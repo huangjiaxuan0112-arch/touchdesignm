@@ -40,6 +40,7 @@ export class SerialDiagnosticService {
   private readonly commandTimeoutMs: number
   private readonly connectSettleMs: number
   private readonly maxLineLength: number
+  private cleanupPromise: Promise<void> = Promise.resolve()
 
   constructor(
     private readonly transport: SerialTransport,
@@ -78,6 +79,7 @@ export class SerialDiagnosticService {
     this.updateState({ state: 'connecting', portPath, baudRate, lastError: undefined })
 
     try {
+      await this.cleanupPromise
       const ports = await this.transport.listPorts()
       if (!ports.some((port) => port.path === portPath)) {
         throw new Error(`Serial port ${portPath} is not currently available.`)
@@ -104,7 +106,8 @@ export class SerialDiagnosticService {
         const connection = this.connection
         this.detachListeners()
         this.connection = undefined
-        void connection.close().catch(() => undefined)
+        this.cleanupPromise = this.closeConnection(connection)
+        await this.cleanupPromise
       }
       this.updateState({ state: 'error', portPath, baudRate, lastError: message })
       throw new Error(message)
@@ -253,7 +256,7 @@ export class SerialDiagnosticService {
       baudRate: this.snapshot.baudRate,
       lastError: error.message,
     })
-    void connection.close().catch(() => undefined)
+    this.cleanupPromise = this.closeConnection(connection, error.message)
   }
 
   private failPending(error: Error): void {
@@ -271,6 +274,22 @@ export class SerialDiagnosticService {
   private detachListeners(): void {
     for (const detach of this.detachConnectionListeners) detach()
     this.detachConnectionListeners = []
+  }
+
+  private async closeConnection(connection: SerialConnection, cause?: string): Promise<void> {
+    try {
+      await connection.close()
+    } catch (error) {
+      const closeError = this.errorMessage(error)
+      const message = cause
+        ? `${cause} Port close failed: ${closeError}`
+        : `Port close failed: ${closeError}`
+      this.updateState({
+        ...this.snapshot,
+        state: 'error',
+        lastError: message,
+      })
+    }
   }
 
   private updateState(snapshot: SerialStateSnapshot): void {

@@ -33,12 +33,14 @@ npm run preview
 
 For the isolated Arduino Nano diagnostic procedure, see [docs/phase-1b-serial.md](docs/phase-1b-serial.md). Keep all actuator loads and power disconnected during those tests.
 
+For the Phase 2B simulation-only unified firmware, protocol tests, upload procedure, and remaining safety gates, see [docs/phase-2b-integration.md](docs/phase-2b-integration.md). The Nano firmware emits source-timeline diagnostics only; it does not drive actuators.
+
 ## Project layout
 
 - `desktop/electron/`: Electron main process and minimal preload bridge
 - `desktop/renderer/`: Vite and React renderer placeholder
 - `desktop/shared/`: shared device and proposed serial protocol types
-- `firmware/`: reserved for future Nature Touch firmware; no pump-control firmware is included
+- `firmware/`: diagnostic and unified Nano firmware; the unified build is simulation-only and has no physical output behavior
 - `firmware/original/` and `references/original/`: reserved for unmodified source sketches and supplied project references
 - `assets/audio/`: reserved for supplied local audio
 - `docs/`: architecture and development plan
@@ -48,6 +50,6 @@ The original sketches and three MP3 assets are now available under `卒研music/
 
 ## Security and hardware boundary
 
-Electron uses context isolation, disables Node integration in the renderer, enables sandboxing, and exposes only `window.natureTouch.getRuntimeInfo()` through preload. Shared serial protocol definitions are types only; no serial package, port handling, Arduino communication, or actuator behavior is implemented.
+Electron uses context isolation, disables Node integration in the renderer, enables sandboxing, and exposes a narrow typed API through preload. The local mock simulation is separate from the serial-controlled Nano simulation firmware. Neither simulation generates physical actuator signals.
 
 Do not connect or operate tactile hardware based on this scaffold. Verify driver and pin mappings, pressure protection, and an independent physical actuator power cutoff before any live test.

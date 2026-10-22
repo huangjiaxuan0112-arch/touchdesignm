@@ -3,6 +3,10 @@ import type { RuntimeInfo } from '../../../shared/ipc'
 import { EXPERIENCE_IDS, EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
 import type { ExperienceAcknowledgement, ExperienceSnapshot, ExperienceStatusResponse } from '../../../shared/experience-control-protocol'
 import { DEFAULT_SERIAL_BAUD_RATE, type SerialPortInfo, type SerialStateSnapshot } from '../../../shared/serial-protocol'
+import {
+  INITIAL_FIRMWARE_CONTROL_SNAPSHOT,
+  type FirmwareControlSnapshot,
+} from '../../../shared/firmware-control-protocol'
 
 export default function App() {
   const [runtimeInfo, setRuntimeInfo] = useState<RuntimeInfo | null>(null)
@@ -21,6 +25,8 @@ export default function App() {
   })
   const [selectedExperience, setSelectedExperience] = useState<ExperienceId>('WIND')
   const [experienceMessage, setExperienceMessage] = useState('')
+  const [firmwareState, setFirmwareState] = useState<FirmwareControlSnapshot>(INITIAL_FIRMWARE_CONTROL_SNAPSHOT)
+  const [firmwareMessage, setFirmwareMessage] = useState('')
   const [busy, setBusy] = useState(false)
   const [actionError, setActionError] = useState('')
 
@@ -28,15 +34,18 @@ export default function App() {
     void window.natureTouch.getRuntimeInfo().then(setRuntimeInfo)
     void window.natureTouch.getSerialState().then(setSerialState)
     void window.natureTouch.getExperienceState().then(setExperienceState)
+    void window.natureTouch.getFirmwareState().then(setFirmwareState)
     void refreshPorts()
     const removeSerialListener = window.natureTouch.onSerialState(setSerialState)
     const removeExperienceListener = window.natureTouch.onExperienceState(setExperienceState)
+    const removeFirmwareListener = window.natureTouch.onFirmwareState(setFirmwareState)
     const progressTimer = window.setInterval(() => {
       void window.natureTouch.getExperienceState().then(setExperienceState)
     }, 100)
     return () => {
       removeSerialListener()
       removeExperienceListener()
+      removeFirmwareListener()
       window.clearInterval(progressTimer)
     }
   }, [])
@@ -86,14 +95,51 @@ export default function App() {
     }
   }
 
+  async function runFirmwareAction(action: () => Promise<unknown>): Promise<void> {
+    setFirmwareMessage('')
+    try {
+      const result = await action()
+      if (result && typeof result === 'object' && 'accepted' in result && !result.accepted) {
+        const rejection = result as ExperienceAcknowledgement
+        setFirmwareMessage(`Rejected: ${rejection.code ?? 'INVALID_COMMAND'}`)
+      } else if (result && typeof result === 'object' && 'snapshot' in result) {
+        const status = result as ExperienceStatusResponse
+        setFirmwareMessage(status.acknowledgement.accepted ? 'Firmware status received.' : `Rejected: ${status.acknowledgement.code ?? 'INVALID_COMMAND'}`)
+      } else if (result && typeof result === 'object' && 'experience' in result) {
+        setFirmwareState(result as FirmwareControlSnapshot)
+        setFirmwareMessage('Protocol v2 firmware identified. Simulation-only controls are ready.')
+      } else {
+        setFirmwareMessage('Firmware command acknowledged.')
+      }
+      setFirmwareState(await window.natureTouch.getFirmwareState())
+    } catch (error) {
+      setFirmwareMessage(error instanceof Error ? error.message : String(error))
+      setFirmwareState(await window.natureTouch.getFirmwareState())
+    }
+  }
+
   function makeRequestId(): string {
     return crypto.randomUUID()
+  }
+
+  function makeFirmwareId(): string {
+    return crypto.randomUUID().replace(/-/g, '').slice(0, 16)
   }
 
   const isConnected = serialState.state === 'connected'
   const canSelectExperience = experienceState.state === 'IDLE' || experienceState.state === 'COMPLETED'
   const canStartExperience = experienceState.state === 'IDLE' && experienceState.selectedExperienceId !== null
   const canStopExperience = experienceState.state === 'RUNNING' && experienceState.operationId !== null
+  const firmwareConnected = firmwareState.connectionState === 'connected'
+  const firmwareIdentified = firmwareConnected && firmwareState.identified
+  const canSelectFirmwareExperience = firmwareIdentified &&
+    (firmwareState.experience.state === 'IDLE' || firmwareState.experience.state === 'COMPLETED')
+  const canStartFirmwareExperience = firmwareIdentified &&
+    firmwareState.experience.state === 'IDLE' &&
+    firmwareState.experience.selectedExperienceId !== null
+  const canStopFirmwareExperience = firmwareIdentified &&
+    (firmwareState.experience.state === 'RUNNING' ||
+      (firmwareState.experience.state === 'FAULT' && firmwareState.experience.operationId !== null))
 
   return (
     <main className="placeholder">
@@ -248,6 +294,107 @@ export default function App() {
           <div><dt>Operation</dt><dd>{experienceState.operationId ?? 'None'}</dd></div>
           {experienceState.faultCode && <div><dt>Fault</dt><dd role="alert">{experienceState.faultCode}</dd></div>}
           {experienceMessage && <div><dt>Simulation</dt><dd role="status">{experienceMessage}</dd></div>}
+        </dl>
+      </section>
+      <section className="diagnostics mock-panel" aria-label="Arduino Nano simulation-only firmware controls">
+        <h2>Arduino Nano firmware (simulation only)</h2>
+        <p>
+          Requires protocol v2 identification before experience commands. Firmware emits diagnostic timeline
+          events only; it never generates actuator signals. Keep pumps, valve, drivers, and actuator power disconnected.
+        </p>
+        <div className="serial-actions">
+          {firmwareConnected ? (
+            <button
+              type="button"
+              onClick={() => void runFirmwareAction(() => window.natureTouch.disconnectFirmware())}
+              disabled={busy}
+            >
+              Disconnect firmware
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => void runFirmwareAction(() => window.natureTouch.connectFirmware(selectedPort, baudRate))}
+              disabled={busy || !selectedPort}
+            >
+              Connect and identify v2
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={() => void runFirmwareAction(() => window.natureTouch.queryFirmwareStatus(makeFirmwareId()))}
+            disabled={!firmwareIdentified || busy}
+          >
+            Query firmware status
+          </button>
+        </div>
+        <div className="serial-fields">
+          <label>
+            Experience
+            <select
+              value={selectedExperience}
+              onChange={(event) => setSelectedExperience(event.target.value as ExperienceId)}
+              disabled={!canSelectFirmwareExperience || busy}
+            >
+              {EXPERIENCE_IDS.map((experienceId) => (
+                <option key={experienceId} value={experienceId}>
+                  {EXPERIENCE_DEFINITIONS[experienceId].name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button
+            type="button"
+            onClick={() => void runFirmwareAction(() =>
+              window.natureTouch.selectFirmwareExperience(selectedExperience, makeFirmwareId()))}
+            disabled={!canSelectFirmwareExperience || busy}
+          >
+            Select on Nano
+          </button>
+        </div>
+        <div className="serial-actions">
+          <button
+            type="button"
+            onClick={() => void runFirmwareAction(() =>
+              window.natureTouch.startFirmwareExperience(makeFirmwareId(), makeFirmwareId()))}
+            disabled={!canStartFirmwareExperience || busy}
+          >
+            Start Nano simulation
+          </button>
+          <button
+            type="button"
+            onClick={() => void runFirmwareAction(() =>
+              window.natureTouch.stopFirmwareExperience(
+                makeFirmwareId(),
+                firmwareState.experience.operationId ?? '',
+              ))}
+            disabled={!canStopFirmwareExperience || busy}
+          >
+            Stop Nano simulation
+          </button>
+          <button
+            type="button"
+            onClick={() => void runFirmwareAction(() => window.natureTouch.recoverFirmware(makeFirmwareId()))}
+            disabled={!firmwareIdentified || busy || firmwareState.experience.state !== 'FAULT'}
+          >
+            Request firmware recovery
+          </button>
+        </div>
+        <dl className="serial-state">
+          <div><dt>Connection</dt><dd>{firmwareState.connectionState}</dd></div>
+          <div><dt>Protocol identified</dt><dd>{firmwareState.identified ? `v${firmwareState.protocolVersion}` : 'No'}</dd></div>
+          <div><dt>Firmware</dt><dd>{firmwareState.firmware ?? 'Unknown'}</dd></div>
+          <div><dt>Hardware outputs</dt><dd>{firmwareState.hardwareOutputsEnabled ? 'ENABLED' : 'Disabled (simulation-only)'}</dd></div>
+          <div><dt>State</dt><dd>{firmwareState.experience.state}</dd></div>
+          <div><dt>Experience</dt><dd>{firmwareState.experience.selectedExperienceId ?? 'None'}</dd></div>
+          <div><dt>Elapsed</dt><dd>{firmwareState.experience.elapsedMs} / {firmwareState.experience.durationMs ?? 0} ms</dd></div>
+          <div><dt>Operation</dt><dd>{firmwareState.experience.operationId ?? 'None'}</dd></div>
+          <div><dt>Last firmware event</dt><dd>{firmwareState.lastEvent ?? 'None'}</dd></div>
+          {firmwareState.experience.faultCode && (
+            <div><dt>Firmware fault</dt><dd role="alert">{firmwareState.experience.faultCode}</dd></div>
+          )}
+          {firmwareState.lastError && <div><dt>Transport</dt><dd role="alert">{firmwareState.lastError}</dd></div>}
+          {firmwareMessage && <div><dt>Firmware request</dt><dd role="status">{firmwareMessage}</dd></div>}
         </dl>
       </section>
     </main>

@@ -9,6 +9,7 @@ import type {
   ExperienceSnapshot,
   ExperienceStatusResponse,
 } from './experience-control-protocol'
+import type { FirmwareControlSnapshot } from './firmware-control-protocol'
 
 export interface RuntimeInfo {
   appVersion: string
@@ -33,4 +34,13 @@ export interface NatureTouchApi {
   simulateExperienceFault(code: string): Promise<ExperienceSnapshot>
   simulateConnectionLoss(): Promise<ExperienceSnapshot>
   recoverExperience(requestId: string): Promise<ExperienceAcknowledgement>
+  getFirmwareState(): Promise<FirmwareControlSnapshot>
+  connectFirmware(portPath: string, baudRate: number): Promise<FirmwareControlSnapshot>
+  disconnectFirmware(): Promise<FirmwareControlSnapshot>
+  onFirmwareState(listener: (snapshot: FirmwareControlSnapshot) => void): () => void
+  selectFirmwareExperience(experienceId: ExperienceId, requestId: string): Promise<ExperienceAcknowledgement>
+  startFirmwareExperience(requestId: string, operationId: string): Promise<ExperienceAcknowledgement>
+  stopFirmwareExperience(requestId: string, operationId: string): Promise<ExperienceAcknowledgement>
+  queryFirmwareStatus(requestId: string): Promise<ExperienceStatusResponse>
+  recoverFirmware(requestId: string): Promise<ExperienceAcknowledgement>
 }

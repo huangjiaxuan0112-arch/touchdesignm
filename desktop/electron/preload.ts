@@ -1,6 +1,7 @@
 import { contextBridge, ipcRenderer } from 'electron'
 import type { NatureTouchApi } from '../shared/ipc'
 import type { SerialStateSnapshot } from '../shared/serial-protocol'
+import type { FirmwareControlSnapshot } from '../shared/firmware-control-protocol'
 
 const api: NatureTouchApi = {
   getRuntimeInfo: () => ipcRenderer.invoke('app:get-runtime-info'),
@@ -36,6 +37,25 @@ const api: NatureTouchApi = {
   simulateExperienceFault: (code) => ipcRenderer.invoke('experience:simulate-fault', code),
   simulateConnectionLoss: () => ipcRenderer.invoke('experience:simulate-connection-loss'),
   recoverExperience: (requestId) => ipcRenderer.invoke('experience:recover', requestId),
+  getFirmwareState: () => ipcRenderer.invoke('firmware:get-state'),
+  connectFirmware: (portPath, baudRate) =>
+    ipcRenderer.invoke('firmware:connect', { portPath, baudRate }),
+  disconnectFirmware: () => ipcRenderer.invoke('firmware:disconnect'),
+  onFirmwareState: (listener) => {
+    const handler = (_event: Electron.IpcRendererEvent, snapshot: FirmwareControlSnapshot) => {
+      listener(snapshot)
+    }
+    ipcRenderer.on('firmware:state', handler)
+    return () => ipcRenderer.removeListener('firmware:state', handler)
+  },
+  selectFirmwareExperience: (experienceId, requestId) =>
+    ipcRenderer.invoke('firmware:select', { experienceId, requestId }),
+  startFirmwareExperience: (requestId, operationId) =>
+    ipcRenderer.invoke('firmware:start', { requestId, operationId }),
+  stopFirmwareExperience: (requestId, operationId) =>
+    ipcRenderer.invoke('firmware:stop', { requestId, operationId }),
+  queryFirmwareStatus: (requestId) => ipcRenderer.invoke('firmware:status', requestId),
+  recoverFirmware: (requestId) => ipcRenderer.invoke('firmware:recover', requestId),
 }
 
 contextBridge.exposeInMainWorld('natureTouch', api)
