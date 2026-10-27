@@ -35,12 +35,14 @@ export interface NatureTouchApi {
   simulateConnectionLoss(): Promise<ExperienceSnapshot>
   recoverExperience(requestId: string): Promise<ExperienceAcknowledgement>
   getFirmwareState(): Promise<FirmwareControlSnapshot>
-  connectFirmware(portPath: string, baudRate: number): Promise<FirmwareControlSnapshot>
+  armFirmwareSimulationTest(loadsIsolated: boolean, simulationFirmwareConfirmed: boolean): Promise<FirmwareControlSnapshot>
+  disarmFirmwareSimulationTest(): Promise<FirmwareControlSnapshot>
+  connectFirmware(portPath: string, baudRate: number, loadsIsolated?: boolean): Promise<FirmwareControlSnapshot>
   disconnectFirmware(): Promise<FirmwareControlSnapshot>
   onFirmwareState(listener: (snapshot: FirmwareControlSnapshot) => void): () => void
   selectFirmwareExperience(experienceId: ExperienceId, requestId: string): Promise<ExperienceAcknowledgement>
   startFirmwareExperience(requestId: string, operationId: string): Promise<ExperienceAcknowledgement>
   stopFirmwareExperience(requestId: string, operationId: string): Promise<ExperienceAcknowledgement>
   queryFirmwareStatus(requestId: string): Promise<ExperienceStatusResponse>
-  recoverFirmware(requestId: string): Promise<ExperienceAcknowledgement>
+  recoverFirmware(requestId: string, loadsIsolated?: boolean, simulationFirmwareConfirmed?: boolean): Promise<ExperienceAcknowledgement>
 }

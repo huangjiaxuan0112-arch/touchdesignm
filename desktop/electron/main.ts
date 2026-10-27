@@ -14,7 +14,10 @@ declare const __NATURE_TOUCH_DEV_CSP_NONCE__: string
 
 const runtimeInfoChannel = 'app:get-runtime-info'
 const serialService = new SerialDiagnosticService(new NativeSerialTransport())
-const firmwareService = new ArduinoFirmwareService(new NativeSerialTransport())
+const firmwareService = new ArduinoFirmwareService(new NativeSerialTransport(), {
+  readOnly: true,
+  allowSimulationTest: !app.isPackaged,
+})
 const mockExperienceController = new MockExperienceController()
 let mainWindow: BrowserWindow | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
@@ -63,25 +66,8 @@ function registerIpcHandlers(): void {
 
   ipcMain.handle('serial:list-ports', () => serialService.listPorts())
   ipcMain.handle('serial:get-state', () => serialService.getState())
-  ipcMain.handle('serial:connect', (_event, payload: unknown): Promise<SerialStateSnapshot> => {
-    if (!payload || typeof payload !== 'object') {
-      throw new Error('A port path and baud rate are required.')
-    }
-    const request = payload as { portPath?: unknown; baudRate?: unknown }
-    if (typeof request.portPath !== 'string' || typeof request.baudRate !== 'number') {
-      throw new Error('A port path and numeric baud rate are required.')
-    }
-    const portPath = request.portPath
-    const baudRate = request.baudRate
-    return serializeSerialPortOperation(async () => {
-      if (serialPortOwner === 'firmware') {
-        await firmwareService.disconnect()
-        serialPortOwner = null
-      }
-      const snapshot = await serialService.connect(portPath, baudRate)
-      serialPortOwner = 'diagnostic'
-      return snapshot
-    })
+  ipcMain.handle('serial:connect', (): Promise<SerialStateSnapshot> => {
+    throw new Error('Legacy serial diagnostics are disabled during read-only hardware integration.')
   })
   ipcMain.handle('serial:disconnect', () =>
     serializeSerialPortOperation(async () => {
@@ -90,12 +76,18 @@ function registerIpcHandlers(): void {
       return snapshot
     }),
   )
-  ipcMain.handle('serial:ping', () => serialService.ping())
-  ipcMain.handle('serial:status', () => serialService.getDiagnosticStatus())
+  ipcMain.handle('serial:ping', () => { throw new Error('Read-only Protocol v2 mode: legacy PING is disabled.') })
+  ipcMain.handle('serial:status', () => { throw new Error('Read-only Protocol v2 mode: legacy STATUS is disabled.') })
   ipcMain.handle('firmware:get-state', (): FirmwareControlSnapshot => firmwareService.getSnapshot())
+  ipcMain.handle('firmware:arm-simulation', (_event, payload: unknown) => {
+    const confirmation = payload as { loadsIsolated?: unknown; simulationFirmwareConfirmed?: unknown } | null
+    return firmwareService.armSimulationTest(confirmation?.loadsIsolated === true, confirmation?.simulationFirmwareConfirmed === true)
+  })
+  ipcMain.handle('firmware:disarm-simulation', () => firmwareService.disarmSimulationTest())
   ipcMain.handle('firmware:connect', (_event, payload: unknown): Promise<FirmwareControlSnapshot> => {
     if (!payload || typeof payload !== 'object') throw new Error('A port path and baud rate are required.')
-    const request = payload as { portPath?: unknown; baudRate?: unknown }
+    const request = payload as { portPath?: unknown; baudRate?: unknown; loadsIsolated?: unknown }
+    if (request.loadsIsolated !== true) throw new Error('Confirm pneumatic loads are physically isolated before opening USB serial.')
     if (typeof request.portPath !== 'string' || typeof request.baudRate !== 'number') {
       throw new Error('A port path and numeric baud rate are required.')
     }
@@ -147,9 +139,12 @@ function registerIpcHandlers(): void {
     if (typeof requestId !== 'string') throw new Error('A firmware request ID is required.')
     return firmwareService.queryStatus(requestId)
   })
-  ipcMain.handle('firmware:recover', (_event, requestId: unknown) => {
-    if (typeof requestId !== 'string') throw new Error('A firmware request ID is required.')
-    return firmwareService.recover(requestId)
+  ipcMain.handle('firmware:recover', (_event, payload: unknown) => {
+    const request = payload as { requestId?: unknown; loadsIsolated?: unknown; simulationFirmwareConfirmed?: unknown } | null
+    if (typeof request?.requestId !== 'string') throw new Error('A firmware request ID is required.')
+    return firmwareService.recover(request.requestId, {
+      loadsIsolated: request.loadsIsolated === true, simulationFirmwareConfirmed: request.simulationFirmwareConfirmed === true,
+    })
   })
   ipcMain.handle('experience:get-state', () => mockExperienceController.getSnapshot())
   ipcMain.handle('experience:select', (_event, payload: unknown) => {

@@ -7,6 +7,8 @@ export type FirmwareConnectionState =
   | 'faulted'
 
 export interface FirmwareControlSnapshot {
+  simulationTestArmed?: boolean
+  simulationTestEligible?: boolean
   connectionState: FirmwareConnectionState
   identified: boolean
   protocolVersion: number | null
@@ -19,6 +21,8 @@ export interface FirmwareControlSnapshot {
 
 export const INITIAL_FIRMWARE_CONTROL_SNAPSHOT: FirmwareControlSnapshot = {
   connectionState: 'disconnected',
+  simulationTestArmed: false,
+  simulationTestEligible: false,
   identified: false,
   protocolVersion: null,
   firmware: null,

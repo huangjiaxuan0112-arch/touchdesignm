@@ -3,8 +3,94 @@ import { test } from 'node:test'
 import { ArduinoFirmwareService } from '../desktop/electron/serial/arduino-firmware-service'
 import { MockSerialTransport } from '../desktop/electron/serial/mock-serial-transport'
 
+test('confirmed simulation recovery returns verified idle without arming, selecting or starting', async () => {
+  const { transport, commands } = createFirmwareTransport({ initialState: 'FAULT' })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    const count = commands.length
+    await assert.rejects(service.recover('noConfirm'), /read-only/)
+    await assert.rejects(service.recover('noIsolation', { loadsIsolated: false, simulationFirmwareConfirmed: true }), /read-only/)
+    assert.equal(commands.length, count)
+    assert.equal((await service.recover('recover', { loadsIsolated: true, simulationFirmwareConfirmed: true })).accepted, true)
+    const state = service.getSnapshot()
+    assert.equal(state.experience.state, 'IDLE')
+    assert.equal(state.experience.selectedExperienceId, null)
+    assert.equal(state.experience.operationId, null)
+    assert.equal(state.simulationTestArmed, false)
+    assert.deepEqual(commands.slice(count).map(line => JSON.parse(line).type), ['STATUS_QUERY', 'RECOVER', 'STATUS_QUERY'])
+    await assert.rejects(service.start('start', 'op'), /read-only/)
+  } finally { await service.disconnect() }
+})
+
+test('RECOVER NACK or unconfirmed idle preserves FAULT', async () => {
+  for (const option of [{ rejectRecover: true }, { recoverWithoutTransition: true }]) {
+    const { transport } = createFirmwareTransport({ initialState: 'FAULT', ...option })
+    const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
+    try {
+      await service.connect('COM3')
+      const operation = service.recover('recover', { loadsIsolated: true, simulationFirmwareConfirmed: true })
+      if (option.rejectRecover) assert.equal((await operation).accepted, false)
+      else await assert.rejects(operation, /safe idle was not confirmed/)
+      assert.equal(service.getSnapshot().experience.state, 'FAULT')
+      assert.equal(service.getSnapshot().simulationTestArmed, false)
+    } finally { await service.disconnect() }
+  }
+})
+
+test('lost post-recovery status never optimistically clears FAULT', async () => {
+  let recovering = false
+  const { transport } = createFirmwareTransport({ initialState: 'FAULT', onCommand: command => {
+    if (command === 'RECOVER') recovering = true
+  }, dropStatus: () => recovering })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0, commandTimeoutMs: 20 })
+  try {
+    await service.connect('COM3')
+    await assert.rejects(service.recover('recover', { loadsIsolated: true, simulationFirmwareConfirmed: true }), /Timed out/)
+    assert.equal(service.getSnapshot().experience.state, 'FAULT')
+    assert.equal(service.getSnapshot().identified, false)
+  } finally { await service.disconnect() }
+})
+
+test('RECOVER confirmation cannot bypass missing simulation identity or disabled development controls', async () => {
+  for (const option of [{ capabilities: [], allowSimulationTest: true }, { allowSimulationTest: false }]) {
+    const { transport, commands } = createFirmwareTransport({ initialState: 'FAULT', ...option })
+    const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: option.allowSimulationTest, connectSettleMs: 0 })
+    try {
+      await service.connect('COM3')
+      await assert.rejects(service.recover('recover', { loadsIsolated: true, simulationFirmwareConfirmed: true }), /read-only/)
+      assert.equal(commands.some(line => JSON.parse(line).type === 'RECOVER'), false)
+    } finally { await service.disconnect() }
+  }
+})
+
+test('read-only hardware integration blocks every mutation before serial write', async () => {
+  const { transport, commands } = createFirmwareTransport({ initialState: 'RUNNING' })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    const before = commands.length
+    await assert.rejects(service.selectExperience('s1', 'WIND'), /read-only/)
+    await assert.rejects(service.start('s2', 'o1'), /read-only/)
+    await assert.rejects(service.stop('s3', 'o1'), /read-only/)
+    await assert.rejects(service.recover('s4'), /read-only/)
+    assert.equal(commands.length, before)
+    await service.queryStatus('q1')
+    assert.deepEqual(commands.map((line) => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY', 'STATUS_QUERY'])
+    transport.lastConnection?.disconnect()
+    assert.equal(service.getSnapshot().connectionState, 'faulted')
+    assert.equal(service.getSnapshot().identified, false)
+    await new Promise((resolve) => setTimeout(resolve, 20))
+    assert.equal(transport.opened.length, 1, 'USB loss must not reconnect automatically')
+  } finally { await service.disconnect() }
+})
+
 function createFirmwareTransport(options: {
   identifyAs?: string
+  rejectRecover?: boolean
+  recoverWithoutTransition?: boolean
+  capabilities?: string[]
+  statusOutputsEnabled?: () => boolean
   initialState?: string
   staleIdentityReply?: boolean
   legacyIdentityResponse?: boolean
@@ -138,6 +224,7 @@ function createFirmwareTransport(options: {
           protocol: 2,
           firmware: options.identifyAs ?? 'nature-touch-unified-simulation',
           hardwareOutputsEnabled: false,
+          capabilities: options.capabilities ?? ['WIND', 'WAVE', 'BUBBLE', 'SIMULATION_ONLY'],
         })
         return cacheResponse(options.staleIdentityReply
           ? `${JSON.stringify({ type: 'ACK', command, accepted: true, requestId: 'stale', state })}\n${identity}`
@@ -153,6 +240,7 @@ function createFirmwareTransport(options: {
           state,
         }
         const snapshot = {
+          hardwareOutputsEnabled: options.statusOutputsEnabled?.() ?? false,
           state,
           selectedExperienceId: selectedExperience,
           operationId,
@@ -263,6 +351,8 @@ function createFirmwareTransport(options: {
           JSON.stringify({ type: 'EVENT', name: 'STOPPED', operationId: stoppedOperation }),
         ].join('\n'))
       } else if (command === 'RECOVER') {
+        if (options.rejectRecover) return cacheResponse(JSON.stringify({ type: 'NACK', command, accepted: false, requestId, state, code: 'INVALID_STATE' }))
+        if (options.recoverWithoutTransition) return cacheResponse(JSON.stringify({ type: 'ACK', command, accepted: true, requestId, state: 'IDLE' }))
         state = 'IDLE'
         selectedExperience = null
         operationId = null
@@ -302,6 +392,83 @@ function createFirmwareTransport(options: {
     },
   }
 }
+
+test('simulation arming requires every prerequisite and never starts on arm or reconnect', async () => {
+  const { transport, commands } = createFirmwareTransport()
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
+  try {
+    await assert.rejects(service.armSimulationTest(true, true), /Identify/)
+    await service.connect('COM3')
+    await assert.rejects(service.armSimulationTest(false, true), /arming denied/)
+    await assert.rejects(service.armSimulationTest(true, false), /arming denied/)
+    await assert.rejects(service.selectExperience('s1', 'WIND'), /read-only/)
+    assert.equal((await service.armSimulationTest(true, true)).simulationTestArmed, true)
+    assert.equal(commands.some((line) => JSON.parse(line).type === 'START'), false)
+    await service.selectExperience('s2', 'WIND')
+    await service.start('s3', 'op1')
+    assert.throws(() => service.disarmSimulationTest(), /STOP/)
+    await assert.rejects(service.recover('s4'), /read-only/)
+    await service.stop('s5', 'op1')
+    service.disarmSimulationTest()
+    await assert.rejects(service.selectExperience('s6', 'WAVE'), /read-only/)
+    await service.armSimulationTest(true, true)
+    transport.lastConnection?.disconnect()
+    assert.equal(service.getSnapshot().simulationTestArmed, false)
+    const count = commands.length
+    await service.connect('COM3')
+    assert.equal(service.getSnapshot().simulationTestArmed, false)
+    assert.deepEqual(commands.slice(count).map((line) => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY'])
+  } finally { await service.disconnect() }
+})
+
+test('simulation arming fails closed for absent capabilities, enabled outputs, or disabled development permission', async () => {
+  for (const options of [
+    { capabilities: [] }, { statusOutputsEnabled: () => true },
+  ]) {
+    const { transport, commands } = createFirmwareTransport(options)
+    const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
+    try {
+      await service.connect('COM3')
+      await assert.rejects(service.armSimulationTest(true, true), /arming denied/)
+      assert.equal(commands.some((line) => JSON.parse(line).type === 'START'), false)
+    } finally { await service.disconnect() }
+  }
+  const { transport } = createFirmwareTransport()
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    await assert.rejects(service.armSimulationTest(true, true), /arming denied/)
+  } finally { await service.disconnect() }
+})
+
+test('loss of simulation-only status disarms and closes the session', async () => {
+  let enabled = false
+  const { transport } = createFirmwareTransport({ statusOutputsEnabled: () => enabled })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    await service.armSimulationTest(true, true)
+    enabled = true
+    await assert.rejects(service.queryStatus('q1'), /flag lost/)
+    assert.equal(service.getSnapshot().simulationTestArmed, false)
+    assert.equal(service.getSnapshot().connectionState, 'faulted')
+  } finally { await service.disconnect() }
+})
+
+test('STOP waits for an in-flight heartbeat then confirms STOPPED', async () => {
+  const { transport, commands } = createFirmwareTransport({ responseDelayMs: 20 })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0, heartbeatIntervalMs: 10 })
+  try {
+    await service.connect('COM3')
+    await service.armSimulationTest(true, true)
+    await service.selectExperience('s1', 'WIND')
+    await service.start('s2', 'op1')
+    await new Promise((resolve) => setTimeout(resolve, 15))
+    assert.equal(JSON.parse(commands.at(-1)!).type, 'STATUS_QUERY')
+    assert.equal((await service.stop('s3', 'op1')).accepted, true)
+    assert.equal(service.getSnapshot().experience.state, 'IDLE')
+  } finally { await service.disconnect() }
+})
 
 async function sendRawRequest(
   transport: MockSerialTransport,

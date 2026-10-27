@@ -58,7 +58,17 @@ test('unified firmware action timelines exactly match all source-derived definit
 })
 
 test('simulation firmware contains no actuator libraries, pin writes, or blocking delays', () => {
-  assert.doesNotMatch(firmwareSource, /#include\s*[<"]Servo\.h[>"]/)
-  assert.doesNotMatch(firmwareSource, /\.attach\s*\(|\bpinMode\s*\(|\bdigitalWrite\s*\(|\banalogWrite\s*\(|\bdelay\s*\(/)
+  const actuatorSource = readFileSync(
+    join(testDirectory, '../firmware/unified/nature_touch_unified/simulated-actuators.h'),
+    'utf8',
+  )
+  const implementation = `${firmwareSource}\n${actuatorSource}`
+  const selector = readFileSync(join(testDirectory, '../firmware/unified/nature_touch_unified/actuator-driver.h'), 'utf8')
+  assert.match(firmwareSource, /#include "actuator-driver\.h"/)
+  assert.match(selector, /namespace Actuators = ActuatorSimulation;/)
+  assert.match(selector, /#if NATURE_TOUCH_ACTUATOR_DRIVER != 0\s+#error[^\n]+\s+#include "real-actuators\.h"/)
+  assert.doesNotMatch(implementation, /#include\s*[<"]Servo\.h[>"]/)
+  assert.doesNotMatch(implementation, /\.attach\s*\(|\bpinMode\s*\(|\bdigitalWrite\s*\(|\banalogWrite\s*\(|\bdelay\s*\(/)
+  assert.doesNotMatch(implementation, /\b(?:DDR|PORT)[BCD]\s*[|&^]?=/)
   assert.match(firmwareSource, /hardwareOutputsEnabled\\?"?:false/)
 })

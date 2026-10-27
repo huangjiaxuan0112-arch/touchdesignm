@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="120" y1="0" x2="680" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D9D7C8"/>
+      <stop offset=".48" stop-color="#9EAA91"/>
+      <stop offset="1" stop-color="#495B4F"/>
+    </linearGradient>
+    <linearGradient id="field" x1="400" y1="610" x2="400" y2="1000" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#697C62" stop-opacity=".25"/>
+      <stop offset=".42" stop-color="#263C32" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#15271F"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientTransform="matrix(92 104 -104 92 555 228)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5E9CE" stop-opacity=".78"/>
+      <stop offset="1" stop-color="#F5E9CE" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <path fill="url(#sky)" d="M0 0h800v1000H0z"/>
+  <circle cx="560" cy="260" r="245" fill="url(#sun)"/>
+  <path d="M0 594c120-38 207-50 320-17 127 36 228 22 480-58v481H0V594Z" fill="#75826B" fill-opacity=".72"/>
+  <path d="M0 696c131-70 227-43 356-3 123 38 257-21 444-87v394H0V696Z" fill="url(#field)"/>
+  <g stroke="#C1C29A" stroke-linecap="round" stroke-opacity=".72" stroke-width="4">
+    <path d="M122 1000c22-147 5-228-21-323m21 154 42-91m-50 28-42-68"/>
+    <path d="M248 1000c-3-123 33-200 75-286m-66 195-45-84m83 8 55-69"/>
+    <path d="M501 1000c-12-121-1-211 34-307m-28 189-49-69m71 15 50-73"/>
+    <path d="M650 1000c8-155 38-236 79-319m-62 201-39-71m81 1 43-59"/>
+  </g>
+  <g stroke="#E1D9B9" stroke-linecap="round" stroke-opacity=".35" stroke-width="3">
+    <path d="M83 360c100-42 190-41 273 4"/>
+    <path d="M153 409c92-25 168-17 231 27"/>
+    <path d="M463 430c79-22 150-10 214 36"/>
+  </g>
+</svg>

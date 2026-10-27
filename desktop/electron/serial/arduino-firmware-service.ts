@@ -21,6 +21,8 @@ import {
 import type { SerialConnection, SerialTransport } from './serial-transport'
 
 interface ServiceOptions {
+  readOnly?: boolean
+  allowSimulationTest?: boolean
   commandTimeoutMs?: number
   identifyTimeoutMs?: number
   connectSettleMs?: number
@@ -64,11 +66,17 @@ export class ArduinoFirmwareService {
   private heartbeatTimer: ReturnType<typeof setTimeout> | undefined
   private cleanupPromise: Promise<void> = Promise.resolve()
   private remoteState: ExperienceSnapshot['state'] = 'IDLE'
+  private readonly readOnly: boolean
+  private readonly allowSimulationTest: boolean
+  private simulationIdentityConfirmed = false
+  private statusRequest: Promise<ExperienceStatusResponse> | undefined
 
   constructor(
     private readonly transport: SerialTransport,
     options: ServiceOptions = {},
   ) {
+    this.readOnly = options.readOnly ?? false
+    this.allowSimulationTest = options.allowSimulationTest ?? false
     this.commandTimeoutMs = options.commandTimeoutMs ?? 1500
     this.identifyTimeoutMs = options.identifyTimeoutMs ?? 5000
     this.connectSettleMs = options.connectSettleMs ?? 2500
@@ -110,6 +118,7 @@ export class ArduinoFirmwareService {
     this.inputLine = ''
     this.discardingLongLine = false
     this.remoteState = 'IDLE'
+    this.simulationIdentityConfirmed = false
     this.runStartedAt = undefined
     this.clearHeartbeat()
     this.updateSnapshot({
@@ -148,7 +157,7 @@ export class ArduinoFirmwareService {
       )
       if (identity.type === 'NACK') {
         const code = typeof identity.code === 'string' ? identity.code : 'PROTOCOL_REJECTED'
-        throw new Error(`Incompatible firmware: protocol v2 IDENTIFY was rejected (${code}). Upload the Phase 2B simulation firmware.`)
+        throw new Error(`Incompatible firmware: protocol v2 IDENTIFY was rejected (${code}). Disconnect and verify the installed firmware; do not upload during read-only integration.`)
       }
       if (
         identity.type !== 'ACK' ||
@@ -157,7 +166,7 @@ export class ArduinoFirmwareService {
         identity.firmware !== 'nature-touch-unified-simulation' ||
         identity.hardwareOutputsEnabled !== false
       ) {
-        throw new Error('Incompatible firmware: expected output-disabled Nature Touch protocol v2. Upload the Phase 2B simulation firmware.')
+        throw new Error('Incompatible firmware: expected output-disabled Nature Touch protocol v2. Disconnect and verify the installed firmware; do not upload during read-only integration.')
       }
       this.updateSnapshot({
         ...this.snapshot,
@@ -165,6 +174,10 @@ export class ArduinoFirmwareService {
         protocolVersion: EXPERIENCE_PROTOCOL_VERSION,
         firmware: String(identity.firmware),
       })
+
+      const capabilities = identity.capabilities
+      this.simulationIdentityConfirmed = identity.accepted === true && Array.isArray(capabilities) &&
+        ['WIND', 'WAVE', 'BUBBLE', 'SIMULATION_ONLY'].every((capability) => capabilities.includes(capability))
 
       const status = await this.readStatus()
       if (status.snapshot.state === 'RUNNING' || status.snapshot.state === 'STOPPING') {
@@ -236,6 +249,31 @@ export class ArduinoFirmwareService {
     return this.getSnapshot()
   }
 
+  async armSimulationTest(loadsIsolated: boolean, simulationFirmwareConfirmed: boolean): Promise<FirmwareControlSnapshot> {
+    this.requireIdentified()
+    if (!this.allowSimulationTest || !this.readOnly || loadsIsolated !== true || simulationFirmwareConfirmed !== true ||
+        !this.simulationIdentityConfirmed) {
+      throw new Error('Simulation test arming denied: development mode, physical isolation and identified simulation firmware confirmation are required.')
+    }
+    const connection = this.connection
+    const status = await this.readStatus()
+    if (connection !== this.connection || !this.snapshot.identified ||
+        !['IDLE', 'COMPLETED'].includes(status.snapshot.state) ||
+        (status.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== false) {
+      throw new Error('Simulation test arming denied: current device must report inactive simulation-only outputs.')
+    }
+    this.updateSnapshot({ ...this.snapshot, simulationTestArmed: true })
+    return this.getSnapshot()
+  }
+
+  disarmSimulationTest(): FirmwareControlSnapshot {
+    if (this.remoteState === 'RUNNING' || this.remoteState === 'STOPPING' || this.pendingRequest) {
+      throw new Error('Finish or STOP the simulated operation before disarming.')
+    }
+    this.updateSnapshot({ ...this.snapshot, simulationTestArmed: false })
+    return this.getSnapshot()
+  }
+
   async selectExperience(requestId: string, experienceId: ExperienceId): Promise<ExperienceAcknowledgement> {
     this.requireIdentified()
     this.validateRequestId(requestId)
@@ -294,6 +332,8 @@ export class ArduinoFirmwareService {
     this.requireIdentified()
     this.validateRequestId(requestId)
     this.validateOperationId(operationId)
+    this.clearHeartbeat()
+    if (this.statusRequest) await this.statusRequest
     if (this.remoteState !== 'RUNNING') throw new Error('Firmware has no confirmed running operation to stop.')
     this.clearHeartbeat()
     return this.sendRequest<ExperienceAcknowledgement>(
@@ -310,19 +350,48 @@ export class ArduinoFirmwareService {
     return this.readStatus(requestId)
   }
 
-  async recover(requestId: string): Promise<ExperienceAcknowledgement> {
+  async recover(requestId: string, confirmation?: { loadsIsolated: boolean; simulationFirmwareConfirmed: boolean }): Promise<ExperienceAcknowledgement> {
     this.requireIdentified()
     this.validateRequestId(requestId)
+    let confirmedRecovery = false
+    if (this.readOnly) {
+      if (!this.allowSimulationTest || !this.simulationIdentityConfirmed ||
+          confirmation?.loadsIsolated !== true || confirmation?.simulationFirmwareConfirmed !== true) {
+        throw new Error('Real Arduino is read-only: explicit isolated simulation recovery confirmation required.')
+      }
+      const connection = this.connection
+      const status = await this.readStatus()
+      if (connection !== this.connection || !this.snapshot.identified || status.snapshot.state !== 'FAULT' ||
+          (status.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== false) {
+        throw new Error('Simulation recovery denied: a confirmed output-disabled FAULT is required.')
+      }
+      confirmedRecovery = true
+    }
     const response = await this.sendRequest<ExperienceAcknowledgement>(
       'RECOVER',
       { requestId },
       requestId,
+      { confirmedRecovery },
     )
     if (response.accepted) {
+      try {
+        const status = await this.readStatus(this.nextRequestId(), false)
+        if (response.state !== 'IDLE' || status.snapshot.state !== 'IDLE' ||
+            status.snapshot.selectedExperienceId !== null || status.snapshot.operationId !== null || status.snapshot.faultCode !== null ||
+            (this.readOnly && (status.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== false)) {
+          throw new Error('RECOVER was acknowledged but safe idle was not confirmed.')
+        }
+      } catch (error) {
+        this.updateSnapshot({ ...this.snapshot, simulationTestArmed: false,
+          experience: { ...this.snapshot.experience, state: 'FAULT', faultCode: this.snapshot.experience.faultCode ?? 'RECOVERY_UNCONFIRMED' },
+          lastError: this.errorMessage(error) })
+        throw error
+      }
       this.remoteState = 'IDLE'
       this.runStartedAt = undefined
       this.updateSnapshot({
         ...this.snapshot,
+        simulationTestArmed: false,
         lastError: null,
         experience: {
           state: 'IDLE',
@@ -338,23 +407,40 @@ export class ArduinoFirmwareService {
     return response
   }
 
-  private async readStatus(requestId = this.nextRequestId()): Promise<ExperienceStatusResponse> {
-    const response = await this.sendRequest<ExperienceStatusResponse>(
+  private async readStatus(requestId = this.nextRequestId(), apply = true): Promise<ExperienceStatusResponse> {
+    const request = this.sendRequest<ExperienceStatusResponse>(
       'STATUS_QUERY',
       { requestId },
       requestId,
       { waitForStatus: true },
     )
-    this.applyStatus(response.snapshot)
-    return response
+    this.statusRequest = request
+    try {
+      const response = await request
+      if (this.snapshot.simulationTestArmed &&
+          (response.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== false) {
+        const error = new Error('Simulation-only output flag lost; test session closed.')
+        if (this.connection) this.failSession(this.connection, error, 'INCOMPATIBLE_FIRMWARE')
+        throw error
+      }
+      if (apply) this.applyStatus(response.snapshot)
+      return response
+    } finally { if (this.statusRequest === request) this.statusRequest = undefined }
   }
 
   private sendRequest<T>(
     command: ExperienceCommandName,
     payload: Record<string, string | number>,
     requestId = this.requestIdFromPayload(payload) ?? this.nextRequestId(),
-    options: { waitForStatus?: boolean; waitForStop?: boolean; timeoutMs?: number } = {},
+    options: { waitForStatus?: boolean; waitForStop?: boolean; timeoutMs?: number; confirmedRecovery?: boolean } = {},
   ): Promise<T> {
+    if (this.readOnly && command !== 'IDENTIFY' && command !== 'STATUS_QUERY' &&
+        !(this.snapshot.simulationTestArmed && this.snapshot.identified &&
+          this.snapshot.connectionState === 'connected' && ['SELECT', 'START', 'STOP'].includes(command)) &&
+        !(command === 'RECOVER' && options.confirmedRecovery && this.allowSimulationTest &&
+          this.snapshot.identified && this.simulationIdentityConfirmed && this.snapshot.connectionState === 'connected')) {
+      return Promise.reject(new Error('Hardware Integration Step 1 is read-only: only IDENTIFY and STATUS_QUERY are allowed.'))
+    }
     const connection = this.connection
     if (!connection) return Promise.reject(new Error('Connect to the firmware before sending commands.'))
     if (this.pendingRequest) return Promise.reject(new Error('Wait for the current firmware request to finish.'))
@@ -435,7 +521,7 @@ export class ArduinoFirmwareService {
           this.failSession(
             connection,
             new Error(
-              'Incompatible firmware: the board returned Phase 1B text diagnostics, not protocol v2. Upload the Phase 2B simulation firmware.',
+              'Incompatible firmware: the board returned Phase 1B text diagnostics, not protocol v2. Disconnect and verify the installed firmware; do not upload during read-only integration.',
             ),
             'INCOMPATIBLE_FIRMWARE',
           )
@@ -458,7 +544,7 @@ export class ArduinoFirmwareService {
       this.failSession(
         connection,
         new Error(
-          'Incompatible firmware: the board rejected the protocol v2 handshake. Upload the Phase 2B simulation firmware.',
+          'Incompatible firmware: the board rejected the protocol v2 handshake. Disconnect and verify the installed firmware; do not upload during read-only integration.',
         ),
         'INCOMPATIBLE_FIRMWARE',
       )
@@ -693,6 +779,11 @@ export class ArduinoFirmwareService {
   }
 
   private updateSnapshot(snapshot: FirmwareControlSnapshot): void {
+    if (snapshot.connectionState !== 'connected' || !snapshot.identified || snapshot.experience.state === 'FAULT') {
+      snapshot = { ...snapshot, simulationTestArmed: false }
+    }
+    snapshot = { ...snapshot, simulationTestEligible: this.allowSimulationTest && this.simulationIdentityConfirmed &&
+      snapshot.connectionState === 'connected' && snapshot.identified }
     this.snapshot = snapshot
     const current = this.getSnapshot()
     for (const listener of this.listeners) listener(current)

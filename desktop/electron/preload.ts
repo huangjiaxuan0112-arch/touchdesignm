@@ -38,8 +38,11 @@ const api: NatureTouchApi = {
   simulateConnectionLoss: () => ipcRenderer.invoke('experience:simulate-connection-loss'),
   recoverExperience: (requestId) => ipcRenderer.invoke('experience:recover', requestId),
   getFirmwareState: () => ipcRenderer.invoke('firmware:get-state'),
-  connectFirmware: (portPath, baudRate) =>
-    ipcRenderer.invoke('firmware:connect', { portPath, baudRate }),
+  armFirmwareSimulationTest: (loadsIsolated, simulationFirmwareConfirmed) =>
+    ipcRenderer.invoke('firmware:arm-simulation', { loadsIsolated, simulationFirmwareConfirmed }),
+  disarmFirmwareSimulationTest: () => ipcRenderer.invoke('firmware:disarm-simulation'),
+  connectFirmware: (portPath, baudRate, loadsIsolated = false) =>
+    ipcRenderer.invoke('firmware:connect', { portPath, baudRate, loadsIsolated }),
   disconnectFirmware: () => ipcRenderer.invoke('firmware:disconnect'),
   onFirmwareState: (listener) => {
     const handler = (_event: Electron.IpcRendererEvent, snapshot: FirmwareControlSnapshot) => {
@@ -55,7 +58,8 @@ const api: NatureTouchApi = {
   stopFirmwareExperience: (requestId, operationId) =>
     ipcRenderer.invoke('firmware:stop', { requestId, operationId }),
   queryFirmwareStatus: (requestId) => ipcRenderer.invoke('firmware:status', requestId),
-  recoverFirmware: (requestId) => ipcRenderer.invoke('firmware:recover', requestId),
+  recoverFirmware: (requestId, loadsIsolated = false, simulationFirmwareConfirmed = false) =>
+    ipcRenderer.invoke('firmware:recover', { requestId, loadsIsolated, simulationFirmwareConfirmed }),
 }
 
 contextBridge.exposeInMainWorld('natureTouch', api)

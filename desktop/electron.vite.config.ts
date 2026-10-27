@@ -38,6 +38,11 @@ export default defineConfig(({ mode }) => {
       root: resolve(__dirname, 'renderer'),
       html: devCspNonce ? { cspNonce: devCspNonce } : undefined,
       plugins: [react()],
+      server: {
+        fs: {
+          allow: [resolve(__dirname, '..')],
+        },
+      },
       build: {
         rollupOptions: {
           input: resolve(__dirname, 'renderer/index.html'),

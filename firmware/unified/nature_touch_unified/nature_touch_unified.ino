@@ -1,5 +1,6 @@
 #include <string.h>
 #include "experience-timelines.h"
+#include "actuator-driver.h"
 
 // Simulation-only firmware; it intentionally has no actuator library,
 // pin configuration, or GPIO writes.
@@ -11,10 +12,33 @@ const uint8_t REQUEST_CACHE_SIZE = 4;
 const uint8_t OPERATION_HISTORY_SIZE = 4;
 const uint8_t PROTOCOL_VERSION = 2;
 const unsigned long BAUD_RATE = 9600;
+// Existing Windows STATUS_QUERY heartbeats normally arrive every 1000 ms.
+// This is a protocol lease, not an electrical USB disconnect detector.
+const uint32_t HOST_TIMEOUT_MS = 5000;
 
 char inputLine[LINE_BUFFER_SIZE];
 uint8_t inputLength = 0;
 bool lineTooLong = false;
+bool inputLineReady = false;
+
+void collectSerialInput();
+void processScheduler(uint32_t now);
+
+// Keep JSON frames intact while allowing RX and logical deadlines to progress.
+// Only the main loop serializes replies/events; this writer never parses commands.
+class CooperativeProtocolWriter : public Print {
+ public:
+  size_t write(uint8_t value) override {
+    collectSerialInput();
+    processScheduler(millis());
+    while (Serial.availableForWrite() == 0) {
+      collectSerialInput();
+      processScheduler(millis());
+    }
+    return Serial.write(value);
+  }
+};
+CooperativeProtocolWriter ProtocolOutput;
 
 struct JsonField {
   char key[16];
@@ -62,6 +86,14 @@ uint32_t elapsedBeforeCurrentAction = 0;
 uint16_t actionIndex = 0;
 uint16_t actionCount = 0;
 bool runActive = false;
+uint32_t lastHostContactAt = 0;
+const char* faultCode = NULL;
+bool actionScheduled = false;
+uint32_t pendingActionEvents = 0;
+bool completionEventPending = false;
+bool faultEventPending = false;
+static_assert(WIND_ACTION_COUNT <= 32 && WAVE_ACTION_COUNT <= 32 && BUBBLE_ACTION_COUNT <= 32,
+  "Diagnostic pending mask supports at most 32 actions per timeline");
 
 const __FlashStringHelper* stateName(ControlState state) {
   switch (state) {
@@ -127,15 +159,15 @@ bool validIdentifier(const char* value, uint8_t maximumLength) {
 
 void printEscaped(const char* value) {
   for (const char* cursor = value; *cursor; cursor++) {
-    if (*cursor == '"' || *cursor == '\\') Serial.write('\\');
-    Serial.write(*cursor);
+    if (*cursor == '"' || *cursor == '\\') ProtocolOutput.write('\\');
+    ProtocolOutput.write(*cursor);
   }
 }
 
 void printError(const char* code) {
-  Serial.print(F("{\"type\":\"ERROR\",\"code\":\""));
+  ProtocolOutput.print(F("{\"type\":\"ERROR\",\"code\":\""));
   printEscaped(code);
-  Serial.println(F("\"}"));
+  ProtocolOutput.println(F("\"}"));
 }
 
 void printAcknowledgement(
@@ -148,36 +180,36 @@ void printAcknowledgement(
   const char* operationId,
   bool includeIdentity
 ) {
-  Serial.print(F("{\"type\":\""));
-  Serial.print(type);
-  Serial.print(F("\",\"command\":\""));
-  Serial.print(command);
-  Serial.print(F("\",\"accepted\":"));
-  Serial.print(accepted ? F("true") : F("false"));
-  Serial.print(F(",\"requestId\":\""));
+  ProtocolOutput.print(F("{\"type\":\""));
+  ProtocolOutput.print(type);
+  ProtocolOutput.print(F("\",\"command\":\""));
+  ProtocolOutput.print(command);
+  ProtocolOutput.print(F("\",\"accepted\":"));
+  ProtocolOutput.print(accepted ? F("true") : F("false"));
+  ProtocolOutput.print(F(",\"requestId\":\""));
   printEscaped(requestId);
-  Serial.print(F("\",\"state\":\""));
-  Serial.print(stateName(state));
-  Serial.print(F("\""));
+  ProtocolOutput.print(F("\",\"state\":\""));
+  ProtocolOutput.print(stateName(state));
+  ProtocolOutput.print(F("\""));
   if (operationId && operationId[0]) {
-    Serial.print(F(",\"operationId\":\""));
+    ProtocolOutput.print(F(",\"operationId\":\""));
     printEscaped(operationId);
-    Serial.print(F("\""));
+    ProtocolOutput.print(F("\""));
   }
   if (code && code[0]) {
-    Serial.print(F(",\"code\":\""));
+    ProtocolOutput.print(F(",\"code\":\""));
     printEscaped(code);
-    Serial.print(F("\""));
+    ProtocolOutput.print(F("\""));
   }
   if (includeIdentity) {
-    Serial.print(F(",\"protocol\":"));
-    Serial.print(PROTOCOL_VERSION);
-    Serial.print(F(",\"firmware\":\"nature-touch-unified-simulation\""));
-    Serial.print(F(",\"deviceId\":\"nature-touch-nano-simulation\""));
-    Serial.print(F(",\"hardwareOutputsEnabled\":false"));
-    Serial.print(F(",\"capabilities\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"SIMULATION_ONLY\"]"));
+    ProtocolOutput.print(F(",\"protocol\":"));
+    ProtocolOutput.print(PROTOCOL_VERSION);
+    ProtocolOutput.print(F(",\"firmware\":\"nature-touch-unified-simulation\""));
+    ProtocolOutput.print(F(",\"deviceId\":\"nature-touch-nano-simulation\""));
+    ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":false"));
+    ProtocolOutput.print(F(",\"capabilities\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"SIMULATION_ONLY\"]"));
   }
-  Serial.println(F("}"));
+  ProtocolOutput.println(F("}"));
 }
 
 bool skipWhitespace(const char*& cursor) {
@@ -330,17 +362,22 @@ bool operationWasUsed(const char* operationId) {
 }
 
 void sendEvent(const char* name, const char* operationId) {
-  Serial.print(F("{\"type\":\"EVENT\",\"name\":\""));
-  Serial.print(name);
-  Serial.print(F("\",\"operationId\":\""));
+  ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\""));
+  ProtocolOutput.print(name);
+  ProtocolOutput.print(F("\",\"operationId\":\""));
   printEscaped(operationId);
-  Serial.print(F("\""));
+  ProtocolOutput.print(F("\""));
   if (strcmp(name, "COMPLETED") == 0) {
-    Serial.print(F(",\"experienceId\":\""));
-    Serial.print(experienceName(selectedExperience));
-    Serial.print(F("\""));
+    ProtocolOutput.print(F(",\"experienceId\":\""));
+    ProtocolOutput.print(experienceName(selectedExperience));
+    ProtocolOutput.print(F("\""));
   }
-  Serial.println(F("}"));
+  if (strcmp(name, "FAULT") == 0 && faultCode) {
+    ProtocolOutput.print(F(",\"code\":\""));
+    printEscaped(faultCode);
+    ProtocolOutput.print(F("\""));
+  }
+  ProtocolOutput.println(F("}"));
 }
 
 uint32_t elapsedTime(uint32_t now) {
@@ -353,57 +390,88 @@ uint32_t elapsedTime(uint32_t now) {
 }
 
 void sendStatus(const char* requestId) {
+  const ControlState snapshotState = controlState;
+  const char* snapshotFault = faultCode;
   const uint32_t elapsed = elapsedTime(millis());
   const uint16_t duration = currentDuration();
-  Serial.print(F("{\"type\":\"STATUS\",\"requestId\":\""));
+  ProtocolOutput.print(F("{\"type\":\"STATUS\",\"requestId\":\""));
   printEscaped(requestId);
-  Serial.print(F("\",\"acknowledgement\":{\"type\":\"ACK\",\"command\":\"STATUS_QUERY\",\"accepted\":true,\"requestId\":\""));
+  ProtocolOutput.print(F("\",\"acknowledgement\":{\"type\":\"ACK\",\"command\":\"STATUS_QUERY\",\"accepted\":true,\"requestId\":\""));
   printEscaped(requestId);
-  Serial.print(F("\",\"state\":\""));
-  Serial.print(stateName(controlState));
-  Serial.print(F("\"},\"snapshot\":{\"state\":\""));
-  Serial.print(stateName(controlState));
-  Serial.print(F("\",\"selectedExperienceId\":"));
-  if (selectedExperience == EXPERIENCE_NONE) Serial.print(F("null"));
+  ProtocolOutput.print(F("\",\"state\":\""));
+  ProtocolOutput.print(stateName(snapshotState));
+  ProtocolOutput.print(F("\"},\"snapshot\":{\"state\":\""));
+  ProtocolOutput.print(stateName(snapshotState));
+  ProtocolOutput.print(F("\",\"selectedExperienceId\":"));
+  if (selectedExperience == EXPERIENCE_NONE) ProtocolOutput.print(F("null"));
   else {
-    Serial.print(F("\""));
-    Serial.print(experienceName(selectedExperience));
-    Serial.print(F("\""));
+    ProtocolOutput.print(F("\""));
+    ProtocolOutput.print(experienceName(selectedExperience));
+    ProtocolOutput.print(F("\""));
   }
-  Serial.print(F(",\"operationId\":"));
+  ProtocolOutput.print(F(",\"operationId\":"));
   if (activeOperationId[0]) {
-    Serial.print(F("\""));
+    ProtocolOutput.print(F("\""));
     printEscaped(activeOperationId);
-    Serial.print(F("\""));
+    ProtocolOutput.print(F("\""));
   } else {
-    Serial.print(F("null"));
+    ProtocolOutput.print(F("null"));
   }
-  Serial.print(F(",\"elapsedMs\":"));
-  Serial.print(elapsed);
-  Serial.print(F(",\"durationMs\":"));
-  if (duration) Serial.print(duration);
-  else Serial.print(F("null"));
-  Serial.print(F(",\"faultCode\":null,\"hardwareOutputsEnabled\":false}}\r\n"));
+  ProtocolOutput.print(F(",\"elapsedMs\":"));
+  ProtocolOutput.print(elapsed);
+  ProtocolOutput.print(F(",\"durationMs\":"));
+  if (duration) ProtocolOutput.print(duration);
+  else ProtocolOutput.print(F("null"));
+  ProtocolOutput.print(F(",\"faultCode\":"));
+  if (snapshotFault) {
+    ProtocolOutput.print(F("\""));
+    printEscaped(snapshotFault);
+    ProtocolOutput.print(F("\""));
+  } else ProtocolOutput.print(F("null"));
+  ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":false}}\r\n"));
+}
+
+void enterFault(const char* code) {
+  if (controlState == STATE_FAULT) return;
+  elapsedBeforeCurrentAction = elapsedTime(millis());
+  runActive = false;
+  actionScheduled = false;
+  pendingActionEvents = 0;
+  completionEventPending = false;
+  Actuators::stopAll();
+  faultCode = code;
+  controlState = STATE_FAULT;
+  faultEventPending = true;
+}
+
+void processSafety(uint32_t now) {
+  if (Actuators::faultLatched && controlState != STATE_FAULT) {
+    enterFault("ACTUATOR_FAULT");
+  } else if (runActive && static_cast<uint32_t>(now - lastHostContactAt) >= HOST_TIMEOUT_MS) {
+    enterFault("HOST_TIMEOUT");
+  }
+  // Cancel/fault first; never release a pending pump handover after timeout.
+  if (runActive && controlState == STATE_RUNNING) Actuators::service(now);
 }
 
 void sendActionEvent(uint32_t atMs, uint16_t durationMs, bool inflate) {
-  Serial.print(F("{\"type\":\"EVENT\",\"name\":\"ACTUATOR_EVENT\",\"operationId\":\""));
+  ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"ACTUATOR_EVENT\",\"operationId\":\""));
   printEscaped(activeOperationId);
-  Serial.print(F("\",\"experienceId\":\""));
-  Serial.print(experienceName(selectedExperience));
-  Serial.print(F("\",\"atMs\":"));
-  Serial.print(atMs);
-  Serial.print(F(",\"action\":\""));
-  Serial.print(inflate ? F("INFLATE") : F("DEFLATE"));
-  Serial.print(F("\",\"durationMs\":"));
-  Serial.print(durationMs);
-  Serial.print(F(",\"D5\":"));
-  Serial.print(inflate ? 180 : 0);
-  Serial.print(F(",\"D6\":"));
-  Serial.print(inflate ? 180 : 0);
-  Serial.print(F(",\"D7\":"));
-  Serial.print(inflate ? 0 : 180);
-  Serial.println(F(",\"hardwareOutputsEnabled\":false}"));
+  ProtocolOutput.print(F("\",\"experienceId\":\""));
+  ProtocolOutput.print(experienceName(selectedExperience));
+  ProtocolOutput.print(F("\",\"atMs\":"));
+  ProtocolOutput.print(atMs);
+  ProtocolOutput.print(F(",\"action\":\""));
+  ProtocolOutput.print(inflate ? F("INFLATE") : F("DEFLATE"));
+  ProtocolOutput.print(F("\",\"durationMs\":"));
+  ProtocolOutput.print(durationMs);
+  ProtocolOutput.print(F(",\"D5\":"));
+  ProtocolOutput.print(inflate ? 180 : 0);
+  ProtocolOutput.print(F(",\"D6\":"));
+  ProtocolOutput.print(inflate ? 180 : 0);
+  ProtocolOutput.print(F(",\"D7\":"));
+  ProtocolOutput.print(inflate ? 0 : 180);
+  ProtocolOutput.println(F(",\"hardwareOutputsEnabled\":false}"));
 }
 
 void sendTimelineMarker(uint32_t atMs) {
@@ -423,27 +491,35 @@ void sendTimelineMarker(uint32_t atMs) {
   if (selectedExperience == EXPERIENCE_BUBBLE && atMs == 24420) marker = "FINAL SHRINK";
   if (!marker) return;
 
-  Serial.print(F("{\"type\":\"EVENT\",\"name\":\"MARKER\",\"operationId\":\""));
+  ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"MARKER\",\"operationId\":\""));
   printEscaped(activeOperationId);
-  Serial.print(F("\",\"experienceId\":\""));
-  Serial.print(experienceName(selectedExperience));
-  Serial.print(F("\",\"atMs\":"));
-  Serial.print(atMs);
-  Serial.print(F(",\"text\":\""));
-  Serial.print(marker);
-  Serial.println(F("\"}"));
+  ProtocolOutput.print(F("\",\"experienceId\":\""));
+  ProtocolOutput.print(experienceName(selectedExperience));
+  ProtocolOutput.print(F("\",\"atMs\":"));
+  ProtocolOutput.print(atMs);
+  ProtocolOutput.print(F(",\"text\":\""));
+  ProtocolOutput.print(marker);
+  ProtocolOutput.println(F("\"}"));
 }
 
 void beginScheduledAction() {
   const ScheduledAction* timeline = currentTimeline();
-  if (!timeline || actionIndex >= actionCount) return;
+  if (!runActive || controlState != STATE_RUNNING) return;
+  if (!timeline || actionIndex >= actionCount) {
+    enterFault("INVALID_TIMELINE");
+    return;
+  }
   const ScheduledAction action = {
     pgm_read_word(&timeline[actionIndex].durationMs),
     pgm_read_byte(&timeline[actionIndex].inflate)
   };
-  sendTimelineMarker(elapsedBeforeCurrentAction);
-  sendActionEvent(elapsedBeforeCurrentAction, action.durationMs, action.inflate != 0);
+  if (!(action.inflate ? Actuators::inflate() : Actuators::deflate())) {
+    enterFault("ACTUATOR_FAULT");
+    return;
+  }
+  pendingActionEvents |= (1UL << actionIndex);
   actionDeadline += action.durationMs;
+  actionScheduled = true;
 }
 
 void startOperation(const char* operationId, uint32_t now) {
@@ -456,37 +532,81 @@ void startOperation(const char* operationId, uint32_t now) {
   actionIndex = 0;
   actionCount = currentActionCount();
   runActive = true;
+  actionScheduled = false;
+  pendingActionEvents = 0;
+  completionEventPending = false;
   controlState = STATE_RUNNING;
-  actionDeadline = now;
+  lastHostContactAt = now;
 }
 
 void processScheduler(uint32_t now) {
-  if (!runActive || static_cast<int32_t>(now - actionDeadline) < 0) return;
+  processSafety(now);
+  if (!runActive || !actionScheduled || static_cast<int32_t>(now - actionDeadline) < 0) return;
 
   const ScheduledAction* timeline = currentTimeline();
+  if (!timeline || actionIndex >= actionCount) {
+    enterFault("INVALID_TIMELINE");
+    return;
+  }
   const uint16_t previousDuration = pgm_read_word(&timeline[actionIndex].durationMs);
   elapsedBeforeCurrentAction += previousDuration;
   actionIndex++;
 
   if (actionIndex >= actionCount) {
     runActive = false;
+    actionScheduled = false;
+    Actuators::stopAll();
     controlState = STATE_COMPLETED;
-    Serial.print(F("{\"type\":\"EVENT\",\"name\":\"MARKER\",\"operationId\":\""));
-    printEscaped(activeOperationId);
-    Serial.print(F("\",\"experienceId\":\""));
-    Serial.print(experienceName(selectedExperience));
-    Serial.print(F("\",\"atMs\":"));
-    Serial.print(currentDuration());
-    Serial.print(F(",\"text\":\""));
-    if (selectedExperience == EXPERIENCE_WIND) Serial.print(F("NEXT WIND CYCLE"));
-    else if (selectedExperience == EXPERIENCE_WAVE) Serial.print(F("NEXT WAVE CYCLE"));
-    else Serial.print(F("NEXT ROUND"));
-    Serial.println(F("\"}"));
-    sendEvent("COMPLETED", activeOperationId);
+    completionEventPending = true;
     return;
   }
 
   beginScheduledAction();
+}
+
+// Drain diagnostic events separately from logical control. A 32-bit pending mask
+// retains all 31 BUBBLE actions, including its consecutive inflation calls.
+void flushScheduledTelemetry() {
+  if (faultEventPending) {
+    faultEventPending = false;
+    sendEvent("FAULT", activeOperationId);
+    return;
+  }
+  if (pendingActionEvents) {
+    const ScheduledAction* timeline = currentTimeline();
+    uint32_t atMs = 0;
+    for (uint8_t index = 0; index < actionCount; index++) {
+      const uint16_t durationMs = pgm_read_word(&timeline[index].durationMs);
+      const uint32_t bit = 1UL << index;
+      if (pendingActionEvents & bit) {
+        pendingActionEvents &= ~bit;
+        sendTimelineMarker(atMs);
+        // A fault may be latched while the marker is being transmitted.
+        if (controlState != STATE_FAULT) {
+          sendActionEvent(atMs, durationMs, pgm_read_byte(&timeline[index].inflate) != 0);
+        }
+        return;
+      }
+      atMs += durationMs;
+    }
+  }
+  if (completionEventPending) {
+    completionEventPending = false;
+    ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"MARKER\",\"operationId\":\""));
+    printEscaped(activeOperationId);
+    ProtocolOutput.print(F("\",\"experienceId\":\""));
+    ProtocolOutput.print(experienceName(selectedExperience));
+    ProtocolOutput.print(F("\",\"atMs\":"));
+    ProtocolOutput.print(currentDuration());
+    ProtocolOutput.print(F(",\"text\":\""));
+    if (selectedExperience == EXPERIENCE_WIND) ProtocolOutput.print(F("NEXT WIND CYCLE"));
+    else if (selectedExperience == EXPERIENCE_WAVE) ProtocolOutput.print(F("NEXT WAVE CYCLE"));
+    else ProtocolOutput.print(F("NEXT ROUND"));
+    ProtocolOutput.println(F("\"}"));
+    sendEvent("COMPLETED", activeOperationId);
+    return;
+  }
+
 }
 
 const char* validCommandName(const char* type) {
@@ -506,7 +626,12 @@ void rejectCommand(const char* command, const char* requestId, const char* code)
 void processProtocolCommand(const char* line) {
   JsonField fields[MAX_FIELDS];
   uint8_t fieldCount = 0;
-  if (!parseJsonObject(line, fields, fieldCount)) {
+  const bool parsed = parseJsonObject(line, fields, fieldCount);
+  // Fields now own the command; RX can collect the next request during printing.
+  inputLength = 0;
+  lineTooLong = false;
+  inputLineReady = false;
+  if (!parsed) {
     printError("INVALID_SCHEMA");
     return;
   }
@@ -564,6 +689,7 @@ void processProtocolCommand(const char* line) {
   if (cachedIndex >= 0) {
     const CachedAcknowledgement& cached = requestCache[cachedIndex];
     if (cached.signature == signature) {
+      if (cached.accepted) lastHostContactAt = millis();
       sendCachedAcknowledgement(cached);
       if (cached.accepted && strcmp(command, "STATUS_QUERY") == 0) {
         sendStatus(requestField->value);
@@ -577,6 +703,12 @@ void processProtocolCommand(const char* line) {
   bool accepted = false;
   const char* code = "";
   const char* operationId = NULL;
+
+  // Complete old diagnostic frames under their original mode/operation identity
+  // before a new selection can replace that context.
+  if (strcmp(command, "SELECT") == 0 && controlState == STATE_COMPLETED) {
+    while (pendingActionEvents || completionEventPending) flushScheduledTelemetry();
+  }
 
   if (strcmp(command, "IDENTIFY") == 0) {
     accepted = strcmp(payload, "2") == 0;
@@ -622,6 +754,10 @@ void processProtocolCommand(const char* line) {
       accepted = true;
       operationId = activeOperationId;
       runActive = false;
+      actionScheduled = false;
+      pendingActionEvents = 0;
+      completionEventPending = false;
+      Actuators::stopAll();
       controlState = STATE_STOPPING;
     }
   } else if (strcmp(command, "STATUS_QUERY") == 0) {
@@ -631,6 +767,14 @@ void processProtocolCommand(const char* line) {
       code = "INVALID_STATE";
     } else {
       accepted = true;
+      runActive = false;
+      actionScheduled = false;
+      pendingActionEvents = 0;
+      completionEventPending = false;
+      faultEventPending = false;
+      Actuators::stopAll();
+      Actuators::faultLatched = false;
+      faultCode = NULL;
       controlState = STATE_IDLE;
       selectedExperience = EXPERIENCE_NONE;
       activeOperationId[0] = '\0';
@@ -638,6 +782,7 @@ void processProtocolCommand(const char* line) {
     }
   }
 
+  if (accepted) lastHostContactAt = millis();
   cacheAcknowledgement(
     requestField->value,
     command,
@@ -652,6 +797,7 @@ void processProtocolCommand(const char* line) {
   if (accepted && strcmp(command, "START") == 0) {
     operationStartedAt = millis();
     actionDeadline = operationStartedAt;
+    lastHostContactAt = operationStartedAt;
     beginScheduledAction();
   }
   if (accepted && strcmp(command, "STOP") == 0) {
@@ -669,39 +815,47 @@ void processProtocolCommand(const char* line) {
 }
 
 void processLine() {
-  if (lineTooLong) {
+  inputLine[inputLength] = '\0';
+  if (!lineTooLong && inputLength > 0 && inputLine[0] == '{') {
+    processProtocolCommand(inputLine);
+    return;
+  }
+  const bool tooLong = lineTooLong;
+  const bool ping = strcmp(inputLine, "PING") == 0;
+  const bool status = strcmp(inputLine, "STATUS") == 0;
+  const bool nonempty = inputLength > 0;
+  inputLength = 0;
+  lineTooLong = false;
+  inputLineReady = false;
+  if (tooLong) {
     printError("LINE_TOO_LONG");
   } else {
-    inputLine[inputLength] = '\0';
-    if (strcmp(inputLine, "PING") == 0) {
-      Serial.println(F("PONG"));
-    } else if (strcmp(inputLine, "STATUS") == 0) {
-      Serial.println(F("STATUS:DIAGNOSTIC_READY"));
-    } else if (inputLength > 0 && inputLine[0] == '{') {
-      processProtocolCommand(inputLine);
-    } else if (inputLength > 0) {
+    if (ping) {
+      ProtocolOutput.println(F("PONG"));
+    } else if (status) {
+      ProtocolOutput.println(F("STATUS:DIAGNOSTIC_READY"));
+    } else if (nonempty) {
       printError("INVALID_COMMAND");
     }
   }
-  inputLength = 0;
-  lineTooLong = false;
 }
 
 void setup() {
+  Actuators::initializeOutputs();
   Serial.begin(BAUD_RATE);
   memset(requestCache, 0, sizeof(requestCache));
   memset(operationHistory, 0, sizeof(operationHistory));
   activeOperationId[0] = '\0';
-  Serial.println(F("{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-simulation\",\"protocol\":2,\"hardwareOutputsEnabled\":false}"));
+  ProtocolOutput.println(F("{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-simulation\",\"protocol\":2,\"hardwareOutputsEnabled\":false}"));
 }
 
-void loop() {
-  while (Serial.available() > 0) {
+void collectSerialInput() {
+  while (!inputLineReady && Serial.available() > 0) {
     const char incoming = static_cast<char>(Serial.read());
     if (incoming == '\r') continue;
     if (incoming == '\n') {
-      processLine();
-      continue;
+      inputLineReady = true;
+      return;
     }
     if (!lineTooLong) {
       if (inputLength < LINE_BUFFER_SIZE - 1) {
@@ -711,5 +865,12 @@ void loop() {
       }
     }
   }
+}
+
+void loop() {
+  processSafety(millis());
+  collectSerialInput();
+  if (inputLineReady) processLine();
   processScheduler(millis());
+  flushScheduledTelemetry();
 }

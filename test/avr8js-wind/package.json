@@ -1,0 +1,15 @@
+{
+  "name": "nature-touch-wind-avr8js-test",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node simulate.mjs WIND",
+    "test:wind": "node simulate.mjs WIND",
+    "test:wave": "node simulate.mjs WAVE",
+    "test:bubble": "node simulate.mjs BUBBLE",
+    "test:all": "node run-all.mjs"
+  },
+  "devDependencies": {
+    "avr8js": "0.21.1"
+  }
+}
