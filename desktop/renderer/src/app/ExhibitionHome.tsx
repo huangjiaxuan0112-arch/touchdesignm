@@ -1,14 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, useReducedMotion } from 'motion/react'
 import { ExperiencePlayer } from './ExperiencePlayer'
-import { stopActiveExperience } from './stop-active-experience'
 import { selectExperienceIntent, startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import {
-  EXPERIENCE_DEFINITIONS,
-  EXPERIENCE_DISPLAY_NAMES,
-  type ExperienceId,
-} from '../../../shared/experience-definitions'
+import type { ExhibitionLifecycleSnapshot } from '../../../shared/exhibition-lifecycle'
+import { EXPERIENCE_DISPLAY_NAMES, type ExperienceId } from '../../../shared/experience-definitions'
 import { NatureVideoCard } from './NatureVideoCard'
 import windPoster from '../assets/wind/wind-poster.png'
 import wavePoster from '../assets/waves/waves-poster.png'
@@ -19,9 +15,6 @@ import wavesPreviewVideo from '../assets/waves/waves-preview.mp4'
 import wavesExperienceVideo from '../assets/waves/waves-experience.mp4'
 import bubblesPreviewVideo from '../assets/bubbles/bubbles-preview.mp4'
 import bubblesExperienceVideo from '../assets/bubbles/bubbles-experience.mp4'
-import windAudio from '../../../../卒研music/wind/东风声.mp3'
-import waveAudio from '../../../../卒研music/ocean waves/海浪声.mp3'
-import bubbleAudio from '../../../../卒研music/bubbles/voicebosch-bubbles-171716.mp3'
 
 const cards: Array<{
   id: ExperienceId
@@ -30,8 +23,7 @@ const cards: Array<{
   description: string
   poster: string
   previewVideo?: string
-  experienceVideo?: string
-  experienceAudio: string
+  experienceVideo: string
 }> = [
   {
     id: 'WIND',
@@ -41,7 +33,6 @@ const cards: Array<{
     poster: windPoster,
     previewVideo: windPreviewVideo,
     experienceVideo: windExperienceVideo,
-    experienceAudio: windAudio,
   },
   {
     id: 'WAVE',
@@ -51,7 +42,6 @@ const cards: Array<{
     poster: wavePoster,
     previewVideo: wavesPreviewVideo,
     experienceVideo: wavesExperienceVideo,
-    experienceAudio: waveAudio,
   },
   {
     id: 'BUBBLE',
@@ -61,7 +51,6 @@ const cards: Array<{
     poster: bubblePoster,
     previewVideo: bubblesPreviewVideo,
     experienceVideo: bubblesExperienceVideo,
-    experienceAudio: bubbleAudio,
   },
 ]
 
@@ -75,8 +64,17 @@ const initialExperienceState: ExperienceSnapshot = {
   faultCode: null,
 }
 
+const initialExhibitionState: ExhibitionLifecycleSnapshot = {
+  revision: 0,
+  phase: 'READY',
+  experienceId: null,
+  operationId: null,
+  faultCode: null,
+}
+
 export default function ExhibitionHome() {
   const [experienceState, setExperienceState] = useState(initialExperienceState)
+  const [exhibitionState, setExhibitionState] = useState(initialExhibitionState)
   const [activeExperienceId, setActiveExperienceId] = useState<ExperienceId>('WIND')
   const [switchingExperienceId, setSwitchingExperienceId] = useState<ExperienceId | null>(null)
   const [dialogExperienceId, setDialogExperienceId] = useState<ExperienceId | null>(null)
@@ -85,10 +83,9 @@ export default function ExhibitionHome() {
   const [previewId, setPreviewId] = useState<ExperienceId | null>(null)
   const [visible, setVisible] = useState(!document.hidden)
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const pendingStop = useRef<Promise<void> | null>(null)
   const pendingStart = useRef<Promise<ExperienceSnapshot> | null>(null)
-  const activeOperationId = useRef<string | null>(null)
   const snapshotRevision = useRef(-1)
+  const exhibitionRevision = useRef(-1)
   const selecting = useRef(false)
   const reducedMotion = useReducedMotion()
 
@@ -97,17 +94,6 @@ export default function ExhibitionHome() {
     hoverTimer.current = null
     setFocusedId(null)
     setPreviewId(null)
-  }
-  function requestSafeStop(): Promise<void> {
-    if (pendingStop.current) return pendingStop.current
-    const operationId = activeOperationId.current ?? experienceState.operationId
-    const request = stopActiveExperience(window.natureTouch, 'mock', operationId)
-      .then(() => {
-        if (activeOperationId.current === operationId) activeOperationId.current = null
-      })
-      .finally(() => { pendingStop.current = null })
-    pendingStop.current = request
-    return request
   }
   function focusPreview(id: ExperienceId) {
     clearPreview()
@@ -128,8 +114,24 @@ export default function ExhibitionHome() {
   useEffect(() => {
     const api = window.natureTouch
     let mounted = true
-    let unsubscribe: (() => void) | undefined
+    let unsubscribeExhibition: (() => void) | undefined
+    let unsubscribeExperience: (() => void) | undefined
     if (!api) return
+
+    void api.subscribeExhibition(snapshot => {
+      if (!mounted || snapshot.revision <= exhibitionRevision.current) return
+      exhibitionRevision.current = snapshot.revision
+      setExhibitionState(snapshot)
+      if (snapshot.experienceId) setActiveExperienceId(snapshot.experienceId)
+      if (snapshot.phase === 'READY' || snapshot.phase === 'FAULT') {
+        setSwitchingExperienceId(null)
+      }
+    }).then(removeListener => {
+      if (mounted) unsubscribeExhibition = removeListener
+      else removeListener()
+    }).catch((error: unknown) => {
+      if (mounted) setActionError(error instanceof Error ? error.message : String(error))
+    })
 
     void api.subscribeExperience('mock', (event) => {
       if (!mounted) return
@@ -138,10 +140,8 @@ export default function ExhibitionHome() {
       const snapshot = event.snapshot.experience
       setExperienceState(snapshot)
       if (snapshot.selectedExperienceId) setActiveExperienceId(snapshot.selectedExperienceId)
-      if (snapshot.operationId) activeOperationId.current = snapshot.operationId
-      else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
     }).then((removeListener) => {
-      if (mounted) unsubscribe = removeListener
+      if (mounted) unsubscribeExperience = removeListener
       else removeListener()
     }).catch((error: unknown) => {
       if (mounted) setActionError(error instanceof Error ? error.message : String(error))
@@ -149,7 +149,8 @@ export default function ExhibitionHome() {
 
     return () => {
       mounted = false
-      unsubscribe?.()
+      unsubscribeExhibition?.()
+      unsubscribeExperience?.()
     }
   }, [])
 
@@ -157,15 +158,8 @@ export default function ExhibitionHome() {
     if (pendingStart.current) return pendingStart.current
     if (!dialogExperienceId) return Promise.reject(new Error('Select an experience first.'))
     const request = (async () => {
-      if (pendingStop.current) throw new Error('Wait for the current stop request to finish.')
-      // Browser preview plays media locally; device control requires Electron.
-      if (!window.natureTouch) return {
-        ...initialExperienceState, state: 'RUNNING' as const,
-        selectedExperienceId: dialogExperienceId,
-        durationMs: EXPERIENCE_DEFINITIONS[dialogExperienceId].totalDurationMs,
-      }
+      if (!window.natureTouch) throw new Error('The exhibition requires the Electron application.')
       const operationId = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
-      activeOperationId.current = operationId
       return startSelectedExperience(
         window.natureTouch,
         'mock',
@@ -177,25 +171,21 @@ export default function ExhibitionHome() {
   }
 
   async function selectExperience(experienceId: ExperienceId, openVideo = false): Promise<void> {
-    if (selecting.current) return
+    if (selecting.current || exhibitionState.phase !== 'READY') return
     selecting.current = true
     const api = window.natureTouch
     if (!api) {
-      setActiveExperienceId(experienceId)
-      if (openVideo) setDialogExperienceId(experienceId)
+      setActionError('The exhibition requires the Electron application.')
       selecting.current = false
       return
     }
     setSwitchingExperienceId(experienceId)
     setActionError('')
     try {
-      await pendingStop.current
       const selected = await selectExperienceIntent(api, 'mock', experienceId)
       if (selected.revision >= snapshotRevision.current) {
         snapshotRevision.current = selected.revision
         const snapshot = selected.experience
-        if (snapshot.operationId) activeOperationId.current = snapshot.operationId
-        else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
         setActiveExperienceId(snapshot.selectedExperienceId ?? experienceId)
         setExperienceState(snapshot)
       }
@@ -209,7 +199,7 @@ export default function ExhibitionHome() {
   }
 
   const dialogCard = cards.find((card) => card.id === dialogExperienceId)
-  const selectedExperienceId = experienceState.selectedExperienceId ?? activeExperienceId
+  const selectedExperienceId = exhibitionState.experienceId ?? experienceState.selectedExperienceId ?? activeExperienceId
   const activeCard = cards.find((card) => card.id === selectedExperienceId)
 
   return (
@@ -238,11 +228,11 @@ export default function ExhibitionHome() {
               onFocusPreview={() => focusPreview(card.id)}
               onLeavePreview={clearPreview}
               disabled={
+                exhibitionState.phase !== 'READY' ||
                 dialogExperienceId !== null ||
                 switchingExperienceId !== null
               }
               onSelect={() => void selectExperience(card.id, !!card.experienceVideo)}
-              onReplay={() => void selectExperience(card.id, true)}
             />
           )
         })}
@@ -269,9 +259,8 @@ export default function ExhibitionHome() {
       }}>
         {dialogCard && <ExperiencePlayer key={dialogCard.id} {...dialogCard}
           runState={experienceState}
-          connectionReady
+          exhibitionState={exhibitionState}
           deviceLabel="ソフトウェア再生 · 実機出力なし"
-          onSafeStop={requestSafeStop}
           onStart={startMediaExperience}
           onExit={() => setDialogExperienceId(null)} />}
       </AnimatePresence>

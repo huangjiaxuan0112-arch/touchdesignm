@@ -9,6 +9,7 @@ import {
   type ExperienceCommand,
   type ExperienceEvent,
 } from '../shared/experience-application-contract'
+import { isExhibitionLifecycleSnapshot, type ExhibitionLifecycleSnapshot } from '../shared/exhibition-lifecycle'
 
 const api: NatureTouchApi = {
   getRuntimeInfo: () => ipcRenderer.invoke(IPC_CHANNELS.runtimeInfo),
@@ -28,6 +29,37 @@ const api: NatureTouchApi = {
     return () => ipcRenderer.removeListener(IPC_CHANNELS.serialState, handler)
   },
   getExperienceSnapshot: (mode) => ipcRenderer.invoke(IPC_CHANNELS.experienceGetSnapshot, mode),
+  getExhibitionSnapshot: () => ipcRenderer.invoke(IPC_CHANNELS.exhibitionGetSnapshot),
+  subscribeExhibition: async listener => {
+    let active = true
+    let revision = -1
+    const handler = (_event: Electron.IpcRendererEvent, payload: unknown) => {
+      if (!active) return
+      if (!isExhibitionLifecycleSnapshot(payload)) throw new Error('Main sent an invalid exhibition lifecycle snapshot.')
+      if (payload.revision <= revision) return
+      revision = payload.revision
+      listener(payload)
+    }
+
+    ipcRenderer.on(IPC_CHANNELS.exhibitionEvent, handler)
+    try {
+      const initial: unknown = await ipcRenderer.invoke(IPC_CHANNELS.exhibitionGetSnapshot)
+      if (!isExhibitionLifecycleSnapshot(initial)) throw new Error('Main returned an invalid exhibition lifecycle snapshot.')
+      if (active && initial.revision > revision) {
+        revision = initial.revision
+        listener(initial)
+      }
+    } catch (error) {
+      active = false
+      ipcRenderer.removeListener(IPC_CHANNELS.exhibitionEvent, handler)
+      throw error
+    }
+
+    return () => {
+      active = false
+      ipcRenderer.removeListener(IPC_CHANNELS.exhibitionEvent, handler)
+    }
+  },
   subscribeExperience: async (mode, listener) => {
     let active = true
     let initialized = false

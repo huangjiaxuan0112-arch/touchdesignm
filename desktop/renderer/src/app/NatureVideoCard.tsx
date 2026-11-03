@@ -16,12 +16,11 @@ export interface NatureVideoCardProps {
   onFocusPreview: () => void
   onLeavePreview: () => void
   onSelect: () => void
-  onReplay: () => void
 }
 
 export function NatureVideoCard({ id, label, title, description, poster, previewVideo,
   active, focused, dimmed, previewPlaying, disabled = false,
-  onFocusPreview, onLeavePreview, onSelect, onReplay }: NatureVideoCardProps) {
+  onFocusPreview, onLeavePreview, onSelect }: NatureVideoCardProps) {
   const video = useRef<HTMLVideoElement>(null)
   const wanted = useRef(false)
   const [loaded, setLoaded] = useState(false)
@@ -59,7 +58,7 @@ export function NatureVideoCard({ id, label, title, description, poster, preview
       onPointerEnter={(event) => { if (event.pointerType !== 'touch') onFocusPreview() }}
       onPointerLeave={onLeavePreview}
       onFocus={(event) => { if (event.currentTarget.matches(':focus-visible')) onFocusPreview() }} onBlur={onLeavePreview}
-      onClick={() => { onLeavePreview(); if (active) onReplay(); else onSelect() }}
+      onClick={() => { onLeavePreview(); onSelect() }}
     >
       <div className="nature-card__media">
         <img className="nature-card__poster" src={poster} alt="" />

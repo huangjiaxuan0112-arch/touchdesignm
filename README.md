@@ -1,16 +1,17 @@
-# Nature Touch — Phase 0
+# Nature Touch — v3.0 Exhibition Prototype
 
-Nature Touch is a Windows Electron + React application for the WIND, WAVES, and
-BUBBLES exhibition experiences. The normal Phase 0 exhibition launch provides
-local software-only media playback and keeps physical actuator control disabled.
-This repository is not a packaged exhibition release.
+Nature Touch is a Windows Electron + React application for the WIND, WAVE, and
+BUBBLE exhibition experiences. The v3.0 S01 prototype provides local software-only
+media playback and keeps physical actuator control disabled. This repository is
+not a packaged exhibition release.
 
 ## Runtime architecture
 
 ```text
 ExhibitionHome / ExperiencePlayer
   -> typed preload API
-  -> Electron Main ExperienceCoordinator
+  -> Electron Main ExhibitionLifecycleController
+  -> ExperienceCoordinator
   -> MockExperienceController (current exhibition UI)
 
 Firmware experience commands
@@ -21,13 +22,18 @@ Read-only diagnostics and output-disabled test APIs
   -> Main process permission checks -> FirmwareService
 ```
 
+The Main process owns READY → STARTING → WAITING (5s) → EXPERIENCE (15s) →
+AWAIT_COMPLETION → COOLDOWN (at least 8s) → READY. Mock device COMPLETED, not
+video `ended`, authorizes cooldown. The UI contains no STOP, Pause, Back, Replay,
+firmware mode selector, ARM, or Bench controls.
+
 The Home and Player contain no firmware mode selector, ARM, or Bench controls.
 Normal launches keep real hardware control disabled. The pre-existing
 `--open-air-bench` Main-process profile and its fixture/device checks are
 preserved, but are not exposed by the Home UI; an isolated open-air bench
-utility also remains outside the default test and build path. The UI plays the
-local MP3 with a muted looping MP4; device completion is owned by the
-Coordinator/Mock controller, not by the media duration.
+utility also remains outside the default test and build path. S01 uses the
+existing local MP4 assets as temporary media; Waiting visuals are explicitly
+marked temporary. Device completion is owned by the Main Mock controller.
 
 The active firmware source is
 `firmware/unified/nature_touch_unified/`. The retained `firmware/releases/`
@@ -62,7 +68,7 @@ npm run build
 npm run preview
 ```
 
-Electron Mock UI and Audio tests:
+Electron Mock lifecycle and media tests:
 
 ```powershell
 $env:NATURE_TOUCH_UI_RESULTS_DIR = Join-Path $env:TEMP "NatureTouch-UI-$([guid]::NewGuid().ToString('N'))"
@@ -70,10 +76,10 @@ npm run test:ui
 npm run test:audio
 ```
 
-The UI/Audio fixtures replace the SerialPort enumerator and open method before
-Main loads; a COM enumeration or open attempt fails the test. The UI test keeps
-its historical output path when `NATURE_TOUCH_UI_RESULTS_DIR` is unset, so use
-a fresh external directory when preserving earlier evidence matters.
+Both commands run the same current lifecycle fixture. It replaces the SerialPort
+enumerator and open method before Main loads; a COM enumeration or open attempt
+fails the test. Results are written to a unique temporary directory outside the
+repository.
 
 Offline firmware checks:
 
@@ -88,11 +94,10 @@ compile-block/GPIO-safety suite. Results are written to the supplied locations;
 do not reuse a directory containing prior evidence. These tests do not connect
 to COM or upload firmware.
 
-The current package version is `0.1.0` and is not a release designation. See
-[`docs/build-manifest.json`](docs/build-manifest.json) for the recorded software
-and firmware identity, and [`docs/PHASE0_HANDOFF.md`](docs/PHASE0_HANDOFF.md)
-for remaining software and physical-validation work. The P0-05 firmware source
-and configuration audit is in
+The current package version is `0.1.0` and is not a release designation.
+[`docs/build-manifest.json`](docs/build-manifest.json) records the prior Phase 0
+baseline; it does not identify this v3.0 prototype build. The P0-05 firmware
+source and configuration audit is in
 [`docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md`](docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md).
 
 ## Hardware boundary
@@ -105,5 +110,5 @@ review and explicit operator authorization; it is not launched by the normal
 application.
 
 Historical phase documents describe prior experiments and are not a current
-product specification. The v3.0 Waiting, iPad control, Cooldown, and audience
-interaction-lock features have not been implemented.
+product specification. iPad control and final exhibition media assets remain
+out of scope for S01.

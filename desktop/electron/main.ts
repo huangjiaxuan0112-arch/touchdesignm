@@ -5,6 +5,7 @@ import { SerialDiagnosticService } from './serial/serial-diagnostic-service'
 import { NativeSerialTransport } from './serial/native-serial-transport'
 import { ArduinoFirmwareService } from './serial/arduino-firmware-service'
 import { MockExperienceController } from '../experience/mock-experience-controller'
+import { ExhibitionLifecycleController } from '../experience/exhibition-lifecycle-controller'
 import {
   type ExperienceCommandServices,
 } from './experience-command-dispatcher'
@@ -15,6 +16,7 @@ import { EXPERIENCE_IDS, type ExperienceId } from '../shared/experience-definiti
 import type { ExperienceSnapshot as DeviceExperienceSnapshot } from '../shared/experience-control-protocol'
 import type { SerialStateSnapshot } from '../shared/serial-protocol'
 import type { FirmwareControlSnapshot } from '../shared/firmware-control-protocol'
+import { EXHIBITION_TIMING } from '../shared/exhibition-lifecycle'
 
 declare const __NATURE_TOUCH_DEV_CSP_NONCE__: string
 declare const __NATURE_TOUCH_GIT_COMMIT__: string
@@ -83,7 +85,9 @@ function rendererFirmwareSnapshot(snapshot = firmwareService.getSnapshot()): Fir
     realControlEligible: realControlEligible(snapshot),
   }
 }
-const mockExperienceController = new MockExperienceController()
+const mockExperienceController = new MockExperienceController({
+  completionDurationMs: EXHIBITION_TIMING.mockDeviceCompletionMs,
+})
 const experienceCommandServices: ExperienceCommandServices = {
   mock: mockExperienceController,
   firmware: firmwareService,
@@ -117,6 +121,10 @@ const coordinatorServices: ExperienceCoordinatorServices = {
   },
 }
 const experienceCoordinator = new ExperienceCoordinator(coordinatorServices)
+const exhibitionLifecycleController = new ExhibitionLifecycleController(
+  experienceCoordinator,
+  mockExperienceController,
+)
 let mainWindow: BrowserWindow | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
 let serialPortOperationQueue: Promise<void> = Promise.resolve()
@@ -245,8 +253,17 @@ function registerIpcHandlers(): void {
       }
     })
   }
+  exhibitionLifecycleController.subscribe(snapshot => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send(IPC_CHANNELS.exhibitionEvent, snapshot)
+    }
+  })
   for (const [channel, handler] of Object.entries(
-    createExperienceIpcHandlers(experienceCommandServices, experienceCoordinator),
+    createExperienceIpcHandlers(
+      experienceCommandServices,
+      experienceCoordinator,
+      exhibitionLifecycleController,
+    ),
   )) {
     ipcMain.handle(channel, async (_event, ...args: unknown[]) => {
       const request = getControlRequestLog(channel, args)
@@ -290,11 +307,12 @@ function registerIpcHandlers(): void {
     appVersion: app.getVersion(),
     platform: process.platform,
   }))
-  ipcMain.handle(IPC_CHANNELS.logMediaError, (_event, code: unknown): void => {
+  ipcMain.handle(IPC_CHANNELS.logMediaError, async (_event, code: unknown): Promise<void> => {
     if (typeof code !== 'string' || !MEDIA_ERROR_CODES.has(code)) {
       throw new Error('Invalid media error code.')
     }
     logEvent('media.error', { level: 'error', reason: code })
+    await exhibitionLifecycleController.reportMediaFailure(code)
   })
 
   ipcMain.handle(IPC_CHANNELS.experienceGetState, () => mockExperienceController.getSnapshot())

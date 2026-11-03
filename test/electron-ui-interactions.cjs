@@ -1,83 +1,57 @@
-// Real Electron UI with Mock services. Serial access is blocked before Main loads.
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, ipcMain } = require('electron')
 const assert = require('node:assert/strict')
-const { mkdirSync, readFileSync, writeFileSync } = require('node:fs')
+const { mkdtempSync, writeFileSync } = require('node:fs')
+const { tmpdir } = require('node:os')
 const { resolve } = require('node:path')
 
 app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion')
 app.commandLine.appendSwitch('disable-background-media-suspend')
 
-const output = resolve(process.env.NATURE_TOUCH_UI_RESULTS_DIR || resolve(__dirname, '../desktop/out/interaction-check'))
-mkdirSync(output, { recursive: true })
-const evidence = { checks: [], commands: [], overlaps: [], errors: [] }
-const countedCommands = new Map()
+const output = mkdtempSync(resolve(tmpdir(), 'nature-touch-v3-ui-'))
+const evidence = { checks: [], commands: [], errors: [] }
 const serial = require('../desktop/node_modules/serialport')
-serial.SerialPort.list = async () => { throw Error('COM discovery forbidden by UI test') }
-serial.SerialPort.prototype.open = () => { throw Error('COM access forbidden by UI test') }
+serial.SerialPort.list = async () => { throw Error('COM discovery forbidden by V3 UI test') }
+serial.SerialPort.prototype.open = () => { throw Error('COM access forbidden by V3 UI test') }
 
-let rejectStop = false
-let holdStartResponse = false
-let clampPlayerDuration = false
-let releaseStartResponse
-let startResponseHeld
-const startResponseIsHeld = new Promise(resolve => { startResponseHeld = resolve })
 const originalHandle = ipcMain.handle.bind(ipcMain)
-
-function commandFrom(channel, args) {
-  if (channel === 'experience:dispatch' && args[1] && typeof args[1] === 'object') return args[1]
-  const legacy = {
-    'experience:select': ['SELECT', 'mock'],
-    'experience:start': ['START', 'mock'],
-    'experience:stop': ['STOP', 'mock'],
-    'firmware:select': ['SELECT', 'firmware'],
-    'firmware:start': ['START', 'firmware'],
-    'firmware:stop': ['STOP', 'firmware'],
-  }[channel]
-  if (!legacy || !args[1] || typeof args[1] !== 'object') return undefined
-  return {
-    type: legacy[0],
-    mode: legacy[1],
-    requestId: args[1].requestId,
-    operationId: args[1].operationId,
-  }
-}
-
 ipcMain.handle = (channel, listener) => originalHandle(channel, async (...args) => {
-  const command = commandFrom(channel, args)
-  if (command && ['SELECT', 'START', 'STOP'].includes(command.type)) {
-    const key = `${command.mode}:${command.type}:${command.requestId}`
-    if (!countedCommands.has(key)) {
-      countedCommands.set(key, { ...command, channel })
-      evidence.commands.push({ ...command, channel })
+  const command = channel === 'experience:dispatch' ? args[1] : undefined
+  let result
+  try {
+    result = await listener(...args)
+  } catch (error) {
+    if (command && ['SELECT', 'START', 'STOP'].includes(command.type)) {
+      evidence.commands.push({ ...command, channel, accepted: false, error: error.message })
     }
+    throw error
   }
-  if (channel === 'experience:dispatch' && args[1]?.type === 'STOP' && rejectStop) {
-    throw Error('Injected STOP failure')
-  }
-  let result = await listener(...args)
-  if (channel === 'experience:dispatch' && args[1]?.type === 'STATUS' && clampPlayerDuration) {
-    clampPlayerDuration = false
-    result = { ...result, snapshot: { ...result.snapshot, durationMs: 1 } }
-  }
-  if (channel === 'experience:dispatch' && args[1]?.type === 'START' && holdStartResponse) {
-    holdStartResponse = false
-    startResponseHeld()
-    await new Promise(resolve => { releaseStartResponse = resolve })
+  if (command && ['SELECT', 'START', 'STOP'].includes(command.type)) {
+    evidence.commands.push({
+      ...command,
+      channel,
+      accepted: result?.accepted ?? result?.acknowledgement?.accepted ?? false,
+    })
   }
   return result
 })
 
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-const count = (type, mode = 'mock') =>
-  [...countedCommands.values()].filter(command => command.type === type && command.mode === mode).length
+const countAccepted = type => evidence.commands.filter(command => command.type === type && command.accepted).length
 function pass(name) { evidence.checks.push({ name, result: 'PASS' }) }
-function finish(code) {
-  writeFileSync(resolve(output, 'results.json'), JSON.stringify(evidence, null, 2))
-  app.exit(code)
-}
 
 let win
 let finished = false
+let timeout
+function finish(error) {
+  if (finished) return
+  finished = true
+  clearTimeout(timeout)
+  if (error) evidence.errors.push(error.stack ?? String(error))
+  writeFileSync(resolve(output, 'results.json'), JSON.stringify(evidence, null, 2))
+  console.log(JSON.stringify({ result: error ? 'FAIL' : 'PASS', evidence: resolve(output, 'results.json'), ...evidence }))
+  app.exit(error ? 1 : 0)
+}
+
 const js = source => win.webContents.executeJavaScript(source, true)
 async function wait(source, timeoutMs = 30_000) {
   const deadline = Date.now() + timeoutMs
@@ -87,189 +61,118 @@ async function wait(source, timeoutMs = 30_000) {
   }
   throw Error(`Timed out: ${source}`)
 }
-async function clickCard(id) {
-  await wait(`!!document.querySelector('[data-experience="${id}"]:not(:disabled)')`)
-  await js(`document.querySelector('[data-experience="${id}"]').click()`)
-}
-async function returnHome() {
-  await js(`(()=>{window.__lastMedia=[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')];document.querySelector('[aria-label="Back to experiences"]').click()})()`)
-  await wait(`!document.querySelector('.experience-dialog')`)
-}
-function mediaPlaying() {
-  return `!document.querySelector('.experience-dialog video')?.paused&&!!document.querySelector('.experience-dialog audio')&&!document.querySelector('.experience-dialog audio').paused`
+
+function dispatch(command) {
+  return js(`window.natureTouch.dispatchExperienceCommand(${JSON.stringify(command)})
+    .then(value=>({accepted:value?.accepted??value?.acknowledgement?.accepted??false}))
+    .catch(error=>({error:error.message}))`)
 }
 
-process.on('uncaughtException', error => {
-  evidence.errors.push(error.stack)
-  if (!finished) { finished = true; finish(1) }
-})
+async function run() {
+  win.webContents.setBackgroundThrottling(false)
+  win.setContentSize(1920, 1248)
+  win.show()
+  win.focus()
+  win.webContents.focus()
+  await wait(`!!document.querySelector('[data-experience="WIND"]')`)
+  assert.equal(await js(`document.querySelectorAll('[data-experience]').length`), 3)
+  assert.equal(await js(`!!document.querySelector('[aria-label="Device mode"]')`), false)
+  pass('Home exposes only the three Mock exhibition experiences')
+
+  await js(`document.querySelector('[data-experience="WIND"]').click()`)
+  await wait(`!!document.querySelector('.experience-dialog video')`)
+  await wait(`document.querySelector('[data-experience-player]')?.dataset.exhibitionPhase==='WAITING'`)
+  assert.equal(countAccepted('SELECT'), 1)
+  assert.equal(countAccepted('START'), 1)
+  assert.equal(await js(`!!document.querySelector('.experience-dialog button, .experience-dialog [role="button"]')`), false)
+  assert.equal(await js(`document.querySelector('.experience-dialog video').controls`), false)
+  assert.equal(await js(`document.querySelector('.experience-dialog video').loop`), false)
+  assert.equal(await js(`document.querySelector('.experience-dialog video').paused`), true,
+    'formal video must remain paused during Waiting')
+  const operation = (await js(`window.natureTouch.getExhibitionSnapshot()`)).operationId
+  const duringWaiting = await js(`window.natureTouch.getExperienceSnapshot('mock')`)
+  assert.equal(duringWaiting.experience.state, 'RUNNING')
+  const audienceStop = await dispatch({
+    type: 'STOP', mode: 'mock', requestId: 'audience-stop', operationId: operation,
+  })
+  assert.match(audienceStop.error, /Audience STOP is unavailable during an exhibition experience/)
+  const duplicateStart = await dispatch({
+    type: 'START', mode: 'mock', requestId: 'duplicate-start', operationId: `${operation}-duplicate`,
+  })
+  assert.match(duplicateStart.error, /cannot START during WAITING/i)
+  const alternateSelect = await dispatch({
+    type: 'SELECT', mode: 'mock', experienceId: 'WAVE', requestId: 'audience-switch',
+  })
+  assert.match(alternateSelect.error, /in progress or cooling down/i)
+  win.webContents.sendInputEvent({ type: 'keyDown', keyCode: 'ESC' })
+  await pause(200)
+  assert.equal(await js(`!!document.querySelector('.experience-dialog[open]')`), true,
+    'Escape must not close the active experience')
+  pass('Waiting locks audience controls and rejects direct STOP, START, SELECT, and Escape')
+
+  await wait(`document.querySelector('[data-experience-player]')?.dataset.exhibitionPhase==='EXPERIENCE'`, 8_000)
+  await wait(`!document.querySelector('.experience-dialog video').paused`)
+  await pause(350)
+  const videoTime = await js(`document.querySelector('.experience-dialog video').currentTime`)
+  assert(videoTime > 0, 'formal video must advance after the 5-second Waiting period')
+  const activeCommands = evidence.commands.filter(command =>
+    ['SELECT', 'START', 'STOP'].includes(command.type))
+  assert.equal(countAccepted('START'), 1, 'one exhibition may send only one accepted START')
+  assert.equal(countAccepted('STOP'), 0, 'successful exhibition playback must not send STOP')
+  assert.equal(activeCommands.filter(command => command.type === 'STOP').length, 1,
+    'only the rejected audience STOP attempt should be observed')
+  pass('The 15-second formal video starts after Waiting without duplicate START or STOP')
+
+  await wait(`document.querySelector('[data-experience-player]')?.dataset.exhibitionPhase==='COOLDOWN'`, 25_000)
+  await wait(`!document.querySelector('.experience-dialog')`)
+  const completed = await js(`window.natureTouch.getExperienceSnapshot('mock')`)
+  assert.equal(completed.experience.state, 'COMPLETED',
+    'Mock device completion, not video ended, must authorize cooldown')
+  const cooling = await js(`window.natureTouch.getExhibitionSnapshot()`)
+  assert.equal(cooling.phase, 'COOLDOWN')
+  assert.equal(await js(`document.querySelector('[data-experience="WIND"]').disabled`), true)
+  const cooldownSelect = await dispatch({
+    type: 'SELECT', mode: 'mock', experienceId: 'BUBBLE', requestId: 'cooldown-select',
+  })
+  assert.match(cooldownSelect.error, /in progress or cooling down/i)
+  await wait(`window.natureTouch.getExhibitionSnapshot().then(snapshot=>snapshot.phase==='READY')`, 12_000)
+  assert.equal(await js(`document.querySelector('[data-experience="WIND"]').disabled`), false)
+  assert.equal(countAccepted('START'), 1)
+  pass('Only device COMPLETED enters an enforced 8-second cooldown before READY')
+
+  await js(`document.querySelector('[data-experience="WAVE"]').click()`)
+  await wait(`document.querySelector('[data-experience-player]')?.dataset.exhibitionPhase==='EXPERIENCE'`, 8_000)
+  await wait(`!document.querySelector('.experience-dialog video').paused`)
+  const startsBeforeDisconnect = countAccepted('START')
+  await js(`window.natureTouch.simulateConnectionLoss()`)
+  await wait(`document.querySelector('[data-experience-player]')?.dataset.exhibitionPhase==='FAULT'`)
+  assert.equal(await js(`(()=>{const video=document.querySelector('.experience-dialog video');return video.paused&&video.currentTime===0})()`), true,
+    'disconnect must stop and clear exhibition media')
+  const disconnected = await js(`window.natureTouch.getExperienceSnapshot('mock')`)
+  assert.equal(disconnected.experience.state, 'FAULT')
+  const recoveredBySelect = await dispatch({
+    type: 'SELECT', mode: 'mock', experienceId: 'BUBBLE', requestId: 'disconnect-auto-recovery',
+  })
+  assert.match(recoveredBySelect.error, /in progress or cooling down/i)
+  assert.equal(countAccepted('START'), startsBeforeDisconnect)
+  assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'FAULT')
+  pass('Disconnect clears active media and cannot auto-recover the exhibition')
+
+  assert.equal(evidence.errors.length, 0)
+  assert.equal(evidence.commands.some(command => command.mode === 'firmware'), false)
+  assert.equal(evidence.commands.some(command => command.channel.startsWith('firmware:')), false)
+  pass('No firmware command, COM enumeration, port open, or physical hardware access')
+}
+
+process.on('uncaughtException', error => finish(error))
+process.on('unhandledRejection', error => finish(error))
+timeout = setTimeout(() => finish(Error('Electron V3 lifecycle test timed out')), 90_000)
 
 app.once('browser-window-created', (_event, browserWindow) => {
   win = browserWindow
-  win.webContents.setBackgroundThrottling(false)
-  win.webContents.once('did-finish-load', async () => {
-    try {
-      win.setContentSize(1920, 1248)
-      win.show()
-      win.focus()
-      win.webContents.focus()
-      await wait(`!!document.querySelector('[data-experience="WAVE"]')`)
-      const posters = await js(`([...document.querySelectorAll('.nature-card__poster')].length===3 && [...document.querySelectorAll('.nature-card__poster')].every(image=>image.complete&&image.naturalWidth>0))`)
-      assert.equal(posters, true, 'home should show the three existing posters')
-      assert.equal(await js(`!!document.querySelector('[aria-label="Device mode"]')`), false,
-        'the exhibition UI must not expose firmware mode or ARM controls')
-      assert.equal(await js(`document.body.innerText.includes('Arm Real Arduino Simulation Test')`), false)
-      assert.equal(await js(`[...document.querySelectorAll('.nature-card video')].filter(video=>!video.paused).length`), 0)
-      pass('Home displays posters; previews are available without autoplay')
-      await js(`window.natureTouch.logMediaError('video-load-failed')`)
-      const logPath = resolve(app.getPath('userData'), 'logs', 'app.jsonl')
-      const logDeadline = Date.now() + 5000
-      let mediaErrorRow
-      while (Date.now() < logDeadline) {
-        try {
-          mediaErrorRow = readFileSync(logPath, 'utf8').split('\n')
-            .filter(Boolean).map(line => JSON.parse(line))
-            .find(row => row.event === 'media.error' && row.reason === 'video-load-failed')
-        } catch (error) {
-          if (error.code !== 'ENOENT') throw error
-        }
-        if (mediaErrorRow) break
-        await pause(50)
-      }
-      assert.ok(mediaErrorRow, 'media errors should be written to the Electron userData log')
-      assert.match(mediaErrorRow.appCommit, /^[0-9a-f]{40}$/)
-      assert.equal(mediaErrorRow.hardwareConfigVersion, 'UNVERSIONED')
-      pass('Media error is persisted with build and hardware configuration identity')
-
-      const selectsBeforeCancel = count('SELECT'), startsBeforeCancel = count('START'), stopsBeforeCancel = count('STOP')
-      await js(`(()=>{
-        window.__holdMediaReadiness=new MutationObserver(()=>{
-          for(const media of document.querySelectorAll('.experience-dialog video,.experience-dialog audio')){
-            if(media.__readinessHeld)continue;
-            Object.defineProperty(media,'readyState',{configurable:true,get:()=>0});
-            media.__readinessHeld=true;
-          }
-        });
-        window.__holdMediaReadiness.observe(document.documentElement,{childList:true,subtree:true});
-      })()`)
-      await clickCard('WAVE')
-      await wait(`!!document.querySelector('.experience-dialog video')&&!!document.querySelector('.experience-dialog audio')&&document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='preparing'`)
-      assert(await js(`[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')].every(element=>element.readyState===0)`),
-        'media readiness must remain pending until the user exits')
-      await returnHome()
-      await js(`window.__holdMediaReadiness.disconnect()`)
-      await pause(300)
-      assert.equal(count('SELECT'), selectsBeforeCancel + 1, 'loading cancellation follows one SELECT')
-      assert.equal(count('START'), startsBeforeCancel, 'exiting during media preparation must not send START')
-      assert.equal(count('STOP'), stopsBeforeCancel, 'media preparation without an operation must not send STOP')
-      pass('Exit during media preparation cancels readiness and cannot trigger a late START')
-
-      const baseSelects = count('SELECT'), baseStarts = count('START'), baseStops = count('STOP')
-      clampPlayerDuration = true
-      await js(`(()=>{const card=document.querySelector('[data-experience="WIND"]');card.click();card.click();card.click()})()`)
-      await wait(`!!document.querySelector('.experience-dialog video')&&!!document.querySelector('.experience-dialog audio')`)
-      await wait(`document.querySelector('.experience-dialog video').readyState>=3&&document.querySelector('.experience-dialog audio').readyState>=3`)
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
-      await pause(250)
-      assert.equal(count('SELECT'), baseSelects + 1, 'repeated card clicks must issue one SELECT')
-      assert.equal(count('START'), baseStarts + 1, 'repeated card clicks must issue one START')
-      assert.equal(count('STOP'), baseStops, 'the player must not end the device operation from its local duration')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING',
-        'device state must remain authoritative when media duration differs')
-      assert(await js(mediaPlaying()), 'WIND video and MP3 must actually play')
-      assert(await js(`document.querySelector('.experience-dialog video').loop&&document.querySelector('.experience-dialog video').muted`))
-      pass('Repeated clicks START once; media plays and local duration cannot stop device')
-
-      const startsBeforeBufferRecovery = count('START')
-      await js(`(()=>{const audio=document.querySelector('.experience-dialog audio');audio.pause();audio.dispatchEvent(new Event('waiting'))})()`)
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='buffering'&&document.querySelector('.experience-dialog video').paused`)
-      await js(`document.querySelector('.experience-dialog audio').play()`)
-      await wait(`!document.querySelector('.experience-dialog audio').paused&&document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
-      assert.equal(await js(`document.querySelector('.experience-dialog video').paused`), false,
-        'audio buffering recovery must resume the paused video')
-      assert.equal(count('START'), startsBeforeBufferRecovery, 'buffering recovery must not issue another START')
-      pass('Audio buffering recovery resumes video without another device START')
-
-      rejectStop = true
-      await js(`document.querySelector('[aria-label="Back to experiences"]').click()`)
-      await wait(`!!document.querySelector('.experience-player__error')`)
-      assert(await js(`!!document.querySelector('.experience-dialog[open]')`), 'failed STOP must retain the player')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING')
-      rejectStop = false
-      const stopsBeforeRetry = count('STOP')
-      await returnHome()
-      assert.equal(count('STOP'), stopsBeforeRetry + 1, 'retry should submit one STOP')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'IDLE')
-      assert(await js(`window.__lastMedia.every(element=>element.paused&&element.currentTime===0)`), 'STOP must clean both media elements')
-      pass('STOP failure is surfaced; retry confirms STOP, clears media and returns home')
-
-      const startsBeforeLate = count('START'), stopsBeforeLate = count('STOP')
-      holdStartResponse = true
-      await clickCard('WAVE')
-      await startResponseIsHeld
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING')
-      await returnHome()
-      releaseStartResponse()
-      await pause(500)
-      assert.equal(count('START'), startsBeforeLate + 1, 'late START response must not dispatch another START')
-      assert.equal(count('STOP'), stopsBeforeLate + 2,
-        'Back and the late START confirmation each submit a STOP intent for the same operation')
-      const lateStopIntents = [...countedCommands.values()]
-        .filter(command => command.type === 'STOP' && command.mode === 'mock')
-        .slice(stopsBeforeLate)
-      assert.equal(new Set(lateStopIntents.map(command => command.operationId)).size, 1,
-        'late STOP intents must remain scoped to the same operation')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'IDLE')
-      pass('Exit during a delayed START confirmation remains IDLE; repeated STOP intent is idempotent')
-
-      const startsBeforeFault = count('START'), stopsBeforeFault = count('STOP')
-      await clickCard('BUBBLE')
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
-      await js(`window.natureTouch.simulateExperienceFault('UI_TEST_FAULT')`)
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='error'`)
-      assert(await js(`[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')].every(element=>element.paused&&element.currentTime===0)`))
-      await returnHome()
-      assert.equal(count('START'), startsBeforeFault + 1)
-      assert.equal(count('STOP'), stopsBeforeFault, 'FAULT navigation must not claim device STOP')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'FAULT')
-      pass('FAULT clears media, preserves FAULT, and allows navigation without STOP/START')
-
-      const startsBeforeRecovery = count('START')
-      await clickCard('WAVE')
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
-      assert.equal(count('START'), startsBeforeRecovery + 1, 'explicit card selection may recover Mock once')
-      const stopsBeforeDisconnect = count('STOP')
-      await js(`window.natureTouch.simulateConnectionLoss()`)
-      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='error'`)
-      await returnHome()
-      assert.equal(count('STOP'), stopsBeforeDisconnect, 'disconnect navigation must not claim device STOP')
-      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'FAULT')
-      assert.equal(count('START'), startsBeforeRecovery + 1, 'disconnect must not auto-restart')
-      pass('Mock disconnect cleans media and does not auto-recover or restart')
-
-      assert(!evidence.commands.some(command => command.mode === 'firmware' || command.channel.startsWith('firmware:')))
-      assert(!evidence.errors.length)
-      pass('No firmware START, serial connect, or physical-port access')
-      finished = true
-      finish(0)
-    } catch (error) {
-      evidence.errors.push(error.stack)
-      evidence.failureUi = await js(`({dialog:!!document.querySelector('.experience-dialog'),phase:document.querySelector('[data-experience-player]')?.dataset.playbackPhase,error:document.querySelector('.experience-player__error')?.textContent})`).catch(() => null)
-      if (!finished) { finished = true; finish(1) }
-    }
+  win.webContents.once('did-finish-load', () => {
+    void run().then(() => finish(), error => finish(error))
   })
 })
 
 require('../desktop/out/main/main.js')
-setTimeout(() => {
-  if (win) return
-  win = BrowserWindow.getAllWindows()[0]
-  if (win) win.webContents.once('did-finish-load', () => {})
-}, 0)
-setTimeout(() => {
-  if (!finished) {
-    evidence.errors.push('Electron UI interaction test timed out')
-    finished = true
-    finish(1)
-  }
-}, 150_000)

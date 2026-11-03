@@ -19,6 +19,7 @@ import type {
   ExperienceSnapshot,
 } from './experience-application-contract'
 import type { FirmwareControlSnapshot } from './firmware-control-protocol'
+import type { ExhibitionLifecycleSnapshot } from './exhibition-lifecycle'
 
 export const IPC_CHANNELS = {
   runtimeInfo: 'app:get-runtime-info',
@@ -33,6 +34,8 @@ export const IPC_CHANNELS = {
   experienceGetSnapshot: 'experience:get-snapshot',
   experienceDispatch: 'experience:dispatch',
   experienceEvent: 'experience:event',
+  exhibitionGetSnapshot: 'exhibition:get-snapshot',
+  exhibitionEvent: 'exhibition:event',
   experienceGetState: 'experience:get-state',
   experienceSelect: 'experience:select',
   experienceStart: 'experience:start',
@@ -77,6 +80,10 @@ export interface NatureTouchApi {
   getDiagnosticStatus(): Promise<DiagnosticReply>
   onSerialState(listener: (snapshot: SerialStateSnapshot) => void): () => void
   getExperienceSnapshot(mode: ExperienceMode): Promise<ExperienceSnapshot>
+  getExhibitionSnapshot(): Promise<ExhibitionLifecycleSnapshot>
+  subscribeExhibition(
+    listener: (snapshot: ExhibitionLifecycleSnapshot) => void,
+  ): Promise<() => void>
   subscribeExperience(
     mode: ExperienceMode,
     listener: (event: ExperienceEvent) => void,

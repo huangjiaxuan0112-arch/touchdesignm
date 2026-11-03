@@ -75,6 +75,13 @@ button { -webkit-tap-highlight-color: transparent; }
 .experience-player__poster, .experience-dialog__video { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 .experience-player__poster { opacity: .7; }
 .experience-dialog__video { background: #141d22; }
+.experience-player__placeholder {
+  position: absolute; z-index: 2; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 14px; padding: 24px;
+  background: rgb(20 29 34 / 72%); color: #f2f0eb; text-align: center;
+  font: 14px/1.6 "Yu Gothic", sans-serif; letter-spacing: .22em;
+}
+.experience-player__placeholder small { color: #b6c0bd; font-size: 10px; letter-spacing: .18em; }
 .experience-player__bottom { flex-shrink: 0; padding-top: 24px; }
 .experience-player__status { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0 0 16px; color: #d8dfdf; font: 13px/1.5 "Yu Gothic", sans-serif; letter-spacing: .1em; }
 .experience-player__status .status-dot { width: 7px; height: 7px; }
