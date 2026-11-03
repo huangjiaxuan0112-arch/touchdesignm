@@ -1,0 +1,77 @@
+{
+  "result": "FAIL_UNCOMMANDED_RESTART_SUSPECTED_NO_AUTOMATIC_RETRY",
+  "authorization": "User approved one WIND 24000ms natural-completion UI test; START already present at turn-resumption inspection, so assistant did not issue another START.",
+  "journal": "docs/evidence/real-react-bench-1793258636969.jsonl",
+  "actualSTARTcount": 1,
+  "START": {
+    "at": "2026-10-29T07:28:51.935Z",
+    "kind": "TX",
+    "value": {
+      "type": "START",
+      "operationId": "4b5b33d1dc844d9e",
+      "requestId": "685f45abd14b400e"
+    }
+  },
+  "START_ACK": {
+    "at": "2026-10-29T07:28:52.188Z",
+    "kind": "RX",
+    "value": "{\"type\":\"ACK\",\"command\":\"START\",\"accepted\":true,\"requestId\":\"685f45abd14b400e\",\"state\":\"RUNNING\",\"operationId\":\"4b5b33d1dc844d9e\"}"
+  },
+  "malformedFrame": {
+    "at": "2026-10-29T07:28:53.099Z",
+    "kind": "RX",
+    "value": "{\"type\":\"STATUS\",\"requestId\":\"768f619bd65841a9\",\"acknowledgement\":{\"type\":\"ACK\",\"command\":\"STATUS_QUERY\",\"accepted\":true,\"requestId\":\"768f619bd65841a9\",\"state\":\"RUNNING\"},\"snapshot\":{\"state\":\"RUNNING\",\"selectedExperienceId\":\"WIND\",\"operationId\":\"4b5b33d1dc844d9e\",\"elapsedMs\":442,\"durationMs\":24{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-real\",\"protocol\":2,\"hardwareOutputsEnabled\":true}"
+  },
+  "rawFault": {
+    "at": "2026-10-29T07:29:00.958Z",
+    "kind": "STATE",
+    "value": {
+      "openAirBenchSession": false,
+      "realControlEligible": false,
+      "connectionState": "faulted",
+      "simulationTestArmed": false,
+      "simulationTestEligible": false,
+      "identified": false,
+      "protocolVersion": 2,
+      "firmware": "nature-touch-unified-real",
+      "hardwareOutputsEnabled": true,
+      "experience": {
+        "state": "FAULT",
+        "selectedExperienceId": "WIND",
+        "operationId": "4b5b33d1dc844d9e",
+        "elapsedMs": 0,
+        "durationMs": 24000,
+        "progress": 0,
+        "faultCode": "COMMUNICATION_FAILURE"
+      },
+      "lastEvent": "WIND 0 ms: INFLATE 5000 ms; D5=180 D6=180 D7=0 (diagnostic only)",
+      "lastError": "Firmware response exceeded the maximum line length."
+    }
+  },
+  "frameAnalysis": {
+    "expectedValidStatusBytes": 347,
+    "configuredHostMaxLineLength": 384,
+    "actualCombinedPartialStatusAndReadyBytes": 405,
+    "partialStatusPrefixBytes": 295,
+    "interpretation": "Unexpected READY appears inside a truncated STATUS frame; observed host line-length error is secondary to malformed/restarted stream, not proof the ordinary frame limit is too small"
+  },
+  "observations": [
+    {
+      "source": "USER_ACTUAL_OBSERVATION",
+      "bothPumpsStopped": true
+    },
+    {
+      "source": "USER_REPORT",
+      "RESETpressed": false,
+      "USBunplugged": false,
+      "wiringChanged": false
+    }
+  ],
+  "physicalCause": "UNDETERMINED: supply disturbance, hardware reset or MCU software fault require discrimination; no reset-cause measurement",
+  "complete24000msRun": false,
+  "mediaPlaybackVerification": "NOT_PASSED; start helper awaits STATUS which failed",
+  "automaticRetry": false,
+  "additionalSTARTauthorized": false,
+  "uploadedAgain": false,
+  "nextDiagnosticProposal": "Operator isolates all pneumatic load power paths while preserving Nano/USB/control setup; only after confirmation and explicit authorization consider the identical real UI case to distinguish load-related reset from software issue."
+}

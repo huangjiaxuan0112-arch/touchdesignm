@@ -1,0 +1,84 @@
+{
+  "startedUtc": "2026-10-29T06:22:45.749Z",
+  "loadsIsolatedUserConfirmed": true,
+  "mode": "READ_ONLY",
+  "events": [
+    {
+      "at": "2026-10-29T06:22:47.424Z",
+      "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:22:48.181Z",
+      "text": "D5LED/1 t=758 event=ERROR_FRAME attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:22:49.074Z",
+      "text": "D5LED/1 t=1650 event=ERROR_FRAME attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:22:49.938Z",
+      "text": "D5LED/1 t=2518 event=STATUS attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    }
+  ],
+  "commands": [
+    {
+      "at": "2026-10-29T06:22:47.981Z",
+      "line": "{\"type\":\"IDENTIFY\",\"protocol\":2,\"requestId\":\"prepidentify\"}"
+    },
+    {
+      "at": "2026-10-29T06:22:48.884Z",
+      "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"prepstatus\"}"
+    },
+    {
+      "at": "2026-10-29T06:22:49.794Z",
+      "line": "STATUS"
+    }
+  ],
+  "uploaded": false,
+  "startSent": false,
+  "discoveredPorts": [
+    {
+      "path": "COM4",
+      "manufacturer": "Microsoft",
+      "pnpId": "BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&0000\\7&2DAE0741&0&000000000000_00000000",
+      "friendlyName": "蓝牙链接上的标准串行 (COM4)"
+    },
+    {
+      "path": "COM3",
+      "manufacturer": "Microsoft",
+      "pnpId": "BTHENUM\\{00001101-0000-1000-8000-00805F9B34FB}_LOCALMFG&005D\\7&2DAE0741&0&648FDB5EAE50_C00000000",
+      "friendlyName": "蓝牙链接上的标准串行 (COM3)"
+    },
+    {
+      "path": "COM5",
+      "manufacturer": "wch.cn",
+      "serialNumber": "5&26B53364&0&9",
+      "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+      "locationId": "Port_#0009.Hub_#0001",
+      "friendlyName": "USB-SERIAL CH340 (COM5)",
+      "vendorId": "1A86",
+      "productId": "7523"
+    }
+  ],
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "result": "READ_ONLY_CAPTURE_COMPLETE",
+  "serialClosed": true,
+  "userSelectedConfiguration": {
+    "offUsAllChannels": 1200,
+    "onUsAllChannels": 1800,
+    "pumpWaitMs": 500,
+    "valveWaitMs": 300,
+    "hostTimeoutMs": 5000,
+    "timingEvidence": "USER_REPORT_CONFIGURATION_WORKS_IN_PHYSICAL_TESTING",
+    "worstCaseTimingMarginEstablished": false
+  }
+}

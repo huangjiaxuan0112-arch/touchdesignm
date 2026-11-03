@@ -1,0 +1,1193 @@
+{
+  "result": "PASS",
+  "method": "Compiled Nano HEX behind Electron test-only serial adapter; no COM",
+  "compileLog": "Sketch uses 10770 bytes (35%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 1379 bytes (67%) of dynamic memory, leaving 669 bytes for local variables. Maximum is 2048 bytes.\n",
+  "hexSha256": "1033aa59cb4b8ec21a5ac913c1fca5c813978c3dffab171875e53847858d708b",
+  "evidence": {
+    "name": "electron-virtual-nano",
+    "virtualSeconds": 22.580093625,
+    "state": "IDLE",
+    "intent": "STOPPED",
+    "outputRecords": [
+      {
+        "virtualMs": 0.64425,
+        "revision": 1,
+        "intent": "STOPPED",
+        "recordedAtMs": 0,
+        "commandCount": 1
+      },
+      {
+        "virtualMs": 4206.0895625,
+        "revision": 2,
+        "intent": "INFLATING",
+        "recordedAtMs": 4204,
+        "commandCount": 2
+      },
+      {
+        "virtualMs": 5523.9068125,
+        "revision": 3,
+        "intent": "STOPPED",
+        "recordedAtMs": 5522,
+        "commandCount": 3
+      },
+      {
+        "virtualMs": 7306.0936875,
+        "revision": 4,
+        "intent": "INFLATING",
+        "recordedAtMs": 7305,
+        "commandCount": 4
+      },
+      {
+        "virtualMs": 8663.9255,
+        "revision": 5,
+        "intent": "STOPPED",
+        "recordedAtMs": 8663,
+        "commandCount": 5
+      },
+      {
+        "virtualMs": 10346.1080625,
+        "revision": 6,
+        "intent": "INFLATING",
+        "recordedAtMs": 10344,
+        "commandCount": 6
+      },
+      {
+        "virtualMs": 11773.94675,
+        "revision": 7,
+        "intent": "STOPPED",
+        "recordedAtMs": 11772,
+        "commandCount": 7
+      },
+      {
+        "virtualMs": 13106.1246875,
+        "revision": 8,
+        "intent": "INFLATING",
+        "recordedAtMs": 13105,
+        "commandCount": 8
+      },
+      {
+        "virtualMs": 13910.07725,
+        "revision": 9,
+        "intent": "STOPPED",
+        "recordedAtMs": 13908,
+        "commandCount": 9
+      },
+      {
+        "virtualMs": 16600.0871875,
+        "revision": 10,
+        "intent": "STOPPED",
+        "recordedAtMs": 16599,
+        "commandCount": 10
+      },
+      {
+        "virtualMs": 17442.4850625,
+        "revision": 11,
+        "intent": "STOPPED",
+        "recordedAtMs": 17441,
+        "commandCount": 11
+      },
+      {
+        "virtualMs": 20316.151625,
+        "revision": 12,
+        "intent": "INFLATING",
+        "recordedAtMs": 20315,
+        "commandCount": 12
+      },
+      {
+        "virtualMs": 21313.9810625,
+        "revision": 13,
+        "intent": "STOPPED",
+        "recordedAtMs": 21312,
+        "commandCount": 13
+      }
+    ],
+    "frames": [
+      {
+        "virtualMs": 124.0228125,
+        "message": {
+          "type": "EVENT",
+          "name": "READY",
+          "deviceId": "nature-touch-nano-simulation",
+          "protocol": 2,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 2347.566625,
+        "message": {
+          "type": "ACK",
+          "command": "IDENTIFY",
+          "accepted": true,
+          "requestId": "r1",
+          "state": "IDLE",
+          "protocol": 2,
+          "firmware": "nature-touch-unified-simulation",
+          "deviceId": "nature-touch-nano-simulation",
+          "hardwareOutputsEnabled": false,
+          "capabilities": [
+            "WIND",
+            "WAVE",
+            "BUBBLE",
+            "SIMULATION_ONLY"
+          ]
+        }
+      },
+      {
+        "virtualMs": 2494.9963125,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r2",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 2805.1263125,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r2",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r2",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": null,
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": null,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 2995.004625,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r3",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 3305.13575,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r3",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r3",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": null,
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": null,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 3564.7125,
+        "message": {
+          "type": "ACK",
+          "command": "SELECT",
+          "accepted": true,
+          "requestId": "e71d4c480b3e4487",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 4271.8426875,
+        "message": {
+          "type": "ACK",
+          "command": "START",
+          "accepted": true,
+          "requestId": "0750f4a2f0d749f4",
+          "state": "RUNNING",
+          "operationId": "74fcc97ce62c46a2"
+        }
+      },
+      {
+        "virtualMs": 4397.149875,
+        "message": {
+          "type": "EVENT",
+          "name": "MARKER",
+          "operationId": "74fcc97ce62c46a2",
+          "experienceId": "WIND",
+          "atMs": 0,
+          "text": "INITIAL FILL"
+        }
+      },
+      {
+        "virtualMs": 4604.944625,
+        "message": {
+          "type": "EVENT",
+          "name": "ACTUATOR_EVENT",
+          "operationId": "74fcc97ce62c46a2",
+          "experienceId": "WIND",
+          "atMs": 0,
+          "action": "INFLATE",
+          "durationMs": 5000,
+          "D5": 180,
+          "D6": 180,
+          "D7": 0,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 4715.6334375,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "39ec06a45f684ecd",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 5081.1055,
+        "message": {
+          "type": "STATUS",
+          "requestId": "39ec06a45f684ecd",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "39ec06a45f684ecd",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "WIND",
+            "operationId": "74fcc97ce62c46a2",
+            "elapsedMs": 444,
+            "durationMs": 24000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 5660.770875,
+        "message": {
+          "type": "ACK",
+          "command": "STOP",
+          "accepted": true,
+          "requestId": "84907b0d573b4193",
+          "state": "STOPPING",
+          "operationId": "74fcc97ce62c46a2"
+        }
+      },
+      {
+        "virtualMs": 5731.7798125,
+        "message": {
+          "type": "EVENT",
+          "name": "STOPPED",
+          "operationId": "74fcc97ce62c46a2"
+        }
+      },
+      {
+        "virtualMs": 5914.27525,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "94561fffaf374fec",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 6256.77375,
+        "message": {
+          "type": "STATUS",
+          "requestId": "94561fffaf374fec",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "94561fffaf374fec",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": "WIND",
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": 24000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 6904.726875,
+        "message": {
+          "type": "ACK",
+          "command": "SELECT",
+          "accepted": true,
+          "requestId": "d80bf7ced9c94cd1",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 7371.8435625,
+        "message": {
+          "type": "ACK",
+          "command": "START",
+          "accepted": true,
+          "requestId": "25aa96882c834d59",
+          "state": "RUNNING",
+          "operationId": "6935b5b1cbc94c72"
+        }
+      },
+      {
+        "virtualMs": 7497.1455625,
+        "message": {
+          "type": "EVENT",
+          "name": "MARKER",
+          "operationId": "6935b5b1cbc94c72",
+          "experienceId": "WAVE",
+          "atMs": 0,
+          "text": "INITIAL FILL"
+        }
+      },
+      {
+        "virtualMs": 7704.9459375,
+        "message": {
+          "type": "EVENT",
+          "name": "ACTUATOR_EVENT",
+          "operationId": "6935b5b1cbc94c72",
+          "experienceId": "WAVE",
+          "atMs": 0,
+          "action": "INFLATE",
+          "durationMs": 5000,
+          "D5": 180,
+          "D6": 180,
+          "D7": 0,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 7815.6315625,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "1e3c73d541204ec9",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 8181.1063125,
+        "message": {
+          "type": "STATUS",
+          "requestId": "1e3c73d541204ec9",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "1e3c73d541204ec9",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "WAVE",
+            "operationId": "6935b5b1cbc94c72",
+            "elapsedMs": 443,
+            "durationMs": 25000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 8800.7930625,
+        "message": {
+          "type": "ACK",
+          "command": "STOP",
+          "accepted": true,
+          "requestId": "edbe8fcd4163429b",
+          "state": "STOPPING",
+          "operationId": "6935b5b1cbc94c72"
+        }
+      },
+      {
+        "virtualMs": 8871.80125,
+        "message": {
+          "type": "EVENT",
+          "name": "STOPPED",
+          "operationId": "6935b5b1cbc94c72"
+        }
+      },
+      {
+        "virtualMs": 9054.301875,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "8780bd429636460f",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 9396.8020625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "8780bd429636460f",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "8780bd429636460f",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": "WAVE",
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": 25000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 9956.8525625,
+        "message": {
+          "type": "ACK",
+          "command": "SELECT",
+          "accepted": true,
+          "requestId": "a6c9c26571e44cb5",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 10411.8630625,
+        "message": {
+          "type": "ACK",
+          "command": "START",
+          "accepted": true,
+          "requestId": "ff05343735e044f7",
+          "state": "RUNNING",
+          "operationId": "244395fa8b574f50"
+        }
+      },
+      {
+        "virtualMs": 10621.7494375,
+        "message": {
+          "type": "EVENT",
+          "name": "ACTUATOR_EVENT",
+          "operationId": "244395fa8b574f50",
+          "experienceId": "BUBBLE",
+          "atMs": 0,
+          "action": "INFLATE",
+          "durationMs": 4420,
+          "D5": 180,
+          "D6": 180,
+          "D7": 0,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 10732.434375,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "7e77103c1a7f48fb",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 11099.9965625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "7e77103c1a7f48fb",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "7e77103c1a7f48fb",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "244395fa8b574f50",
+            "elapsedMs": 321,
+            "durationMs": 27420,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 11338.168625,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r4",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 11676.497625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r4",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r4",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "244395fa8b574f50",
+            "elapsedMs": 927,
+            "durationMs": 27420,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 11910.81175,
+        "message": {
+          "type": "ACK",
+          "command": "STOP",
+          "accepted": true,
+          "requestId": "637558f6770841f2",
+          "state": "STOPPING",
+          "operationId": "244395fa8b574f50"
+        }
+      },
+      {
+        "virtualMs": 11981.8164375,
+        "message": {
+          "type": "EVENT",
+          "name": "STOPPED",
+          "operationId": "244395fa8b574f50"
+        }
+      },
+      {
+        "virtualMs": 12154.299,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ff32498dcf6f4634",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 12498.8906875,
+        "message": {
+          "type": "STATUS",
+          "requestId": "ff32498dcf6f4634",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "ff32498dcf6f4634",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": 27420,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 13171.871875,
+        "message": {
+          "type": "ACK",
+          "command": "START",
+          "accepted": true,
+          "requestId": "f5eb90d58fea407b",
+          "state": "RUNNING",
+          "operationId": "791ff22fa9314a4e"
+        }
+      },
+      {
+        "virtualMs": 13381.7603125,
+        "message": {
+          "type": "EVENT",
+          "name": "ACTUATOR_EVENT",
+          "operationId": "791ff22fa9314a4e",
+          "experienceId": "BUBBLE",
+          "atMs": 0,
+          "action": "INFLATE",
+          "durationMs": 4420,
+          "D5": 180,
+          "D6": 180,
+          "D7": 0,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 13492.442875,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "f08653575ea34b64",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 13860.00825,
+        "message": {
+          "type": "STATUS",
+          "requestId": "f08653575ea34b64",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "f08653575ea34b64",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "791ff22fa9314a4e",
+            "elapsedMs": 320,
+            "durationMs": 27420,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 14003.038375,
+        "message": {
+          "type": "EVENT",
+          "name": "FAULT",
+          "operationId": "791ff22fa9314a4e",
+          "code": "ACTUATOR_FAULT"
+        }
+      },
+      {
+        "virtualMs": 14106.1058125,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r5",
+          "state": "FAULT"
+        }
+      },
+      {
+        "virtualMs": 14452.8038125,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r5",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r5",
+            "state": "FAULT"
+          },
+          "snapshot": {
+            "state": "FAULT",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "791ff22fa9314a4e",
+            "elapsedMs": 803,
+            "durationMs": 27420,
+            "faultCode": "ACTUATOR_FAULT",
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 15986.107375,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r6",
+          "state": "FAULT"
+        }
+      },
+      {
+        "virtualMs": 16332.813875,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r6",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r6",
+            "state": "FAULT"
+          },
+          "snapshot": {
+            "state": "FAULT",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "791ff22fa9314a4e",
+            "elapsedMs": 803,
+            "durationMs": 27420,
+            "faultCode": "ACTUATOR_FAULT",
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 16519.94825,
+        "message": {
+          "type": "NACK",
+          "command": "RECOVER",
+          "accepted": false,
+          "requestId": "3ee92aefc21e498d",
+          "state": "IDLE",
+          "code": "INVALID_STATE"
+        }
+      },
+      {
+        "virtualMs": 16693.0531875,
+        "message": {
+          "type": "EVENT",
+          "name": "FAULT",
+          "operationId": "791ff22fa9314a4e",
+          "code": "ACTUATOR_FAULT"
+        }
+      },
+      {
+        "virtualMs": 17026.111375,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r7",
+          "state": "FAULT"
+        }
+      },
+      {
+        "virtualMs": 17372.8075625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r7",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r7",
+            "state": "FAULT"
+          },
+          "snapshot": {
+            "state": "FAULT",
+            "selectedExperienceId": "BUBBLE",
+            "operationId": "791ff22fa9314a4e",
+            "elapsedMs": 803,
+            "durationMs": 27420,
+            "faultCode": "ACTUATOR_FAULT",
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 17543.844375,
+        "message": {
+          "type": "ACK",
+          "command": "RECOVER",
+          "accepted": true,
+          "requestId": "d0db25577f0e43e8",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 17695.0581875,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r8",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 18005.18625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r8",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r8",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": null,
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": null,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 19285.066125,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r9",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 19595.1958125,
+        "message": {
+          "type": "STATUS",
+          "requestId": "r9",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "r9",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": null,
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": null,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 19784.7924375,
+        "message": {
+          "type": "ACK",
+          "command": "SELECT",
+          "accepted": true,
+          "requestId": "479ae2e949784022",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 20381.9045,
+        "message": {
+          "type": "ACK",
+          "command": "START",
+          "accepted": true,
+          "requestId": "9c96df2e5dd145ed",
+          "state": "RUNNING",
+          "operationId": "97d3dee3c1ec4c17"
+        }
+      },
+      {
+        "virtualMs": 20507.20775,
+        "message": {
+          "type": "EVENT",
+          "name": "MARKER",
+          "operationId": "97d3dee3c1ec4c17",
+          "experienceId": "WIND",
+          "atMs": 0,
+          "text": "INITIAL FILL"
+        }
+      },
+      {
+        "virtualMs": 20715.0075,
+        "message": {
+          "type": "EVENT",
+          "name": "ACTUATOR_EVENT",
+          "operationId": "97d3dee3c1ec4c17",
+          "experienceId": "WIND",
+          "atMs": 0,
+          "action": "INFLATE",
+          "durationMs": 5000,
+          "D5": 180,
+          "D6": 180,
+          "D7": 0,
+          "hardwareOutputsEnabled": false
+        }
+      },
+      {
+        "virtualMs": 20825.6900625,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "a961e34eeef84e91",
+          "state": "RUNNING"
+        }
+      },
+      {
+        "virtualMs": 21191.167625,
+        "message": {
+          "type": "STATUS",
+          "requestId": "a961e34eeef84e91",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "a961e34eeef84e91",
+            "state": "RUNNING"
+          },
+          "snapshot": {
+            "state": "RUNNING",
+            "selectedExperienceId": "WIND",
+            "operationId": "97d3dee3c1ec4c17",
+            "elapsedMs": 443,
+            "durationMs": 24000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      },
+      {
+        "virtualMs": 21450.8460625,
+        "message": {
+          "type": "ACK",
+          "command": "STOP",
+          "accepted": true,
+          "requestId": "8113541a02274bfb",
+          "state": "STOPPING",
+          "operationId": "97d3dee3c1ec4c17"
+        }
+      },
+      {
+        "virtualMs": 21521.85075,
+        "message": {
+          "type": "EVENT",
+          "name": "STOPPED",
+          "operationId": "97d3dee3c1ec4c17"
+        }
+      },
+      {
+        "virtualMs": 21694.35,
+        "message": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "fe9a375c7eba4c5b",
+          "state": "IDLE"
+        }
+      },
+      {
+        "virtualMs": 22036.8496875,
+        "message": {
+          "type": "STATUS",
+          "requestId": "fe9a375c7eba4c5b",
+          "acknowledgement": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "fe9a375c7eba4c5b",
+            "state": "IDLE"
+          },
+          "snapshot": {
+            "state": "IDLE",
+            "selectedExperienceId": "WIND",
+            "operationId": null,
+            "elapsedMs": 0,
+            "durationMs": 24000,
+            "faultCode": null,
+            "hardwareOutputsEnabled": false
+          }
+        }
+      }
+    ],
+    "inputFrames": [
+      {
+        "virtualMs": 2062.133875,
+        "line": "{\"type\":\"IDENTIFY\",\"protocol\":2,\"requestId\":\"r1\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 2402.74075,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r2\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 2902.7533125,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r3\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 3464.0143125,
+        "line": "{\"type\":\"SELECT\",\"experienceId\":\"WIND\",\"requestId\":\"e71d4c480b3e4487\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 4134.446375,
+        "line": "{\"type\":\"START\",\"operationId\":\"74fcc97ce62c46a2\",\"requestId\":\"0750f4a2f0d749f4\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 4347.3406875,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"39ec06a45f684ecd\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 5523.4018125,
+        "line": "{\"type\":\"STOP\",\"operationId\":\"74fcc97ce62c46a2\",\"requestId\":\"84907b0d573b4193\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 5807.3439375,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"94561fffaf374fec\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 6804.0225625,
+        "line": "{\"type\":\"SELECT\",\"experienceId\":\"WAVE\",\"requestId\":\"d80bf7ced9c94cd1\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 7234.450625,
+        "line": "{\"type\":\"START\",\"operationId\":\"6935b5b1cbc94c72\",\"requestId\":\"25aa96882c834d59\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 7447.356625,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"1e3c73d541204ec9\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 8663.4155,
+        "line": "{\"type\":\"STOP\",\"operationId\":\"6935b5b1cbc94c72\",\"requestId\":\"edbe8fcd4163429b\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 8947.369625,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"8780bd429636460f\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 9856.13225,
+        "line": "{\"type\":\"SELECT\",\"experienceId\":\"BUBBLE\",\"requestId\":\"a6c9c26571e44cb5\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 10274.4671875,
+        "line": "{\"type\":\"START\",\"operationId\":\"244395fa8b574f50\",\"requestId\":\"ff05343735e044f7\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 10477.3629375,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"7e77103c1a7f48fb\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 11242.7773125,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r4\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 11773.43475,
+        "line": "{\"type\":\"STOP\",\"operationId\":\"244395fa8b574f50\",\"requestId\":\"637558f6770841f2\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 12047.3729375,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"ff32498dcf6f4634\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 13034.4781875,
+        "line": "{\"type\":\"START\",\"operationId\":\"791ff22fa9314a4e\",\"requestId\":\"f5eb90d58fea407b\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 13247.37975,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"f08653575ea34b64\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 14012.7938125,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r5\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 15892.795875,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r6\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 16392.1898125,
+        "line": "{\"type\":\"RECOVER\",\"requestId\":\"3ee92aefc21e498d\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 16932.8099375,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r7\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 17442.18075,
+        "line": "{\"type\":\"RECOVER\",\"requestId\":\"d0db25577f0e43e8\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 17602.8056875,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r8\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 19192.813,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r9\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 19684.0895625,
+        "line": "{\"type\":\"SELECT\",\"experienceId\":\"WIND\",\"requestId\":\"479ae2e949784022\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 20244.5060625,
+        "line": "{\"type\":\"START\",\"operationId\":\"97d3dee3c1ec4c17\",\"requestId\":\"9c96df2e5dd145ed\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 20447.40825,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"a961e34eeef84e91\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 21313.4765625,
+        "line": "{\"type\":\"STOP\",\"operationId\":\"97d3dee3c1ec4c17\",\"requestId\":\"8113541a02274bfb\"}",
+        "tooLong": false
+      },
+      {
+        "virtualMs": 21587.415625,
+        "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"fe9a375c7eba4c5b\"}",
+        "tooLong": false
+      }
+    ],
+    "gpioEdges": [],
+    "enabledPins": [],
+    "usartRepairs": [],
+    "sampledStackLowWater": 1904,
+    "staticRamEnd": 1635
+  }
+}

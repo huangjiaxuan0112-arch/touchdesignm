@@ -1,0 +1,30 @@
+Error occurred in handler for 'firmware:select': Error: Hardware Integration Step 1 is read-only: only IDENTIFY and STATUS_QUERY are allowed.
+    at ArduinoFirmwareService.sendRequest (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:854:29)
+    at ArduinoFirmwareService.selectExperience (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:749:33)
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1497:28
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)
+Error occurred in handler for 'firmware:start': Error: Hardware Integration Step 1 is read-only: only IDENTIFY and STATUS_QUERY are allowed.
+    at ArduinoFirmwareService.sendRequest (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:854:29)
+    at ArduinoFirmwareService.start (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:773:33)
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1505:28
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)
+Error occurred in handler for 'firmware:recover': Error: Hardware Integration Step 1 is read-only: only IDENTIFY and STATUS_QUERY are allowed.
+    at ArduinoFirmwareService.sendRequest (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:854:29)
+    at ArduinoFirmwareService.recover (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:818:33)
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1521:28
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)
+Error occurred in handler for 'serial:ping': Error: Read-only Protocol v2 mode: legacy PING is disabled.
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1458:11
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)
+Error occurred in handler for 'serial:status': Error: Read-only Protocol v2 mode: legacy STATUS is disabled.
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1461:11
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)
+Error occurred in handler for 'serial:connect': Error: Legacy serial diagnostics are disabled during read-only hardware integration.
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1447:11
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)

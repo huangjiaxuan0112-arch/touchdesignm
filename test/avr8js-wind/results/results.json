@@ -1,0 +1,950 @@
+{
+  "result": "PASS",
+  "measurementMethod": "Actual AVR instruction execution of Arduino CLI-produced HEX; GPIO listeners timestamp CPU cycles. No scripted waveform or delay fast-forward.",
+  "startedAtUtc": "2026-10-27T03:27:43.269Z",
+  "fqbn": "arduino:avr:nano:cpu=atmega328",
+  "frequencyHz": 16000000,
+  "cliVersion": "arduino-cli  Version: 1.5.1 Commit: 01f3d4f2b Date: 2026-06-05T10:22:12Z",
+  "avr8jsVersion": "0.21.1",
+  "nodeVersion": "v24.22.1",
+  "sourceRelativePath": "卒研music/wind/sketch_oct21a/sketch_oct21a.ino",
+  "sourceSha256": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+  "hexSha256": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+  "loadedFlashBytes": 3424,
+  "buildDirectory": "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-wind-avr8js-BwOuea",
+  "compileArgs": [
+    "compile",
+    "--fqbn",
+    "arduino:avr:nano:cpu=atmega328",
+    "--libraries",
+    "C:\\Users\\20676\\AppData\\Local\\Arduino15\\libraries",
+    "--build-path",
+    "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-wind-avr8js-BwOuea",
+    "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\卒研music\\wind\\sketch_oct21a"
+  ],
+  "virtualCycles": 388800001,
+  "instructions": 299500178,
+  "virtualSeconds": 24.3000000625,
+  "wallSeconds": 10.979,
+  "thresholds": {
+    "pulseUs": 12,
+    "steadyPeriodUs": 30,
+    "startupMs": 75,
+    "phaseMs": 30,
+    "commandToPulseMs": 25,
+    "loopMs": 5
+  },
+  "commands": [
+    {
+      "phase": 0,
+      "command": "inflate",
+      "timeMs": 0.3130625,
+      "cycle": 5009,
+      "requestedDelayMs": 5000
+    },
+    {
+      "phase": 1,
+      "command": "deflate",
+      "timeMs": 5000.6205,
+      "cycle": 80009928,
+      "requestedDelayMs": 1500
+    },
+    {
+      "phase": 2,
+      "command": "inflate",
+      "timeMs": 6500.77225,
+      "cycle": 104012356,
+      "requestedDelayMs": 1300
+    },
+    {
+      "phase": 3,
+      "command": "deflate",
+      "timeMs": 7800.924625,
+      "cycle": 124814794,
+      "requestedDelayMs": 1450
+    },
+    {
+      "phase": 4,
+      "command": "inflate",
+      "timeMs": 9251.084125,
+      "cycle": 148017346,
+      "requestedDelayMs": 1050
+    },
+    {
+      "phase": 5,
+      "command": "deflate",
+      "timeMs": 10301.237,
+      "cycle": 164819792,
+      "requestedDelayMs": 1900
+    },
+    {
+      "phase": 6,
+      "command": "inflate",
+      "timeMs": 12201.389375,
+      "cycle": 195222230,
+      "requestedDelayMs": 1600
+    },
+    {
+      "phase": 7,
+      "command": "deflate",
+      "timeMs": 13801.5449375,
+      "cycle": 220824719,
+      "requestedDelayMs": 1750
+    },
+    {
+      "phase": 8,
+      "command": "inflate",
+      "timeMs": 15551.7050625,
+      "cycle": 248827281,
+      "requestedDelayMs": 1450
+    },
+    {
+      "phase": 9,
+      "command": "deflate",
+      "timeMs": 17001.857,
+      "cycle": 272029712,
+      "requestedDelayMs": 1050
+    },
+    {
+      "phase": 10,
+      "command": "inflate",
+      "timeMs": 18052.0095,
+      "cycle": 288832152,
+      "requestedDelayMs": 950
+    },
+    {
+      "phase": 11,
+      "command": "deflate",
+      "timeMs": 19002.271125,
+      "cycle": 304036338,
+      "requestedDelayMs": 5000
+    },
+    {
+      "phase": 12,
+      "command": "inflate",
+      "timeMs": 24002.65875,
+      "cycle": 384042540,
+      "requestedDelayMs": 5000
+    }
+  ],
+  "firstTimer1Interrupts": [
+    {
+      "cycle": 527125,
+      "timeMs": 32.9453125,
+      "channelBeforeISR": 0
+    },
+    {
+      "cycle": 565666,
+      "timeMs": 35.354125,
+      "channelBeforeISR": 1
+    },
+    {
+      "cycle": 574515,
+      "timeMs": 35.9071875,
+      "channelBeforeISR": 2
+    },
+    {
+      "cycle": 847122,
+      "timeMs": 52.945125,
+      "channelBeforeISR": -1
+    },
+    {
+      "cycle": 885554,
+      "timeMs": 55.347125,
+      "channelBeforeISR": 0
+    },
+    {
+      "cycle": 924098,
+      "timeMs": 57.756125,
+      "channelBeforeISR": 1
+    },
+    {
+      "cycle": 932944,
+      "timeMs": 58.309,
+      "channelBeforeISR": 2
+    },
+    {
+      "cycle": 1167183,
+      "timeMs": 72.9489375,
+      "channelBeforeISR": -1
+    },
+    {
+      "cycle": 1205618,
+      "timeMs": 75.351125,
+      "channelBeforeISR": 0
+    },
+    {
+      "cycle": 1244162,
+      "timeMs": 77.760125,
+      "channelBeforeISR": 1
+    }
+  ],
+  "summaries": {
+    "D5": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 631,
+        "min": 543.4375,
+        "max": 548.8125,
+        "mean": 543.7010697305864
+      },
+      "longWidthUs": {
+        "count": 579,
+        "min": 2399.4375,
+        "max": 2403.9375,
+        "mean": 2399.6860967184803
+      },
+      "steadyPeriodUs": {
+        "count": 1138,
+        "min": 20002.8125,
+        "max": 20007.3125,
+        "mean": 20003.117311072056
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 20002.8125,
+        "max": 20007.3125,
+        "mean": 20003.11798679868
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 847308,
+          "fallCycle": 885699,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 52.95675,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 1167369,
+          "fallCycle": 1205763,
+          "widthUs": 2399.625,
+          "kind": "long",
+          "riseMs": 72.9605625,
+          "periodUs": 20003.8125
+        },
+        {
+          "riseCycle": 1487420,
+          "fallCycle": 1525811,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 92.96375,
+          "periodUs": 20003.1875
+        },
+        {
+          "riseCycle": 1807468,
+          "fallCycle": 1845859,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 112.96675,
+          "periodUs": 20003
+        }
+      ],
+      "startupOtherPulses": []
+    },
+    "D6": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 631,
+        "min": 543.4375,
+        "max": 549.625,
+        "mean": 543.8059627575277
+      },
+      "longWidthUs": {
+        "count": 578,
+        "min": 2399.4375,
+        "max": 2402.125,
+        "mean": 2399.827314013841
+      },
+      "steadyPeriodUs": {
+        "count": 1137,
+        "min": 19999.3125,
+        "max": 20008.4375,
+        "mean": 20003.11680958663
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 18146.8125,
+        "max": 22401.8125,
+        "mean": 20005.09777227723
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 527414,
+          "fallCycle": 565807,
+          "widthUs": 2399.5625,
+          "kind": "long",
+          "riseMs": 32.963375,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 885843,
+          "fallCycle": 924239,
+          "widthUs": 2399.75,
+          "kind": "long",
+          "riseMs": 55.3651875,
+          "periodUs": 22401.8125
+        },
+        {
+          "riseCycle": 1205907,
+          "fallCycle": 1244303,
+          "widthUs": 2399.75,
+          "kind": "long",
+          "riseMs": 75.3691875,
+          "periodUs": 20004
+        },
+        {
+          "riseCycle": 1525955,
+          "fallCycle": 1564354,
+          "widthUs": 2399.9375,
+          "kind": "long",
+          "riseMs": 95.3721875,
+          "periodUs": 20003
+        }
+      ],
+      "startupOtherPulses": []
+    },
+    "D7": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 578,
+        "min": 543.4375,
+        "max": 549,
+        "mean": 543.6980968858131
+      },
+      "longWidthUs": {
+        "count": 631,
+        "min": 2399.4375,
+        "max": 2405.0625,
+        "mean": 2399.729298732171
+      },
+      "steadyPeriodUs": {
+        "count": 1136,
+        "min": 19997.125,
+        "max": 20008.5,
+        "mean": 20003.118122799297
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 16290.1875,
+        "max": 23716,
+        "mean": 20005.09777227723
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 565941,
+          "fallCycle": 574646,
+          "widthUs": 544.0625,
+          "kind": "short",
+          "riseMs": 35.3713125,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 924373,
+          "fallCycle": 933075,
+          "widthUs": 543.875,
+          "kind": "short",
+          "riseMs": 57.7733125,
+          "periodUs": 22402
+        },
+        {
+          "riseCycle": 1244437,
+          "fallCycle": 1253142,
+          "widthUs": 544.0625,
+          "kind": "short",
+          "riseMs": 77.7773125,
+          "periodUs": 20004
+        },
+        {
+          "riseCycle": 1564488,
+          "fallCycle": 1573189,
+          "widthUs": 543.8125,
+          "kind": "short",
+          "riseMs": 97.7805,
+          "periodUs": 20003.1875
+        }
+      ],
+      "startupOtherPulses": []
+    }
+  },
+  "transitions": {
+    "D5": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 52.95675,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 52.95675,
+        "commandMs": 0.3130625,
+        "commandToPulseMs": 52.6436875,
+        "observedDurationMs": 4960.7721249999995
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5013.728875,
+        "widthUs": 543.8125,
+        "kind": "short",
+        "errorMs": 13.728874999999789,
+        "commandMs": 5000.6205,
+        "commandToPulseMs": 13.108374999999796,
+        "observedDurationMs": 1500.2384375000001
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6513.9673125,
+        "widthUs": 2399.875,
+        "kind": "long",
+        "errorMs": 13.967312499999935,
+        "commandMs": 6500.77225,
+        "commandToPulseMs": 13.195062499999949,
+        "observedDurationMs": 1300.2020000000002
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7814.1693125,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 14.16931250000016,
+        "commandMs": 7800.924625,
+        "commandToPulseMs": 13.24468750000051,
+        "observedDurationMs": 1440.2219375000004
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9254.39125,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 4.391250000000582,
+        "commandMs": 9251.084125,
+        "commandToPulseMs": 3.3071250000011787,
+        "observedDurationMs": 1060.1636874999986
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10314.5549375,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.554937499999141,
+        "commandMs": 10301.237,
+        "commandToPulseMs": 13.317937499999971,
+        "observedDurationMs": 1900.2993125000012
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12214.85425,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 14.85425000000032,
+        "commandMs": 12201.389375,
+        "commandToPulseMs": 13.464874999999665,
+        "observedDurationMs": 1600.2489999999998
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13815.10325,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 15.103250000000116,
+        "commandMs": 13801.5449375,
+        "commandToPulseMs": 13.558312499999374,
+        "observedDurationMs": 1740.2695000000003
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15555.37275,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 5.372750000000451,
+        "commandMs": 15551.7050625,
+        "commandToPulseMs": 3.6676875000011933,
+        "observedDurationMs": 1460.2240000000002
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17015.59675,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 15.596750000000611,
+        "commandMs": 17001.857,
+        "commandToPulseMs": 13.73975000000064,
+        "observedDurationMs": 1040.1671874999993
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18055.7639375,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 5.763937499999884,
+        "commandMs": 18052.0095,
+        "commandToPulseMs": 3.754437499999767,
+        "observedDurationMs": 960.1478124999994
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19015.91175,
+        "widthUs": 543.6875,
+        "kind": "short",
+        "errorMs": 15.911749999999302,
+        "commandMs": 19002.271125,
+        "commandToPulseMs": 13.640625,
+        "observedDurationMs": 5000.781625
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24016.693375,
+        "widthUs": 2399.8125,
+        "kind": "long",
+        "errorMs": 16.693374999998923,
+        "commandMs": 24002.65875,
+        "commandToPulseMs": 14.034625000000233,
+        "observedDurationMs": null
+      }
+    ],
+    "D6": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 32.963375,
+        "widthUs": 2399.5625,
+        "kind": "long",
+        "errorMs": 32.963375,
+        "commandMs": 0.3130625,
+        "commandToPulseMs": 32.6503125,
+        "observedDurationMs": 4981.3183125
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5014.2816875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.281687499999862,
+        "commandMs": 5000.6205,
+        "commandToPulseMs": 13.661187499999869,
+        "observedDurationMs": 1502.0945000000002
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6516.3761875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 16.376187500000015,
+        "commandMs": 6500.77225,
+        "commandToPulseMs": 15.603937500000029,
+        "observedDurationMs": 1298.3459999999995
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7814.7221875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.722187499999563,
+        "commandMs": 7800.924625,
+        "commandToPulseMs": 13.797562499999913,
+        "observedDurationMs": 1442.0775000000012
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9256.7996875,
+        "widthUs": 2400.375,
+        "kind": "long",
+        "errorMs": 6.7996875000008,
+        "commandMs": 9251.084125,
+        "commandToPulseMs": 5.715562500001397,
+        "observedDurationMs": 1058.307999999999
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10315.1076875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 15.107687499999884,
+        "commandMs": 10301.237,
+        "commandToPulseMs": 13.870687500000713,
+        "observedDurationMs": 1902.1550000000007
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12217.2626875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 17.26268750000054,
+        "commandMs": 12201.389375,
+        "commandToPulseMs": 15.873312499999884,
+        "observedDurationMs": 1598.393
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13815.6556875,
+        "widthUs": 544,
+        "kind": "short",
+        "errorMs": 15.655687500000568,
+        "commandMs": 13801.5449375,
+        "commandToPulseMs": 14.110749999999825,
+        "observedDurationMs": 1742.1255
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15557.7811875,
+        "widthUs": 2400.3125,
+        "kind": "long",
+        "errorMs": 7.781187500000669,
+        "commandMs": 15551.7050625,
+        "commandToPulseMs": 6.0761250000014115,
+        "observedDurationMs": 1458.3679999999986
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17016.1491875,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 16.149187499999243,
+        "commandMs": 17001.857,
+        "commandToPulseMs": 14.292187499999272,
+        "observedDurationMs": 1042.0234999999993
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18058.1726875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 8.172687499998574,
+        "commandMs": 18052.0095,
+        "commandToPulseMs": 6.1631874999984575,
+        "observedDurationMs": 958.2917500000003
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19016.4644375,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 16.464437499998894,
+        "commandMs": 19002.271125,
+        "commandToPulseMs": 14.193312499999593,
+        "observedDurationMs": 5002.637750000002
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24019.1021875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 19.102187500000582,
+        "commandMs": 24002.65875,
+        "commandToPulseMs": 16.44343750000189,
+        "observedDurationMs": null
+      }
+    ],
+    "D7": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 35.3713125,
+        "widthUs": 544.0625,
+        "kind": "short",
+        "errorMs": 35.3713125,
+        "commandMs": 0.3130625,
+        "commandToPulseMs": 35.05825,
+        "observedDurationMs": 4979.4625
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5014.8338125,
+        "widthUs": 2399.6875,
+        "kind": "long",
+        "errorMs": 14.833812500000022,
+        "commandMs": 5000.6205,
+        "commandToPulseMs": 14.213312500000029,
+        "observedDurationMs": 1503.9505
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6518.7843125,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 18.784312499999942,
+        "commandMs": 6500.77225,
+        "commandToPulseMs": 18.012062499999956,
+        "observedDurationMs": 1296.4899999999998
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7815.2743125,
+        "widthUs": 2399.5,
+        "kind": "long",
+        "errorMs": 15.274312499999724,
+        "commandMs": 7800.924625,
+        "commandToPulseMs": 14.349687500000073,
+        "observedDurationMs": 1443.9341249999998
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9259.2084375,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 9.20843749999949,
+        "commandMs": 9251.084125,
+        "commandToPulseMs": 8.124312500000087,
+        "observedDurationMs": 1056.4513750000006
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10315.6598125,
+        "widthUs": 2399.625,
+        "kind": "long",
+        "errorMs": 15.659812500000044,
+        "commandMs": 10301.237,
+        "commandToPulseMs": 14.422812500000873,
+        "observedDurationMs": 1904.0110000000004
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12219.6708125,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 19.670812500000466,
+        "commandMs": 12201.389375,
+        "commandToPulseMs": 18.28143749999981,
+        "observedDurationMs": 1596.5372499999994
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13816.2080625,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 16.20806249999987,
+        "commandMs": 13801.5449375,
+        "commandToPulseMs": 14.663124999999127,
+        "observedDurationMs": 1743.9818125000002
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15560.189875,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 10.189875000000029,
+        "commandMs": 15551.7050625,
+        "commandToPulseMs": 8.484812500000771,
+        "observedDurationMs": 1456.5115624999999
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17016.7014375,
+        "widthUs": 2400,
+        "kind": "long",
+        "errorMs": 16.701437499999884,
+        "commandMs": 17001.857,
+        "commandToPulseMs": 14.844437499999913,
+        "observedDurationMs": 1043.8793750000004
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18060.5808125,
+        "widthUs": 543.625,
+        "kind": "short",
+        "errorMs": 10.58081250000032,
+        "commandMs": 18052.0095,
+        "commandToPulseMs": 8.571312500000204,
+        "observedDurationMs": 956.4354999999996
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19017.0163125,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 17.016312499999913,
+        "commandMs": 19002.271125,
+        "commandToPulseMs": 14.745187500000611,
+        "observedDurationMs": 5004.493999999999
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24021.5103125,
+        "widthUs": 543.5625,
+        "kind": "short",
+        "errorMs": 21.51031249999869,
+        "commandMs": 24002.65875,
+        "commandToPulseMs": 18.8515625,
+        "observedDurationMs": null
+      }
+    ]
+  },
+  "serial": [
+    {
+      "cycle": 220683,
+      "timeMs": 13.7926875,
+      "text": "INITIAL FILL"
+    },
+    {
+      "cycle": 80341826,
+      "timeMs": 5021.364125,
+      "text": "PLAY WIND AUDIO NOW"
+    },
+    {
+      "cycle": 304252033,
+      "timeMs": 19015.7520625,
+      "text": "FINAL SHRINK"
+    },
+    {
+      "cycle": 384306311,
+      "timeMs": 24019.1444375,
+      "text": "NEXT WIND CYCLE"
+    },
+    {
+      "cycle": 384540252,
+      "timeMs": 24033.76575,
+      "text": "INITIAL FILL"
+    }
+  ],
+  "checks": [
+    {
+      "name": "executed helper commands and delays",
+      "result": "PASS",
+      "detail": "ELF-resolved function-entry PC and AVR r22-r25 argument capture; no source-level timeline drives the CPU."
+    },
+    {
+      "name": "executed 24-second loop",
+      "result": "PASS",
+      "detail": "Measured helper-entry loop interval 24002.345687499997 ms (±5 ms tolerance)."
+    },
+    {
+      "name": "unified WIND nominal timeline",
+      "result": "PASS",
+      "detail": "Read-only comparison; unified firmware is not executed or modified."
+    },
+    {
+      "name": "legacy helper sequence",
+      "result": "PASS",
+      "detail": "Original source matches the 12 expected WIND states, total 24000 ms."
+    },
+    {
+      "name": "D5 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D5 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D5 startup observed separately",
+      "result": "PASS",
+      "detail": "Startup bound 75 ms: Timer1 zero-compare first wrap (32.768 ms) plus refresh (20 ms) and setup margin. Startup is not a steady frame. See initial-validation.json for the rejected 50 ms assumption."
+    },
+    {
+      "name": "D5 phase timing",
+      "result": "PASS",
+      "detail": "After startup: first pulse within 30 ms of nominal boot-relative offset and 0–25 ms after actual executed helper entry (frame plus serialized channel offsets)."
+    },
+    {
+      "name": "D5 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "D6 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D6 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D6 startup observed separately",
+      "result": "PASS",
+      "detail": "Startup bound 75 ms: Timer1 zero-compare first wrap (32.768 ms) plus refresh (20 ms) and setup margin. Startup is not a steady frame. See initial-validation.json for the rejected 50 ms assumption."
+    },
+    {
+      "name": "D6 phase timing",
+      "result": "PASS",
+      "detail": "After startup: first pulse within 30 ms of nominal boot-relative offset and 0–25 ms after actual executed helper entry (frame plus serialized channel offsets)."
+    },
+    {
+      "name": "D6 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "D7 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D7 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D7 startup observed separately",
+      "result": "PASS",
+      "detail": "Startup bound 75 ms: Timer1 zero-compare first wrap (32.768 ms) plus refresh (20 ms) and setup margin. Startup is not a steady frame. See initial-validation.json for the rejected 50 ms assumption."
+    },
+    {
+      "name": "D7 phase timing",
+      "result": "PASS",
+      "detail": "After startup: first pulse within 30 ms of nominal boot-relative offset and 0–25 ms after actual executed helper entry (frame plus serialized channel offsets)."
+    },
+    {
+      "name": "D7 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "virtual UART continued across loop boundary",
+      "result": "PASS",
+      "detail": "Virtual USART output, not a physical serial connection."
+    },
+    {
+      "name": "original sketch unchanged",
+      "result": "PASS",
+      "detail": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2"
+    }
+  ],
+  "finalRegisters": {
+    "TCCR0A": 3,
+    "TCCR0B": 3,
+    "TIMSK0": 1,
+    "TCCR1A": 0,
+    "TCCR1B": 2,
+    "TIMSK1": 2,
+    "DDRD": 224
+  }
+}

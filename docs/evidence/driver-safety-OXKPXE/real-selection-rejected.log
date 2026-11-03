@@ -1,0 +1,8 @@
+
+Used platform Version Path
+arduino:avr   1.8.8   C:\Users\20676\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.8
+In file included from C:\Users\20676\OneDrive\桌面\touchdesign\firmware\unified\nature_touch_unified\actuator-driver.h:9:0,
+                 from C:\Users\20676\OneDrive\桌面\touchdesign\firmware\unified\nature_touch_unified\nature_touch_unified.ino:3:
+C:\Users\20676\OneDrive\桌面\touchdesign\firmware\unified\nature_touch_unified\real-actuators.h:5:10: fatal error: Servo.h: No such file or directory
+compilation terminated.
+Error during build: exit status 1

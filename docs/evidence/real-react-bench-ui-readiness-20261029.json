@@ -1,0 +1,11 @@
+{
+  "observedUtc": "2026-10-29T07:28:10.867Z",
+  "window": "Nature Touch — Open-air Bench",
+  "method": "Actual React/Electron accessibility plus original native serial journal from physical COM5",
+  "uiText": "自然音 × やわらかな触覚体験 NATURAL SOUND × SOFT TACTILE EXPERIENCE 触れられない感覚を、触れられる体験へ   WIND風ゆっくり、やさしく流れる。  WAVES波寄せては返す、穏やかなリズム。  BUBBLES泡小さく弾ける、軽やかな感覚。  実機接続：connected（無圧ベンチ・気囊接続禁止） Device mode   Real Arduino: connected (COM5) · OPEN-AIR BENCH ONLY · NO AIRBAG COM port   Refresh ports  I confirm the airbag is disconnected, the gas path is open and cannot build pressure, and I can immediately disconnect the sole USB power. Open-air bench only. Connecting does not START. An experience-card click starts real pumps and valve; keep the airbag disconnected. Disconnect Arduino STATUS_QUERY IDENTIFY: nature-touch-unified-real · Protocol 2 · reports outputs enabled Test START Test STOP {\n  \"state\": \"IDLE\",\n  \"selectedExperienceId\": null,\n  \"operationId\": null,\n  \"elapsedMs\": 0,\n  \"durationMs\": null,\n  \"faultCode\": null,\n  \"hardwareOutputsEnabled\": true\n}    音をえらんでください 音源 ファイル未設定映像 ホバーでプレビュー",
+  "actualJournal": "docs/evidence/real-react-bench-1793258636969.jsonl",
+  "assistantClickedExperienceCard": false,
+  "assistantSentNewSTART": false,
+  "oldWindowClosed": true,
+  "physicalEndToEndExperienceRun": "AWAITING_EXPLICIT_AUTHORIZATION"
+}

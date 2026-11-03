@@ -1,0 +1,14 @@
+{
+  "result": "PASS",
+  "checks": [
+    "real selector fails compilation",
+    "per-channel OFF unverified and legacy tuples unchanged",
+    "blocked scaffold rejects all operations including fault-flag clearing",
+    "D5/D6/D7 never output or transition"
+  ],
+  "method": "Actual separately compiled blocked scaffold executed in AVR8js for 100 ms; Servo library present, no physical USB/COM.",
+  "virtualMs": 100.0000625,
+  "outputModes": [],
+  "edges": [],
+  "compileLog": "Sketch uses 1256 bytes (4%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 67 bytes (3%) of dynamic memory, leaving 1981 bytes for local variables. Maximum is 2048 bytes.\n"
+}

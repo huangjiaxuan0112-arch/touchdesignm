@@ -1,0 +1,81 @@
+{
+  "result": "PASS_REAL_D6_DEFLATE_AND_STOP_USER_CONFIRMED",
+  "scope": "AIRBAG_DISCONNECTED_OPEN_NONPRESSURIZING_BENCH_ONLY",
+  "mode": "WIND",
+  "START": {
+    "at": "2026-10-29T07:09:46.011Z",
+    "kind": "TX",
+    "value": {
+      "type": "START",
+      "operationId": "42ba14a23b13",
+      "requestId": "eb0d3209fd6e"
+    }
+  },
+  "START_ACK": {
+    "at": "2026-10-29T07:09:46.223Z",
+    "kind": "START_ACK",
+    "value": {
+      "type": "ACK",
+      "command": "START",
+      "accepted": true,
+      "requestId": "eb0d3209fd6e",
+      "state": "RUNNING",
+      "operationId": "42ba14a23b13"
+    }
+  },
+  "STOP": {
+    "at": "2026-10-29T07:10:08.420Z",
+    "kind": "TX",
+    "value": {
+      "type": "STOP",
+      "operationId": "42ba14a23b13",
+      "requestId": "1637228db4df"
+    }
+  },
+  "requestedStopAfterStartAckMs": 22000,
+  "actualStartAckToStopWireMs": 22197,
+  "extraDelayMs": 197,
+  "delayReason": "Existing stop() waits for any in-flight STATUS_QUERY",
+  "finalDeflateIntentEvent": {
+    "type": "EVENT",
+    "name": "ACTUATOR_EVENT",
+    "operationId": "42ba14a23b13",
+    "experienceId": "WIND",
+    "atMs": 19000,
+    "action": "DEFLATE",
+    "durationMs": 5000,
+    "D5": 0,
+    "D6": 0,
+    "D7": 180,
+    "hardwareOutputsEnabled": true
+  },
+  "legacyEventFieldsAreNotMeasuredPhysicalPulses": true,
+  "finalLogicalState": {
+    "state": "IDLE",
+    "selectedExperienceId": "WIND",
+    "operationId": null,
+    "elapsedMs": 0,
+    "durationMs": 24000,
+    "faultCode": null,
+    "hardwareOutputsEnabled": true
+  },
+  "serialClosed": true,
+  "physicalObservations": [
+    {
+      "reportedUtc": "2026-10-29T07:12:40.853Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "1 对的 2 对的完全停止",
+      "D6RanDuringFinalDeflate": true,
+      "D7StoppedDuringFinalDeflate": true,
+      "D5SwitchedDuringFinalDeflate": true,
+      "D6StoppedAfterSTOP": true,
+      "D7StoppedAfterSTOP": true,
+      "scope": "Airbag disconnected open nonpressurizing bench; not pressure protection or measured current/flow verification"
+    }
+  ],
+  "D6RunningDuringDeflate": "USER_CONFIRMED_PASS",
+  "D7StoppedDuringDeflate": "USER_CONFIRMED_PASS",
+  "D5Switching": "USER_CONFIRMED_PASS",
+  "bothPumpsStoppedAfterStop": "USER_CONFIRMED_PASS",
+  "anotherStartAuthorized": false
+}

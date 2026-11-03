@@ -1,0 +1,30 @@
+{
+  "authorizedUtc": "2026-10-29T07:03:07.642Z",
+  "userWords": "改成7秒比较好 然后开始",
+  "scope": "One open nonpressurizing bench WIND START then STOP approximately 7000ms after START ACK. Airbag disconnected. No repeats.",
+  "launchClaimed": true,
+  "command": "START_STOP_ONCE WIND 7000",
+  "firmwareSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "hostSourceSha256": "373526f5b098cfddfa9265c1abb131e97a79039c3c9cb4ecf0bb8c74928ac3fc",
+  "hostBundleSha256": "b1093e9cbd9e2ef8ff05ec79004055e9b9bae16535b926fe2b55eb1edaedec04",
+  "timelineUnchanged": true,
+  "expectedOriginalActions": [
+    {
+      "atMs": 0,
+      "action": "INFLATE"
+    },
+    {
+      "atMs": 5000,
+      "action": "DEFLATE"
+    },
+    {
+      "atMs": 6500,
+      "action": "INFLATE"
+    }
+  ],
+  "consumed": true,
+  "actualSession": "docs/evidence/open-air-bench-session-TZCUL3",
+  "STARTcount": 1,
+  "STOPcount": 1,
+  "repeatNotAuthorized": true
+}

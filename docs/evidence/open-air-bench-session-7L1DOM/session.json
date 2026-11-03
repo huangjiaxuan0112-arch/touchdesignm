@@ -1,0 +1,27 @@
+{
+  "scope": "AIRBAG_DISCONNECTED_OPEN_NONPRESSURIZING_BENCH_ONLY",
+  "startupObservation": "USER_CONFIRMED_D6_D7_DID_NOT_SELF_START_AFTER_UPLOAD",
+  "power": "USER_CONFIRMED_LOADS_RECONNECTED_TO_SOLE_USB_OPERATOR_PRESENT_CUTOFF_ACCESSIBLE",
+  "hexSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "initial": {
+    "type": "STATUS",
+    "requestId": "b94d50c128cf",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "b94d50c128cf",
+      "state": "IDLE"
+    },
+    "snapshot": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": true
+    }
+  },
+  "startSentAtPreparation": false
+}

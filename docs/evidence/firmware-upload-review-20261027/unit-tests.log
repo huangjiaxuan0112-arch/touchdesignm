@@ -1,0 +1,68 @@
+
+> nature-touch-desktop@0.1.0 test
+> tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts
+
+✔ read-only hardware integration blocks every mutation before serial write (34.8572ms)
+✔ simulation arming requires every prerequisite and never starts on arm or reconnect (26.7047ms)
+✔ simulation arming fails closed for absent capabilities, enabled outputs, or disabled development permission (38.9127ms)
+✔ loss of simulation-only status disarms and closes the session (16.063ms)
+✔ STOP waits for an in-flight heartbeat then confirms STOPPED (189.484ms)
+✔ identifies protocol v2 before status or experience commands and ignores stale replies (0.9344ms)
+✔ firmware request cache replays identical requests and rejects changed payloads (3.4573ms)
+✔ duplicate START replays its ACK without executing twice (2.8004ms)
+✔ firmware request cache retains four entries and evicts the oldest request (39.482ms)
+✔ operation history prevents recent IDs from being started again (97.4272ms)
+✔ firmware rejects malformed requests with the existing protocol error codes (60.703ms)
+✔ firmware rejects an oversized serial input line and resumes at the next newline (7.7157ms)
+✔ serial service handles split CRLF frames and asynchronous events among consecutive replies (10.7001ms)
+✔ serial service faults and closes on an oversized response frame (6.0615ms)
+✔ requests made while disconnected are rejected without opening a port (0.2358ms)
+✔ rejects a connected board without the simulation-only firmware identity (5.5826ms)
+✔ waits for the Nano bootloader reset interval before sending IDENTIFY (36.4308ms)
+✔ reports Phase 1B diagnostic firmware as incompatible instead of waiting for IDENTIFY timeout (18.2042ms)
+✔ IDENTIFY timeout closes the session and is recoverable only through explicit reconnect (24.0762ms)
+✔ a port disconnect during the IDENTIFY write rejects the pending command (0.6339ms)
+✔ rejects a concurrent connection attempt while the first port is opening (41.2553ms)
+✔ selects, starts, stops, and waits for the correlated STOPPED event (0.9049ms)
+✔ reports correlated natural completion and scheduled diagnostic events (5.5038ms)
+✔ rejects invalid-state commands and mismatched stop operation IDs (5.5054ms)
+✔ times out explicitly, faults the host session, and blocks future experience requests (24.206ms)
+✔ recovers from a communication fault only after explicit reconnect and never resends START (42.7674ms)
+✔ status heartbeat faults a running host session when replies stop arriving (59.7149ms)
+✔ reset and reconnect perform identify/status only and never resume the prior operation (24.5587ms)
+✔ reconnect does not resume a firmware operation still reported as running (11.6664ms)
+✔ recovers an explicitly faulted firmware state to IDLE without selecting a mode (6.5123ms)
+✔ experience cycle durations match the original delay sums (1.0767ms)
+✔ wind and wave preserve the original ordered action durations (1.1555ms)
+✔ all generated actions preserve the original D5/D6/D7 signal values (0.4331ms)
+✔ bubble definition retains all source timestamps and stops events at 20 seconds (0.2235ms)
+✔ unified firmware action timelines exactly match all source-derived definitions (5.244ms)
+✔ simulation firmware contains no actuator libraries, pin writes, or blocking delays (2.2206ms)
+✔ selects each supported experience while idle (1.5546ms)
+✔ rejects unknown experience identifiers (1.6924ms)
+✔ starts from IDLE and reports deterministic elapsed time and progress (0.7226ms)
+✔ completes naturally at the definition duration (0.32ms)
+✔ STOP enters STOPPING and then returns to IDLE without resuming (0.5613ms)
+✔ rejects invalid state transitions (0.2781ms)
+✔ duplicate request IDs are idempotent and cannot change command payload (1.0603ms)
+✔ does not reuse an operation ID after completion and recovery (0.2717ms)
+✔ simulated faults stop progress and recover only through reset (0.2804ms)
+✔ connection loss faults a running simulation and never auto-resumes (0.3825ms)
+✔ status reports current simulation state (0.2788ms)
+✔ handles native SerialPort errors and rejects active writes without an uncaught error event (4.1033ms)
+✔ cancels queued writes when a native serial port closes (0.7753ms)
+✔ frames native serial writes with one newline delimiter (2.5096ms)
+✔ connects only to a discovered port and completes PING and STATUS (6.5068ms)
+✔ rejects a port that was not discovered (1.2727ms)
+✔ times out and closes the session when a diagnostic reply is missing (35.9141ms)
+✔ rejects invalid response and closes the session (1.0998ms)
+✔ reports disconnection and rejects a pending diagnostic (5.5458ms)
+✔ requires an explicit reconnect after USB disconnection (16.828ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 56
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1461.1456

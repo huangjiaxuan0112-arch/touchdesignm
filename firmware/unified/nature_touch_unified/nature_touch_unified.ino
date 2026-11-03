@@ -2,8 +2,8 @@
 #include "experience-timelines.h"
 #include "actuator-driver.h"
 
-// Simulation-only firmware; it intentionally has no actuator library,
-// pin configuration, or GPIO writes.
+// Simulation is the default; the real build uses the same protocol and scheduler.
+// The real selector requires reviewed source-level shutdown/protection conditions.
 const uint8_t LINE_BUFFER_SIZE = 160;
 const uint8_t MAX_FIELDS = 6;
 const uint8_t MAX_REQUEST_ID_LENGTH = 16;
@@ -204,10 +204,18 @@ void printAcknowledgement(
   if (includeIdentity) {
     ProtocolOutput.print(F(",\"protocol\":"));
     ProtocolOutput.print(PROTOCOL_VERSION);
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+    ProtocolOutput.print(F(",\"firmware\":\"nature-touch-unified-real\""));
+    ProtocolOutput.print(F(",\"deviceId\":\"nature-touch-nano-real\""));
+    ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":"));
+    ProtocolOutput.print(Actuators::hardwareOutputsEnabled() ? F("true") : F("false"));
+    ProtocolOutput.print(F(",\"capabilities\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"REAL_ACTUATORS\"]"));
+#else
     ProtocolOutput.print(F(",\"firmware\":\"nature-touch-unified-simulation\""));
     ProtocolOutput.print(F(",\"deviceId\":\"nature-touch-nano-simulation\""));
     ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":false"));
     ProtocolOutput.print(F(",\"capabilities\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"SIMULATION_ONLY\"]"));
+#endif
   }
   ProtocolOutput.println(F("}"));
 }
@@ -428,7 +436,13 @@ void sendStatus(const char* requestId) {
     printEscaped(snapshotFault);
     ProtocolOutput.print(F("\""));
   } else ProtocolOutput.print(F("null"));
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+  ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":"));
+  ProtocolOutput.print(Actuators::hardwareOutputsEnabled() ? F("true") : F("false"));
+  ProtocolOutput.print(F("}}\r\n"));
+#else
   ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":false}}\r\n"));
+#endif
 }
 
 void enterFault(const char* code) {
@@ -471,7 +485,13 @@ void sendActionEvent(uint32_t atMs, uint16_t durationMs, bool inflate) {
   ProtocolOutput.print(inflate ? 180 : 0);
   ProtocolOutput.print(F(",\"D7\":"));
   ProtocolOutput.print(inflate ? 0 : 180);
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+  ProtocolOutput.print(F(",\"hardwareOutputsEnabled\":"));
+  ProtocolOutput.print(Actuators::hardwareOutputsEnabled() ? F("true") : F("false"));
+  ProtocolOutput.println(F("}"));
+#else
   ProtocolOutput.println(F(",\"hardwareOutputsEnabled\":false}"));
+#endif
 }
 
 void sendTimelineMarker(uint32_t atMs) {
@@ -734,6 +754,11 @@ void processProtocolCommand(const char* line) {
       activeOperationId[0] = '\0';
     }
   } else if (strcmp(command, "START") == 0) {
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+    if (!Actuators::outputsReady()) {
+      code = "ACTUATOR_NOT_READY";
+    } else
+#endif
     if (controlState != STATE_IDLE) {
       code = "INVALID_STATE";
     } else if (selectedExperience == EXPERIENCE_NONE) {
@@ -763,6 +788,11 @@ void processProtocolCommand(const char* line) {
   } else if (strcmp(command, "STATUS_QUERY") == 0) {
     accepted = true;
   } else if (strcmp(command, "RECOVER") == 0) {
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+    if (!Actuators::outputsReady()) {
+      code = "ACTUATOR_NOT_READY";
+    } else
+#endif
     if (controlState != STATE_FAULT) {
       code = "INVALID_STATE";
     } else {
@@ -846,7 +876,13 @@ void setup() {
   memset(requestCache, 0, sizeof(requestCache));
   memset(operationHistory, 0, sizeof(operationHistory));
   activeOperationId[0] = '\0';
+#if NATURE_TOUCH_ACTUATOR_DRIVER == 1
+  ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-real\",\"protocol\":2,\"hardwareOutputsEnabled\":"));
+  ProtocolOutput.print(Actuators::hardwareOutputsEnabled() ? F("true") : F("false"));
+  ProtocolOutput.println(F("}"));
+#else
   ProtocolOutput.println(F("{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-simulation\",\"protocol\":2,\"hardwareOutputsEnabled\":false}"));
+#endif
 }
 
 void collectSerialInput() {

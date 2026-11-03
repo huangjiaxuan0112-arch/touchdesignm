@@ -1,0 +1,213 @@
+{
+  "result": "SOFTWARE_SEQUENCE_COMPLETE_AWAIT_OBSERVATION",
+  "authorization": "User explicitly approved one 1200us SHORT_PULSE test in chat; all five fixture conditions previously confirmed.",
+  "utc": "2026-10-29T03:21:54.122Z",
+  "port": "COM5",
+  "requestedUs": 1200,
+  "maximumMs": 5000,
+  "firmwareSourceSha256": "8706e4478b679d7f2c0f8d7eabf6c6e4979bd2e087db6c6470573a886f895d5b",
+  "events": [
+    {
+      "utc": "2026-10-29T03:21:54.129Z",
+      "kind": "CONNECTED",
+      "text": "COM5; opening may reset Nano; no automatic output before identity and approved command."
+    },
+    {
+      "utc": "2026-10-29T03:21:54.636Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:54.856Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:54.857Z",
+      "kind": "TX",
+      "text": "SHORT_PULSE"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.014Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=153 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.018Z",
+      "kind": "TX",
+      "text": "CONFIRM 1"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.139Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.199Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=314 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.308Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=430 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.652Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:55.799Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=943 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:56.152Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:56.300Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=1442 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:56.655Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:56.803Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=1945 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:57.157Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:57.304Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=2446 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:57.666Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:57.814Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=2955 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:58.171Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:58.319Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=3460 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:58.687Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:58.835Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=3975 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:59.193Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:59.341Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=4482 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:21:59.695Z",
+      "kind": "TX",
+      "text": "STATUS"
+    },
+    {
+      "utc": "2026-10-29T03:21:59.843Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=4982 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "utc": "2026-10-29T03:22:00.186Z",
+      "kind": "RX",
+      "text": "D7LED/1 t=5314 event=MAX_TEST_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    }
+  ],
+  "physicalObservations": [
+    {
+      "utc": "2026-10-29T03:22:46.353Z",
+      "source": "USER_REPORT",
+      "userQuote": "闪烁，led是亮了",
+      "ledDescription": "BLINKING_AND_LIT_REPORTED",
+      "duringPulse": "TIMING_NOT_CONFIRMED",
+      "afterSignalRemoval": "NOT_CONFIRMED",
+      "indicatorLocation": "AWAIT_CONFIRMATION_C93_VS_NANO",
+      "physicalOffVerified": false
+    },
+    {
+      "utc": "2026-10-29T03:24:01.372Z",
+      "source": "USER_REPORT",
+      "userQuote": "C93 电子开关上的 LED",
+      "indicatorLocation": "C93_MODULE",
+      "duringPulse": "BLINKING_AND_LIT_REPORTED_TIMING_NOT_PRECISE",
+      "afterSignalRemoval": "AWAIT_USER_REPORT",
+      "physicalOffVerified": false
+    },
+    {
+      "utc": "2026-10-29T03:24:38.015Z",
+      "source": "USER_REPORT",
+      "userQuote": "持续闪烁",
+      "phase": "AFTER_FIRMWARE_REPORTED_SIGNAL_REMOVAL_AND_SERIAL_CLOSE",
+      "indicatorLocation": "C93_MODULE",
+      "led": "CONTINUOUS_BLINKING",
+      "physicalOffVerified": false
+    },
+    {
+      "utc": "2026-10-29T03:25:22.133Z",
+      "source": "USER_REPORT",
+      "userQuote": "对拔了c93 led完全熄灭了",
+      "phase": "USB_DISCONNECTED_BY_USER",
+      "indicatorLocation": "C93_MODULE",
+      "led": "OFF",
+      "physicalOffVerified": false,
+      "notes": "User reports C93 LED fully extinguished after disconnecting sole USB. Pneumatic loads remain isolated; no load-side current or voltage measurement."
+    }
+  ],
+  "ledState": "OFF_WITH_USB_DISCONNECTED",
+  "repeatability": "NOT_TESTED",
+  "physicalOffVerified": false,
+  "ticket": "1",
+  "appliedResponse": "D7LED/1 t=314 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED",
+  "removedResponse": "D7LED/1 t=5314 event=MAX_TEST_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED",
+  "finishedUtc": "2026-10-29T03:22:00.187Z",
+  "reason": "Exactly one requested pulse train; firmware 5s limit removed signal. LED/current require user observation.",
+  "selected": true,
+  "confirmed": true,
+  "applied": true,
+  "review": "TEST_PAUSED_USB_DISCONNECTED: 1200us trial associated with blinking/lit report; persistent C93 blinking after reported signal removal; LED extinguished on USB disconnect. Meaning of blinking and load-side OFF remain unverified. No LONG_PULSE or repeat trial executed.",
+  "softwareReview": {
+    "pulseCommands": [
+      "SHORT_PULSE",
+      "CONFIRM 1"
+    ],
+    "statusQueries": 11,
+    "onlyShortSelected": true,
+    "appliedResponse": "D7LED/1 t=314 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED",
+    "removedResponse": "D7LED/1 t=5314 event=MAX_TEST_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+  }
+}

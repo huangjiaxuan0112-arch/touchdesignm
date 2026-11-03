@@ -1,0 +1,16 @@
+{
+  "authorizedUtc": "2026-10-29T07:09:29.312Z",
+  "userWords": "对我批准了",
+  "scope": "One WIND START then STOP approximately 22000ms after START ACK, using original 19000-24000ms final DEFLATE for D6 observation. Airbag disconnected, gas path open and nonpressurizing.",
+  "launchClaimed": true,
+  "command": "START_STOP_ONCE WIND 22000",
+  "firmwareSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "hostSourceSha256": "63de8b3a5ff913e7832e7afaa4e81359da96d3b9a15e6fdd2337e8745fa2a474",
+  "hostBundleSha256": "65290fc2f6cd002bd718118ab5f3c2a716f673b5247b3ea68b36978c2647bcbf",
+  "noOtherModesOrRepeatsAuthorized": true,
+  "consumed": true,
+  "actualSession": "docs/evidence/open-air-bench-session-XZbVVG",
+  "STARTcount": 1,
+  "STOPcount": 1,
+  "repeatNotAuthorized": true
+}

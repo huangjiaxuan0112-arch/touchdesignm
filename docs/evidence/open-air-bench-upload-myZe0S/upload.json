@@ -1,0 +1,39 @@
+{
+  "result": "PASS",
+  "startedUtc": "2026-10-29T06:47:11.388Z",
+  "authorization": "User explicitly authorized this open-air bench HEX upload and subsequent IDENTIFY/STATUS_QUERY only. No START authorization.",
+  "scope": "USER_CONFIRMED_AIRBAG_DISCONNECTED_OPEN_GAS_PATH_NO_PRESSURE_BUILDUP",
+  "hexSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "command": {
+    "executable": "C:\\Users\\20676\\AppData\\Local\\Programs\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+    "args": [
+      "--config-file",
+      "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\firmware\\releases\\nature_touch_open_air_bench_20261029\\build-58987b21d56743abb3c6a7b5dc7cde27\\arduino-cli.yaml",
+      "upload",
+      "--fqbn",
+      "arduino:avr:nano:cpu=atmega328",
+      "--port",
+      "COM5",
+      "--input-file",
+      "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\docs\\evidence\\open-air-bench-upload-myZe0S\\OPEN_AIR_BENCH_ONLY.hex",
+      "--verify",
+      "--verbose"
+    ]
+  },
+  "applicationCommandsSent": [],
+  "physicalObservations": [],
+  "notApprovedForAirbag": true,
+  "exitCode": 0,
+  "verified": true,
+  "finishedUtc": "2026-10-29T06:47:18.289Z"
+}

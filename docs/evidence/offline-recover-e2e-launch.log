@@ -1,0 +1,2 @@
+
+{"result":"PASS","checks":{"identifyStatus":"PASS","WIND_SELECT_START_STOP":"PASS","WAVE_SELECT_START_STOP":"PASS","BUBBLE_SELECT_START_STOP":"PASS","faultSynchronization":"PASS","noAutomaticRestart":"PASS","recoveryFailurePreservesFaultAndDisplaysError":"PASS","recoverVerifiedIdleNoAutomaticRestart":"PASS","manualSelectStartAfterRecovery":"PASS"}}

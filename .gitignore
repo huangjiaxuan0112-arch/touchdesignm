@@ -25,3 +25,12 @@ Thumbs.db
 *.map
 *.o
 *.d
+
+# Local launch logs and regenerable Arduino compiler caches
+desktop/dev-start.log
+desktop/dev-start-error.log
+firmware/releases/**/build-*/
+docs/evidence/**/default-build/
+*.a
+*.bin
+*.cache

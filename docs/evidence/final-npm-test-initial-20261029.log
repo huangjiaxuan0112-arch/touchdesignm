@@ -1,0 +1,126 @@
+
+> nature-touch-desktop@0.1.0 test
+> tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts ../test/interactive-ui-stop.test.ts
+
+✔ confirmed simulation recovery returns verified idle without arming, selecting or starting (8.1421ms)
+✔ RECOVER NACK or unconfirmed idle preserves FAULT (4.9633ms)
+✔ lost post-recovery status never optimistically clears FAULT (22.1217ms)
+✔ RECOVER confirmation cannot bypass missing simulation identity or disabled development controls (31.7057ms)
+✔ read-only hardware integration blocks every mutation before serial write (31.9647ms)
+✔ simulation arming requires every prerequisite and never starts on arm or reconnect (31.943ms)
+✔ simulation arming fails closed for absent capabilities, enabled outputs, or disabled development permission (47.5696ms)
+✔ loss of simulation-only status disarms and closes the session (15.7844ms)
+✔ STOP waits for an in-flight heartbeat then confirms STOPPED (255.5566ms)
+✔ identifies protocol v2 before status or experience commands and ignores stale replies (2.8297ms)
+✔ firmware request cache replays identical requests and rejects changed payloads (4.7078ms)
+✔ duplicate START replays its ACK without executing twice (8.2728ms)
+✔ firmware request cache retains four entries and evicts the oldest request (78.6232ms)
+✔ operation history prevents recent IDs from being started again (206.5147ms)
+✔ firmware rejects malformed requests with the existing protocol error codes (74.0844ms)
+✔ firmware rejects an oversized serial input line and resumes at the next newline (15.9663ms)
+✔ serial service handles split CRLF frames and asynchronous events among consecutive replies (16.6033ms)
+✔ serial service faults and closes on an oversized response frame (15.6025ms)
+✔ requests made while disconnected are rejected without opening a port (0.4944ms)
+✔ rejects a connected board without the simulation-only firmware identity (14.7742ms)
+✔ waits for the Nano bootloader reset interval before sending IDENTIFY (32.3336ms)
+✔ reports Phase 1B diagnostic firmware as incompatible instead of waiting for IDENTIFY timeout (15.8432ms)
+✔ IDENTIFY timeout closes the session and is recoverable only through explicit reconnect (47.2873ms)
+✔ a port disconnect during the IDENTIFY write rejects the pending command (16.0271ms)
+✔ rejects a concurrent connection attempt while the first port is opening (47.5508ms)
+✔ selects, starts, stops, and waits for the correlated STOPPED event (16.0279ms)
+✔ reports correlated natural completion and scheduled diagnostic events (16.0131ms)
+✔ rejects invalid-state commands and mismatched stop operation IDs (15.0719ms)
+✔ times out explicitly, faults the host session, and blocks future experience requests (31.686ms)
+✔ recovers from a communication fault only after explicit reconnect and never resends START (47.4482ms)
+✔ status heartbeat faults a running host session when replies stop arriving (63.0287ms)
+✔ reset and reconnect perform identify/status only and never resume the prior operation (32.2372ms)
+✔ reconnect does not resume a firmware operation still reported as running (31.5372ms)
+✔ recovers an explicitly faulted firmware state to IDLE without selecting a mode (15.8108ms)
+✔ real identity connects for status but cannot use simulation arming or default START (1.9992ms)
+✔ read-only real connection permits explicit STOP of a confirmed active operation (29.7751ms)
+✔ explicit real deployment permission enables protocol commands without automatic START (15.9013ms)
+✔ runtime RESET closes real session and never replays START or reconnects (31.1989ms)
+✔ real output status change invalidates identity instead of pretending physical OFF (16.088ms)
+✔ readOnly remains a real-control lock even when deployment option is supplied (15.6763ms)
+✔ experience cycle durations match the original delay sums (1.6634ms)
+✔ wind and wave preserve the original ordered action durations (2.9854ms)
+✔ all generated actions preserve the original D5/D6/D7 signal values (0.5039ms)
+✔ bubble definition retains all source timestamps and stops events at 20 seconds (0.3228ms)
+✔ unified firmware action timelines exactly match all source-derived definitions (2.3935ms)
+✖ simulation firmware contains no actuator libraries, pin writes, or blocking delays (3.4702ms)
+✔ media-only idle/browser exit sends no STOP or START (1.0648ms)
+✔ mock UI stop waits for cancellation instead of treating ACK as IDLE (109.9752ms)
+✔ real UI stop reuses firmware STOP and STATUS; never reconnects or STARTs (0.3554ms)
+✔ rejected STOP cannot approve safe exit (0.5559ms)
+✔ FAULT during STOP preserves failure instead of reporting successful cancellation (0.2623ms)
+✔ disconnect during STOP cannot approve safe exit (0.2198ms)
+✔ selects each supported experience while idle (1.4528ms)
+✔ rejects unknown experience identifiers (0.1713ms)
+✔ starts from IDLE and reports deterministic elapsed time and progress (0.3859ms)
+✔ completes naturally at the definition duration (0.2114ms)
+✔ STOP enters STOPPING and then returns to IDLE without resuming (0.3408ms)
+✔ rejects invalid state transitions (0.1507ms)
+✔ duplicate request IDs are idempotent and cannot change command payload (0.8488ms)
+✔ does not reuse an operation ID after completion and recovery (0.2449ms)
+✔ simulated faults stop progress and recover only through reset (0.2723ms)
+✔ connection loss faults a running simulation and never auto-resumes (0.2542ms)
+✔ status reports current simulation state (0.174ms)
+✔ handles native SerialPort errors and rejects active writes without an uncaught error event (3.1024ms)
+✔ cancels queued writes when a native serial port closes (0.6609ms)
+✔ frames native serial writes with one newline delimiter (2.0323ms)
+✔ connects only to a discovered port and completes PING and STATUS (4.8941ms)
+✔ rejects a port that was not discovered (0.6585ms)
+✔ times out and closes the session when a diagnostic reply is missing (24.5611ms)
+✔ rejects invalid response and closes the session (16.1332ms)
+✔ reports disconnection and rejects a pending diagnostic (15.8648ms)
+✔ requires an explicit reconnect after USB disconnection (31.2929ms)
+ℹ tests 72
+ℹ suites 0
+ℹ pass 71
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2170.0337
+
+✖ failing tests:
+
+test at ..\test\firmware-timeline.test.ts:60:1
+✖ simulation firmware contains no actuator libraries, pin writes, or blocking delays (3.4702ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /#if NATURE_TOUCH_ACTUATOR_DRIVER != 0\s+#error[^\n]+\s+#include "real-actuators\.h"/. Input:
+  
+  '#ifndef NATURE_TOUCH_ACTUATOR_DRIVER_H\n' +
+    '#define NATURE_TOUCH_ACTUATOR_DRIVER_H\n' +
+    '\n' +
+    '// Simulation is the default. Selecting real cannot bypass source-level interlocks.\n' +
+    '#ifndef NATURE_TOUCH_ACTUATOR_DRIVER\n' +
+    '#define NATURE_TOUCH_ACTUATOR_DRIVER 0\n' +
+    '#endif\n' +
+    '#if NATURE_TOUCH_ACTUATOR_DRIVER == 1\n' +
+    '#include "real-actuators.h"\n' +
+    'static_assert(RealActuators::CONFIGURATION_VERIFIED,\n' +
+    '  "Real actuator driver BLOCKED: STOP/transition/power/pressure conditions are not verified.");\n' +
+    'namespace Actuators = RealActuators;\n' +
+    '#elif NATURE_TOUCH_ACTUATOR_DRIVER == 0\n' +
+    '#include "simulated-actuators.h"\n' +
+    'namespace Actuators = ActuatorSimulation;\n' +
+    '#else\n' +
+    '#error "Unsupported actuator driver selection; only simulation (0) and reviewed real (1) exist."\n' +
+    '#endif\n' +
+    '\n' +
+    '#endif\n'
+  
+      at TestContext.<anonymous> (C:\Users\20676\OneDrive\桌面\touchdesign\test\firmware-timeline.test.ts:69:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: '#ifndef NATURE_TOUCH_ACTUATOR_DRIVER_H\n#define NATURE_TOUCH_ACTUATOR_DRIVER_H\n\n// Simulation is the default. Selecting real cannot bypass source-level interlocks.\n#ifndef NATURE_TOUCH_ACTUATOR_DRIVER\n#define NATURE_TOUCH_ACTUATOR_DRIVER 0\n#endif\n#if NATURE_TOUCH_ACTUATOR_DRIVER == 1\n#include "real-actuators.h"\nstatic_assert(RealActuators::CONFIGURATION_VERIFIED,\n  "Real actuator driver BLOCKED: STOP/transition/power/pressure conditions are not verified.");\nnamespace Actuators = RealActuators;\n#elif NATURE_TOUCH_ACTUATOR_DRIVER == 0\n#include "simulated-actuators.h"\nnamespace Actuators = ActuatorSimulation;\n#else\n#error "Unsupported actuator driver selection; only simulation (0) and reviewed real (1) exist."\n#endif\n\n#endif\n',
+    expected: /#if NATURE_TOUCH_ACTUATOR_DRIVER != 0\s+#error[^\n]+\s+#include "real-actuators\.h"/,
+    operator: 'match',
+    diff: 'simple'
+  }

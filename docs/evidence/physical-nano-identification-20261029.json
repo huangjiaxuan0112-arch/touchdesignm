@@ -1,0 +1,85 @@
+{
+  "purpose": "Read-only physical Nano identification; user confirmed all pneumatic loads isolated",
+  "startedAt": "2026-10-29T06:17:20.473Z",
+  "events": [
+    {
+      "at": "2026-10-29T06:17:22.142Z",
+      "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:17:22.902Z",
+      "text": "D5LED/1 t=760 event=ERROR_FRAME attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:17:23.554Z",
+      "text": "D5LED/1 t=1409 event=ERROR_COMMAND attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    },
+    {
+      "at": "2026-10-29T06:17:24.158Z",
+      "text": "D5LED/1 t=2020 event=STATUS attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+    }
+  ],
+  "commands": [
+    {
+      "at": "2026-10-29T06:17:22.710Z",
+      "line": "{\"type\":\"IDENTIFY\",\"protocol\":2,\"requestId\":\"hwid1\"}"
+    },
+    {
+      "at": "2026-10-29T06:17:23.362Z",
+      "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"hwstatus1\"}"
+    },
+    {
+      "at": "2026-10-29T06:17:24.016Z",
+      "line": "STATUS"
+    }
+  ],
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "result": "DIAGNOSTIC_D5_CONFIRMED",
+  "closed": true,
+  "electronObserved": {
+    "window": "Nature Touch",
+    "mode": "Real Arduino READ ONLY",
+    "port": "COM5",
+    "error": "Invalid firmware JSON response: D5LED/1",
+    "simulationArmed": false
+  },
+  "sourceReview": {
+    "workingDriverMatchesRelease": false,
+    "releaseSnapshotMatchesManifest": true,
+    "simulationHexMatchesManifest": true,
+    "workingD6Us": {
+      "off": 1200,
+      "on": 1800,
+      "verified": false
+    },
+    "previousConfirmedD6Us": {
+      "off": 544,
+      "on": 2400
+    },
+    "workingTheoryOnlySettleMs": {
+      "pump": 500,
+      "valve": 300
+    },
+    "settleVerified": false,
+    "driverDefault": "simulation",
+    "configurationVerified": false,
+    "electronRealDeploymentReviewed": false,
+    "physicalOutputsPermitted": false,
+    "stopValveVerified": false,
+    "powerCutoffVerified": false,
+    "overpressureProtectionVerified": false,
+    "startupAndTransitionVerified": false,
+    "firmwareModified": false,
+    "uploaded": false,
+    "actuationCommandsSent": []
+  }
+}

@@ -1,0 +1,113 @@
+{
+  "result": "PASS",
+  "startedAtUtc": "2026-10-27T03:38:36.046Z",
+  "modes": [
+    {
+      "mode": "WIND",
+      "exitCode": 0,
+      "result": "PASS",
+      "checks": 28,
+      "virtualSeconds": 24.3000000625,
+      "loopMs": 24002.345687499997,
+      "results": "wind/results.json"
+    },
+    {
+      "mode": "WAVE",
+      "exitCode": 0,
+      "result": "PASS",
+      "checks": 26,
+      "virtualSeconds": 25.300000125,
+      "loopMs": 25002.05075,
+      "results": "wave/results.json"
+    },
+    {
+      "mode": "BUBBLE",
+      "exitCode": 0,
+      "result": "PASS",
+      "checks": 26,
+      "virtualSeconds": 27.7200000625,
+      "loopMs": 27425.89325,
+      "results": "bubble/results.json"
+    }
+  ],
+  "preservation": [
+    {
+      "sha256": "86d248733b0df718483eb8d6b6f4a588212686f4797d8f2884374099664d2e5a",
+      "path": "test/avr8js-wind/results/compile.log",
+      "actualSha256": "86d248733b0df718483eb8d6b6f4a588212686f4797d8f2884374099664d2e5a",
+      "result": "PASS"
+    },
+    {
+      "sha256": "894f130997c177d7b2a29618c06bd078cd7eecdf2334697e298e46196652bfe5",
+      "path": "test/avr8js-wind/results/edges.csv",
+      "actualSha256": "894f130997c177d7b2a29618c06bd078cd7eecdf2334697e298e46196652bfe5",
+      "result": "PASS"
+    },
+    {
+      "sha256": "9a977ef9e24266127acb74b2e74ac1607b7cb2829a71837e2722a7a02fa31923",
+      "path": "test/avr8js-wind/results/initial-validation.json",
+      "actualSha256": "9a977ef9e24266127acb74b2e74ac1607b7cb2829a71837e2722a7a02fa31923",
+      "result": "PASS"
+    },
+    {
+      "sha256": "9767597d302ffe0ceb76df595b426398ee419fd844f9e37ecdb963d244aa1f23",
+      "path": "test/avr8js-wind/results/pulses.csv",
+      "actualSha256": "9767597d302ffe0ceb76df595b426398ee419fd844f9e37ecdb963d244aa1f23",
+      "result": "PASS"
+    },
+    {
+      "sha256": "f446466a5cf4e3042f02cb5f88001a31c7e9a1b2d7dac9e9ea0ee93a336cd70c",
+      "path": "test/avr8js-wind/results/results.json",
+      "actualSha256": "f446466a5cf4e3042f02cb5f88001a31c7e9a1b2d7dac9e9ea0ee93a336cd70c",
+      "result": "PASS"
+    },
+    {
+      "sha256": "10d265545ca87a435f782b8f1d8c6b2715462e014fbb59e26343892b0255b6b7",
+      "path": "test/avr8js-wind/results/symbols.txt",
+      "actualSha256": "10d265545ca87a435f782b8f1d8c6b2715462e014fbb59e26343892b0255b6b7",
+      "result": "PASS"
+    },
+    {
+      "sha256": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+      "path": "test/avr8js-wind/results/wind.hex.txt",
+      "actualSha256": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+      "result": "PASS"
+    },
+    {
+      "sha256": "b5af25e6fe7bf5ae5db8dab27c953c48d5ae061f498f727522ac05ca9418dee9",
+      "path": "docs/phase-3b-step2-avr8js-results.md",
+      "actualSha256": "b5af25e6fe7bf5ae5db8dab27c953c48d5ae061f498f727522ac05ca9418dee9",
+      "result": "PASS"
+    },
+    {
+      "sha256": "e94eeacc870d2d3595bd66500ffc43cfb5d7c9c998e34db831aa42b5c2530fd3",
+      "path": "卒研music/bubbles/sketch_sep30a/sketch_oct21a/sketch_oct21a.ino",
+      "actualSha256": "e94eeacc870d2d3595bd66500ffc43cfb5d7c9c998e34db831aa42b5c2530fd3",
+      "result": "PASS"
+    },
+    {
+      "sha256": "28ea0d4a9548d4575d850b061d5c0f0dff9ae603c6b415f3aa1eb17429c2ad81",
+      "path": "卒研music/ocean waves/sketch_oct21b/sketch_oct21b.ino",
+      "actualSha256": "28ea0d4a9548d4575d850b061d5c0f0dff9ae603c6b415f3aa1eb17429c2ad81",
+      "result": "PASS"
+    },
+    {
+      "sha256": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+      "path": "卒研music/wind/sketch_oct21a/sketch_oct21a.ino",
+      "actualSha256": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+      "result": "PASS"
+    },
+    {
+      "sha256": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+      "path": "firmware/unified/nature_touch_unified/experience-timelines.h",
+      "actualSha256": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+      "result": "PASS"
+    },
+    {
+      "sha256": "2ef3f15732093c542b0db54b699721c66803573723e7d5066cbcecb75e30e7e1",
+      "path": "firmware/unified/nature_touch_unified/nature_touch_unified.ino",
+      "actualSha256": "2ef3f15732093c542b0db54b699721c66803573723e7d5066cbcecb75e30e7e1",
+      "result": "PASS"
+    }
+  ]
+}

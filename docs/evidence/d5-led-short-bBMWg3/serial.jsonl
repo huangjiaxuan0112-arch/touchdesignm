@@ -1,0 +1,31 @@
+{"utc":"2026-10-29T04:13:12.520Z","kind":"CONNECTED","text":"COM5; opening may reset Nano; no automatic output before identity and approved command."}
+{"utc":"2026-10-29T04:13:13.023Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:13.242Z","kind":"RX","text":"D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:13.243Z","kind":"TX","text":"SHORT_PULSE"}
+{"utc":"2026-10-29T04:13:13.401Z","kind":"RX","text":"D5LED/1 t=155 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:13.406Z","kind":"TX","text":"CONFIRM 1"}
+{"utc":"2026-10-29T04:13:13.525Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:13.585Z","kind":"RX","text":"D5LED/1 t=314 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:13.694Z","kind":"RX","text":"D5LED/1 t=431 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:14.028Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:14.174Z","kind":"RX","text":"D5LED/1 t=932 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:14.531Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:14.679Z","kind":"RX","text":"D5LED/1 t=1435 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:15.034Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:15.182Z","kind":"RX","text":"D5LED/1 t=1938 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:15.537Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:15.684Z","kind":"RX","text":"D5LED/1 t=2440 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:16.046Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:16.194Z","kind":"RX","text":"D5LED/1 t=2950 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:16.551Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:16.699Z","kind":"RX","text":"D5LED/1 t=3453 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:17.057Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:17.205Z","kind":"RX","text":"D5LED/1 t=3959 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:17.560Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:17.708Z","kind":"RX","text":"D5LED/1 t=4462 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:18.063Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:18.211Z","kind":"RX","text":"D5LED/1 t=4965 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"utc":"2026-10-29T04:13:18.566Z","kind":"TX","text":"STATUS"}
+{"utc":"2026-10-29T04:13:18.571Z","kind":"RX","text":"D5LED/1 t=5314 event=MAX_TEST_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"}
+{"kind":"HUMAN_OBSERVATION","utc":"2026-10-29T04:13:54.454Z","source":"USER_REPORT","userQuote":"闪烁，和持续闪烁","indicatorLocation":"D5_C93_MODULE","duringPulse":"BLINKING","afterSignalRemoval":"CONTINUOUS_BLINKING","physicalOffVerified":false,"pneumaticFlowState":"NOT_TESTED"}
+{"kind":"HUMAN_OBSERVATION","utc":"2026-10-29T04:14:20.544Z","source":"USER_REPORT","userQuote":"完全熄灭了","phase":"SOLE_USB_DISCONNECTED_BY_USER","indicatorLocation":"D5_C93_MODULE","led":"OFF","physicalOffVerified":false,"pneumaticFlowState":"NOT_TESTED"}

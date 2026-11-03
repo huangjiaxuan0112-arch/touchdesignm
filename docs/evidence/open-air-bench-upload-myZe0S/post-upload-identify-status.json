@@ -1,0 +1,144 @@
+{
+  "startedUtc": "2026-10-29T06:47:50.982Z",
+  "result": "PASS",
+  "events": [
+    {
+      "at": "2026-10-29T06:47:52.622Z",
+      "raw": "{\"type\":\"EVENT\",\"name\":\"READY\",\"deviceId\":\"nature-touch-nano-real\",\"protocol\":2,\"hardwareOutputsEnabled\":true}",
+      "frame": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-real",
+        "protocol": 2,
+        "hardwareOutputsEnabled": true
+      }
+    },
+    {
+      "at": "2026-10-29T06:47:53.547Z",
+      "raw": "{\"type\":\"ACK\",\"command\":\"IDENTIFY\",\"accepted\":true,\"requestId\":\"benchidentity\",\"state\":\"IDLE\",\"protocol\":2,\"firmware\":\"nature-touch-unified-real\",\"deviceId\":\"nature-touch-nano-real\",\"hardwareOutputsEnabled\":true,\"capabilities\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"REAL_ACTUATORS\"]}",
+      "frame": {
+        "type": "ACK",
+        "command": "IDENTIFY",
+        "accepted": true,
+        "requestId": "benchidentity",
+        "state": "IDLE",
+        "protocol": 2,
+        "firmware": "nature-touch-unified-real",
+        "deviceId": "nature-touch-nano-real",
+        "hardwareOutputsEnabled": true,
+        "capabilities": [
+          "WIND",
+          "WAVE",
+          "BUBBLE",
+          "REAL_ACTUATORS"
+        ]
+      }
+    },
+    {
+      "at": "2026-10-29T06:47:53.751Z",
+      "raw": "{\"type\":\"ACK\",\"command\":\"STATUS_QUERY\",\"accepted\":true,\"requestId\":\"benchstatus\",\"state\":\"IDLE\"}",
+      "frame": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "benchstatus",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": "2026-10-29T06:47:54.048Z",
+      "raw": "{\"type\":\"STATUS\",\"requestId\":\"benchstatus\",\"acknowledgement\":{\"type\":\"ACK\",\"command\":\"STATUS_QUERY\",\"accepted\":true,\"requestId\":\"benchstatus\",\"state\":\"IDLE\"},\"snapshot\":{\"state\":\"IDLE\",\"selectedExperienceId\":null,\"operationId\":null,\"elapsedMs\":0,\"durationMs\":null,\"faultCode\":null,\"hardwareOutputsEnabled\":true}}",
+      "frame": {
+        "type": "STATUS",
+        "requestId": "benchstatus",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "benchstatus",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": true
+        }
+      }
+    }
+  ],
+  "commands": [
+    {
+      "at": "2026-10-29T06:47:53.200Z",
+      "frame": {
+        "type": "IDENTIFY",
+        "protocol": 2,
+        "requestId": "benchidentity"
+      }
+    },
+    {
+      "at": "2026-10-29T06:47:53.565Z",
+      "frame": {
+        "type": "STATUS_QUERY",
+        "requestId": "benchstatus"
+      }
+    }
+  ],
+  "physicalObservations": [],
+  "STARTsent": false,
+  "scope": "OPEN_AIR_BENCH_ONLY",
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "identity": {
+    "type": "ACK",
+    "command": "IDENTIFY",
+    "accepted": true,
+    "requestId": "benchidentity",
+    "state": "IDLE",
+    "protocol": 2,
+    "firmware": "nature-touch-unified-real",
+    "deviceId": "nature-touch-nano-real",
+    "hardwareOutputsEnabled": true,
+    "capabilities": [
+      "WIND",
+      "WAVE",
+      "BUBBLE",
+      "REAL_ACTUATORS"
+    ]
+  },
+  "status": {
+    "type": "STATUS",
+    "requestId": "benchstatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "benchstatus",
+      "state": "IDLE"
+    },
+    "snapshot": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": true
+    }
+  },
+  "physicalOffVerified": false,
+  "note": "IDLE and outputs-enabled=true indicate initialized real OFF signal outputs, not measured pump current or physical stop. User observation still required.",
+  "serialClosed": true,
+  "finishedUtc": "2026-10-29T06:47:54.655Z"
+}

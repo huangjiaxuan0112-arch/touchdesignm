@@ -1,5 +1,7 @@
 // Offline React -> preload -> IPC -> original serial service -> virtual Nano HEX.
 const { app, BrowserWindow } = require('electron')
+app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion')
+app.commandLine.appendSwitch('disable-background-media-suspend')
 const { EventEmitter } = require('node:events')
 const { spawn } = require('node:child_process')
 const { mkdirSync, writeFileSync } = require('node:fs')
@@ -73,18 +75,23 @@ async function click(text) {
     assert.equal(initial.identified, true); assert.equal(initial.experience.state, 'IDLE')
     assert.equal(await js(`Array.from(document.querySelectorAll('button')).some(b=>b.textContent==='RECOVER')`), false)
     evidence.checks.identifyStatus = 'PASS'
+    await wait(`!document.querySelector('[aria-label="Confirm simulation firmware"]').disabled`)
     await js(`document.querySelector('[aria-label="Confirm simulation firmware"]').click()`)
     await click('Arm Real Arduino Simulation Test')
     await wait(`document.querySelector('.device-connection [role=status]').textContent.includes('SIMULATION TEST ARMED')`)
     for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
       await wait(`!document.querySelector('[data-experience="${mode}"]').disabled`)
       await js(`document.querySelector('[data-experience="${mode}"]').click()`); await pause(150)
-      await click('Test START')
       await wait(`!Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Test STOP').disabled`)
       assert.equal((await js('window.natureTouch.getFirmwareState()')).experience.state, 'RUNNING')
       await pause(1400)
-      await click('Test STOP')
+      await wait(`!!document.querySelector('[aria-label="Pause video"]:not(:disabled)')`)
+      await js(`document.querySelector('[aria-label="Stop experience"]').click()`)
+      await wait(`window.natureTouch.getFirmwareState().then(s=>s.experience.state==='IDLE')`)
       await wait(`document.querySelector('[aria-label="Arduino status"]').textContent.includes('"state": "IDLE"')`)
+      await wait(`!!document.querySelector('[aria-label="Back to experiences"]:not(:disabled)')`)
+      await js(`document.querySelector('[aria-label="Back to experiences"]').click()`)
+      await wait(`!document.querySelector('.experience-dialog')`)
       evidence.checks[mode + '_SELECT_START_STOP'] = 'PASS'
     }
     await click('Test START')
@@ -120,9 +127,13 @@ async function click(text) {
     assert.equal(await js(`Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Test START').disabled`), true)
     await wait(`!document.querySelector('[data-experience="WIND"]').disabled`)
     await js(`document.querySelector('[data-experience="WIND"]').click()`); await pause(150)
-    await click('Test START')
     await wait(`!Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Test STOP').disabled`)
-    await click('Test STOP')
+    await wait(`!!document.querySelector('[aria-label="Pause video"]:not(:disabled)')`)
+    await js(`document.querySelector('[aria-label="Stop experience"]').click()`)
+    await wait(`window.natureTouch.getFirmwareState().then(s=>s.experience.state==='IDLE')`)
+    await wait(`!!document.querySelector('[aria-label="Back to experiences"]:not(:disabled)')`)
+    await js(`document.querySelector('[aria-label="Back to experiences"]').click()`)
+    await wait(`!document.querySelector('.experience-dialog')`)
     evidence.checks.manualSelectStartAfterRecovery = 'PASS'
     await click('Disconnect Arduino')
     evidence.result = 'PASS'
@@ -137,3 +148,5 @@ async function click(text) {
     app.quit()
   }
 })()
+
+

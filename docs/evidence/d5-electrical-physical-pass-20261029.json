@@ -1,0 +1,50 @@
+{
+  "recordedUtc": "2026-10-29T04:15:38.034Z",
+  "source": "USER_REPORTED_PHYSICAL_TEST",
+  "rawUserReport": "D5 脉宽高于 1500 µs（如 1800 µs、约 2400 µs）时开关 ON、负载侧有电，低于 1500 µs（如 1200 µs、约 544 µs）时 OFF、负载侧无电",
+  "observations": [
+    {
+      "channel": "D5",
+      "pulseUs": 1200,
+      "switchState": "OFF",
+      "loadSide": "NO_POWER_REPORTED",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "channel": "D5",
+      "pulseUsApprox": 544,
+      "switchState": "OFF",
+      "loadSide": "NO_POWER_REPORTED",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "channel": "D5",
+      "pulseUs": 1800,
+      "switchState": "ON",
+      "loadSide": "POWER_PRESENT",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "channel": "D5",
+      "pulseUsApprox": 2400,
+      "switchState": "ON",
+      "loadSide": "POWER_PRESENT",
+      "result": "PASS_REPORTED"
+    }
+  ],
+  "reportedThresholdUs": 1500,
+  "behaviorAtExactly1500Us": "NOT_VERIFIED",
+  "fullInputRangeCharacterized": false,
+  "numericalLoadVoltageCurrentAndInstrumentationProvided": false,
+  "onToOffTransitionTimingCharacterized": false,
+  "signalLossVerified": false,
+  "resetVerified": false,
+  "powerRecoveryVerified": false,
+  "pneumaticFlowState": "NOT_VERIFIED",
+  "pneumaticFlowVerificationIndependentOfElectricalSwitching": true,
+  "previousLedOnlyRecord": "docs/evidence/d5-led-short-bBMWg3/trial.json",
+  "scope": "User-reported real D5 electrical observations at listed pulse values. Preserve earlier LED-only observations. Does not establish valve port connections, pneumatic flow, signal-loss/reset safety or a guarantee over every pulse width.",
+  "productionDriverLocksChangedThisTurn": false,
+  "physicalCommandsSentByAssistantThisTurn": [],
+  "uploadedThisTurn": false
+}

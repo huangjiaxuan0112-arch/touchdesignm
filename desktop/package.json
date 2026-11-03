@@ -9,11 +9,17 @@
     "build": "electron-vite build",
     "preview": "electron-vite preview",
     "typecheck": "tsc --noEmit --project tsconfig.node.json && tsc --noEmit --project tsconfig.web.json",
-    "test": "tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts",
+    "test": "tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts ../test/interactive-ui-stop.test.ts",
+    "test:ui": "electron ../test/electron-ui-interactions.cjs",
+    "test:audio": "electron ../test/electron-ui-audio.cjs",
     "test:unified-actuators": "node ../test/unified-controller/verify.mjs",
     "test:actuator-driver-safety": "node ../test/actuator-driver-safety/verify.mjs"
   },
   "dependencies": {
+    "@radix-ui/react-slider": "^1.6.1",
+    "@radix-ui/react-tooltip": "^1.4.1",
+    "lucide-react": "^1.63.0",
+    "motion": "^14.7.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "serialport": "^13.0.0"

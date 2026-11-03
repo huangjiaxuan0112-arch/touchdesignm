@@ -1,0 +1,25 @@
+{
+  "recordDateLocal": "2026-10-29",
+  "timezone": "Asia/Tokyo",
+  "source": "USER_REPORTED_PHYSICAL_TESTS_STEP_3E",
+  "simulation": false,
+  "priorFailureRecord": "docs/evidence/d7-reset-user-report-20261029.json",
+  "priorFailurePreserved": true,
+  "observations": [
+    { "test": "D7_1200US", "reportedResult": "OFF", "result": "PASS_REPORTED" },
+    { "test": "D7_1800US", "reportedResult": "ON", "result": "PASS_REPORTED" },
+    { "test": "D7_1800_TO_1200US", "reportedResult": "OFF", "result": "PASS_REPORTED" },
+    { "test": "PWM_SIGNAL_LOSS", "reportedResult": "OFF", "result": "PASS_REPORTED" },
+    { "test": "ARDUINO_RESET", "reportedResult": "PUMP_STOPS", "result": "LATEST_PASS_REPORTED" }
+  ],
+  "userExplanation": "The previous RESET failure was resolved during the user's testing.",
+  "scope": "Latest observation supersedes the previous failure for this tested condition only. Does not establish all reset, startup, brownout, power-loss, backfeed or recovery conditions.",
+  "resolutionDetailsProvided": false,
+  "testedFirmwareHash": null,
+  "rawTimingOrWaveformProvided": false,
+  "independentPowerCutoffReviewComplete": false,
+  "pressureSafetyReviewComplete": false,
+  "physicalActivationAuthorizedInStep3E": false,
+  "physicalCommandsSentInStep3E": [],
+  "uploadedInStep3E": false
+}

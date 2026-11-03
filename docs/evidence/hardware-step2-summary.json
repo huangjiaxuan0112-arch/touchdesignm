@@ -1,0 +1,90 @@
+{
+  "overall": "FAIL",
+  "modes": {
+    "WIND": {
+      "result": "PASS",
+      "actionCount": 12,
+      "timelineDiagnosticsMatch": true,
+      "hostAckToCompletedMs": 24148,
+      "nominalMs": 24000,
+      "cancelledStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "STOPPING",
+        "IDLE"
+      ],
+      "naturalStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "COMPLETED"
+      ]
+    },
+    "WAVE": {
+      "result": "PASS",
+      "actionCount": 10,
+      "timelineDiagnosticsMatch": true,
+      "hostAckToCompletedMs": 25152,
+      "nominalMs": 25000,
+      "cancelledStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "STOPPING",
+        "IDLE"
+      ],
+      "naturalStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "COMPLETED"
+      ]
+    },
+    "BUBBLE": {
+      "result": "PASS",
+      "actionCount": 31,
+      "timelineDiagnosticsMatch": true,
+      "hostAckToCompletedMs": 27568,
+      "nominalMs": 27420,
+      "cancelledStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "STOPPING",
+        "IDLE"
+      ],
+      "naturalStateSequence": [
+        "IDLE",
+        "RUNNING",
+        "COMPLETED"
+      ]
+    }
+  },
+  "commandCounts": {
+    "IDENTIFY": 2,
+    "STATUS_QUERY": 67,
+    "SELECT": 7,
+    "START": 7,
+    "STOP": 4
+  },
+  "hostLease": {
+    "type": "STATUS",
+    "requestId": "leaseStatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "leaseStatus",
+      "state": "RUNNING"
+    },
+    "snapshot": {
+      "state": "RUNNING",
+      "selectedExperienceId": "WIND",
+      "operationId": "leaseOperation",
+      "elapsedMs": 6745,
+      "durationMs": 24000,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    }
+  },
+  "usbUnplugStep2": "NOT RUN — stopped at firmware mismatch",
+  "hostLeaseWriteGapMs": 6720,
+  "hostLeaseCompatible": false,
+  "cleanupStopped": true
+}

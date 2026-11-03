@@ -1,0 +1,271 @@
+{
+  "result": "PASS",
+  "startedAtUtc": "2026-10-27T05:31:33.483Z",
+  "caseFilter": "host protocol silence",
+  "method": "Actual unified Arduino CLI HEX executed in AVR8js with virtual USART input; no physical COM or upload. Fault injection is explicitly virtual SRAM mutation.",
+  "usartModel": "AVR8js 0.21.1 with explicit test-side pending-RXC preservation on UCSRB writes; stock full-duplex failure is documented and retained.",
+  "compileArgs": [
+    "compile",
+    "--fqbn",
+    "arduino:avr:nano:cpu=atmega328",
+    "--build-path",
+    "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-unified-step4-lTlw2t",
+    "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\firmware\\unified\\nature_touch_unified"
+  ],
+  "buildDirectory": "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-unified-step4-lTlw2t",
+  "compileLog": "Sketch uses 10770 bytes (35%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 1379 bytes (67%) of dynamic memory, leaving 669 bytes for local variables. Maximum is 2048 bytes.\n",
+  "hexSha256": "1033aa59cb4b8ec21a5ac913c1fca5c813978c3dffab171875e53847858d708b",
+  "firmwareSha256": "82cecd9eb290997f313c46197728e25ed49b21174834687b946a48f7aa5151fc",
+  "actuatorHeaderSha256": "4f6d22761044718fb1b41c0429e6ea9168bdb1f62ef30e5e94d485cf7c9863d1",
+  "protectedFiles": {
+    "test/avr8js-wind/results/compile.log": "86d248733b0df718483eb8d6b6f4a588212686f4797d8f2884374099664d2e5a",
+    "test/avr8js-wind/results/edges.csv": "894f130997c177d7b2a29618c06bd078cd7eecdf2334697e298e46196652bfe5",
+    "test/avr8js-wind/results/initial-validation.json": "9a977ef9e24266127acb74b2e74ac1607b7cb2829a71837e2722a7a02fa31923",
+    "test/avr8js-wind/results/pulses.csv": "9767597d302ffe0ceb76df595b426398ee419fd844f9e37ecdb963d244aa1f23",
+    "test/avr8js-wind/results/results.json": "f446466a5cf4e3042f02cb5f88001a31c7e9a1b2d7dac9e9ea0ee93a336cd70c",
+    "test/avr8js-wind/results/symbols.txt": "10d265545ca87a435f782b8f1d8c6b2715462e014fbb59e26343892b0255b6b7",
+    "test/avr8js-wind/results/wind.hex.txt": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+    "docs/phase-3b-step2-avr8js-results.md": "b5af25e6fe7bf5ae5db8dab27c953c48d5ae061f498f727522ac05ca9418dee9",
+    "卒研music/bubbles/sketch_sep30a/sketch_oct21a/sketch_oct21a.ino": "e94eeacc870d2d3595bd66500ffc43cfb5d7c9c998e34db831aa42b5c2530fd3",
+    "卒研music/ocean waves/sketch_oct21b/sketch_oct21b.ino": "28ea0d4a9548d4575d850b061d5c0f0dff9ae603c6b415f3aa1eb17429c2ad81",
+    "卒研music/wind/sketch_oct21a/sketch_oct21a.ino": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+    "firmware/unified/nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "test/avr8js-wind/results-step3/wind/compile.log": "86d248733b0df718483eb8d6b6f4a588212686f4797d8f2884374099664d2e5a",
+    "test/avr8js-wind/results-step3/wind/edges.csv": "894f130997c177d7b2a29618c06bd078cd7eecdf2334697e298e46196652bfe5",
+    "test/avr8js-wind/results-step3/wind/pulses.csv": "9767597d302ffe0ceb76df595b426398ee419fd844f9e37ecdb963d244aa1f23",
+    "test/avr8js-wind/results-step3/wind/results.json": "ed6b8da95da9f5b4847cd94877d8a12b1268154725f855dc1045e8f97914f954",
+    "test/avr8js-wind/results-step3/wind/symbols.txt": "10d265545ca87a435f782b8f1d8c6b2715462e014fbb59e26343892b0255b6b7",
+    "test/avr8js-wind/results-step3/wind/wind.hex.txt": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+    "test/avr8js-wind/results-step3/wave/compile.log": "30c7b67b4d3bac9331df3e199d42bab913a80613c27d003a60bfe2385c5d7976",
+    "test/avr8js-wind/results-step3/wave/edges.csv": "df8f71a94aa1a51951f6aa152f82cf2b99940264db2389daa1dd8708ffe608f4",
+    "test/avr8js-wind/results-step3/wave/pulses.csv": "b97cd16ce62f431fa4f78ca7b0ebc8dd6d9a24fb34be999e7aacae272413c44e",
+    "test/avr8js-wind/results-step3/wave/results.json": "0712dc9702ac34a51ee950fb63bd2c01cf7e0678bebcfd9680a9f65cb57fc29d",
+    "test/avr8js-wind/results-step3/wave/symbols.txt": "9d8062879518b71028fdece39ae0e70d6cba1d6990345c6f579e7138d916464d",
+    "test/avr8js-wind/results-step3/wave/wave.hex.txt": "a9e688153f093f1b532ba46822b77beda2381616f9816dfeea17edb5b13ce656",
+    "test/avr8js-wind/results-step3/bubble/bubble.hex.txt": "74ceaef1fdf512e14bc0c45e9925719e2cbc1987579cc9902476d51b9e434c41",
+    "test/avr8js-wind/results-step3/bubble/compile.log": "49dc0856403f2559674f41ac22c631fc8a3b08ae085627a89cc7b3b1a60d1466",
+    "test/avr8js-wind/results-step3/bubble/edges.csv": "bce2db847be4dd493564a3165fba891b8b239bf77f5dcd2b65363b0b1be909b3",
+    "test/avr8js-wind/results-step3/bubble/pulses.csv": "80555cfcaa61dc2566f0cd3f947a672d4fe29ff857e9ab7e7eebc30a78448059",
+    "test/avr8js-wind/results-step3/bubble/results.json": "806b8ecdf0394d78b005790ce78a53152a4555274361a7b3cb9b03874470be67",
+    "test/avr8js-wind/results-step3/bubble/symbols.txt": "e1091bfecc3008105935a686794c53a6646758789d8316186bc7936a2d90120f",
+    "test/avr8js-wind/results-step3/all-modes.json": "2451ed0a9dff8aef6fd3ad80c1e184feb4ddbb6b3488969ac9fd2e8d0f0155a8",
+    "docs/phase-3b-step3-all-modes-simulation.md": "1a37dfba624f0f691be1b2c16eb890a1038dcc465290d3cf95c236fed3010c92",
+    "docs/phase-2d-protocol-validation.md": "3d2f935d4c5c482764fbb639f8695fa30e72b0802c32569fde4265fba1dc4437"
+  },
+  "completions": [],
+  "checks": [
+    {
+      "name": "host protocol silence faults, cancels, and requires explicit RECOVER",
+      "result": "PASS"
+    }
+  ],
+  "evidence": [
+    {
+      "name": "host-timeout",
+      "virtualSeconds": 11.075011812500001,
+      "state": "IDLE",
+      "intent": "STOPPED",
+      "outputRecords": [
+        {
+          "virtualMs": 0.64425,
+          "revision": 1,
+          "intent": "STOPPED",
+          "recordedAtMs": 0,
+          "commandCount": 1
+        },
+        {
+          "virtualMs": 406.2975,
+          "revision": 2,
+          "intent": "INFLATING",
+          "recordedAtMs": 405,
+          "commandCount": 2
+        },
+        {
+          "virtualMs": 5406.3651875,
+          "revision": 3,
+          "intent": "STOPPED",
+          "recordedAtMs": 5405,
+          "commandCount": 3
+        },
+        {
+          "virtualMs": 9793.0145,
+          "revision": 4,
+          "intent": "STOPPED",
+          "recordedAtMs": 9791,
+          "commandCount": 4
+        }
+      ],
+      "frames": [
+        {
+          "virtualMs": 124.0228125,
+          "message": {
+            "type": "EVENT",
+            "name": "READY",
+            "deviceId": "nature-touch-nano-simulation",
+            "protocol": 2,
+            "hardwareOutputsEnabled": false
+          }
+        },
+        {
+          "virtualMs": 285.8769375,
+          "message": {
+            "type": "ACK",
+            "command": "SELECT",
+            "accepted": true,
+            "requestId": "sselect",
+            "state": "IDLE"
+          }
+        },
+        {
+          "virtualMs": 472.051125,
+          "message": {
+            "type": "ACK",
+            "command": "START",
+            "accepted": true,
+            "requestId": "sstart",
+            "state": "RUNNING",
+            "operationId": "timeout"
+          }
+        },
+        {
+          "virtualMs": 587.9543125,
+          "message": {
+            "type": "EVENT",
+            "name": "MARKER",
+            "operationId": "timeout",
+            "experienceId": "WIND",
+            "atMs": 0,
+            "text": "INITIAL FILL"
+          }
+        },
+        {
+          "virtualMs": 786.3583125,
+          "message": {
+            "type": "EVENT",
+            "name": "ACTUATOR_EVENT",
+            "operationId": "timeout",
+            "experienceId": "WIND",
+            "atMs": 0,
+            "action": "INFLATE",
+            "durationMs": 5000,
+            "D5": 180,
+            "D6": 180,
+            "D7": 0,
+            "hardwareOutputsEnabled": false
+          }
+        },
+        {
+          "virtualMs": 5487.8451875,
+          "message": {
+            "type": "EVENT",
+            "name": "FAULT",
+            "operationId": "timeout",
+            "code": "HOST_TIMEOUT"
+          }
+        },
+        {
+          "virtualMs": 9219.3906875,
+          "message": {
+            "type": "ACK",
+            "command": "STATUS_QUERY",
+            "accepted": true,
+            "requestId": "status",
+            "state": "FAULT"
+          }
+        },
+        {
+          "virtualMs": 9561.897,
+          "message": {
+            "type": "STATUS",
+            "requestId": "status",
+            "acknowledgement": {
+              "type": "ACK",
+              "command": "STATUS_QUERY",
+              "accepted": true,
+              "requestId": "status",
+              "state": "FAULT"
+            },
+            "snapshot": {
+              "state": "FAULT",
+              "selectedExperienceId": "WIND",
+              "operationId": "timeout",
+              "elapsedMs": 5000,
+              "durationMs": 24000,
+              "faultCode": "HOST_TIMEOUT",
+              "hardwareOutputsEnabled": false
+            }
+          }
+        },
+        {
+          "virtualMs": 9748.0600625,
+          "message": {
+            "type": "NACK",
+            "command": "START",
+            "accepted": false,
+            "requestId": "blocked",
+            "state": "FAULT",
+            "code": "INVALID_STATE"
+          }
+        },
+        {
+          "virtualMs": 9884.9748125,
+          "message": {
+            "type": "ACK",
+            "command": "RECOVER",
+            "accepted": true,
+            "requestId": "recover",
+            "state": "IDLE"
+          }
+        },
+        {
+          "virtualMs": 10074.31025,
+          "message": {
+            "type": "NACK",
+            "command": "START",
+            "accepted": false,
+            "requestId": "noSelect",
+            "state": "IDLE",
+            "code": "NO_EXPERIENCE_SELECTED"
+          }
+        }
+      ],
+      "inputFrames": [
+        {
+          "virtualMs": 194.6206875,
+          "line": "{\"type\":\"SELECT\",\"requestId\":\"sselect\",\"experienceId\":\"WIND\"}",
+          "tooLong": false
+        },
+        {
+          "virtualMs": 354.627375,
+          "line": "{\"type\":\"START\",\"requestId\":\"sstart\",\"operationId\":\"timeout\"}",
+          "tooLong": false
+        },
+        {
+          "virtualMs": 9121.905625,
+          "line": "{\"type\":\"STATUS_QUERY\",\"requestId\":\"status\"}",
+          "tooLong": false
+        },
+        {
+          "virtualMs": 9630.671875,
+          "line": "{\"type\":\"START\",\"requestId\":\"blocked\",\"operationId\":\"blocked\"}",
+          "tooLong": false
+        },
+        {
+          "virtualMs": 9792.7513125,
+          "line": "{\"type\":\"RECOVER\",\"requestId\":\"recover\"}",
+          "tooLong": false
+        },
+        {
+          "virtualMs": 9947.544625,
+          "line": "{\"type\":\"START\",\"requestId\":\"noSelect\",\"operationId\":\"new\"}",
+          "tooLong": false
+        }
+      ],
+      "gpioEdges": [],
+      "enabledPins": [],
+      "usartRepairs": [],
+      "sampledStackLowWater": 1912,
+      "staticRamEnd": 1635
+    }
+  ]
+}

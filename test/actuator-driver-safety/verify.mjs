@@ -7,13 +7,16 @@ import { homedir, tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
-const out = resolve(process.env.DRIVER_SAFETY_RESULTS || join(root, 'docs/evidence/hardware-step3b-driver-safety'));
+const out = resolve(process.env.DRIVER_SAFETY_RESULTS || mkdtempSync(join(root, 'docs/evidence/driver-safety-')));
 mkdirSync(out, { recursive: true });
 const cli = join(homedir(), 'AppData/Local/Programs/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe');
 const fqbn = 'arduino:avr:nano:cpu=atmega328';
 const sketch = join(root, 'firmware/unified/nature_touch_unified');
 const temporary = mkdtempSync(join(tmpdir(), 'nature-touch-driver-safety-'));
-const invalid = spawnSync(cli, ['compile', '--fqbn', fqbn, '--build-path', join(temporary, 'invalid'),
+const config = join(temporary, 'arduino-cli.yaml');
+writeFileSync(config, `directories:\n  data: ${JSON.stringify(join(homedir(), 'AppData/Local/Arduino15'))}\n  user: ${JSON.stringify(temporary)}\n  downloads: ${JSON.stringify(join(temporary, 'downloads'))}\nbuild_cache:\n  path: ${JSON.stringify(join(temporary, 'cache'))}\n`);
+const invalid = spawnSync(cli, ['--config-file', config, 'compile', '--fqbn', fqbn,
+  '--libraries', join(homedir(), 'AppData/Local/Arduino15/libraries'), '--build-path', join(temporary, 'invalid'),
   '--build-property', 'compiler.cpp.extra_flags=-DNATURE_TOUCH_ACTUATOR_DRIVER=1', sketch], { encoding: 'utf8', timeout: 180000 });
 writeFileSync(join(out, 'real-selection-rejected.log'), invalid.stdout + invalid.stderr);
 assert.notEqual(invalid.status, 0);
@@ -23,12 +26,19 @@ const probe = join(temporary, 'blocked_probe'); mkdirSync(probe);
 copyFileSync(join(sketch, 'real-actuators.h'), join(probe, 'real-actuators.h'));
 writeFileSync(join(probe, 'blocked_probe.ino'), `#include "real-actuators.h"
 volatile uint8_t probeResult = 0;
-static_assert(RealActuators::VALVE_OFF.servoValue == 0 && !RealActuators::VALVE_OFF.verified, "D5 seller-documented OFF candidate must remain physically unverified");
-static_assert(RealActuators::SUCTION_OFF.servoValue == 0 && !RealActuators::SUCTION_OFF.verified, "D6 seller-documented OFF candidate must remain physically unverified");
-static_assert(RealActuators::INFLATION_OFF.servoValue == 0 && !RealActuators::INFLATION_OFF.verified, "D7 seller-documented OFF candidate must remain physically unverified");
 static_assert(!RealActuators::PHYSICAL_OUTPUTS_PERMITTED, "Hard lock required");
-static_assert(RealActuators::INFLATE.valve == 0 && RealActuators::INFLATE.suction == 0 && RealActuators::INFLATE.inflation == 180, "Documented pump labels must map inflation to D7 ON");
-static_assert(RealActuators::DEFLATE.valve == 180 && RealActuators::DEFLATE.suction == 180 && RealActuators::DEFLATE.inflation == 0, "Documented pump labels must map deflation to D6 ON");
+static_assert(!RealActuators::CONFIGURATION_VERIFIED, "Real build must remain blocked by incomplete review");
+static_assert(!RealActuators::D7_ACTIVATION_REVIEWED && !RealActuators::D5_D6_OUTPUTS_PERMITTED, "D7 activation and D5/D6 remain locked");
+static_assert(RealActuators::D5_MAPPING_VERIFIED && !RealActuators::D6_MAPPING_VERIFIED && RealActuators::D7_MAPPING_VERIFIED, "The new D6 theoretical mapping must remain unverified");
+static_assert(RealActuators::D5_OFF_US == 1200 && RealActuators::D5_ON_US == 1800 &&
+  RealActuators::D6_OFF_US == 1200 && RealActuators::D6_ON_US == 1800 &&
+  RealActuators::D7_OFF_US == 1200 && RealActuators::D7_ON_US == 1800, "Requested theoretical channel mapping required");
+static_assert(RealActuators::INFLATE.valveUs == 1800 && RealActuators::INFLATE.suctionUs == 1200 && RealActuators::INFLATE.inflationUs == 1800, "Correct inflation mapping required");
+static_assert(RealActuators::DEFLATE.valveUs == 1200 && RealActuators::DEFLATE.suctionUs == 1800 && RealActuators::DEFLATE.inflationUs == 1200, "Correct deflation mapping required");
+static_assert(!RealActuators::STOP_VALVE_VERIFIED && RealActuators::STOP_VALVE_US == 1200, "STOP valve selected OFF but still unverified and blocked");
+static_assert(RealActuators::PUMP_OFF_SETTLE_MS == 500 && RealActuators::VALVE_SETTLE_MS == 300 &&
+  !RealActuators::PUMP_OFF_SETTLE_VERIFIED && !RealActuators::VALVE_SETTLE_VERIFIED,
+  "Requested settling assumptions must remain unverified");
 void setup() {
   RealActuators::initializeOutputs();
   bool blocked = !RealActuators::inflate() && !RealActuators::deflate();
@@ -44,7 +54,7 @@ void loop() {}
 `);
 const build = join(temporary, 'probe-build');
 const libraries = join(homedir(), 'AppData/Local/Arduino15/libraries');
-const log = execFileSync(cli, ['compile', '--fqbn', fqbn, '--libraries', libraries, '--build-path', build, probe], { encoding: 'utf8', timeout: 180000 });
+const log = execFileSync(cli, ['--config-file', config, 'compile', '--fqbn', fqbn, '--libraries', libraries, '--build-path', build, probe], { encoding: 'utf8', timeout: 180000 });
 writeFileSync(join(out, 'blocked-probe-compile.log'), log);
 const gcc = join(homedir(), 'AppData/Local/Arduino15/packages/arduino/tools/avr-gcc');
 const nm = join(gcc, readdirSync(gcc).sort().at(-1), 'bin/avr-nm.exe');
@@ -77,9 +87,9 @@ while (cpu.cycles < 1600000) { avrInstruction(cpu); cpu.tick(); }
 assert.equal(cpu.data[resultAddress], 0x5a);
 assert.deepEqual(outputModes, []); assert.deepEqual(edges, []);
 writeFileSync(join(out, 'results.json'), JSON.stringify({ result: 'PASS', checks: [
-  'real selector fails compilation', 'seller-documented OFF candidates remain physically unverified and activation stays locked',
-  'logical inflation/deflation command tuples follow documented D5/D6/D7 labels without changing timelines',
+  'real selector fails compilation', 'STOP valve, settling times and protection reviews remain unverified and blocked',
+  'three-channel measured electrical mappings used without copying legacy combinations; physical locks remain closed',
   'blocked scaffold rejects all operations including fault-flag clearing', 'D5/D6/D7 never output or transition',
 ], method: 'Actual separately compiled blocked scaffold executed in AVR8js for 100 ms; Servo library present, no physical USB/COM.',
   virtualMs: cpu.cycles / 16000, outputModes, edges, compileLog: log }, null, 2) + '\n');
-console.log('PASS: 4 driver safety checks; no GPIO output/edges');
+console.log('PASS: 5 driver safety checks; no GPIO output/edges');

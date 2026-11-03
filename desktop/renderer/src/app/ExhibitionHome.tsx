@@ -1,13 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { AnimatePresence, useReducedMotion } from 'motion/react'
+import { ExperiencePlayer } from './ExperiencePlayer'
+import { stopActiveExperience } from './stop-active-experience'
+import { startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import type { ExperienceId } from '../../../shared/experience-definitions'
+import { EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
 import { NatureVideoCard } from './NatureVideoCard'
 import { ArduinoConnection } from '../device/ArduinoConnection'
 import { INITIAL_FIRMWARE_CONTROL_SNAPSHOT } from '../../../shared/firmware-control-protocol'
-import windPreviewVideo from '../../../../卒研music/wind/东风视频（短1）.mp4'
-import windPoster from '../assets/posters/wind.svg'
-import wavePoster from '../assets/posters/waves.svg'
-import bubblePoster from '../assets/posters/bubbles.svg'
+import windPoster from '../assets/wind/wind-poster.png'
+import wavePoster from '../assets/waves/waves-poster.png'
+import bubblePoster from '../assets/bubbles/bubbles-poster.png'
+import windPreviewVideo from '../assets/wind/wind-preview.mp4'
+import windExperienceVideo from '../../../../卒研music/wind/东风长3_15秒音视频合成.mp4'
+import wavesPreviewVideo from '../assets/waves/waves-preview.mp4'
+import wavesExperienceVideo from '../assets/waves/waves-experience.mp4'
+import bubblesPreviewVideo from '../assets/bubbles/bubbles-preview.mp4'
+import bubblesExperienceVideo from '../assets/bubbles/bubbles-experience.mp4'
+import windAudio from '../../../../卒研music/wind/东风声.mp3'
+import waveAudio from '../../../../卒研music/ocean waves/海浪声.mp3'
+import bubbleAudio from '../../../../卒研music/bubbles/voicebosch-bubbles-171716.mp3'
 
 const cards: Array<{
   id: ExperienceId
@@ -16,28 +28,38 @@ const cards: Array<{
   description: string
   poster: string
   previewVideo?: string
+  experienceVideo?: string
+  experienceAudio: string
 }> = [
   {
     id: 'WIND',
     label: 'WIND',
     title: '風',
-    description: '風のように、揺れながら流れる。',
+    description: 'ゆっくり、やさしく流れる。',
     poster: windPoster,
     previewVideo: windPreviewVideo,
+    experienceVideo: windExperienceVideo,
+    experienceAudio: windAudio,
   },
   {
     id: 'WAVE',
     label: 'WAVES',
     title: '波',
-    description: 'ゆっくりと広がる、穏やかな波。',
+    description: '寄せては返す、穏やかなリズム。',
     poster: wavePoster,
+    previewVideo: wavesPreviewVideo,
+    experienceVideo: wavesExperienceVideo,
+    experienceAudio: waveAudio,
   },
   {
     id: 'BUBBLE',
     label: 'BUBBLES',
     title: '泡',
-    description: '小さく弾けて、軽やかに戻る。',
+    description: '小さく弾ける、軽やかな感覚。',
     poster: bubblePoster,
+    previewVideo: bubblesPreviewVideo,
+    experienceVideo: bubblesExperienceVideo,
+    experienceAudio: bubbleAudio,
   },
 ]
 
@@ -60,6 +82,47 @@ export default function ExhibitionHome() {
   const [switchingExperienceId, setSwitchingExperienceId] = useState<ExperienceId | null>(null)
   const [dialogExperienceId, setDialogExperienceId] = useState<ExperienceId | null>(null)
   const [actionError, setActionError] = useState('')
+  const [focusedId, setFocusedId] = useState<ExperienceId | null>(null)
+  const [previewId, setPreviewId] = useState<ExperienceId | null>(null)
+  const [visible, setVisible] = useState(!document.hidden)
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const pendingStop = useRef<Promise<void> | null>(null)
+  const pendingStart = useRef<Promise<ExperienceSnapshot> | null>(null)
+  const selecting = useRef(false)
+  const reducedMotion = useReducedMotion()
+
+  function clearPreview() {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    hoverTimer.current = null
+    setFocusedId(null)
+    setPreviewId(null)
+  }
+  function requestSafeStop(): Promise<void> {
+    if (pendingStop.current) return pendingStop.current
+    const request = (async () => {
+      // A cancelled media load must not let an in-flight START finish afterward.
+      await pendingStart.current?.catch(() => undefined)
+      await stopActiveExperience(window.natureTouch, realMode)
+    })()
+      .finally(() => { pendingStop.current = null })
+    pendingStop.current = request
+    return request
+  }
+  function focusPreview(id: ExperienceId) {
+    clearPreview()
+    setFocusedId(id)
+    if (reducedMotion || document.hidden || dialogExperienceId) return
+    hoverTimer.current = setTimeout(() => { setPreviewId(id); hoverTimer.current = null }, 200)
+  }
+  useEffect(() => {
+    function updateVisibility() { setVisible(!document.hidden); clearPreview() }
+    document.addEventListener('visibilitychange', updateVisibility)
+    return () => {
+      document.removeEventListener('visibilitychange', updateVisibility)
+      if (hoverTimer.current) clearTimeout(hoverTimer.current)
+    }
+  }, [])
+  useEffect(() => { clearPreview() }, [dialogExperienceId, reducedMotion])
 
   useEffect(() => {
     const api = window.natureTouch
@@ -88,28 +151,51 @@ export default function ExhibitionHome() {
     }
   }, [])
 
-  useEffect(() => {
-    if (!dialogExperienceId) return
-    function closeOnEscape(event: KeyboardEvent): void {
-      if (event.key === 'Escape') setDialogExperienceId(null)
-    }
-    document.addEventListener('keydown', closeOnEscape)
-    return () => document.removeEventListener('keydown', closeOnEscape)
-  }, [dialogExperienceId])
-
   const displayedState = realMode ? firmwareState.experience : experienceState
   const canSwitchExperience = displayedState.state === 'IDLE' || displayedState.state === 'COMPLETED'
+  const benchReady = firmwareState.openAirBenchSession === true && firmwareState.realControlEligible === true &&
+    firmwareState.hardwareOutputsEnabled === true && firmwareState.connectionState === 'connected' && firmwareState.identified
+  const realSessionReady = firmwareState.simulationTestArmed === true || benchReady
 
-  async function selectExperience(experienceId: ExperienceId): Promise<void> {
-    if (realMode && !firmwareState.simulationTestArmed) return
+  function startMediaExperience(): Promise<ExperienceSnapshot> {
+    if (pendingStart.current) return pendingStart.current
+    if (!dialogExperienceId) return Promise.reject(new Error('Select an experience first.'))
+    const request = (async () => {
+      await pendingStop.current
+      // Browser preview plays media locally; device control requires Electron.
+      if (!window.natureTouch && !realMode) return {
+        ...initialExperienceState, state: 'RUNNING' as const,
+        selectedExperienceId: dialogExperienceId,
+        durationMs: EXPERIENCE_DEFINITIONS[dialogExperienceId].totalDurationMs,
+      }
+      return startSelectedExperience(window.natureTouch, realMode, dialogExperienceId)
+    })().finally(() => { pendingStart.current = null })
+    pendingStart.current = request
+    return request
+  }
+
+  async function selectExperience(experienceId: ExperienceId, openVideo = false): Promise<void> {
+    if (selecting.current) return
+    if (realMode && !realSessionReady) return
+    selecting.current = true
     const api = window.natureTouch
     if (!api) {
-      setActionError('Mock Device mode selection is available in the Electron application.')
+      setActiveExperienceId(experienceId)
+      if (openVideo) setDialogExperienceId(experienceId)
+      selecting.current = false
       return
     }
     setSwitchingExperienceId(experienceId)
     setActionError('')
     try {
+      await pendingStop.current
+      const previous = realMode ? (await api.getFirmwareState()).experience : await api.getExperienceState()
+      if (previous.state === 'RUNNING' || previous.state === 'STOPPING') await requestSafeStop()
+      if (!realMode && previous.state === 'FAULT') {
+        // A new manual card selection may reset the local mock, never hardware.
+        const recovered = await api.recoverExperience(crypto.randomUUID().replace(/-/g, '').slice(0, 16))
+        if (!recovered.accepted) throw new Error('Mock recovery rejected.')
+      }
       const acknowledgement = realMode
         ? await api.selectFirmwareExperience(experienceId, crypto.randomUUID().replace(/-/g, '').slice(0, 16))
         : await api.selectExperience(experienceId, crypto.randomUUID())
@@ -121,26 +207,29 @@ export default function ExhibitionHome() {
         setActiveExperienceId(experienceId)
         setExperienceState(await api.getExperienceState())
       }
+      if (openVideo) setDialogExperienceId(experienceId)
     } catch (error) {
       setActionError(error instanceof Error ? error.message : String(error))
     } finally {
+      selecting.current = false
       setSwitchingExperienceId(null)
     }
   }
 
   const dialogCard = cards.find((card) => card.id === dialogExperienceId)
+  const activeCard = cards.find((card) => card.id === (realMode ? firmwareState.experience.selectedExperienceId : activeExperienceId))
 
   return (
     <main className="exhibition-home">
       <header className="exhibition-heading">
-        <h1 lang="ja">自然音 × 柔らかな形状変化</h1>
-        <p>THREE NATURES, FELT THROUGH TOUCH</p>
+        <span className="exhibition-heading__stem" aria-hidden="true" />
+        <h1 lang="ja">自然音 × やわらかな触覚体験</h1>
+        <p>NATURAL SOUND × SOFT TACTILE EXPERIENCE</p>
+        <span className="exhibition-heading__rule" aria-hidden="true" />
+        <p className="exhibition-heading__description" lang="ja">
+          触れられない感覚を、触れられる体験へ
+        </p>
       </header>
-
-      <ArduinoConnection realMode={realMode} onModeChange={setRealMode}
-        onSnapshot={setFirmwareState}
-        onBusyChange={setDeviceBusy}
-        disabled={switchingExperienceId !== null || experienceState.state === 'RUNNING' || experienceState.state === 'STOPPING'} />
 
       <section className="nature-card-grid" aria-label="Choose a nature experience">
         {cards.map((card) => {
@@ -150,62 +239,67 @@ export default function ExhibitionHome() {
               key={card.id}
               {...card}
               active={active}
-              previewPlaying={active && dialogExperienceId === null}
+              focused={focusedId === card.id}
+              dimmed={focusedId !== null && focusedId !== card.id}
+              previewPlaying={visible && previewId === card.id && dialogExperienceId === null}
+              onFocusPreview={() => focusPreview(card.id)}
+              onLeavePreview={clearPreview}
               disabled={
-                (realMode && !firmwareState.simulationTestArmed) ||
+                dialogExperienceId !== null ||
+                (realMode && !realSessionReady) ||
                 (realMode && deviceBusy) ||
                 switchingExperienceId !== null ||
-                (realMode ? !canSwitchExperience : (!active && !canSwitchExperience))
+                (realMode ? !canSwitchExperience : (!active && !canSwitchExperience && displayedState.state !== 'FAULT'))
               }
-              onSelect={() => void selectExperience(card.id)}
-              onReplay={() => realMode ? void selectExperience(card.id) : setDialogExperienceId(card.id)}
+              onSelect={() => void selectExperience(card.id, !!card.experienceVideo)}
+              onReplay={() => void selectExperience(card.id, true)}
             />
           )
         })}
       </section>
 
-      <p role="alert">
+      <p className="exhibition-alert" role="alert">
         {actionError}
       </p>
 
-      {dialogCard && (
-        <div
-          className="experience-dialog"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`${dialogCard.label} experience video`}
-          onMouseDown={(event) => {
-            if (event.target === event.currentTarget) setDialogExperienceId(null)
-          }}
-        >
-          <button
-            className="experience-dialog__close"
-            type="button"
-            aria-label="Close experience video"
-            autoFocus
-            onClick={() => setDialogExperienceId(null)}
-          >
-            ×
-          </button>
-          {dialogCard.previewVideo ? (
-            <video
-              className="experience-dialog__video"
-              src={dialogCard.previewVideo}
-              poster={dialogCard.poster}
-              autoPlay
-              controls
-              playsInline
-            />
-          ) : (
-            <>
-              <img className="experience-dialog__poster" src={dialogCard.poster} alt="" />
-              <p className="experience-dialog__message" lang="ja">
-                このモードの体験動画は未提供です。
-              </p>
-            </>
-          )}
-        </div>
-      )}
+      <footer className="exhibition-footer">
+        <details className="device-panel">
+          <summary aria-label="Device controls">
+            <span className={`status-dot${realMode && !firmwareState.identified ? ' status-dot--muted' : ''}`} aria-hidden="true" />
+            {realMode
+              ? `実機接続：${firmwareState.connectionState}（${firmwareState.openAirBenchSession ? '無圧ベンチ・気囊接続禁止' : '実出力制御はロック中'}）`
+              : 'Mock モード（実機は未接続）'}
+          </summary>
+          <div className="device-panel__content">
+            <ArduinoConnection realMode={realMode} onModeChange={setRealMode}
+              onSnapshot={setFirmwareState}
+              onBusyChange={setDeviceBusy}
+              disabled={switchingExperienceId !== null || experienceState.state === 'RUNNING' || experienceState.state === 'STOPPING'} />
+          </div>
+        </details>
+        <p className="exhibition-footer__instruction" lang="ja">
+          音をえらんでください
+        </p>
+        <p className="exhibition-footer__media">
+          <span><i className={`status-dot${activeCard?.experienceVideo ? '' : ' status-dot--muted'}`} aria-hidden="true" />音源 {activeCard?.experienceVideo ? `${activeCard.label} 設定済み` : 'ファイル未設定'}</span>
+          <span><i className={`status-dot${previewId ? '' : ' status-dot--muted'}`} aria-hidden="true" />映像 {previewId ? 'プレビュー選択中' : 'ホバーでプレビュー'}</span>
+        </p>
+      </footer>
+
+      <AnimatePresence onExitComplete={() => {
+        document.querySelector<HTMLButtonElement>(`[data-experience="${activeExperienceId}"]`)?.focus({ preventScroll: true })
+        clearPreview()
+      }}>
+        {dialogCard && <ExperiencePlayer key={dialogCard.id} {...dialogCard}
+          runState={displayedState}
+          connectionReady={!realMode || (firmwareState.connectionState === 'connected' && firmwareState.identified && (firmwareState.hardwareOutputsEnabled === false || benchReady))}
+          deviceLabel={realMode
+            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${firmwareState.experience.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
+            : 'Mock モード · 実機は未接続'}
+          onSafeStop={requestSafeStop}
+          onStart={startMediaExperience}
+          onExit={() => setDialogExperienceId(null)} />}
+      </AnimatePresence>
     </main>
   )
 }

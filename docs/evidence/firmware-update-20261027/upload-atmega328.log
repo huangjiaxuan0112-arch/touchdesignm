@@ -1,0 +1,27 @@
+"C:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1/bin/avrdude" "-CC:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1/etc/avrdude.conf" -v  -patmega328p -carduino "-PCOM5" -b115200 -D "-Uflash:w:C:\Users\20676\OneDrive\桌面\touchdesign\docs\evidence\firmware-upload-review-20261027/nature_touch_unified.ino.hex:i"
+Avrdude version 8.0-arduino.1
+Copyright see https://github.com/avrdudes/avrdude/blob/main/AUTHORS
+
+System wide configuration file is C:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1\etc\avrdude.conf
+
+Using port            : COM5
+Using programmer      : arduino
+Setting baud rate     : 115200
+AVR part              : ATmega328P
+Programming modes     : SPM, ISP, HVPP, debugWIRE
+Programmer type       : Arduino
+Description           : Arduino bootloader using STK500 v1 protocol
+HW Version            : 3
+FW Version            : 4.4
+
+AVR device initialized and ready to accept instructions
+Device signature = 1E 95 0F (ATmega328P, ATA6614Q, LGT8F328P)
+Reading 10770 bytes for flash from input file nature_touch_unified.ino.hex
+in 1 section [0, 0x2a11]: 85 pages and 110 pad bytes
+Writing 10770 bytes to flash
+Writing | ################################################## | 100% 1.58s
+Reading | ################################################## | 100% 1.31s
+10770 bytes of flash verified
+
+Avrdude done.  Thank you.
+New upload port: COM5 (serial)

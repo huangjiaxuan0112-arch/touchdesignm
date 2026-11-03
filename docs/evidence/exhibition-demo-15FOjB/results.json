@@ -1,0 +1,6337 @@
+{
+  "media": [],
+  "modes": [
+    {
+      "mode": "WIND",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风长3_15秒音视频合成-CsJm9tnX.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风声-BthS0CNS.mp3",
+      "duration": 15,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 5098.646,
+      "rms": 0.11810748593410546,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "WIND",
+        "operationId": "fbffcc7d742b4b4f",
+        "elapsedMs": 24000,
+        "durationMs": 24000,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 2
+    },
+    {
+      "mode": "WAVE",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/waves-experience-CT8b_JR6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/海浪声-TBiY0r_D.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 5066.445,
+      "rms": 0.049057999530588585,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "WAVE",
+        "operationId": "40e39dd3c4b445f0",
+        "elapsedMs": 25000,
+        "durationMs": 25000,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 1
+    },
+    {
+      "mode": "BUBBLE",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/bubbles-experience-DLYWOwH6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/voicebosch-bubbles-171716-0yIbfYsI.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 4488.913,
+      "rms": 0.17750045035517711,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "BUBBLE",
+        "operationId": "bb4f0f69a99f404a",
+        "elapsedMs": 27420,
+        "durationMs": 27420,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 2
+    },
+    {
+      "mode": "WIND",
+      "real": true,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风长3_15秒音视频合成-CsJm9tnX.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风声-BthS0CNS.mp3",
+      "duration": 15,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 4986.361,
+      "rms": 0.10473629220234305,
+      "final": {
+        "connectionState": "connected",
+        "simulationTestArmed": true,
+        "simulationTestEligible": true,
+        "identified": true,
+        "protocolVersion": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "hardwareOutputsEnabled": false,
+        "experience": {
+          "state": "COMPLETED",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 24000,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false,
+          "progress": 1
+        },
+        "lastEvent": "COMPLETED",
+        "lastError": null
+      }
+    },
+    {
+      "mode": "WAVE",
+      "real": true,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/waves-experience-CT8b_JR6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/海浪声-TBiY0r_D.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 4963.3859999999995,
+      "rms": 0.04687300261184297,
+      "final": {
+        "connectionState": "connected",
+        "simulationTestArmed": true,
+        "simulationTestEligible": true,
+        "identified": true,
+        "protocolVersion": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "hardwareOutputsEnabled": false,
+        "experience": {
+          "state": "COMPLETED",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 25000,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false,
+          "progress": 1
+        },
+        "lastEvent": "COMPLETED",
+        "lastError": null
+      }
+    },
+    {
+      "mode": "BUBBLE",
+      "real": true,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/bubbles-experience-DLYWOwH6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/voicebosch-bubbles-171716-0yIbfYsI.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 4370.415,
+      "rms": 0.07757704724392077,
+      "final": {
+        "connectionState": "connected",
+        "simulationTestArmed": true,
+        "simulationTestEligible": true,
+        "identified": true,
+        "protocolVersion": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "hardwareOutputsEnabled": false,
+        "experience": {
+          "state": "COMPLETED",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 27420,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false,
+          "progress": 1
+        },
+        "lastEvent": "COMPLETED",
+        "lastError": null
+      }
+    }
+  ],
+  "method": "Actual React/Electron + compiled HEX in AVR8js; NO COM",
+  "checks": {
+    "mockThreeNaturalRuns": "PASS",
+    "pauseExplicitRestartStop": "PASS",
+    "mockFaultCleanup": "PASS",
+    "virtualNanoThreeNaturalRuns": "PASS"
+  },
+  "writes": [
+    {
+      "type": "IDENTIFY",
+      "protocol": 2,
+      "requestId": "r1"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r2"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r3"
+    },
+    {
+      "type": "SELECT",
+      "experienceId": "WIND",
+      "requestId": "acb2b24349354114"
+    },
+    {
+      "type": "START",
+      "operationId": "e91abbe432644d77",
+      "requestId": "d94b1a714c504631"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "8cae5d356b8a4407"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r4"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r5"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r6"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r7"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r8"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r9"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "ra"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rb"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rc"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rd"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "re"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rf"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rg"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rh"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "ri"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rj"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rk"
+    },
+    {
+      "type": "SELECT",
+      "experienceId": "WAVE",
+      "requestId": "39ea5317382b4036"
+    },
+    {
+      "type": "START",
+      "operationId": "e775ed0ff8af4935",
+      "requestId": "3ce123c341b94b0d"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "d1a38115e01747df"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rl"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rm"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rn"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "ro"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rp"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rq"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rr"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rs"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rt"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "ru"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rv"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rw"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rx"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "ry"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "rz"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r10"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r11"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r12"
+    },
+    {
+      "type": "SELECT",
+      "experienceId": "BUBBLE",
+      "requestId": "f45d75cad15b4f82"
+    },
+    {
+      "type": "START",
+      "operationId": "adcd2d0d9ba24dd0",
+      "requestId": "1415f02873e54264"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "38e40d7b48e74699"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r13"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r14"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r15"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r16"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r17"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r18"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r19"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1a"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1b"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1c"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1d"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1e"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1f"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1g"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1h"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1i"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1j"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1k"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1l"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r1m"
+    },
+    {
+      "type": "SELECT",
+      "experienceId": "WIND",
+      "requestId": "f545608b1dbb4834"
+    },
+    {
+      "type": "START",
+      "operationId": "42924f15af5c443a",
+      "requestId": "70e27635c1dc4162"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "a522d1e2818047d5"
+    },
+    {
+      "type": "STOP",
+      "operationId": "42924f15af5c443a",
+      "requestId": "2e9777fe3974406a"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "e37547d9884e4c1b"
+    }
+  ],
+  "frames": [
+    {
+      "kind": "frame",
+      "virtualMs": 124.0228125,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 2287.5546875,
+      "message": {
+        "type": "ACK",
+        "command": "IDENTIFY",
+        "accepted": true,
+        "requestId": "r1",
+        "state": "IDLE",
+        "protocol": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "deviceId": "nature-touch-nano-simulation",
+        "hardwareOutputsEnabled": false,
+        "capabilities": [
+          "WIND",
+          "WAVE",
+          "BUBBLE",
+          "SIMULATION_ONLY"
+        ]
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 2434.98725,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r2",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 2745.122,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r2",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r2",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 2915.0014375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r3",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 3225.133875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r3",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r3",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 3444.7161875,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "acb2b24349354114",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 3751.83325,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "d94b1a714c504631",
+        "state": "RUNNING",
+        "operationId": "e91abbe432644d77"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 3877.139625,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 4084.9376875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 4195.6229375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "8cae5d356b8a4407",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 4561.0955,
+      "message": {
+        "type": "STATUS",
+        "requestId": "8cae5d356b8a4407",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "8cae5d356b8a4407",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 443,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 5418.139625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r4",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 5755.417625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r4",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r4",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 1666,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 6768.1686875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r5",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 7105.446875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r5",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r5",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 3016,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 8098.150625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r6",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 8435.42725,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r6",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r6",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 4346,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 8820.9894375,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 5000,
+        "text": "PLAY WIND AUDIO NOW"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 9029.83,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 5000,
+        "action": "DEFLATE",
+        "durationMs": 1500,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 9438.17975,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r7",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 9775.459625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r7",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r7",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 5686,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 10396.32625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 6500,
+        "action": "INFLATE",
+        "durationMs": 1300,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 10778.1815,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r8",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 11115.4665625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r8",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r8",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 7026,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 11693.693125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 7800,
+        "action": "DEFLATE",
+        "durationMs": 1450,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 12148.1899375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r9",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 12485.4696875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r9",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r9",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 8396,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 13145.7875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 9250,
+        "action": "INFLATE",
+        "durationMs": 1050,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 13468.1999375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "ra",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 13805.4794375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "ra",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ra",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 9716,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 14195.37575,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 10300,
+        "action": "DEFLATE",
+        "durationMs": 1900,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 14808.1918125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rb",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 15146.5151875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rb",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rb",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 11056,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 16096.97025,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 12200,
+        "action": "INFLATE",
+        "durationMs": 1600,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 16193.0364375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rc",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 16531.36175,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rc",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rc",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 12440,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 17578.19925,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rd",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 17916.5214375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rd",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rd",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 13826,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 18126.4055,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 13800,
+        "action": "DEFLATE",
+        "durationMs": 1750,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 18928.2096875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "re",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 19266.5314375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "re",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "re",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 15176,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 19478.50675,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 15550,
+        "action": "INFLATE",
+        "durationMs": 1450,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 20278.21825,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rf",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 20616.5415625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rf",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rf",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 16526,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 20895.433875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 17000,
+        "action": "DEFLATE",
+        "durationMs": 1050,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 21628.2,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rg",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 21966.5228125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rg",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rg",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 17876,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 22177.4556875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 18050,
+        "action": "INFLATE",
+        "durationMs": 950,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 22814.9001875,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 19000,
+        "text": "FINAL SHRINK"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 23024.787875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 19000,
+        "action": "DEFLATE",
+        "durationMs": 5000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 23120.8520625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rh",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 23459.177625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rh",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rh",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 19369,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 24448.2341875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "ri",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 24786.5573125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "ri",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ri",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 20696,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 25818.229125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rj",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 26156.55275,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rj",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rj",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 22066,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 27218.2353125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rk",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 27556.56,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rk",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rk",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "e91abbe432644d77",
+          "elapsedMs": 23466,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 27818.14,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND",
+        "atMs": 24000,
+        "text": "NEXT WIND CYCLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 27914.206625,
+      "message": {
+        "type": "EVENT",
+        "name": "COMPLETED",
+        "operationId": "e91abbe432644d77",
+        "experienceId": "WIND"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 28674.823,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "39ea5317382b4036",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 29041.9384375,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "3ce123c341b94b0d",
+        "state": "RUNNING",
+        "operationId": "e775ed0ff8af4935"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 29167.2458125,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 29375.043,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 29485.729125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "d1a38115e01747df",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 29851.2019375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "d1a38115e01747df",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "d1a38115e01747df",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 443,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 30468.24975,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rl",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 30805.5299375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rl",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rl",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 1426,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 31768.245,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rm",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 32105.5244375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rm",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rm",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 2725,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 33138.25625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rn",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 33475.53625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rn",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rn",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 4096,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 34110.7060625,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 5000,
+        "text": "PLAY WAVE AUDIO NOW"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 34319.5486875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 5000,
+        "action": "DEFLATE",
+        "durationMs": 2000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 34458.254,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "ro",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 34795.5320625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "ro",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ro",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 5416,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 35808.2686875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rp",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 36145.5480625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rp",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rp",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 6766,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 36356.4781875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 7000,
+        "action": "INFLATE",
+        "durationMs": 2500,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 37148.272125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rq",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 37485.5546875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rq",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rq",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 8106,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 38508.2731875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rr",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 38845.5539375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rr",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rr",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 9465,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 39054.394625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 9500,
+        "action": "DEFLATE",
+        "durationMs": 2000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 39868.281625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rs",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 40206.6055625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rs",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rs",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 10826,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 40687.31075,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 11500,
+        "action": "INFLATE",
+        "durationMs": 2500,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 41238.2929375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rt",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 41576.616375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rt",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rt",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 12195,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 42578.2949375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "ru",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 42916.6188125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "ru",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ru",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 13536,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 43184.8156875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 14000,
+        "action": "DEFLATE",
+        "durationMs": 2000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 43908.2898125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rv",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 44246.6141875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rv",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rv",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 14866,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 45186.7759375,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 16000,
+        "action": "INFLATE",
+        "durationMs": 2500,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 45282.84075,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rw",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 45621.166,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rw",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rw",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 16240,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 46618.3125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rx",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 46956.637,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rx",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rx",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 17576,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 47685.3015625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 18500,
+        "action": "DEFLATE",
+        "durationMs": 1000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 47928.311375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "ry",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 48266.6358125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "ry",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "ry",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 18886,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 48685.7841875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 19500,
+        "action": "INFLATE",
+        "durationMs": 500,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 49105.070875,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 20000,
+        "text": "FINAL SHRINK"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 49314.95525,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 20000,
+        "action": "DEFLATE",
+        "durationMs": 5000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 49411.0231875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "rz",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 49749.3471875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "rz",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "rz",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 20369,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 50800.4166875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r10",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 51140.8263125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r10",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r10",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 21758,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 52190.4219375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r11",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 52530.8343125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r11",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r11",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 23148,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 53580.4289375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r12",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 53920.8411875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r12",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r12",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WAVE",
+          "operationId": "e775ed0ff8af4935",
+          "elapsedMs": 24538,
+          "durationMs": 25000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 54107.296,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE",
+        "atMs": 25000,
+        "text": "NEXT WAVE CYCLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 54203.3645,
+      "message": {
+        "type": "EVENT",
+        "name": "COMPLETED",
+        "operationId": "e775ed0ff8af4935",
+        "experienceId": "WAVE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 54937.01275,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "f45d75cad15b4f82",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 55242.022375,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "1415f02873e54264",
+        "state": "RUNNING",
+        "operationId": "adcd2d0d9ba24dd0"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 55451.9081875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 4420,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 55562.5951875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "38e40d7b48e74699",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 55930.157625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "38e40d7b48e74699",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "38e40d7b48e74699",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 320,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 56120.4336875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r13",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 56460.8445625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r13",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r13",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 878,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 57250.4309375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r14",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 57591.8851875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r14",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r14",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 2008,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 58590.44275,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r15",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 58931.8988125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r15",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r15",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 3348,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 59728.0666875,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 4420,
+        "text": "PLAY AUDIO NOW"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 59940.0410625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 4420,
+        "action": "INFLATE",
+        "durationMs": 580,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 60037.1530625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r16",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 60378.6091875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r16",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r16",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 4795,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 60509.13625,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 5000,
+        "text": "BUBBLE START"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 60719.020875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 5000,
+        "action": "DEFLATE",
+        "durationMs": 657,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 61044.420125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 5657,
+        "action": "INFLATE",
+        "durationMs": 803,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 61420.4554375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r17",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 61761.9121875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r17",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r17",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 6178,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 61971.7975625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 6460,
+        "action": "DEFLATE",
+        "durationMs": 670,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 62516.931875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 7130,
+        "action": "INFLATE",
+        "durationMs": 820,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 62790.447375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r18",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 63131.902125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r18",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r18",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 7548,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 63341.7885625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 7950,
+        "action": "DEFLATE",
+        "durationMs": 891,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 64229.105125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 8841,
+        "action": "INFLATE",
+        "durationMs": 1089,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 64326.2153125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r19",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 64667.6753125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r19",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r19",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 9084,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 65315.5238125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 9930,
+        "action": "DEFLATE",
+        "durationMs": 850,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 65700.4643125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1a",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66042.967875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1a",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1a",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 10458,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66257.02975,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 10780,
+        "action": "INFLATE",
+        "durationMs": 1040,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67080.4676875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1b",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67422.9666875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1b",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1b",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 11838,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67633.9004375,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 11820,
+        "action": "DEFLATE",
+        "durationMs": 900,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68109.08925,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 12720,
+        "action": "INFLATE",
+        "durationMs": 1100,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68450.4724375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1c",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68792.97275,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1c",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1c",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 13208,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 69205.7515,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 13820,
+        "action": "DEFLATE",
+        "durationMs": 823,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 69840.4843125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1d",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 70182.9841875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1d",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1d",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 14598,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 70397.0465625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 14643,
+        "action": "INFLATE",
+        "durationMs": 1007,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 71036.6723125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 15650,
+        "action": "DEFLATE",
+        "durationMs": 819,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 71240.4965625,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1e",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 71582.9939375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1e",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1e",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 15998,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 71857.981375,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 16469,
+        "action": "INFLATE",
+        "durationMs": 1001,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 72590.492,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1f",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 72932.98475,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1f",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1f",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 17348,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 73143.914,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 17470,
+        "action": "DEFLATE",
+        "durationMs": 225,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 73356.93575,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 17695,
+        "action": "INFLATE",
+        "durationMs": 275,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 73568.90875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 17970,
+        "action": "DEFLATE",
+        "durationMs": 1066,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 73980.4988125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1g",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 74323.0020625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1g",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1g",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 18738,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 74537.067625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 19036,
+        "action": "INFLATE",
+        "durationMs": 1304,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 75350.5083125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1h",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 75693.0075625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1h",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1h",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 20108,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 75903.937,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 20340,
+        "action": "DEFLATE",
+        "durationMs": 342,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 76116.958875,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 20682,
+        "action": "INFLATE",
+        "durationMs": 418,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 76486.501625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 21100,
+        "action": "DEFLATE",
+        "durationMs": 378,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 76720.5106875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1i",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 77063.0130625,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1i",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1i",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 21478,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 77276.0318125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 21478,
+        "action": "INFLATE",
+        "durationMs": 462,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 77486.9618125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 21940,
+        "action": "DEFLATE",
+        "durationMs": 252,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 77699.981625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 22192,
+        "action": "INFLATE",
+        "durationMs": 308,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 77910.9109375,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 22500,
+        "action": "DEFLATE",
+        "durationMs": 243,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 78131.147625,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 22743,
+        "action": "INFLATE",
+        "durationMs": 297,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 78228.2564375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1j",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 78570.7554375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1j",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1j",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 22985,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 78781.689125,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 23040,
+        "action": "DEFLATE",
+        "durationMs": 621,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 79049.715,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 23661,
+        "action": "INFLATE",
+        "durationMs": 759,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 79570.5125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1k",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 79913.0136875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1k",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1k",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 24328,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 80044.584625,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 24420,
+        "text": "FINAL SHRINK"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 80256.55675,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 24420,
+        "action": "DEFLATE",
+        "durationMs": 3000,
+        "D5": 0,
+        "D6": 0,
+        "D7": 180,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 80920.50875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1l",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 81263.00825,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1l",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1l",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 25679,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 82300.5196875,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r1m",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 82643.0233125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r1m",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r1m",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "BUBBLE",
+          "operationId": "adcd2d0d9ba24dd0",
+          "elapsedMs": 27058,
+          "durationMs": 27420,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 82772.5056875,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE",
+        "atMs": 27420,
+        "text": "NEXT ROUND"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 82870.661875,
+      "message": {
+        "type": "EVENT",
+        "name": "COMPLETED",
+        "operationId": "adcd2d0d9ba24dd0",
+        "experienceId": "BUBBLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 83595.0145625,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "f545608b1dbb4834",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 83962.1315625,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "70e27635c1dc4162",
+        "state": "RUNNING",
+        "operationId": "42924f15af5c443a"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 84087.4378125,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "42924f15af5c443a",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 84295.234,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "42924f15af5c443a",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 84405.921125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "a522d1e2818047d5",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 84771.393875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "a522d1e2818047d5",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "a522d1e2818047d5",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "42924f15af5c443a",
+          "elapsedMs": 443,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 85071.0826875,
+      "message": {
+        "type": "ACK",
+        "command": "STOP",
+        "accepted": true,
+        "requestId": "2e9777fe3974406a",
+        "state": "STOPPING",
+        "operationId": "42924f15af5c443a"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 85142.088125,
+      "message": {
+        "type": "EVENT",
+        "name": "STOPPED",
+        "operationId": "42924f15af5c443a"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 85314.5783125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "e37547d9884e4c1b",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 85657.0795,
+      "message": {
+        "type": "STATUS",
+        "requestId": "e37547d9884e4c1b",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "e37547d9884e4c1b",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": "WIND",
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    }
+  ],
+  "mockCommands": [
+    {
+      "channel": "experience:get-state",
+      "at": 1793253556961
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253565187
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793253565194
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253565197
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253566001
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253566022
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253566026
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253566059
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253571315
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572323
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572425
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572535
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572638
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572746
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572852
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253572962
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573073
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573182
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573291
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573406
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573512
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573619
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573727
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573837
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253573948
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574062
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574166
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574270
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574377
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574491
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574603
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574710
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574827
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253574931
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575041
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575144
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575256
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575368
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575484
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575600
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575703
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575815
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253575926
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576038
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576150
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576260
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576368
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576479
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576588
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576697
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576805
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253576916
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577025
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577133
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577243
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577360
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577464
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577571
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577679
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577791
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253577901
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578004
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578116
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578229
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578337
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578447
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578558
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578675
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578787
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253578899
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579004
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579228
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579352
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579461
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579572
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579679
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579782
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253579889
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580008
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580119
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580227
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580332
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580446
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580556
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580672
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580774
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580882
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253580992
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581101
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581211
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581320
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581430
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581539
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581650
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581759
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581863
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253581979
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582093
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582216
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582321
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582431
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582542
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582649
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582759
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582873
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253582978
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583086
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583195
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583306
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583418
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583528
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583651
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583764
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583867
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253583977
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584079
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584193
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584307
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584413
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584525
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584634
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584743
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584852
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253584970
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585080
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585183
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585291
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585401
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585511
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585619
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585722
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585828
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253585931
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586038
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586146
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586260
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586368
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586478
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586583
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586692
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586804
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253586918
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587027
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587132
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587236
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587343
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587447
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587553
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587672
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587785
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253587899
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588008
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588117
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588227
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588338
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588447
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588557
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588665
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588778
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253588896
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589006
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589118
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589224
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589329
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589434
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589539
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589649
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589764
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589874
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253589989
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253590098
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253590101
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253590615
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253591196
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793253591197
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253591198
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253591346
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253591354
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253591355
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253591424
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253596640
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253597587
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253597693
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253597796
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253597911
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598032
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598155
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598271
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598388
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598506
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598611
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598729
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598845
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253598961
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599073
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599192
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599308
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599418
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599524
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599633
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599742
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599851
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253599958
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600064
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600171
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600274
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600377
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600485
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600588
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600692
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600803
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253600911
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601016
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601134
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601249
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601353
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601456
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601562
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601672
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601788
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253601897
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602007
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602225
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602337
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602440
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602550
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602664
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602780
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253602894
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603000
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603218
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603325
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603434
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603536
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603649
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603751
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603858
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253603973
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604077
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604182
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604286
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604392
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604502
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604606
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604709
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604822
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253604931
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605040
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605153
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605260
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605369
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605478
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605588
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605691
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605803
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253605906
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606020
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606128
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606248
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606350
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606455
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606571
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606710
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606830
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253606943
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607046
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607154
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607259
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607362
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607476
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607594
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607712
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607826
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253607935
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608042
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608146
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608256
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608364
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608467
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608678
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608789
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608893
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253608997
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609102
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609213
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609331
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609438
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609548
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609652
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609769
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609876
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253609981
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610097
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610211
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610318
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610423
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610530
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610634
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610740
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610847
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253610950
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611058
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611163
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611276
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611380
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611490
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611600
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611706
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611808
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253611923
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612033
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612145
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612258
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612372
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612476
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612591
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612694
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612804
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253612920
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613034
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613138
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613247
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613354
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613456
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613561
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613669
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613772
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613879
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253613987
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614092
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614209
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614322
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614427
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614530
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614645
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614751
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614854
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253614961
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615066
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615176
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615292
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615407
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615512
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615626
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615729
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615838
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253615940
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616049
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616158
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616262
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616376
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616380
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253616940
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253617562
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793253617562
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253617564
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253617692
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253617699
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253617700
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253617785
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253622346
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623260
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623369
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623471
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623581
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623686
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623792
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623896
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253623999
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624107
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624222
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624337
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624448
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624550
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624664
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624769
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624874
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253624980
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625082
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625187
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625290
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625400
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625507
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625617
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625732
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625850
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253625955
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626058
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626169
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626277
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626394
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626500
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626604
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626713
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626822
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253626929
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627044
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627163
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627270
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627392
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627501
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627603
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627706
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627809
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253627917
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628028
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628133
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628242
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628351
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628454
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628560
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628662
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628776
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253628890
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629007
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629125
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629229
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629336
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629442
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629551
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629665
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629782
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253629893
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630002
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630227
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630336
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630440
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630557
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630666
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630784
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253630893
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631009
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631119
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631228
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631336
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631446
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631558
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631666
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631775
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631886
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253631996
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632102
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632211
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632321
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632431
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632540
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632651
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632759
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253632894
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633010
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633117
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633226
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633333
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633447
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633550
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633661
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633771
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633882
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253633994
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634230
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634335
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634446
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634556
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634664
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634773
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634884
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253634993
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635099
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635207
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635318
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635430
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635535
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635643
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635749
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635855
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253635972
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636080
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636187
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636291
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636402
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636511
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636618
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636727
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636842
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253636958
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637074
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637183
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637290
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637401
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637522
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637631
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637734
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637843
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253637949
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638057
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638160
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638266
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638381
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638485
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638589
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638697
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638800
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253638908
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639018
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639131
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639235
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639338
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639444
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639558
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639671
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639774
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639878
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253639981
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640084
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640187
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640291
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640399
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640502
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640607
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640709
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640822
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253640925
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641035
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641138
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641247
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641350
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641454
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641560
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641662
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641774
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641878
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253641984
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642089
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642198
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642302
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642418
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642529
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642637
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642743
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642859
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253642967
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643079
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643192
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643301
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643411
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643513
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643626
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643730
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643836
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253643940
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644054
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644158
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644263
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644377
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644493
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644608
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644722
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644827
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253644936
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253645040
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253645167
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253645200
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253645807
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646408
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793253646408
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646409
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646631
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253646634
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646634
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646728
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646732
+    },
+    {
+      "channel": "experience:stop",
+      "at": 1793253646733
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646737
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646740
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646840
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646849
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646941
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646951
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646953
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253646954
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253646955
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647059
+    },
+    {
+      "channel": "experience:stop",
+      "at": 1793253647061
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647062
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647064
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647170
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647171
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647272
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647273
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647275
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647797
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793253647798
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647798
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647926
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793253647931
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253647939
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253648022
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253653194
+    },
+    {
+      "channel": "experience:simulate-fault",
+      "at": 1793253654124
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793253654253
+    }
+  ],
+  "result": "FAIL",
+  "error": "Error: Timed out: !document.querySelector('.experience-dialog')\n    at wait (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:64:9)\n    at async back (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:75:3)\n    at async C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:155:26",
+  "ui": {
+    "text": "自然音 × やわらかな触覚体験\n\nNATURAL SOUND × SOFT TACTILE EXPERIENCE\n\n触れられない感覚を、触れられる体験へ\n\nWIND\n風\nゆっくり、やさしく流れる。\nWAVES\n波\n寄せては返す、穏やかなリズム。\nBUBBLES\n泡\n小さく弾ける、軽やかな感覚。\n実機接続：connected（出力はシミュレーション）\nDevice mode\nMock Device — simulated\nReal Arduino — read-only USB\n\nReal Arduino: connected (VIRTUAL_NANO) · SIMULATION TEST ARMED\n\nCOM port\nChoose a detected port\nVIRTUAL_NANO · AVR8js — NOT USB hardware\nRefresh ports\nI confirm valve and both pumps are physically isolated from all power paths. USB/reset cannot energize them.\n\nOpening serial may reset an unknown installed sketch. Controls require a separately armed simulation test session.\n\nDisconnect ArduinoSTATUS_QUERY\n\nIDENTIFY: nature-touch-unified-simulation · Protocol 2 · reports outputs disabled\n\nI confirm the identified Nature Touch simulation-only firmware is the intended test firmware. Loads remain physically isolated; this is not actuator control.\nDisarm simulation testTest STARTTest STOP\n{\n  \"state\": \"IDLE\",\n  \"selectedExperienceId\": \"WIND\",\n  \"operationId\": null,\n  \"elapsedMs\": 0,\n  \"durationMs\": 24000,\n  \"faultCode\": null,\n  \"hardwareOutputsEnabled\": false\n}\n\n音をえらんでください\n\n音源 WIND 設定済み\n映像 ホバーでプレビュー\n\nもどる\nWIND\n風\n\nArduino シミュレーション · IDLE · 実出力は無効\n\n停止中\n映像・音声\n\n停止",
+    "errors": [],
+    "visibility": []
+  }
+}

@@ -54,9 +54,11 @@ export function ArduinoConnection({ realMode, onModeChange, disabled, onSnapshot
   const connected = snapshot.connectionState === 'connected'
   const connecting = snapshot.connectionState === 'connecting'
   const running = snapshot.experience.state === 'RUNNING' || snapshot.experience.state === 'STOPPING'
+  const benchMode = snapshot.openAirBenchSession === true
+  const controlReady = snapshot.simulationTestArmed === true || (benchMode && snapshot.realControlEligible === true)
   const requestId = () => crypto.randomUUID().replace(/-/g, '').slice(0, 16)
 
-  return <section className="device-connection" aria-label="Device connection">
+  return <section className={`device-connection${realMode ? ' device-connection--expanded' : ''}`} aria-label="Device connection">
     <label>Device mode <select aria-label="Device mode" value={realMode ? 'real' : 'mock'}
       disabled={busy || connecting || disabled || running}
       onChange={(event) => {
@@ -68,9 +70,9 @@ export function ArduinoConnection({ realMode, onModeChange, disabled, onSnapshot
         })
       }}>
       <option value="mock">Mock Device — simulated</option>
-      <option value="real" disabled={!api}>Real Arduino — read-only USB</option>
+      <option value="real" disabled={!api}>{benchMode ? 'Real Arduino — open-air bench ONLY' : 'Real Arduino — read-only USB'}</option>
     </select></label>
-    <p role="status">{realMode ? `Real Arduino: ${snapshot.connectionState}${connected ? ` (${connectedPort || 'existing session'})` : ''} · ${snapshot.simulationTestArmed ? 'SIMULATION TEST ARMED' : 'READ ONLY'}` : 'Mock Mode — no Arduino commands'}</p>
+    <p role="status">{realMode ? `Real Arduino: ${snapshot.connectionState}${connected ? ` (${connectedPort || 'existing session'})` : ''} · ${benchMode ? 'OPEN-AIR BENCH ONLY · NO AIRBAG' : snapshot.simulationTestArmed ? 'SIMULATION TEST ARMED' : 'READ ONLY'}` : 'Mock Mode — no Arduino commands'}</p>
     {realMode && <>
       <label>COM port <select aria-label="COM port" value={portPath} disabled={busy || connected || connecting}
         onChange={(event) => setPortPath(event.target.value)}>
@@ -78,20 +80,20 @@ export function ArduinoConnection({ realMode, onModeChange, disabled, onSnapshot
         {ports.map((port) => <option key={port.path} value={port.path}>{port.path} · {port.manufacturer || 'Unknown device'}{port.vendorId ? ` (${port.vendorId}:${port.productId})` : ''}</option>)}
       </select></label>
       <button disabled={busy || connecting} onClick={() => void run(refreshPorts)}>Refresh ports</button>
-      <label><input type="checkbox" checked={isolated} disabled={busy || connected || connecting}
+      <label><input type="checkbox" aria-label={benchMode ? 'Confirm open-air bench' : undefined} checked={isolated} disabled={busy || connected || connecting}
         onChange={(event) => setIsolated(event.target.checked)} />
-        I confirm valve and both pumps are physically isolated from all power paths. USB/reset cannot energize them.
+        {benchMode ? 'I confirm the airbag is disconnected, the gas path is open and cannot build pressure, and I can immediately disconnect the sole USB power.' : 'I confirm valve and both pumps are physically isolated from all power paths. USB/reset cannot energize them.'}
       </label>
-      <p>Opening serial may reset an unknown installed sketch. Controls require a separately armed simulation test session.</p>
+      <p>{benchMode ? 'Open-air bench only. Connecting does not START. An experience-card click starts real pumps and valve; keep the airbag disconnected.' : 'Opening serial may reset an unknown installed sketch. Controls require a separately armed simulation test session.'}</p>
       <button disabled={busy || connecting || (!connected && (!portPath || !isolated))}
         onClick={() => void run(async () => {
           if (connected) { await api.disconnectFirmware(); setIsolated(false) }
-          else { setConnectedPort(portPath); setSnapshot(await api.connectFirmware(portPath, DEFAULT_SERIAL_BAUD_RATE, isolated)) }
+          else { setConnectedPort(portPath); setSnapshot(await api.connectFirmware(portPath, DEFAULT_SERIAL_BAUD_RATE, benchMode ? false : isolated, benchMode ? isolated : false)) }
         })}>{connected ? 'Disconnect Arduino' : 'Connect + IDENTIFY'}</button>
       <button disabled={busy || !connected || !snapshot.identified}
         onClick={() => void run(() => api.queryFirmwareStatus(crypto.randomUUID().replace(/-/g, '').slice(0, 16)))}>STATUS_QUERY</button>
-      <p>IDENTIFY: {snapshot.identified ? `${snapshot.firmware} · Protocol ${snapshot.protocolVersion} · reports outputs disabled` : 'Not identified'}</p>
-      <label><input type="checkbox" aria-label="Confirm simulation firmware" checked={firmwareConfirmed}
+      <p>IDENTIFY: {snapshot.identified ? `${snapshot.firmware} · Protocol ${snapshot.protocolVersion} · reports outputs ${snapshot.hardwareOutputsEnabled ? 'enabled' : 'disabled'}` : 'Not identified'}</p>
+      {!benchMode && <><label><input type="checkbox" aria-label="Confirm simulation firmware" checked={firmwareConfirmed}
         disabled={busy || !snapshot.identified || snapshot.simulationTestArmed}
         onChange={(event) => setFirmwareConfirmed(event.target.checked)} />
         I confirm the identified Nature Touch simulation-only firmware is the intended test firmware. Loads remain physically isolated; this is not actuator control.
@@ -101,15 +103,15 @@ export function ArduinoConnection({ realMode, onModeChange, disabled, onSnapshot
         onClick={() => void run(async () => {
           if (snapshot.simulationTestArmed) await api.disarmFirmwareSimulationTest()
           else await api.armFirmwareSimulationTest(isolated, firmwareConfirmed)
-        })}>{snapshot.simulationTestArmed ? 'Disarm simulation test' : 'Arm Real Arduino Simulation Test'}</button>
-      <button disabled={busy || disabled || !snapshot.simulationTestArmed || snapshot.experience.state !== 'IDLE' || !snapshot.experience.selectedExperienceId}
+        })}>{snapshot.simulationTestArmed ? 'Disarm simulation test' : 'Arm Real Arduino Simulation Test'}</button></>}
+      <button disabled={busy || disabled || !controlReady || snapshot.experience.state !== 'IDLE' || !snapshot.experience.selectedExperienceId}
         onClick={() => void run(async () => {
           const ack = await api.startFirmwareExperience(requestId(), requestId())
           setCommandResult(JSON.stringify(ack))
           if (!ack.accepted) throw new Error(`START rejected: ${ack.code}`)
           await api.queryFirmwareStatus(requestId())
         })}>Test START</button>
-      <button disabled={busy || !snapshot.simulationTestArmed || snapshot.experience.state !== 'RUNNING' || !snapshot.experience.operationId}
+      <button disabled={busy || !controlReady || snapshot.experience.state !== 'RUNNING' || !snapshot.experience.operationId}
         onClick={() => void run(async () => {
           const ack = await api.stopFirmwareExperience(requestId(), snapshot.experience.operationId!)
           setCommandResult(JSON.stringify(ack))

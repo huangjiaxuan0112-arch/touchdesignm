@@ -1,0 +1,77 @@
+{
+  "media": [],
+  "modes": [],
+  "method": "Actual React/Electron + compiled HEX in AVR8js; NO COM",
+  "checks": {},
+  "writes": [],
+  "frames": [
+    {
+      "kind": "frame",
+      "virtualMs": 124.0228125,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    }
+  ],
+  "mockCommands": [
+    {
+      "channel": "experience:get-state",
+      "at": 1793251878629
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887059
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793251887065
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887068
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887819
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793251887834
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887837
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887867
+    },
+    {
+      "channel": "experience:stop",
+      "at": 1793251887876
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887886
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251887992
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793251888104
+    }
+  ],
+  "result": "FAIL",
+  "error": "Error: Timed out: document.querySelector('.experience-dialog video')?.currentTime>0\n    at wait (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:57:9)\n    at async open (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:75:3)\n    at async C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:103:17",
+  "ui": {
+    "text": "自然音 × やわらかな触覚体験\n\nNATURAL SOUND × SOFT TACTILE EXPERIENCE\n\n触れられない感覚を、触れられる体験へ\n\nWIND\n風\nゆっくり、やさしく流れる。\nWAVES\n波\n寄せては返す、穏やかなリズム。\nBUBBLES\n泡\n小さく弾ける、軽やかな感覚。\nMock モード（実機は未接続）\n\n音をえらんでください\n\n音源 WIND 設定済み\n映像 ホバーでプレビュー\n\nもどる\nWIND\n風\n\nMock モード · 実機は未接続\n\n再生を停止しました\n映像・音声\n\n停止\n\n体験を開始できません。AbortError: The play() request was interrupted because video-only background media was paused to save power. https://goo.gl/LdLk22",
+    "errors": [],
+    "visibility": []
+  }
+}

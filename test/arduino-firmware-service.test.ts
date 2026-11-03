@@ -87,6 +87,7 @@ test('read-only hardware integration blocks every mutation before serial write',
 
 function createFirmwareTransport(options: {
   identifyAs?: string
+  identityOutputsEnabled?: boolean
   rejectRecover?: boolean
   recoverWithoutTransition?: boolean
   capabilities?: string[]
@@ -223,7 +224,7 @@ function createFirmwareTransport(options: {
           state,
           protocol: 2,
           firmware: options.identifyAs ?? 'nature-touch-unified-simulation',
-          hardwareOutputsEnabled: false,
+          hardwareOutputsEnabled: options.identityOutputsEnabled ?? false,
           capabilities: options.capabilities ?? ['WIND', 'WAVE', 'BUBBLE', 'SIMULATION_ONLY'],
         })
         return cacheResponse(options.staleIdentityReply
@@ -983,4 +984,105 @@ test('recovers an explicitly faulted firmware state to IDLE without selecting a 
   assert.equal(service.getSnapshot().experience.state, 'IDLE')
   assert.equal(service.getSnapshot().experience.selectedExperienceId, null)
   await service.disconnect()
+})
+
+const realIdentity = {
+  identifyAs: 'nature-touch-unified-real',
+  identityOutputsEnabled: true,
+  statusOutputsEnabled: () => true,
+  capabilities: ['WIND', 'WAVE', 'BUBBLE', 'REAL_ACTUATORS'],
+}
+
+test('real identity connects for status but cannot use simulation arming or default START', async () => {
+  const { transport, commands } = createFirmwareTransport(realIdentity)
+  const service = new ArduinoFirmwareService(transport, { readOnly: false, allowSimulationTest: true, connectSettleMs: 0 })
+  try {
+    const state = await service.connect('COM3')
+    assert.equal(state.firmware, 'nature-touch-unified-real')
+    assert.equal(state.hardwareOutputsEnabled, true)
+    assert.equal(state.simulationTestEligible, false)
+    await assert.rejects(service.armSimulationTest(true, true), /arming denied/)
+    const before = commands.length
+    await assert.rejects(service.selectExperience('realselect', 'WIND'), /Real actuator control is locked/)
+    await assert.rejects(service.start('realstart', 'realop'), /Real actuator control is locked/)
+    await assert.rejects(service.recover('realrecover'), /Real actuator control is locked/)
+    assert.equal(commands.length, before)
+  } finally { await service.disconnect() }
+})
+
+test('read-only real connection permits explicit STOP of a confirmed active operation', async () => {
+  const { transport, commands } = createFirmwareTransport(realIdentity)
+  const starter = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
+    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+  await starter.connect('COM3')
+  await starter.selectExperience('prepare', 'WIND')
+  await starter.start('preparestart', 'active')
+  await starter.disconnect()
+  const before = commands.length
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, connectSettleMs: 0 })
+  try {
+    const state = await service.connect('COM3')
+    assert.equal(state.experience.faultCode, 'RECONNECTED_WHILE_ACTIVE')
+    assert.ok(state.experience.operationId)
+    await service.stop('realstop', state.experience.operationId!)
+    assert.equal(commands.slice(before).filter(line => JSON.parse(line).type === 'START').length, 0)
+    assert.equal(service.getSnapshot().experience.state, 'IDLE')
+  } finally { await service.disconnect() }
+})
+
+test('explicit real deployment permission enables protocol commands without automatic START', async () => {
+  const { transport, commands } = createFirmwareTransport(realIdentity)
+  const service = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
+    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+  try {
+    await service.connect('COM3')
+    assert.deepEqual(commands.map(line => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY'])
+    await service.selectExperience('realselect', 'WIND')
+    assert.equal((await service.start('realstart', 'realop')).accepted, true)
+    await service.stop('realstop', 'realop')
+    assert.equal(service.getSnapshot().experience.state, 'IDLE')
+  } finally { await service.disconnect() }
+})
+
+test('runtime RESET closes real session and never replays START or reconnects', async () => {
+  const { transport, commands } = createFirmwareTransport(realIdentity)
+  const service = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
+    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+  try {
+    await service.connect('COM3')
+    await service.selectExperience('realselect', 'WIND')
+    await service.start('realstart', 'realop')
+    const before = commands.length
+    transport.lastConnection?.emitData(JSON.stringify({ type: 'EVENT', name: 'READY', protocol: 2,
+      deviceId: 'nature-touch-nano-real', hardwareOutputsEnabled: true }) + '\n')
+    await new Promise(resolve => setTimeout(resolve, 5))
+    assert.equal(service.getSnapshot().experience.faultCode, 'DEVICE_RESET')
+    assert.equal(service.getSnapshot().identified, false)
+    assert.equal(commands.length, before)
+    assert.equal(transport.opened.length, 1)
+  } finally { await service.disconnect() }
+})
+
+test('real output status change invalidates identity instead of pretending physical OFF', async () => {
+  let enabled = true
+  const { transport } = createFirmwareTransport({ ...realIdentity, statusOutputsEnabled: () => enabled })
+  const service = new ArduinoFirmwareService(transport, { connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    enabled = false
+    await assert.rejects(service.queryStatus('changed'), /output capability changed/)
+    assert.equal(service.getSnapshot().identified, false)
+    assert.equal(service.getSnapshot().experience.state, 'FAULT')
+  } finally { await service.disconnect() }
+})
+
+test('readOnly remains a real-control lock even when deployment option is supplied', async () => {
+  const { transport, commands } = createFirmwareTransport(realIdentity)
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowRealHardwareControl: true, connectSettleMs: 0 })
+  try {
+    await service.connect('COM3')
+    const before = commands.length
+    await assert.rejects(service.start('locked', 'op'), /Real actuator control is locked/)
+    assert.equal(commands.length, before)
+  } finally { await service.disconnect() }
 })

@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron'
 import { join } from 'node:path'
+import { appendFileSync, mkdirSync } from 'node:fs'
 import { SerialDiagnosticService } from './serial/serial-diagnostic-service'
 import { NativeSerialTransport } from './serial/native-serial-transport'
 import { ArduinoFirmwareService } from './serial/arduino-firmware-service'
@@ -14,10 +15,52 @@ declare const __NATURE_TOUCH_DEV_CSP_NONCE__: string
 
 const runtimeInfoChannel = 'app:get-runtime-info'
 const serialService = new SerialDiagnosticService(new NativeSerialTransport())
-const firmwareService = new ArduinoFirmwareService(new NativeSerialTransport(), {
-  readOnly: true,
-  allowSimulationTest: !app.isPackaged,
+// Source-level deployment permission. Never set by renderer input or dev mode.
+// Remains false until shutdown/power/pressure provisions and deployment are approved.
+const REAL_HARDWARE_DEPLOYMENT_REVIEWED = false
+// User-confirmed airbag-disconnected, open nonpressurizing bench ONLY. Normal
+// launches remain read-only; the renderer cannot enable this process profile.
+const OPEN_AIR_BENCH_UI_REVIEWED = true
+const OPEN_AIR_BENCH_SESSION = OPEN_AIR_BENCH_UI_REVIEWED && process.argv.includes('--open-air-bench')
+const REAL_CONTROL_PERMITTED = REAL_HARDWARE_DEPLOYMENT_REVIEWED || OPEN_AIR_BENCH_SESSION
+const benchEvidence = join(__dirname, '../../../docs/evidence', `real-react-bench-${Date.now()}.jsonl`)
+function benchLog(kind: string, value: unknown): void {
+  if (!OPEN_AIR_BENCH_SESSION) return
+  mkdirSync(join(__dirname, '../../../docs/evidence'), { recursive: true })
+  appendFileSync(benchEvidence, JSON.stringify({ at: new Date().toISOString(), kind, value }) + '\n')
+}
+const firmwareTransport = new NativeSerialTransport()
+if (OPEN_AIR_BENCH_SESSION) {
+  const open = firmwareTransport.open.bind(firmwareTransport)
+  firmwareTransport.open = async (path, baud) => {
+    const connection = await open(path, baud)
+    const write = connection.write.bind(connection)
+    connection.write = async line => { benchLog('TX', JSON.parse(line)); await write(line) }
+    let buffer = ''
+    connection.onData(chunk => {
+      buffer += chunk
+      for (let cut; (cut = buffer.indexOf('\n')) >= 0;) {
+        benchLog('RX', buffer.slice(0, cut).trim()); buffer = buffer.slice(cut + 1)
+      }
+    })
+    return connection
+  }
+}
+const firmwareService = new ArduinoFirmwareService(firmwareTransport, {
+  readOnly: !REAL_CONTROL_PERMITTED,
+  allowSimulationTest: !app.isPackaged && !OPEN_AIR_BENCH_SESSION,
+  allowRealHardwareControl: REAL_CONTROL_PERMITTED,
 })
+function rendererFirmwareSnapshot(snapshot = firmwareService.getSnapshot()): FirmwareControlSnapshot {
+  benchLog('STATE', snapshot)
+  return {
+    ...snapshot,
+    openAirBenchSession: OPEN_AIR_BENCH_SESSION,
+    realControlEligible: OPEN_AIR_BENCH_SESSION && snapshot.identified &&
+      snapshot.connectionState === 'connected' && snapshot.firmware === 'nature-touch-unified-real' &&
+      snapshot.hardwareOutputsEnabled === true,
+  }
+}
 const mockExperienceController = new MockExperienceController()
 let mainWindow: BrowserWindow | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
@@ -78,7 +121,7 @@ function registerIpcHandlers(): void {
   )
   ipcMain.handle('serial:ping', () => { throw new Error('Read-only Protocol v2 mode: legacy PING is disabled.') })
   ipcMain.handle('serial:status', () => { throw new Error('Read-only Protocol v2 mode: legacy STATUS is disabled.') })
-  ipcMain.handle('firmware:get-state', (): FirmwareControlSnapshot => firmwareService.getSnapshot())
+  ipcMain.handle('firmware:get-state', (): FirmwareControlSnapshot => rendererFirmwareSnapshot())
   ipcMain.handle('firmware:arm-simulation', (_event, payload: unknown) => {
     const confirmation = payload as { loadsIsolated?: unknown; simulationFirmwareConfirmed?: unknown } | null
     return firmwareService.armSimulationTest(confirmation?.loadsIsolated === true, confirmation?.simulationFirmwareConfirmed === true)
@@ -86,21 +129,31 @@ function registerIpcHandlers(): void {
   ipcMain.handle('firmware:disarm-simulation', () => firmwareService.disarmSimulationTest())
   ipcMain.handle('firmware:connect', (_event, payload: unknown): Promise<FirmwareControlSnapshot> => {
     if (!payload || typeof payload !== 'object') throw new Error('A port path and baud rate are required.')
-    const request = payload as { portPath?: unknown; baudRate?: unknown; loadsIsolated?: unknown }
-    if (request.loadsIsolated !== true) throw new Error('Confirm pneumatic loads are physically isolated before opening USB serial.')
+    const request = payload as { portPath?: unknown; baudRate?: unknown; loadsIsolated?: unknown; benchFixtureConfirmed?: unknown }
+    if (OPEN_AIR_BENCH_SESSION ? request.benchFixtureConfirmed !== true : request.loadsIsolated !== true) {
+      throw new Error(OPEN_AIR_BENCH_SESSION
+        ? 'Confirm airbag disconnected, gas path open/nonpressurizing and USB cutoff immediately accessible.'
+        : 'Confirm pneumatic loads are physically isolated before opening USB serial.')
+    }
     if (typeof request.portPath !== 'string' || typeof request.baudRate !== 'number') {
       throw new Error('A port path and numeric baud rate are required.')
     }
     const portPath = request.portPath
     const baudRate = request.baudRate
     return serializeSerialPortOperation(async () => {
+      if (OPEN_AIR_BENCH_SESSION) {
+        const reviewedNano = (await firmwareService.listPorts()).find(port => port.path === portPath &&
+          port.vendorId?.toUpperCase() === '1A86' && port.productId?.toUpperCase() === '7523' &&
+          port.serialNumber === '5&26B53364&0&9')
+        if (!reviewedNano) throw new Error('Open-air bench profile is restricted to the reviewed physical Nano.')
+      }
       if (serialPortOwner === 'diagnostic') {
         await serialService.disconnect()
         serialPortOwner = null
       }
       const snapshot = await firmwareService.connect(portPath, baudRate)
       serialPortOwner = 'firmware'
-      return snapshot
+      return rendererFirmwareSnapshot(snapshot)
     })
   })
   ipcMain.handle('firmware:disconnect', () =>
@@ -199,13 +252,14 @@ function registerIpcHandlers(): void {
   })
   firmwareService.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('firmware:state', snapshot)
+      mainWindow.webContents.send('firmware:state', rendererFirmwareSnapshot(snapshot))
     }
   })
 }
 
 function createWindow(): void {
   const window = new BrowserWindow({
+    title: OPEN_AIR_BENCH_SESSION ? 'Nature Touch — Open-air Bench' : 'Nature Touch',
     width: 960,
     height: 640,
     show: false,
@@ -217,6 +271,7 @@ function createWindow(): void {
     },
   })
   mainWindow = window
+  if (OPEN_AIR_BENCH_SESSION) window.on('page-title-updated', event => event.preventDefault())
 
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }))
   window.webContents.on('will-navigate', (event) => event.preventDefault())

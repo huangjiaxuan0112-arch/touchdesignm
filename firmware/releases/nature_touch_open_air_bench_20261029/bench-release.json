@@ -1,0 +1,330 @@
+{
+  "status": "UPLOADED_OPEN_AIR_BENCH_TWO_AUTHORIZED_PAIRS_COMPLETED_AIRBAG_RELEASE_STILL_BLOCKED",
+  "createdUtc": "2026-10-29T06:45:21.336Z",
+  "artifact": "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\firmware\\releases\\nature_touch_open_air_bench_20261029\\OPEN_AIR_BENCH_ONLY.hex",
+  "sha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "scope": "USER_CONFIRMED_AIRBAG_DISCONNECTED_OPEN_GAS_PATH_NO_PRESSURE_BUILDUP",
+  "notApprovedForAirbag": true,
+  "independentPressureProtectionVerified": false,
+  "powerCutoff": "USER_CONFIRMED_ALL_THREE_LOADS_DISCONNECTED_BY_SOLE_USB_NO_BACKFEED",
+  "parameters": {
+    "D5": {
+      "off": 1200,
+      "on": 1800
+    },
+    "D6": {
+      "off": 1200,
+      "on": 1800
+    },
+    "D7": {
+      "off": 1200,
+      "on": 1800
+    },
+    "pumpOffSettleMs": 500,
+    "valveSettleMs": 300,
+    "hostTimeoutMs": 5000
+  },
+  "flashBytes": 12590,
+  "staticSramBytes": 1458,
+  "remainingSramBytes": 590,
+  "normalSwitchingEvidence": "User-reported normal three-mode physical function PASS, not quantified pressure proof",
+  "compile": {
+    "status": "OPEN_AIR_BENCH_ONLY_COMPILED_NOT_UPLOAD_AUTHORIZED",
+    "fqbn": "arduino:avr:nano:cpu=atmega328",
+    "selector": "NATURE_TOUCH_ACTUATOR_DRIVER=1; NATURE_TOUCH_OPEN_AIR_BENCH=1",
+    "hexPath": "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\firmware\\releases\\nature_touch_open_air_bench_20261029\\build-58987b21d56743abb3c6a7b5dc7cde27\\nature_touch_unified.ino.hex",
+    "hexSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+    "flashAndSramUsage": [
+      "Sketch uses 12590 bytes (40%) of program storage space. Maximum is 30720 bytes.",
+      "Global variables use 1458 bytes (71%) of dynamic memory, leaving 590 bytes for local variables. Maximum is 2048 bytes."
+    ],
+    "sourceSha256": [
+      {
+        "file": "actuator-driver.h",
+        "sha256": "f2c7ad7b1d8b687d3fb6adb724234bad6be941bd8282849cde7139de299cd841"
+      },
+      {
+        "file": "experience-timelines.h",
+        "sha256": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff"
+      },
+      {
+        "file": "nature_touch_unified.ino",
+        "sha256": "47d22ea888bccafe6cc2469b9eb76da2fc115658df4dbd1353a20e78b31fe823"
+      },
+      {
+        "file": "real-actuators.h",
+        "sha256": "ce4527f8f8d5cac4244fd457402eae578beac2bbd6bb58b59cac5c4fd943333a"
+      },
+      {
+        "file": "simulated-actuators.h",
+        "sha256": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b"
+      }
+    ],
+    "uploaded": false
+  },
+  "verification": {
+    "intelHexChecksum": "PASS",
+    "elfIndependentFlashExtraction": "PASS",
+    "realDriverSymbols": "PASS",
+    "realFirmwareIdentity": "PASS",
+    "productionSourcesUnchanged": true,
+    "controllerAndTimelinesUnchanged": true
+  },
+  "startup": "Preload 1200us before attach; no automatic START. Upload/reset emits OFF pulses.",
+  "preservedGuards": "STOP, FAULT, HOST_TIMEOUT=5000ms, cancel pending ON, no automatic restart. MCU-held reset remains outside software control.",
+  "uploaded": true,
+  "comOpened": true,
+  "startSent": false,
+  "hostRealPermissionStillLocked": true,
+  "authorizationRequired": {
+    "upload": false,
+    "firstStart": false,
+    "anyAdditionalStart": true
+  },
+  "firstActionPlan": [
+    "Keep airbag disconnected and gas path open/nonpressurizing; operator present and USB cutoff accessible",
+    "Authorize this exact HEX upload; dynamically discover Nano, upload --verify; no START",
+    "Read IDENTIFY/STATUS; user observes startup pumps stopped",
+    "Separately authorize one supervised START then STOP via existing protocol; no automatic repeats",
+    "Connected-airbag release remains blocked"
+  ],
+  "uploadVerified": true,
+  "deploymentEvidence": "docs/evidence/open-air-bench-upload-myZe0S",
+  "lastInstalledFirmware": "nature-touch-unified-real",
+  "lastObservedLogicalState": {
+    "state": "IDLE",
+    "selectedExperienceId": null,
+    "operationId": null,
+    "elapsedMs": 0,
+    "durationMs": null,
+    "faultCode": null,
+    "hardwareOutputsEnabled": true
+  },
+  "userStartupPhysicalObservation": {
+    "reportedUtc": "2026-10-29T06:53:36.607Z",
+    "D6DidNotSelfStart": true,
+    "D7DidNotSelfStart": true,
+    "scope": "User actual observation after unified firmware upload; not measured load current or independent relief proof"
+  },
+  "currentFixture": {
+    "airbagDisconnected": true,
+    "gasPathOpen": true,
+    "noPressureBuildUpUserConfirmed": true,
+    "loadsReconnectedToSoleUSB": true,
+    "operatorPresent": true,
+    "emergencyUSBDisconnectAccessible": true
+  },
+  "benchHostPreparation": {
+    "entry": "desktop/electron/open-air-bench-session.ts",
+    "usesExistingService": "ArduinoFirmwareService + NativeSerialTransport inside Electron",
+    "productionAppPermissionUnchanged": true,
+    "readOnlyEvidence": "docs/evidence/open-air-bench-session-7L1DOM",
+    "currentState": "IDLE_NO_FAULT_NO_SELECTED_MODE",
+    "sessionClosed": true,
+    "plannedExplicitCommand": "START_STOP_ONCE WIND 2000",
+    "timedStop": "2000ms after START ACK; serial/physical stop delays not included",
+    "repeatAllowed": false,
+    "firstStartStillAwaitingExplicitAuthorization": true,
+    "controllerSourceSha256": "63308cdfe96695ee3488fd4305726495a59934dc42b28684e09e0686627062c4",
+    "actualPreparationCommands": [
+      "IDENTIFY",
+      "STATUS_QUERY",
+      "STATUS_QUERY"
+    ]
+  },
+  "lastSupervisedPair": {
+    "evidence": "docs/evidence/open-air-bench-session-S8hz0f",
+    "softwareResult": "SOFTWARE_START_STOP_PASS_USER_CONFIRMED_BOTH_PUMPS_STOPPED",
+    "mode": "WIND",
+    "STARTcount": 1,
+    "STOPcount": 1,
+    "ackToStopSendMs": 2001,
+    "physicalObservation": {
+      "reportedUtc": "2026-10-29T06:58:12.136Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "对完全停止了",
+      "scope": "D6 and D7 both completely stopped after the authorized WIND START/STOP pair",
+      "D6Stopped": true,
+      "D7Stopped": true,
+      "loadCurrentMeasured": false,
+      "pressureSafetyVerified": false
+    },
+    "serialClosed": true,
+    "anotherStartAuthorized": false,
+    "startOnBehavior": "USER_CONFIRMED_D7_RAN_D6_DID_NOT_RUN",
+    "valveObservation": "NOT_CONFIRMED_SHORT_TEST_SOUND_NOT_CLEAR",
+    "stopPowerContext": "PREVIOUS_UNPLUGGING_WORD_CLARIFIED_AS_TYPO",
+    "additionalUserObservation": {
+      "reportedUtc": "2026-10-29T06:59:10.107Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "对d7 运转拔了d6 没有",
+      "D7RanReported": true,
+      "D6DidNotRunReported": true,
+      "unpluggingMeaning": "PENDING_CLARIFICATION",
+      "unpluggedItemAndTiming": "UNKNOWN"
+    },
+    "result": "PASS_SERIAL_START_STOP_AND_USER_OBSERVED_D7_ON_D6_INACTIVE_BOTH_STOPPED",
+    "typoClarification": {
+      "reportedUtc": "2026-10-29T07:00:03.965Z",
+      "source": "USER_CLARIFICATION",
+      "userWords": "打错字你不需要在意",
+      "clarification": "The word 拔了 in the previous observation was a typo, not a report of unplugging."
+    },
+    "valveObservationDetail": {
+      "reportedUtc": "2026-10-29T07:01:35.009Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "秒数太快了听不太清楚",
+      "component": "D5",
+      "result": "NOT_CONFIRMED",
+      "reason": "Switching sound was not clearly heard during the short run; not evidence of valve failure"
+    }
+  },
+  "secondSupervisedPair": {
+    "evidence": "docs/evidence/open-air-bench-session-TZCUL3",
+    "result": "PASS_SERIAL_START_STOP_USER_HEARD_D5_SWITCHING_AND_CONFIRMED_BOTH_PUMPS_STOPPED",
+    "requestedStopMs": 7000,
+    "actualStartAckToStopWireMs": 7428,
+    "physicalObservations": {
+      "reportedUtc": "2026-10-29T07:05:18.577Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "听到了d5的切换声 ，两台已经停止了",
+      "D5SwitchingSoundHeard": true,
+      "D6StoppedAfterSTOP": true,
+      "D7StoppedAfterSTOP": true,
+      "flowRoutingMeasured": false,
+      "D6RunningDuringDeflate": "NOT_REPORTED",
+      "pressureSafetyVerified": false
+    },
+    "serialClosed": true,
+    "anotherStartAuthorized": false
+  },
+  "pendingD6Verification": {
+    "status": "PASS_REAL_D6_DEFLATE_AND_STOP_USER_CONFIRMED",
+    "mode": "WIND",
+    "scope": "AIRBAG_DISCONNECTED_OPEN_GAS_PATH_NO_PRESSURE_BUILDUP",
+    "command": "START_STOP_ONCE WIND 22000",
+    "sequence": "Run original WIND sequence once; final DEFLATE begins at 19000ms, ends at 24000ms. Send STOP 22000ms after START ACK, subject to in-flight serial request completion.",
+    "expectedFinalDeflate": {
+      "D7": "OFF",
+      "D5": "OFF_A_R",
+      "D6": "ON"
+    },
+    "expectedAfterStop": {
+      "D6": "OFF",
+      "D7": "OFF",
+      "state": "IDLE"
+    },
+    "physicalMeasurements": {
+      "reportedUtc": "2026-10-29T07:12:40.853Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "1 对的 2 对的完全停止",
+      "D6RanDuringFinalDeflate": true,
+      "D7StoppedDuringFinalDeflate": true,
+      "D5SwitchedDuringFinalDeflate": true,
+      "D6StoppedAfterSTOP": true,
+      "D7StoppedAfterSTOP": true,
+      "scope": "Airbag disconnected open nonpressurizing bench; not pressure protection or measured current/flow verification"
+    },
+    "STARTauthorized": false,
+    "STARTsent": true,
+    "uploadNeeded": false,
+    "firmwareModified": false,
+    "protocolModified": false,
+    "timelineModified": false,
+    "hostSourceSha256": "63de8b3a5ff913e7832e7afaa4e81359da96d3b9a15e6fdd2337e8745fa2a474",
+    "hostBundleSha256": "65290fc2f6cd002bd718118ab5f3c2a716f673b5247b3ea68b36978c2647bcbf",
+    "nextTaskIfPassed": "React -> Electron -> physical Nano end-to-end integration; no repeat Mock or AVR8js testing",
+    "authorizationConsumed": true,
+    "evidence": "docs/evidence/open-air-bench-session-XZbVVG",
+    "actualStartAckToStopWireMs": 22197,
+    "finalLogicalState": {
+      "state": "IDLE",
+      "selectedExperienceId": "WIND",
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": 24000,
+      "faultCode": null,
+      "hardwareOutputsEnabled": true
+    },
+    "anotherStartAuthorized": false
+  },
+  "nextTask": "React -> Electron -> physical Nano end-to-end integration in open nonpressurizing bench; no repeat Mock or AVR8js",
+  "realReactIntegration": {
+    "status": "ACTUAL_FIRST_UI_START_FAILED_UNEXPECTED_READY_IN_TRUNCATED_STATUS",
+    "evidence": "docs/evidence/real-react-bench-ui-readiness-20261029.json",
+    "typecheck": "PASS",
+    "build": "PASS",
+    "MockOrAvr8jsRepeated": false,
+    "firmwareUploadedAgain": false,
+    "newSTARTsentByAssistant": false,
+    "defaultApplicationPhysicalPermission": false,
+    "benchLaunchFlag": "--open-air-bench",
+    "benchProfileReviewed": true,
+    "reviewedNanoOnly": {
+      "vendorId": "1A86",
+      "productId": "7523",
+      "serialNumber": "5&26B53364&0&9"
+    },
+    "ProtocolV2Changed": false,
+    "timelinesChanged": false,
+    "pendingFirstPhysicalUICase": "WIND one 24000ms original experience; natural completion; STOP only if needed, subject to explicit authorization",
+    "sourceSha256": {
+      "desktop/electron/main.ts": "17d1da06757fc5ddf0befed7626d817918d700834cafe96f6bbe2f8b2f6ec58c",
+      "desktop/electron/preload.ts": "d4d3f84570aca07f03d34dc2395621bf58ee44c9cd6f1fa29caa4fb44645e6f6",
+      "desktop/shared/ipc.ts": "c7c69c37442ef6b46f1c870c6d6907f4d2b33bbae6d92977714b55bb83fcc2a3",
+      "desktop/shared/firmware-control-protocol.ts": "8f93437b2acf205ce7f49064dbd6196ed19d79927c2b9b914a2df2a24ca6d032",
+      "desktop/renderer/src/app/ExhibitionHome.tsx": "30b7552b377f5dac25cc568e2d333666272da3887d98ae540156b7b199ca9a23",
+      "desktop/renderer/src/app/start-selected-experience.ts": "a9cf5d4a99a2d7f53e2fff0f30d1a277e7b21f43e85351b1962c9f90b57a0ba3",
+      "desktop/renderer/src/device/ArduinoConnection.tsx": "54073cc03c1654815da707f10d053946edcec1b857090a68d3947237a59b085d"
+    },
+    "actualJournal": "docs/evidence/real-react-bench-1793258636969.jsonl",
+    "actualCommands": [
+      {
+        "type": "IDENTIFY",
+        "protocol": 2,
+        "requestId": "r1"
+      },
+      {
+        "type": "STATUS_QUERY",
+        "requestId": "r2"
+      }
+    ],
+    "installedIdentity": {
+      "type": "ACK",
+      "command": "IDENTIFY",
+      "accepted": true,
+      "requestId": "r1",
+      "state": "IDLE",
+      "protocol": 2,
+      "firmware": "nature-touch-unified-real",
+      "deviceId": "nature-touch-nano-real",
+      "hardwareOutputsEnabled": true,
+      "capabilities": [
+        "WIND",
+        "WAVE",
+        "BUBBLE",
+        "REAL_ACTUATORS"
+      ]
+    },
+    "lastStatus": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": true
+    },
+    "oldWindowClosed": true,
+    "rawLogNote": "STATE entries are raw service snapshots before the Electron-local scope overlay; real UI scope/eligibility are attached only in the renderer snapshot.",
+    "buildSha256": {
+      "main": "b5d75560c57636654836d133b8430ec53d330139159d30549b5c13c4d1356e76",
+      "preload": "a87b1177d464a90361e3af032b813dbe64d45f27733a6409f3b51f759b58207b"
+    },
+    "actualRunEvidence": "docs/evidence/real-react-wind-24s-result-20261029.json",
+    "actualSTARTcount": 1,
+    "physicalStopUserConfirmed": true,
+    "userReportsNoExternalRESETorWiringChange": true,
+    "additionalSTARTauthorized": false
+  }
+}

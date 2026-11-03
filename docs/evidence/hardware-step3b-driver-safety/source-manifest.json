@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-10-27T06:12:52.148Z",
+  "physicalSerialAccess": false,
+  "uploaded": false,
+  "defaultDriver": "simulation",
+  "realDriver": "BLOCKED",
+  "sourceHashes": {
+    "firmware/unified/nature_touch_unified/actuator-driver.h": "c623954af87d8b9c16a5cc8321efb321ce8a2a91078a42c5b5076a31e4ad3dbb",
+    "firmware/unified/nature_touch_unified/real-actuators.h": "1262c24a401258b6103b2f4297062478b116b779bfce2e79c02edfbc9446d072",
+    "firmware/unified/nature_touch_unified/simulated-actuators.h": "4f6d22761044718fb1b41c0429e6ea9168bdb1f62ef30e5e94d485cf7c9863d1",
+    "firmware/unified/nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "firmware/unified/nature_touch_unified/nature_touch_unified.ino": "9b886820fd02c95b58ad5d208b53e9e5e85489bc4c214840f0984bacae8676a1"
+  }
+}

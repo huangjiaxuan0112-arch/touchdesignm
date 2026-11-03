@@ -1,0 +1,12 @@
+{
+  "authorizedUtc": "2026-10-29T07:36:08.996Z",
+  "userWords": "可以了我同意",
+  "fixture": "User reports isolation step complete: D5/D6/D7 pneumatic load power isolated; Nano USB and control wiring retained; airbag disconnected and gas path open.",
+  "action": "One identical actual React WIND card click, 24000ms original timeline to natural completion; protective STOP on abnormality; no other modes or automatic retries",
+  "journal": "docs/evidence/real-react-bench-1793258636969.jsonl",
+  "baselineRows": 45,
+  "baselineSTARTcount": 1,
+  "launchClaimed": true,
+  "firmwareSha256": "1dc67169edc0b513be668bee0f4d9354152bf2124535ee4d0252fd97835d3ca0",
+  "cardClickClaimedUtc": "2026-10-29T07:36:47.402Z"
+}

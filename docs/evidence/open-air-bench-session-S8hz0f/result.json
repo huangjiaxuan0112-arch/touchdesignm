@@ -1,0 +1,86 @@
+{
+  "scope": "One interrupted WIND run on airbag-disconnected open nonpressurizing bench; not full timeline, deflation, fault or pressure-protection verification",
+  "result": "PASS_SERIAL_START_STOP_AND_USER_OBSERVED_D7_ON_D6_INACTIVE_BOTH_STOPPED",
+  "START": {
+    "at": "2026-10-29T06:57:07.215Z",
+    "kind": "TX",
+    "value": {
+      "type": "START",
+      "operationId": "335a4f95cfbd",
+      "requestId": "3f16278c7332"
+    }
+  },
+  "START_ACK": {
+    "at": "2026-10-29T06:57:07.426Z",
+    "kind": "START_ACK",
+    "value": {
+      "type": "ACK",
+      "command": "START",
+      "accepted": true,
+      "requestId": "3f16278c7332",
+      "state": "RUNNING",
+      "operationId": "335a4f95cfbd"
+    }
+  },
+  "STOP": {
+    "at": "2026-10-29T06:57:09.427Z",
+    "kind": "TX",
+    "value": {
+      "type": "STOP",
+      "operationId": "335a4f95cfbd",
+      "requestId": "15f5e40edc86"
+    }
+  },
+  "ackToStopSendMs": 2001,
+  "logicalFinalState": {
+    "state": "IDLE",
+    "selectedExperienceId": "WIND",
+    "operationId": null,
+    "elapsedMs": 0,
+    "durationMs": 24000,
+    "faultCode": null,
+    "hardwareOutputsEnabled": true
+  },
+  "closed": true,
+  "automaticRepeat": false,
+  "physicalObservations": [
+    {
+      "reportedUtc": "2026-10-29T06:58:12.136Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "对完全停止了",
+      "scope": "D6 and D7 both completely stopped after the authorized WIND START/STOP pair",
+      "D6Stopped": true,
+      "D7Stopped": true,
+      "loadCurrentMeasured": false,
+      "pressureSafetyVerified": false
+    },
+    {
+      "reportedUtc": "2026-10-29T06:59:10.107Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "对d7 运转拔了d6 没有",
+      "D7RanReported": true,
+      "D6DidNotRunReported": true,
+      "unpluggingMeaning": "PENDING_CLARIFICATION",
+      "unpluggedItemAndTiming": "UNKNOWN"
+    },
+    {
+      "reportedUtc": "2026-10-29T07:00:03.965Z",
+      "source": "USER_CLARIFICATION",
+      "userWords": "打错字你不需要在意",
+      "clarification": "The word 拔了 in the previous observation was a typo, not a report of unplugging."
+    },
+    {
+      "reportedUtc": "2026-10-29T07:01:35.009Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "秒数太快了听不太清楚",
+      "component": "D5",
+      "result": "NOT_CONFIRMED",
+      "reason": "Switching sound was not clearly heard during the short run; not evidence of valve failure"
+    }
+  ],
+  "physicalPumpOffConfirmed": true,
+  "legacyActuatorEventNumbersAreNotPhysicalPulseMeasurements": true,
+  "startOnBehavior": "USER_CONFIRMED_D7_RAN_D6_DID_NOT_RUN",
+  "valveSwitchingObservation": "NOT_CONFIRMED_SHORT_TEST_SOUND_NOT_CLEAR",
+  "stopPowerContext": "PREVIOUS_UNPLUGGING_WORD_CLARIFIED_AS_TYPO"
+}

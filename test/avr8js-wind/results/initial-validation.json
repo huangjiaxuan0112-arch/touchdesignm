@@ -1,0 +1,650 @@
+{
+  "result": "FAIL",
+  "measurementMethod": "Actual AVR instruction execution of Arduino CLI-produced HEX; GPIO listeners timestamp CPU cycles. No scripted waveform or delay fast-forward.",
+  "fqbn": "arduino:avr:nano:cpu=atmega328",
+  "frequencyHz": 16000000,
+  "cliVersion": "arduino-cli  Version: 1.5.1 Commit: 01f3d4f2b Date: 2026-06-05T10:22:12Z",
+  "avr8jsVersion": "0.21.1",
+  "nodeVersion": "v24.22.1",
+  "sourceRelativePath": "卒研music/wind/sketch_oct21a/sketch_oct21a.ino",
+  "sourceSha256": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+  "hexSha256": "fc79c3f306248729900b3f68f243256a38799527308c5267b8e9ffeb29ca4830",
+  "loadedFlashBytes": 3424,
+  "buildDirectory": "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-wind-avr8js-SJ98s8",
+  "compileArgs": [
+    "compile",
+    "--fqbn",
+    "arduino:avr:nano:cpu=atmega328",
+    "--libraries",
+    "C:\\Users\\20676\\AppData\\Local\\Arduino15\\libraries",
+    "--build-path",
+    "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-wind-avr8js-SJ98s8",
+    "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\卒研music\\wind\\sketch_oct21a"
+  ],
+  "virtualCycles": 388800001,
+  "instructions": 299500178,
+  "virtualSeconds": 24.3000000625,
+  "wallSeconds": 6.563,
+  "thresholds": {
+    "pulseUs": 12,
+    "steadyPeriodUs": 30,
+    "phaseMs": 50
+  },
+  "summaries": {
+    "D5": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 631,
+        "min": 543.4375,
+        "max": 548.8125,
+        "mean": 543.7010697305864
+      },
+      "longWidthUs": {
+        "count": 579,
+        "min": 2399.4375,
+        "max": 2403.9375,
+        "mean": 2399.6860967184803
+      },
+      "steadyPeriodUs": {
+        "count": 1138,
+        "min": 20002.8125,
+        "max": 20007.3125,
+        "mean": 20003.117311072056
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 20002.8125,
+        "max": 20007.3125,
+        "mean": 20003.11798679868
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 847308,
+          "fallCycle": 885699,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 52.95675,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 1167369,
+          "fallCycle": 1205763,
+          "widthUs": 2399.625,
+          "kind": "long",
+          "riseMs": 72.9605625,
+          "periodUs": 20003.8125
+        },
+        {
+          "riseCycle": 1487420,
+          "fallCycle": 1525811,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 92.96375,
+          "periodUs": 20003.1875
+        },
+        {
+          "riseCycle": 1807468,
+          "fallCycle": 1845859,
+          "widthUs": 2399.4375,
+          "kind": "long",
+          "riseMs": 112.96675,
+          "periodUs": 20003
+        }
+      ],
+      "startupOtherPulses": []
+    },
+    "D6": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 631,
+        "min": 543.4375,
+        "max": 549.625,
+        "mean": 543.8059627575277
+      },
+      "longWidthUs": {
+        "count": 578,
+        "min": 2399.4375,
+        "max": 2402.125,
+        "mean": 2399.827314013841
+      },
+      "steadyPeriodUs": {
+        "count": 1137,
+        "min": 19999.3125,
+        "max": 20008.4375,
+        "mean": 20003.11680958663
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 18146.8125,
+        "max": 22401.8125,
+        "mean": 20005.09777227723
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 527414,
+          "fallCycle": 565807,
+          "widthUs": 2399.5625,
+          "kind": "long",
+          "riseMs": 32.963375,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 885843,
+          "fallCycle": 924239,
+          "widthUs": 2399.75,
+          "kind": "long",
+          "riseMs": 55.3651875,
+          "periodUs": 22401.8125
+        },
+        {
+          "riseCycle": 1205907,
+          "fallCycle": 1244303,
+          "widthUs": 2399.75,
+          "kind": "long",
+          "riseMs": 75.3691875,
+          "periodUs": 20004
+        },
+        {
+          "riseCycle": 1525955,
+          "fallCycle": 1564354,
+          "widthUs": 2399.9375,
+          "kind": "long",
+          "riseMs": 95.3721875,
+          "periodUs": 20003
+        }
+      ],
+      "startupOtherPulses": []
+    },
+    "D7": {
+      "pulseCount": 1213,
+      "shortWidthUs": {
+        "count": 578,
+        "min": 543.4375,
+        "max": 549,
+        "mean": 543.6980968858131
+      },
+      "longWidthUs": {
+        "count": 631,
+        "min": 2399.4375,
+        "max": 2405.0625,
+        "mean": 2399.729298732171
+      },
+      "steadyPeriodUs": {
+        "count": 1136,
+        "min": 19997.125,
+        "max": 20008.5,
+        "mean": 20003.118122799297
+      },
+      "allPeriodUs": {
+        "count": 1212,
+        "min": 16290.1875,
+        "max": 23716,
+        "mean": 20005.09777227723
+      },
+      "firstPulses": [
+        {
+          "riseCycle": 565941,
+          "fallCycle": 574646,
+          "widthUs": 544.0625,
+          "kind": "short",
+          "riseMs": 35.3713125,
+          "periodUs": null
+        },
+        {
+          "riseCycle": 924373,
+          "fallCycle": 933075,
+          "widthUs": 543.875,
+          "kind": "short",
+          "riseMs": 57.7733125,
+          "periodUs": 22402
+        },
+        {
+          "riseCycle": 1244437,
+          "fallCycle": 1253142,
+          "widthUs": 544.0625,
+          "kind": "short",
+          "riseMs": 77.7773125,
+          "periodUs": 20004
+        },
+        {
+          "riseCycle": 1564488,
+          "fallCycle": 1573189,
+          "widthUs": 543.8125,
+          "kind": "short",
+          "riseMs": 97.7805,
+          "periodUs": 20003.1875
+        }
+      ],
+      "startupOtherPulses": []
+    }
+  },
+  "transitions": {
+    "D5": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 52.95675,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 52.95675
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5013.728875,
+        "widthUs": 543.8125,
+        "kind": "short",
+        "errorMs": 13.728874999999789
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6513.9673125,
+        "widthUs": 2399.875,
+        "kind": "long",
+        "errorMs": 13.967312499999935
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7814.1693125,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 14.16931250000016
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9254.39125,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 4.391250000000582
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10314.5549375,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.554937499999141
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12214.85425,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 14.85425000000032
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13815.10325,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 15.103250000000116
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15555.37275,
+        "widthUs": 2399.4375,
+        "kind": "long",
+        "errorMs": 5.372750000000451
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17015.59675,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 15.596750000000611
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18055.7639375,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 5.763937499999884
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19015.91175,
+        "widthUs": 543.6875,
+        "kind": "short",
+        "errorMs": 15.911749999999302
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24016.693375,
+        "widthUs": 2399.8125,
+        "kind": "long",
+        "errorMs": 16.693374999998923
+      }
+    ],
+    "D6": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 32.963375,
+        "widthUs": 2399.5625,
+        "kind": "long",
+        "errorMs": 32.963375
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5014.2816875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.281687499999862
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6516.3761875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 16.376187500000015
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7814.7221875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 14.722187499999563
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9256.7996875,
+        "widthUs": 2400.375,
+        "kind": "long",
+        "errorMs": 6.7996875000008
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10315.1076875,
+        "widthUs": 543.75,
+        "kind": "short",
+        "errorMs": 15.107687499999884
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12217.2626875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 17.26268750000054
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13815.6556875,
+        "widthUs": 544,
+        "kind": "short",
+        "errorMs": 15.655687500000568
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15557.7811875,
+        "widthUs": 2400.3125,
+        "kind": "long",
+        "errorMs": 7.781187500000669
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17016.1491875,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 16.149187499999243
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18058.1726875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 8.172687499998574
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19016.4644375,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 16.464437499998894
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24019.1021875,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 19.102187500000582
+      }
+    ],
+    "D7": [
+      {
+        "phase": 0,
+        "expectedMs": 0,
+        "observedRiseMs": 35.3713125,
+        "widthUs": 544.0625,
+        "kind": "short",
+        "errorMs": 35.3713125
+      },
+      {
+        "phase": 1,
+        "expectedMs": 5000,
+        "observedRiseMs": 5014.8338125,
+        "widthUs": 2399.6875,
+        "kind": "long",
+        "errorMs": 14.833812500000022
+      },
+      {
+        "phase": 2,
+        "expectedMs": 6500,
+        "observedRiseMs": 6518.7843125,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 18.784312499999942
+      },
+      {
+        "phase": 3,
+        "expectedMs": 7800,
+        "observedRiseMs": 7815.2743125,
+        "widthUs": 2399.5,
+        "kind": "long",
+        "errorMs": 15.274312499999724
+      },
+      {
+        "phase": 4,
+        "expectedMs": 9250,
+        "observedRiseMs": 9259.2084375,
+        "widthUs": 543.875,
+        "kind": "short",
+        "errorMs": 9.20843749999949
+      },
+      {
+        "phase": 5,
+        "expectedMs": 10300,
+        "observedRiseMs": 10315.6598125,
+        "widthUs": 2399.625,
+        "kind": "long",
+        "errorMs": 15.659812500000044
+      },
+      {
+        "phase": 6,
+        "expectedMs": 12200,
+        "observedRiseMs": 12219.6708125,
+        "widthUs": 543.5,
+        "kind": "short",
+        "errorMs": 19.670812500000466
+      },
+      {
+        "phase": 7,
+        "expectedMs": 13800,
+        "observedRiseMs": 13816.2080625,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 16.20806249999987
+      },
+      {
+        "phase": 8,
+        "expectedMs": 15550,
+        "observedRiseMs": 15560.189875,
+        "widthUs": 543.4375,
+        "kind": "short",
+        "errorMs": 10.189875000000029
+      },
+      {
+        "phase": 9,
+        "expectedMs": 17000,
+        "observedRiseMs": 17016.7014375,
+        "widthUs": 2400,
+        "kind": "long",
+        "errorMs": 16.701437499999884
+      },
+      {
+        "phase": 10,
+        "expectedMs": 18050,
+        "observedRiseMs": 18060.5808125,
+        "widthUs": 543.625,
+        "kind": "short",
+        "errorMs": 10.58081250000032
+      },
+      {
+        "phase": 11,
+        "expectedMs": 19000,
+        "observedRiseMs": 19017.0163125,
+        "widthUs": 2399.75,
+        "kind": "long",
+        "errorMs": 17.016312499999913
+      },
+      {
+        "phase": 12,
+        "expectedMs": 24000,
+        "observedRiseMs": 24021.5103125,
+        "widthUs": 543.5625,
+        "kind": "short",
+        "errorMs": 21.51031249999869
+      }
+    ]
+  },
+  "serial": [
+    {
+      "cycle": 220683,
+      "timeMs": 13.7926875,
+      "text": "INITIAL FILL"
+    },
+    {
+      "cycle": 80341826,
+      "timeMs": 5021.364125,
+      "text": "PLAY WIND AUDIO NOW"
+    },
+    {
+      "cycle": 304252033,
+      "timeMs": 19015.7520625,
+      "text": "FINAL SHRINK"
+    },
+    {
+      "cycle": 384306311,
+      "timeMs": 24019.1444375,
+      "text": "NEXT WIND CYCLE"
+    },
+    {
+      "cycle": 384540252,
+      "timeMs": 24033.76575,
+      "text": "INITIAL FILL"
+    }
+  ],
+  "checks": [
+    {
+      "name": "unified WIND nominal timeline",
+      "result": "PASS",
+      "detail": "Read-only comparison; unified firmware is not executed or modified."
+    },
+    {
+      "name": "legacy helper sequence",
+      "result": "PASS",
+      "detail": "Original source matches the 12 expected WIND states, total 24000 ms."
+    },
+    {
+      "name": "D5 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D5 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D5 phase timing",
+      "result": "FAIL",
+      "detail": "First pulse of each state must be within 50 ms of nominal boot-relative delay sum (20 ms frames, startup and software latency)."
+    },
+    {
+      "name": "D5 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "D6 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D6 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D6 phase timing",
+      "result": "PASS",
+      "detail": "First pulse of each state must be within 50 ms of nominal boot-relative delay sum (20 ms frames, startup and software latency)."
+    },
+    {
+      "name": "D6 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "D7 pulse widths",
+      "result": "PASS",
+      "detail": "Every pulse after startup must be 544 or 2400 us within ±12 us; tolerates ISR/digitalWrite latency."
+    },
+    {
+      "name": "D7 full sequence and repeat",
+      "result": "PASS",
+      "detail": "12 states plus next-cycle inflation must be observed."
+    },
+    {
+      "name": "D7 phase timing",
+      "result": "PASS",
+      "detail": "First pulse of each state must be within 50 ms of nominal boot-relative delay sum (20 ms frames, startup and software latency)."
+    },
+    {
+      "name": "D7 steady repetition",
+      "result": "PASS",
+      "detail": "Away from phase changes: 20000 us ±30 us. Serialized channel offsets can change intervals at transitions."
+    },
+    {
+      "name": "virtual UART continued across loop boundary",
+      "result": "PASS",
+      "detail": "Virtual USART output, not a physical serial connection."
+    },
+    {
+      "name": "original sketch unchanged",
+      "result": "PASS",
+      "detail": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2"
+    }
+  ]
+}

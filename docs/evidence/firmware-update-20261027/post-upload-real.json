@@ -1,0 +1,663 @@
+{
+  "startedAtUtc": "2026-10-27T05:35:34.901Z",
+  "kind": "REAL USB Nano; existing service and native transport",
+  "port": "COM5",
+  "writes": [
+    {
+      "at": 1793079337430,
+      "request": {
+        "type": "IDENTIFY",
+        "protocol": 2,
+        "requestId": "r1"
+      }
+    },
+    {
+      "at": 1793079337770,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "r2"
+      }
+    },
+    {
+      "at": 1793079338223,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "r3"
+      }
+    },
+    {
+      "at": 1793079338669,
+      "request": {
+        "type": "SELECT",
+        "experienceId": "WIND",
+        "requestId": "selectStop"
+      }
+    },
+    {
+      "at": 1793079338833,
+      "request": {
+        "type": "START",
+        "operationId": "updatedStop",
+        "requestId": "startStop"
+      }
+    },
+    {
+      "at": 1793079339039,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "runningStatus"
+      }
+    },
+    {
+      "at": 1793079340918,
+      "request": {
+        "type": "STOP",
+        "operationId": "updatedStop",
+        "requestId": "stopCheck"
+      }
+    },
+    {
+      "at": 1793079341181,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "stoppedStatus"
+      }
+    },
+    {
+      "at": 1793079341676,
+      "request": {
+        "type": "SELECT",
+        "experienceId": "WIND",
+        "requestId": "selectLease"
+      }
+    },
+    {
+      "at": 1793079341843,
+      "request": {
+        "type": "START",
+        "operationId": "updatedLease",
+        "requestId": "startLease"
+      }
+    },
+    {
+      "at": 1793079348551,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "timeoutStatus"
+      }
+    },
+    {
+      "at": 1793079352083,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "latchedStatus"
+      }
+    }
+  ],
+  "frames": [
+    {
+      "at": 1793079336559,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1793079337769,
+      "message": {
+        "type": "ACK",
+        "command": "IDENTIFY",
+        "accepted": true,
+        "requestId": "r1",
+        "state": "IDLE",
+        "protocol": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "deviceId": "nature-touch-nano-simulation",
+        "hardwareOutputsEnabled": false,
+        "capabilities": [
+          "WIND",
+          "WAVE",
+          "BUBBLE",
+          "SIMULATION_ONLY"
+        ]
+      }
+    },
+    {
+      "at": 1793079337913,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r2",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793079338216,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r2",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r2",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793079338366,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r3",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793079338669,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r3",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r3",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793079338833,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "selectStop",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793079339038,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "startStop",
+        "state": "RUNNING",
+        "operationId": "updatedStop"
+      }
+    },
+    {
+      "at": 1793079339172,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "updatedStop",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "at": 1793079339371,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "updatedStop",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1793079339471,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "runningStatus",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "at": 1793079339813,
+      "message": {
+        "type": "STATUS",
+        "requestId": "runningStatus",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "runningStatus",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "updatedStop",
+          "elapsedMs": 428,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793079341122,
+      "message": {
+        "type": "ACK",
+        "command": "STOP",
+        "accepted": true,
+        "requestId": "stopCheck",
+        "state": "STOPPING",
+        "operationId": "updatedStop"
+      }
+    },
+    {
+      "at": 1793079341181,
+      "message": {
+        "type": "EVENT",
+        "name": "STOPPED",
+        "operationId": "updatedStop"
+      }
+    },
+    {
+      "at": 1793079341369,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "stoppedStatus",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793079341676,
+      "message": {
+        "type": "STATUS",
+        "requestId": "stoppedStatus",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "stoppedStatus",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": "WIND",
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793079341842,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "selectLease",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793079342050,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "startLease",
+        "state": "RUNNING",
+        "operationId": "updatedLease"
+      }
+    },
+    {
+      "at": 1793079342183,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "updatedLease",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "at": 1793079342369,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "updatedLease",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1793079347068,
+      "message": {
+        "type": "EVENT",
+        "name": "FAULT",
+        "operationId": "updatedLease",
+        "code": "HOST_TIMEOUT"
+      }
+    },
+    {
+      "at": 1793079348739,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "timeoutStatus",
+        "state": "FAULT"
+      }
+    },
+    {
+      "at": 1793079349072,
+      "message": {
+        "type": "STATUS",
+        "requestId": "timeoutStatus",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "timeoutStatus",
+          "state": "FAULT"
+        },
+        "snapshot": {
+          "state": "FAULT",
+          "selectedExperienceId": "WIND",
+          "operationId": "updatedLease",
+          "elapsedMs": 5001,
+          "durationMs": 24000,
+          "faultCode": "HOST_TIMEOUT",
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793079352271,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "latchedStatus",
+        "state": "FAULT"
+      }
+    },
+    {
+      "at": 1793079352604,
+      "message": {
+        "type": "STATUS",
+        "requestId": "latchedStatus",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "latchedStatus",
+          "state": "FAULT"
+        },
+        "snapshot": {
+          "state": "FAULT",
+          "selectedExperienceId": "WIND",
+          "operationId": "updatedLease",
+          "elapsedMs": 5001,
+          "durationMs": 24000,
+          "faultCode": "HOST_TIMEOUT",
+          "hardwareOutputsEnabled": false
+        }
+      }
+    }
+  ],
+  "checks": {
+    "identifyAndIdle": "PASS",
+    "windSelectStartStop": "PASS",
+    "hostTimeout": "PASS",
+    "noAutomaticRestart": "PASS"
+  },
+  "loadsPhysicallyIsolatedConfirmed": true,
+  "ports": [
+    {
+      "path": "COM4",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM3",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM5",
+      "manufacturer": "wch.cn",
+      "vendorId": "1A86",
+      "productId": "7523",
+      "serialNumber": "5&26B53364&0&9"
+    }
+  ],
+  "initial": {
+    "connectionState": "connected",
+    "simulationTestArmed": false,
+    "simulationTestEligible": true,
+    "identified": true,
+    "protocolVersion": 2,
+    "firmware": "nature-touch-unified-simulation",
+    "hardwareOutputsEnabled": false,
+    "experience": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    },
+    "lastEvent": null,
+    "lastError": null
+  },
+  "identify": {
+    "type": "ACK",
+    "command": "IDENTIFY",
+    "accepted": true,
+    "requestId": "r1",
+    "state": "IDLE",
+    "protocol": 2,
+    "firmware": "nature-touch-unified-simulation",
+    "deviceId": "nature-touch-nano-simulation",
+    "hardwareOutputsEnabled": false,
+    "capabilities": [
+      "WIND",
+      "WAVE",
+      "BUBBLE",
+      "SIMULATION_ONLY"
+    ]
+  },
+  "running": {
+    "type": "STATUS",
+    "requestId": "runningStatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "runningStatus",
+      "state": "RUNNING"
+    },
+    "snapshot": {
+      "state": "RUNNING",
+      "selectedExperienceId": "WIND",
+      "operationId": "updatedStop",
+      "elapsedMs": 428,
+      "durationMs": 24000,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    }
+  },
+  "stopAck": {
+    "type": "ACK",
+    "command": "STOP",
+    "accepted": true,
+    "requestId": "stopCheck",
+    "state": "STOPPING",
+    "operationId": "updatedStop"
+  },
+  "afterStop": {
+    "type": "STATUS",
+    "requestId": "stoppedStatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "stoppedStatus",
+      "state": "IDLE"
+    },
+    "snapshot": {
+      "state": "IDLE",
+      "selectedExperienceId": "WIND",
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": 24000,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    }
+  },
+  "afterSilence": {
+    "type": "STATUS",
+    "requestId": "timeoutStatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "timeoutStatus",
+      "state": "FAULT"
+    },
+    "snapshot": {
+      "state": "FAULT",
+      "selectedExperienceId": "WIND",
+      "operationId": "updatedLease",
+      "elapsedMs": 5001,
+      "durationMs": 24000,
+      "faultCode": "HOST_TIMEOUT",
+      "hardwareOutputsEnabled": false
+    }
+  },
+  "faultEvent": {
+    "at": 1793079347068,
+    "message": {
+      "type": "EVENT",
+      "name": "FAULT",
+      "operationId": "updatedLease",
+      "code": "HOST_TIMEOUT"
+    }
+  },
+  "silentWriteGapMs": 6708,
+  "startWriteToFaultReceiptMs": 5225,
+  "faultStillLatched": {
+    "type": "STATUS",
+    "requestId": "latchedStatus",
+    "acknowledgement": {
+      "type": "ACK",
+      "command": "STATUS_QUERY",
+      "accepted": true,
+      "requestId": "latchedStatus",
+      "state": "FAULT"
+    },
+    "snapshot": {
+      "state": "FAULT",
+      "selectedExperienceId": "WIND",
+      "operationId": "updatedLease",
+      "elapsedMs": 5001,
+      "durationMs": 24000,
+      "faultCode": "HOST_TIMEOUT",
+      "hardwareOutputsEnabled": false
+    }
+  },
+  "softwareStoppedEvidence": {
+    "directPhysicalIntentReadback": false,
+    "explanation": "Physical FAULT/HOST_TIMEOUT is observed. The flash-verified reviewed binary calls ActuatorSimulation::stopAll() before entering FAULT; compiled virtual execution independently records STOPPED. Protocol v2 does not serialize the SRAM intent on fault."
+  },
+  "review": {
+    "reviewedAtUtc": "2026-10-27T05:32:38.798Z",
+    "uploaded": false,
+    "physicalSerialAccess": false,
+    "fqbn": "arduino:avr:nano:cpu=atmega328",
+    "bootloaderVariantVerified": false,
+    "toolchain": "Arduino CLI 1.5.1 / arduino:avr 1.8.8",
+    "sha256": {
+      "firmware/unified/nature_touch_unified/nature_touch_unified.ino": "82cecd9eb290997f313c46197728e25ed49b21174834687b946a48f7aa5151fc",
+      "firmware/unified/nature_touch_unified/simulated-actuators.h": "4f6d22761044718fb1b41c0429e6ea9168bdb1f62ef30e5e94d485cf7c9863d1",
+      "firmware/unified/nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+      "docs/evidence/firmware-upload-review-20261027/nature_touch_unified.ino.hex": "1033aa59cb4b8ec21a5ac913c1fca5c813978c3dffab171875e53847858d708b"
+    },
+    "matchesPreviouslyValidatedHex": true,
+    "priorValidationChecks": 11,
+    "targetedCheck": [
+      {
+        "name": "host protocol silence faults, cancels, and requires explicit RECOVER",
+        "result": "PASS"
+      }
+    ],
+    "pinOutputConfigurations": 0,
+    "pinEdges": 0,
+    "timeoutRecordedMillis": 5000,
+    "usartModel": "AVR8js 0.21.1 with explicit test-side pending-RXC preservation on UCSRB writes; stock full-duplex failure is documented and retained."
+  },
+  "result": "PASS",
+  "finalDisconnect": {
+    "connectionState": "disconnected",
+    "simulationTestArmed": false,
+    "simulationTestEligible": false,
+    "identified": false,
+    "protocolVersion": null,
+    "firmware": null,
+    "hardwareOutputsEnabled": false,
+    "experience": {
+      "state": "FAULT",
+      "selectedExperienceId": "WIND",
+      "operationId": "updatedLease",
+      "elapsedMs": 5001,
+      "durationMs": 24000,
+      "faultCode": "HOST_TIMEOUT",
+      "hardwareOutputsEnabled": false
+    },
+    "lastEvent": "WIND 0 ms: INFLATE 5000 ms; D5=180 D6=180 D7=0 (diagnostic only)",
+    "lastError": null
+  },
+  "finishedAtUtc": "2026-10-27T05:35:52.608Z"
+}

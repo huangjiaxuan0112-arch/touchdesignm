@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-10-27T05:21:13.958Z",
+  "portPath": "COM5",
+  "kind": "REAL Nano / Electron UI",
+  "loadsIsolatedConfirmed": true,
+  "writes": [],
+  "messages": [],
+  "modes": {},
+  "checks": {},
+  "errors": [
+    "Error: Script failed to execute, this normally means an error was thrown. Check the renderer console for the error.\n    at node:electron/js2c/sandbox_bundle:2:127259\n    at IpcRendererInternal.<anonymous> (node:electron/js2c/sandbox_bundle:2:121504)\n    at IpcRendererInternal.emit (node:electron/js2c/sandbox_bundle:2:45997)\n    at Object.onMessage (node:electron/js2c/sandbox_bundle:2:119481)"
+  ],
+  "result": "FAIL",
+  "stage": "COMPLETE"
+}

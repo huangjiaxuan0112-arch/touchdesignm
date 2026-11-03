@@ -1,0 +1,2862 @@
+{
+  "media": [],
+  "modes": [
+    {
+      "mode": "WIND",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风长3_15秒音视频合成-CsJm9tnX.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/东风声-BthS0CNS.mp3",
+      "duration": 15,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 5073.253,
+      "rms": 0.09812134323509647,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "WIND",
+        "operationId": "a4b253b8264a4da1",
+        "elapsedMs": 24000,
+        "durationMs": 24000,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 1
+    },
+    {
+      "mode": "WAVE",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/waves-experience-CT8b_JR6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/海浪声-TBiY0r_D.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 5060.381,
+      "rms": 0.04723916897904465,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "WAVE",
+        "operationId": "28d1bddfeb55453d",
+        "elapsedMs": 25000,
+        "durationMs": 25000,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 1
+    },
+    {
+      "mode": "BUBBLE",
+      "real": false,
+      "video": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/bubbles-experience-DLYWOwH6.mp4",
+      "audio": "file:///C:/Users/20676/OneDrive/桌面/touchdesign/desktop/out/renderer/assets/voicebosch-bubbles-171716-0yIbfYsI.mp3",
+      "duration": 15.015,
+      "videoMuted": true,
+      "audioMuted": false,
+      "audioPaused": true,
+      "loop": true,
+      "audioStartElapsed": 4479.223,
+      "rms": 0.14815018746233027,
+      "final": {
+        "state": "COMPLETED",
+        "selectedExperienceId": "BUBBLE",
+        "operationId": "752637ca64884b7d",
+        "elapsedMs": 27420,
+        "durationMs": 27420,
+        "progress": 1,
+        "faultCode": null
+      },
+      "videoWraps": 2
+    }
+  ],
+  "method": "Actual React/Electron + compiled HEX in AVR8js; NO COM",
+  "checks": {
+    "mockThreeNaturalRuns": "PASS",
+    "pauseExplicitRestartStop": "PASS",
+    "mockFaultCleanup": "PASS"
+  },
+  "writes": [
+    {
+      "type": "IDENTIFY",
+      "protocol": 2,
+      "requestId": "r1"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r2"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r3"
+    },
+    {
+      "type": "SELECT",
+      "experienceId": "WIND",
+      "requestId": "c4214a1bc49a41ba"
+    },
+    {
+      "type": "START",
+      "operationId": "25357f02ae974788",
+      "requestId": "d6dc231ce3f7469f"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "4701a26d040a47a5"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r4"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r5"
+    },
+    {
+      "type": "STATUS_QUERY",
+      "requestId": "r6"
+    }
+  ],
+  "frames": [
+    {
+      "kind": "frame",
+      "virtualMs": 124.0228125,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66267.85575,
+      "message": {
+        "type": "ACK",
+        "command": "IDENTIFY",
+        "accepted": true,
+        "requestId": "r1",
+        "state": "IDLE",
+        "protocol": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "deviceId": "nature-touch-nano-simulation",
+        "hardwareOutputsEnabled": false,
+        "capabilities": [
+          "WIND",
+          "WAVE",
+          "BUBBLE",
+          "SIMULATION_ONLY"
+        ]
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66415.3,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r2",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66725.4283125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r2",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r2",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 66885.3014375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r3",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67195.4321875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r3",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r3",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67415.01425,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "c4214a1bc49a41ba",
+        "state": "IDLE"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67712.1130625,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "d6dc231ce3f7469f",
+        "state": "RUNNING",
+        "operationId": "25357f02ae974788"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 67837.420125,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "25357f02ae974788",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68045.2154375,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "25357f02ae974788",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68155.903125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "4701a26d040a47a5",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 68521.3754375,
+      "message": {
+        "type": "STATUS",
+        "requestId": "4701a26d040a47a5",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "4701a26d040a47a5",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "25357f02ae974788",
+          "elapsedMs": 443,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 69178.448375,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r4",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 69515.7246875,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r4",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r4",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "25357f02ae974788",
+          "elapsedMs": 1466,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 70288.4568125,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r5",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 70625.7378125,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r5",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r5",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "25357f02ae974788",
+          "elapsedMs": 2576,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "kind": "frame",
+      "virtualMs": 71398.44725,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r6",
+        "state": "RUNNING"
+      }
+    }
+  ],
+  "mockCommands": [
+    {
+      "channel": "experience:get-state",
+      "at": 1793252531005
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252537609
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793252537613
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252537614
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252538158
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252538167
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252538168
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252538262
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252543445
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544357
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544462
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544567
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544675
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544786
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544890
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252544993
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545106
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545214
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545327
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545435
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545544
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545656
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545768
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545871
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252545984
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546092
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546200
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546305
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546411
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546516
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546629
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546734
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546841
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252546946
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547062
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547168
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547270
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547373
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547476
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547585
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547690
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547805
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252547922
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548037
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548138
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548241
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548345
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548455
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548574
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548676
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548778
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548881
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252548990
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549093
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549197
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549312
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549424
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549529
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549639
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549748
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549860
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252549972
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550080
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550193
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550305
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550409
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550518
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550624
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550730
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550834
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252550935
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551038
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551143
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551245
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551360
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551474
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551577
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551680
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551790
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252551897
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552001
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552112
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552223
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552325
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552440
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552541
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552655
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552757
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552861
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252552964
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553075
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553177
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553284
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553390
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553501
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553607
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553710
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553813
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252553916
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554019
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554127
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554240
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554348
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554455
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554686
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554794
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252554904
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555006
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555115
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555230
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555344
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555449
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555551
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555654
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555771
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555879
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252555983
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556085
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556188
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556301
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556404
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556506
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556611
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556714
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556818
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252556921
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557036
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557143
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557247
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557350
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557466
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557571
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557675
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557776
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557878
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252557984
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558096
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558200
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558304
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558412
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558520
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558630
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558745
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558847
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252558960
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559063
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559166
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559271
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559374
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559490
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559605
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559708
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559812
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252559914
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560016
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560126
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560238
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560344
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560446
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560550
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560654
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560756
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560869
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252560979
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561082
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561186
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561288
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561401
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561508
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561610
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561713
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561816
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252561919
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252562032
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252562135
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252562255
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252562257
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252562765
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252563311
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793252563311
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252563312
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252563457
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252563469
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252563469
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252563525
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252568732
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252569656
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252569758
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252569871
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252569986
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570092
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570194
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570297
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570405
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570507
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570614
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570730
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570834
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252570941
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571056
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571160
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571267
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571384
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571494
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571597
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571703
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571806
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252571922
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572025
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572132
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572239
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572348
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572453
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572559
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572662
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572770
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572873
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252572991
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573097
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573200
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573303
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573405
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573518
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573621
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573724
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573830
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252573932
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574038
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574142
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574257
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574363
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574466
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574685
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574791
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252574897
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575000
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575103
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575210
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575324
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575431
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575539
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575643
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575745
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575849
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252575950
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576055
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576159
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576267
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576372
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576488
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576596
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576714
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576824
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252576938
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577045
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577151
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577254
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577372
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577477
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577584
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577698
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577810
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252577915
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578020
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578126
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578229
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578331
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578441
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578592
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578727
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578839
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252578946
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579059
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579161
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579265
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579369
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579476
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579579
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579686
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579798
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252579900
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580016
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580124
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580228
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580331
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580434
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580536
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580650
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580754
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580859
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252580967
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581069
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581190
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581303
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581407
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581523
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581634
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581749
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581863
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252581964
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582075
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582188
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582300
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582402
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582505
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582610
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582716
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582821
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252582924
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583032
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583135
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583238
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583341
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583450
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583568
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583676
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583789
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252583895
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584004
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584113
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584229
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584335
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584439
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584542
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584646
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584755
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584866
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252584970
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585077
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585184
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585286
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585391
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585492
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585608
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585714
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585834
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252585942
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586059
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586167
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586284
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586388
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586490
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586599
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586718
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586832
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252586946
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587060
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587166
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587281
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587391
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587504
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587617
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587726
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587835
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252587943
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588054
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588164
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588285
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588388
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588499
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252588504
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252589055
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252589648
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793252589660
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252589662
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252589915
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252589936
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252589941
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252590056
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252594617
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252595585
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252595696
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252595806
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252595913
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596016
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596132
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596237
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596366
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596477
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596591
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596695
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596803
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252596914
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597023
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597134
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597242
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597352
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597462
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597680
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597791
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252597896
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598008
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598118
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598225
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598330
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598441
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598546
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598651
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598760
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598865
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252598987
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599096
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599205
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599312
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599415
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599524
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599628
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599735
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599843
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252599953
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600067
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600174
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600281
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600393
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600507
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600615
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600721
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600825
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252600929
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601032
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601135
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601238
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601341
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601446
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601562
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601670
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601779
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601887
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252601990
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602093
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602201
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602304
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602407
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602510
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602617
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602733
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602838
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252602948
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603056
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603165
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603275
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603377
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603481
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603589
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603694
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603808
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252603916
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604019
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604121
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604226
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604329
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604436
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604540
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604645
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604748
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604850
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252604960
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605114
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605218
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605324
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605431
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605537
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605640
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605756
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605859
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252605963
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606066
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606169
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606273
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606383
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606488
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606593
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606697
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606801
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252606909
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607023
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607127
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607230
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607333
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607448
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607560
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607672
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607776
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607889
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252607991
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608096
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608199
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608312
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608424
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608539
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608645
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608756
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608859
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252608962
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609065
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609184
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609287
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609390
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609496
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609599
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609707
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609814
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252609925
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610028
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610144
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610256
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610362
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610465
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610687
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610790
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252610896
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611014
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611116
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611229
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611337
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611440
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611551
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611656
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611761
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611864
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252611968
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612073
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612186
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612294
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612398
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612507
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612622
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612726
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612841
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252612944
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613055
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613158
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613265
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613373
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613487
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613598
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613706
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613810
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252613922
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614027
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614131
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614239
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614345
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614456
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614560
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614664
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614767
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614869
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252614974
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615082
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615193
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615300
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615411
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615521
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615626
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615729
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615834
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252615937
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616038
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616142
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616250
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616359
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616463
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616570
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616677
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616786
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616890
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252616996
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617099
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617208
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617320
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617431
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617434
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252617960
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618545
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793252618549
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618549
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618769
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252618771
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618771
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618869
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618871
+    },
+    {
+      "channel": "experience:stop",
+      "at": 1793252618872
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618876
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618878
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618981
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252618982
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619086
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619086
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619095
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252619097
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619098
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619206
+    },
+    {
+      "channel": "experience:stop",
+      "at": 1793252619208
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619208
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619209
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619312
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619313
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619421
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619422
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619425
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619962
+    },
+    {
+      "channel": "experience:select",
+      "at": 1793252619963
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252619963
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252620168
+    },
+    {
+      "channel": "experience:start",
+      "at": 1793252620174
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252620175
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252620285
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252625431
+    },
+    {
+      "channel": "experience:simulate-fault",
+      "at": 1793252626381
+    },
+    {
+      "channel": "experience:get-state",
+      "at": 1793252626498
+    }
+  ],
+  "result": "FAIL",
+  "error": "AssertionError [ERR_ASSERTION]: Audio cue alignment: 3857.774\n    at captureAudio (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:93:10)\n    at async C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\electron-demo-e2e.cjs:138:39",
+  "ui": {
+    "text": "自然音 × やわらかな触覚体験\n\nNATURAL SOUND × SOFT TACTILE EXPERIENCE\n\n触れられない感覚を、触れられる体験へ\n\nWIND\n風\nゆっくり、やさしく流れる。\nWAVES\n波\n寄せては返す、穏やかなリズム。\nBUBBLES\n泡\n小さく弾ける、軽やかな感覚。\n実機接続：connected（出力はシミュレーション）\nDevice mode\nMock Device — simulated\nReal Arduino — read-only USB\n\nReal Arduino: connected (VIRTUAL_NANO) · SIMULATION TEST ARMED\n\nCOM port\nChoose a detected port\nVIRTUAL_NANO · AVR8js — NOT USB hardware\nRefresh ports\nI confirm valve and both pumps are physically isolated from all power paths. USB/reset cannot energize them.\n\nOpening serial may reset an unknown installed sketch. Controls require a separately armed simulation test session.\n\nDisconnect ArduinoSTATUS_QUERY\n\nIDENTIFY: nature-touch-unified-simulation · Protocol 2 · reports outputs disabled\n\nI confirm the identified Nature Touch simulation-only firmware is the intended test firmware. Loads remain physically isolated; this is not actuator control.\nDisarm simulation testTest STARTTest STOP\n{\n  \"state\": \"RUNNING\",\n  \"selectedExperienceId\": \"WIND\",\n  \"operationId\": \"25357f02ae974788\",\n  \"elapsedMs\": 2576,\n  \"durationMs\": 24000,\n  \"faultCode\": null,\n  \"hardwareOutputsEnabled\": false,\n  \"progress\": 0.10733333333333334\n}\n\n音をえらんでください\n\n音源 WIND 設定済み\n映像 ホバーでプレビュー\n\nもどる\nWIND\n風\n\nArduino シミュレーション · RUNNING · 実出力は無効\n\n再生中\n映像・音声\n\n停止",
+    "errors": [],
+    "visibility": []
+  }
+}

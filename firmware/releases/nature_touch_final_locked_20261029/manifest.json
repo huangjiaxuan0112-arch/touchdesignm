@@ -1,0 +1,62 @@
+{
+  "createdUtc": "2026-10-29T05:10:46.365Z",
+  "status": "FINAL_INTEGRATION_SOURCE_READY_PHYSICAL_RELEASE_BLOCKED",
+  "protocol": 2,
+  "fqbn": "arduino:avr:nano:cpu=atmega328",
+  "defaultTarget": "simulation",
+  "simulationHexSha256": "1033aa59cb4b8ec21a5ac913c1fca5c813978c3dffab171875e53847858d708b",
+  "realDeployableHexIncluded": false,
+  "realBuildSelector": "NATURE_TOUCH_ACTUATOR_DRIVER=1",
+  "realBuildCurrentlyRejectedByStaticAssert": true,
+  "sourceSha256": {
+    "nature_touch_unified/actuator-driver.h": "76078824c6e9be9d34890ec6cc6616f176b322a86d98ea54044bdf901f0640b9",
+    "nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "nature_touch_unified/nature_touch_unified.ino": "47d22ea888bccafe6cc2469b9eb76da2fc115658df4dbd1353a20e78b31fe823",
+    "nature_touch_unified/real-actuators.h": "b9996d28832e832377f7bc7a6e647b61805818d84c4213cba65b716255a71756",
+    "nature_touch_unified/simulated-actuators.h": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b"
+  },
+  "clientSourceSha256": {
+    "desktop/electron/main.ts": "3de2b24664b9c26c33f4bd11b1c82b906a81dcdf82bc5434398460630357ee65",
+    "desktop/electron/serial/arduino-firmware-service.ts": "a440afdc6b98b4abe919633f3a1e91fbe5d59f23849c2720e5c2723fe02983a4",
+    "desktop/shared/firmware-control-protocol.ts": "05c880f9260024babf786ad47b2bc3d2ec83a11701948329ce60dda3b8f23e21",
+    "desktop/renderer/src/device/ArduinoConnection.tsx": "d21434c615a68e40c37f95fa7e56cc4ccc6ace5df0a9f0fa6a16f20704002c5f"
+  },
+  "mappingUs": {
+    "INFLATE": {
+      "D5": 1800,
+      "D6": 544,
+      "D7": 1800
+    },
+    "DEFLATE": {
+      "D5": 1200,
+      "D6": 2400,
+      "D7": 1200
+    },
+    "STOP": {
+      "D5": 1200,
+      "D6": 544,
+      "D7": 1200
+    }
+  },
+  "stopValveStatus": "SELECTED_NOT_BENCH_VERIFIED",
+  "pumpSettleMs": "UNMEASURED_UINT16_MAX",
+  "valveSettleMs": "UNMEASURED_UINT16_MAX",
+  "usbManualEmergencyCutoffSelected": true,
+  "pressureLimitingConfirmed": false,
+  "reliablePressureReliefConfirmed": false,
+  "applicationPhysicalPermission": false,
+  "frontendSimulationArmingNeverAuthorizesRealControl": true,
+  "virtualTests": {
+    "result": "PASS",
+    "checks": 14,
+    "source": "docs/evidence/pneumatic-driver-Wj5ram/results.json",
+    "virtualRealBuild": {
+      "flashBytes": 12594,
+      "staticRamBytes": 1458
+    },
+    "syntheticDelaysNotForHardware": true
+  },
+  "physicalCommandsSent": [],
+  "uploaded": false,
+  "comAccessed": false
+}

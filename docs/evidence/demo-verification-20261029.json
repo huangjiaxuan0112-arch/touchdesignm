@@ -1,0 +1,91 @@
+{
+  "result": "PASS",
+  "scope": "Software simulation demo only; no physical COM, upload or actuator activation",
+  "naturalRuns": [
+    {
+      "mode": "WIND",
+      "backend": "Mock",
+      "durationMs": 24000,
+      "result": "PASS",
+      "audioCueMs": 5098.646,
+      "audioRms": 0.11810748593410546
+    },
+    {
+      "mode": "WAVE",
+      "backend": "Mock",
+      "durationMs": 25000,
+      "result": "PASS",
+      "audioCueMs": 5066.445,
+      "audioRms": 0.049057999530588585
+    },
+    {
+      "mode": "BUBBLE",
+      "backend": "Mock",
+      "durationMs": 27420,
+      "result": "PASS",
+      "audioCueMs": 4488.913,
+      "audioRms": 0.17750045035517711
+    },
+    {
+      "mode": "WIND",
+      "backend": "AVR8js compiled Nano HEX",
+      "durationMs": 24000,
+      "result": "PASS",
+      "audioCueMs": 4986.361,
+      "audioRms": 0.10473629220234305
+    },
+    {
+      "mode": "WAVE",
+      "backend": "AVR8js compiled Nano HEX",
+      "durationMs": 25000,
+      "result": "PASS",
+      "audioCueMs": 4963.3859999999995,
+      "audioRms": 0.04687300261184297
+    },
+    {
+      "mode": "BUBBLE",
+      "backend": "AVR8js compiled Nano HEX",
+      "durationMs": 27420,
+      "result": "PASS",
+      "audioCueMs": 4370.415,
+      "audioRms": 0.07757704724392077
+    }
+  ],
+  "transitionChecks": {
+    "pauseExplicitRestartStop": "PASS",
+    "mockFaultCleanup": "PASS",
+    "virtualStop": "PASS",
+    "virtualFaultCleanup": "PASS",
+    "usbDisconnectMediaCleanupNoRestart": "PASS"
+  },
+  "recoveryChecks": {
+    "identifyStatus": "PASS",
+    "WIND_SELECT_START_STOP": "PASS",
+    "WAVE_SELECT_START_STOP": "PASS",
+    "BUBBLE_SELECT_START_STOP": "PASS",
+    "faultSynchronization": "PASS",
+    "noAutomaticRestart": "PASS",
+    "recoveryFailurePreservesFaultAndDisplaysError": "PASS",
+    "recoverVerifiedIdleNoAutomaticRestart": "PASS",
+    "manualSelectStartAfterRecovery": "PASS"
+  },
+  "uiChecks": 21,
+  "regression": {
+    "passed": 75,
+    "failed": 0,
+    "log": "demo-regression.log"
+  },
+  "typecheck": "PASS",
+  "build": "PASS",
+  "firmwareSourcesMatchLockedRelease": true,
+  "evidence": {
+    "naturalPath": "docs/evidence/exhibition-demo-15FOjB/results.json",
+    "transitionPath": "docs/evidence/exhibition-demo-d5izLB/results.json",
+    "recoveryPath": "docs/evidence/offline-recover-e2e/results.json",
+    "ui": "demo-ui-interactions.json"
+  },
+  "testNotes": [
+    "All six natural completion subcases passed. The original combined run then stopped on a test script clicking a disabled Back button. After fixing the test wait, all remaining transition subcases passed in a focused rerun.",
+    "AVR8js virtual time is not a realtime clock. Native audio/video cue timing and compiled firmware marker timing were checked separately. Actual USB timing was not measured."
+  ]
+}

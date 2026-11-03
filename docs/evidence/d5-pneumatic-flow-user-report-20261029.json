@@ -1,0 +1,33 @@
+{
+  "recordedUtc": "2026-10-29T04:28:23.349Z",
+  "source": "USER_REPORTED_PHYSICAL_OBSERVATION",
+  "rawUserReport": "失电时 A 与 R 相通，P 关闭；得电后 P 与 A 相通，R 关",
+  "channel": "D5",
+  "deenergized": {
+    "connectedPorts": [
+      "A",
+      "R"
+    ],
+    "blockedPort": "P"
+  },
+  "energized": {
+    "connectedPorts": [
+      "P",
+      "A"
+    ],
+    "blockedPort": "R"
+  },
+  "electricalMappingReference": "docs/evidence/d5-electrical-physical-pass-20261029.json",
+  "interpretation": "Observed three-port/two-position routing. Electrical OFF selects A-R; electrical ON selects P-A. This does not identify where each port is connected in the installed pneumatic system.",
+  "installedPortConnections": {
+    "P": "NOT_RECORDED",
+    "A": "NOT_RECORDED",
+    "R": "NOT_RECORDED"
+  },
+  "confirmedInflationOrDeflationFromValveAlone": false,
+  "safePressureReliefVerified": false,
+  "leakRateOrSwitchingTimeMeasured": false,
+  "physicalCommandsSentByAssistantThisTurn": [],
+  "uploadedThisTurn": false,
+  "productionDriverLocksChanged": false
+}

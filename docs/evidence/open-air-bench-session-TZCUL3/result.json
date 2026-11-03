@@ -1,0 +1,107 @@
+{
+  "result": "PASS_SERIAL_START_STOP_USER_HEARD_D5_SWITCHING_AND_CONFIRMED_BOTH_PUMPS_STOPPED",
+  "scope": "AIRBAG_DISCONNECTED_OPEN_NONPRESSURIZING_BENCH_ONLY",
+  "requestedStopAfterStartAckMs": 7000,
+  "actualStartAckToStopWireMs": 7428,
+  "extraDelayMs": 428,
+  "delayReason": "Existing stop() waits for in-flight STATUS_QUERY to finish before sending STOP; no timeline modification",
+  "START": {
+    "at": "2026-10-29T07:03:23.219Z",
+    "kind": "TX",
+    "value": {
+      "type": "START",
+      "operationId": "86f68c43400a",
+      "requestId": "cb691d3449aa"
+    }
+  },
+  "START_ACK": {
+    "at": "2026-10-29T07:03:23.431Z",
+    "kind": "START_ACK",
+    "value": {
+      "type": "ACK",
+      "command": "START",
+      "accepted": true,
+      "requestId": "cb691d3449aa",
+      "state": "RUNNING",
+      "operationId": "86f68c43400a"
+    }
+  },
+  "STOP": {
+    "at": "2026-10-29T07:03:30.859Z",
+    "kind": "TX",
+    "value": {
+      "type": "STOP",
+      "operationId": "86f68c43400a",
+      "requestId": "d8ca5bf9ea83"
+    }
+  },
+  "finalLogicalState": {
+    "state": "IDLE",
+    "selectedExperienceId": "WIND",
+    "operationId": null,
+    "elapsedMs": 0,
+    "durationMs": 24000,
+    "faultCode": null,
+    "hardwareOutputsEnabled": true
+  },
+  "timelineIntentEvents": [
+    {
+      "type": "EVENT",
+      "name": "ACTUATOR_EVENT",
+      "operationId": "86f68c43400a",
+      "experienceId": "WIND",
+      "atMs": 0,
+      "action": "INFLATE",
+      "durationMs": 5000,
+      "D5": 180,
+      "D6": 180,
+      "D7": 0,
+      "hardwareOutputsEnabled": true
+    },
+    {
+      "type": "EVENT",
+      "name": "ACTUATOR_EVENT",
+      "operationId": "86f68c43400a",
+      "experienceId": "WIND",
+      "atMs": 5000,
+      "action": "DEFLATE",
+      "durationMs": 1500,
+      "D5": 0,
+      "D6": 0,
+      "D7": 180,
+      "hardwareOutputsEnabled": true
+    },
+    {
+      "type": "EVENT",
+      "name": "ACTUATOR_EVENT",
+      "operationId": "86f68c43400a",
+      "experienceId": "WIND",
+      "atMs": 6500,
+      "action": "INFLATE",
+      "durationMs": 1300,
+      "D5": 180,
+      "D6": 180,
+      "D7": 0,
+      "hardwareOutputsEnabled": true
+    }
+  ],
+  "legacyEventNumbersAreNotMeasuredPhysicalPulses": true,
+  "physicalObservations": [
+    {
+      "reportedUtc": "2026-10-29T07:05:18.577Z",
+      "source": "USER_ACTUAL_PHYSICAL_OBSERVATION",
+      "userWords": "听到了d5的切换声 ，两台已经停止了",
+      "D5SwitchingSoundHeard": true,
+      "D6StoppedAfterSTOP": true,
+      "D7StoppedAfterSTOP": true,
+      "flowRoutingMeasured": false,
+      "D6RunningDuringDeflate": "NOT_REPORTED",
+      "pressureSafetyVerified": false
+    }
+  ],
+  "physicalPumpOffConfirmed": true,
+  "D5Observation": "USER_HEARD_SWITCHING_SOUND_NOT_FLOW_ROUTING_MEASUREMENT",
+  "serialClosed": true,
+  "automaticRepeat": false,
+  "additionalStartAuthorized": false
+}

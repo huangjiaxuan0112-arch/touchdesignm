@@ -7,19 +7,24 @@ export type FirmwareConnectionState =
   | 'faulted'
 
 export interface FirmwareControlSnapshot {
+  // Electron-local permissions, never fields in Arduino Protocol v2.
+  openAirBenchSession?: boolean
+  realControlEligible?: boolean
   simulationTestArmed?: boolean
   simulationTestEligible?: boolean
   connectionState: FirmwareConnectionState
   identified: boolean
   protocolVersion: number | null
   firmware: string | null
-  hardwareOutputsEnabled: false
+  hardwareOutputsEnabled: boolean
   experience: ExperienceSnapshot
   lastEvent: string | null
   lastError: string | null
 }
 
 export const INITIAL_FIRMWARE_CONTROL_SNAPSHOT: FirmwareControlSnapshot = {
+  openAirBenchSession: false,
+  realControlEligible: false,
   connectionState: 'disconnected',
   simulationTestArmed: false,
   simulationTestEligible: false,

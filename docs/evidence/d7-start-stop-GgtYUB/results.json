@@ -1,0 +1,285 @@
+{
+  "result": "PASS",
+  "testedAt": "2026-10-29T02:51:54.532Z",
+  "method": "Actual compiled Nano HEX in AVR8js with existing test-side USART RXC compatibility adapter; no physical serial access. Reset uses fresh virtual CPU; bootloader/electrical behavior not modeled.",
+  "compile": "Sketch uses 3268 bytes (10%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 286 bytes (13%) of dynamic memory, leaving 1762 bytes for local variables. Maximum is 2048 bytes.\n",
+  "before": {
+    "firmware/unified/nature_touch_unified/nature_touch_unified.ino": "4884a98c612bca4d2ad085592a2a5250a348a3281c7e2cb54b79d28b70d02c7f",
+    "firmware/unified/nature_touch_unified/actuator-driver.h": "74f53fdc98ed2d1507440d748c6c270198842a8d7c3cf41af4c989b41499c744",
+    "firmware/unified/nature_touch_unified/real-actuators.h": "019cae7f0ba0b1a9d9876ca3df91f8a7c785c5df2503d2e829381adf0edf274b",
+    "firmware/unified/nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "firmware/unified/nature_touch_unified/simulated-actuators.h": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b",
+    "firmware/diagnostic/rc_switch_off_signal/rc_switch_off_signal.ino": "ea619a08a33aaac9c56af69f75e9149b9bbc4408c626fc46baf0c1e32b8e26d5",
+    "卒研music/wind/sketch_oct21a/sketch_oct21a.ino": "20771252af97129bd08c1fe6e8fd1983ca2345c0652d202614afd762013066f2",
+    "卒研music/ocean waves/sketch_oct21b/sketch_oct21b.ino": "28ea0d4a9548d4575d850b061d5c0f0dff9ae603c6b415f3aa1eb17429c2ad81",
+    "卒研music/bubbles/sketch_sep30a/sketch_oct21a/sketch_oct21a.ino": "e94eeacc870d2d3595bd66500ffc43cfb5d7c9c998e34db831aa42b5c2530fd3"
+  },
+  "protectedFilesUnchanged": true,
+  "interfaceChecks": "identity, stale response, reset, READY never starts: PASS",
+  "results": [
+    {
+      "name": "START/STOP、重复 START 不重置起点、Windows 接口与虚拟串口联通",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 305.4900625,
+          "text": "D7DIAG/1 t=205 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 508.63175,
+          "text": "D7DIAG/1 t=405 event=START_DUPLICATE state=SIM_RUNNING elapsed=201 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 691.9213125,
+          "text": "D7DIAG/1 t=605 event=STOP state=STOPPED elapsed=399 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 892.9509375,
+          "text": "D7DIAG/1 t=805 event=STOP state=STOPPED elapsed=399 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "主机静默 5000ms、超时锁定、心跳不恢复、STOP 后显式 START",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 305.4900625,
+          "text": "D7DIAG/1 t=205 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5310.5866875,
+          "text": "D7DIAG/1 t=5206 event=HOST_TIMEOUT state=TIMEOUT_LOCKED elapsed=5001 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5619.0536875,
+          "text": "D7DIAG/1 t=5506 event=REJECT_STOP_REQUIRED state=TIMEOUT_LOCKED elapsed=5001 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5801.3095625,
+          "text": "D7DIAG/1 t=5704 event=PING state=TIMEOUT_LOCKED elapsed=5001 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5993.99875,
+          "text": "D7DIAG/1 t=5904 event=STOP state=STOPPED elapsed=5001 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 6206.5321875,
+          "text": "D7DIAG/1 t=6106 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "持续心跳仍在 10000ms 达到单次上限、重复 START 不延期",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 305.4900625,
+          "text": "D7DIAG/1 t=205 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 1197.1528125,
+          "text": "D7DIAG/1 t=1104 event=PING state=SIM_RUNNING elapsed=899 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 2098.1921875,
+          "text": "D7DIAG/1 t=2004 event=PING state=SIM_RUNNING elapsed=1799 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 2998.2036875,
+          "text": "D7DIAG/1 t=2905 event=PING state=SIM_RUNNING elapsed=2700 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 3898.1961875,
+          "text": "D7DIAG/1 t=3805 event=PING state=SIM_RUNNING elapsed=3600 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 4110.7326875,
+          "text": "D7DIAG/1 t=4005 event=START_DUPLICATE state=SIM_RUNNING elapsed=3800 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 4998.1934375,
+          "text": "D7DIAG/1 t=4904 event=PING state=SIM_RUNNING elapsed=4699 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5898.1968125,
+          "text": "D7DIAG/1 t=5805 event=PING state=SIM_RUNNING elapsed=5600 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 6798.1945625,
+          "text": "D7DIAG/1 t=6705 event=PING state=SIM_RUNNING elapsed=6500 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 7698.1914375,
+          "text": "D7DIAG/1 t=7604 event=PING state=SIM_RUNNING elapsed=7400 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 8598.20025,
+          "text": "D7DIAG/1 t=8504 event=PING state=SIM_RUNNING elapsed=8300 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 9498.1984375,
+          "text": "D7DIAG/1 t=9404 event=PING state=SIM_RUNNING elapsed=9200 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 10307.656875,
+          "text": "D7DIAG/1 t=10205 event=MAX_TEST state=TIMEOUT_LOCKED elapsed=10000 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 10406.857375,
+          "text": "D7DIAG/1 t=10304 event=PING state=TIMEOUT_LOCKED elapsed=10000 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "非法、超长、嵌入 NUL、半帧均不能续租或激活，解析可恢复",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 300.2494375,
+          "text": "D7DIAG/1 t=207 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 498.17025,
+          "text": "D7DIAG/1 t=405 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 699.21075,
+          "text": "D7DIAG/1 t=607 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 976.3309375,
+          "text": "D7DIAG/1 t=883 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 1093.9961875,
+          "text": "D7DIAG/1 t=1000 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 1300.2519375,
+          "text": "D7DIAG/1 t=1206 event=ERROR_FRAME state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 1506.5325625,
+          "text": "D7DIAG/1 t=1405 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 2409.667125,
+          "text": "D7DIAG/1 t=2308 event=ERROR_COMMAND state=SIM_RUNNING elapsed=903 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 3310.70775,
+          "text": "D7DIAG/1 t=3208 event=ERROR_COMMAND state=SIM_RUNNING elapsed=1803 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 4210.7145,
+          "text": "D7DIAG/1 t=4108 event=ERROR_COMMAND state=SIM_RUNNING elapsed=2703 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 5110.709625,
+          "text": "D7DIAG/1 t=5007 event=ERROR_COMMAND state=SIM_RUNNING elapsed=3603 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 6010.71925,
+          "text": "D7DIAG/1 t=5907 event=ERROR_COMMAND state=SIM_RUNNING elapsed=4503 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 6509.6795,
+          "text": "D7DIAG/1 t=6405 event=HOST_TIMEOUT state=TIMEOUT_LOCKED elapsed=5000 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 6913.83175,
+          "text": "D7DIAG/1 t=6807 event=ERROR_COMMAND state=TIMEOUT_LOCKED elapsed=5000 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 7093.9975625,
+          "text": "D7DIAG/1 t=7004 event=STOP state=STOPPED elapsed=5000 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 13304.4495,
+          "text": "D7DIAG/1 t=13202 event=START_SIM_ONLY state=SIM_RUNNING elapsed=1 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 13494.008625,
+          "text": "D7DIAG/1 t=13405 event=STOP state=STOPPED elapsed=202 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "启动等待无自动运行，超时后等待无自动重启",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 11307.5743125,
+          "text": "D7DIAG/1 t=11205 event=START_SIM_ONLY state=SIM_RUNNING elapsed=1 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 16311.430875,
+          "text": "D7DIAG/1 t=16205 event=HOST_TIMEOUT state=TIMEOUT_LOCKED elapsed=5000 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 22506.538375,
+          "text": "D7DIAG/1 t=22407 event=STATUS state=TIMEOUT_LOCKED elapsed=5000 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "复位重新执行同一 HEX，不恢复此前运行",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 83.67375,
+          "text": "D7DIAG/1 t=0 event=READY state=STOPPED elapsed=0 output=DISABLED off=UNVERIFIED"
+        },
+        {
+          "at": 305.4900625,
+          "text": "D7DIAG/1 t=205 event=START_SIM_ONLY state=SIM_RUNNING elapsed=0 output=DISABLED off=UNVERIFIED"
+        }
+      ],
+      "gpioEdges": [],
+      "gpioOutputModes": [],
+      "gpioHighOrChangedWrites": [],
+      "usartRepairs": []
+    }
+  ]
+}

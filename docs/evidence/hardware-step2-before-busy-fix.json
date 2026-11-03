@@ -1,0 +1,448 @@
+{
+  "timestamp": "2026-10-27T05:21:53.970Z",
+  "portPath": "COM5",
+  "kind": "REAL Nano / Electron UI",
+  "loadsIsolatedConfirmed": true,
+  "writes": [
+    {
+      "at": 1793078518533,
+      "request": {
+        "type": "IDENTIFY",
+        "protocol": 2,
+        "requestId": "r1"
+      }
+    },
+    {
+      "at": 1793078518873,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "r2"
+      }
+    },
+    {
+      "at": 1793078519404,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "r3"
+      }
+    },
+    {
+      "at": 1793078519948,
+      "request": {
+        "type": "SELECT",
+        "experienceId": "WIND",
+        "requestId": "a1bf001c9daf4dd2"
+      }
+    },
+    {
+      "at": 1793078520131,
+      "request": {
+        "type": "START",
+        "operationId": "47a4b3e57ddd416d",
+        "requestId": "5c0e37ce67bb4786"
+      }
+    },
+    {
+      "at": 1793078520384,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "851e653dff544846"
+      }
+    },
+    {
+      "at": 1793078521395,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "r4"
+      }
+    },
+    {
+      "at": 1793078522545,
+      "request": {
+        "type": "STOP",
+        "operationId": "47a4b3e57ddd416d",
+        "requestId": "10880050e92a4ab1"
+      }
+    },
+    {
+      "at": 1793078522839,
+      "request": {
+        "type": "STATUS_QUERY",
+        "requestId": "628efb6f4c054341"
+      }
+    },
+    {
+      "at": 1793078523424,
+      "request": {
+        "type": "SELECT",
+        "experienceId": "WIND",
+        "requestId": "b272db25d41c4a29"
+      }
+    }
+  ],
+  "messages": [
+    {
+      "at": 1793078517659,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1793078518872,
+      "message": {
+        "type": "ACK",
+        "command": "IDENTIFY",
+        "accepted": true,
+        "requestId": "r1",
+        "state": "IDLE",
+        "protocol": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "deviceId": "nature-touch-nano-simulation",
+        "hardwareOutputsEnabled": false,
+        "capabilities": [
+          "WIND",
+          "WAVE",
+          "BUBBLE",
+          "SIMULATION_ONLY"
+        ]
+      }
+    },
+    {
+      "at": 1793078519016,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r2",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793078519320,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r2",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r2",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793078519547,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r3",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793078519850,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r3",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r3",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": null,
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": null,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793078520125,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "a1bf001c9daf4dd2",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793078520382,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "5c0e37ce67bb4786",
+        "state": "RUNNING",
+        "operationId": "47a4b3e57ddd416d"
+      }
+    },
+    {
+      "at": 1793078520482,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "47a4b3e57ddd416d",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "at": 1793078520715,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "47a4b3e57ddd416d",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1793078520815,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "851e653dff544846",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "at": 1793078521161,
+      "message": {
+        "type": "STATUS",
+        "requestId": "851e653dff544846",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "851e653dff544846",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "47a4b3e57ddd416d",
+          "elapsedMs": 442,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793078521538,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "r4",
+        "state": "RUNNING"
+      }
+    },
+    {
+      "at": 1793078521873,
+      "message": {
+        "type": "STATUS",
+        "requestId": "r4",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "r4",
+          "state": "RUNNING"
+        },
+        "snapshot": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "47a4b3e57ddd416d",
+          "elapsedMs": 1181,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793078522795,
+      "message": {
+        "type": "ACK",
+        "command": "STOP",
+        "accepted": true,
+        "requestId": "10880050e92a4ab1",
+        "state": "STOPPING",
+        "operationId": "47a4b3e57ddd416d"
+      }
+    },
+    {
+      "at": 1793078522838,
+      "message": {
+        "type": "EVENT",
+        "name": "STOPPED",
+        "operationId": "47a4b3e57ddd416d"
+      }
+    },
+    {
+      "at": 1793078523030,
+      "message": {
+        "type": "ACK",
+        "command": "STATUS_QUERY",
+        "accepted": true,
+        "requestId": "628efb6f4c054341",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 1793078523346,
+      "message": {
+        "type": "STATUS",
+        "requestId": "628efb6f4c054341",
+        "acknowledgement": {
+          "type": "ACK",
+          "command": "STATUS_QUERY",
+          "accepted": true,
+          "requestId": "628efb6f4c054341",
+          "state": "IDLE"
+        },
+        "snapshot": {
+          "state": "IDLE",
+          "selectedExperienceId": "WIND",
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        }
+      }
+    },
+    {
+      "at": 1793078523601,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "b272db25d41c4a29",
+        "state": "IDLE"
+      }
+    }
+  ],
+  "modes": {
+    "WIND": {
+      "stopRun": {
+        "connectionState": "connected",
+        "simulationTestArmed": true,
+        "simulationTestEligible": true,
+        "identified": true,
+        "protocolVersion": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "hardwareOutputsEnabled": false,
+        "experience": {
+          "state": "RUNNING",
+          "selectedExperienceId": "WIND",
+          "operationId": "47a4b3e57ddd416d",
+          "elapsedMs": 516,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false,
+          "progress": 0.0215
+        },
+        "lastEvent": "WIND 0 ms: INFLATE 5000 ms; D5=180 D6=180 D7=0 (diagnostic only)",
+        "lastError": null
+      },
+      "stopped": {
+        "connectionState": "connected",
+        "simulationTestArmed": true,
+        "simulationTestEligible": true,
+        "identified": true,
+        "protocolVersion": 2,
+        "firmware": "nature-touch-unified-simulation",
+        "hardwareOutputsEnabled": false,
+        "experience": {
+          "state": "IDLE",
+          "selectedExperienceId": "WIND",
+          "operationId": null,
+          "elapsedMs": 0,
+          "durationMs": 24000,
+          "faultCode": null,
+          "hardwareOutputsEnabled": false
+        },
+        "lastEvent": "STOPPED",
+        "lastError": null
+      }
+    }
+  },
+  "checks": {
+    "readOnlyGuard": true,
+    "noStartOnArm": true
+  },
+  "errors": [
+    "Error: Timed out: !Array.from(document.querySelectorAll('button')).find(b=>b.textContent==='Test STOP').disabled\n    at waitFor (C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\hardware-step2-electron.cjs:52:9)\n    at async C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\hardware-step2-electron.cjs:104:7"
+  ],
+  "ports": [
+    {
+      "path": "COM4",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM3",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM5",
+      "manufacturer": "wch.cn",
+      "vendorId": "1A86",
+      "productId": "7523",
+      "serialNumber": "5&26B53364&0&9"
+    }
+  ],
+  "identity": {
+    "connectionState": "connected",
+    "simulationTestArmed": false,
+    "simulationTestEligible": true,
+    "identified": true,
+    "protocolVersion": 2,
+    "firmware": "nature-touch-unified-simulation",
+    "hardwareOutputsEnabled": false,
+    "experience": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    },
+    "lastEvent": null,
+    "lastError": null
+  },
+  "result": "FAIL",
+  "stage": "COMPLETE"
+}

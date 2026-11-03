@@ -1,0 +1,6 @@
+Error occurred in handler for 'firmware:start': Error: Hardware Integration Step 1 is read-only: only IDENTIFY and STATUS_QUERY are allowed.
+    at ArduinoFirmwareService.sendRequest (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:894:29)
+    at ArduinoFirmwareService.start (C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:800:33)
+    at C:\Users\20676\OneDrive\桌面\touchdesign\desktop\out\main\main.js:1557:28
+    at WebContents.<anonymous> (node:electron/js2c/browser_init:2:87039)
+    at WebContents.emit (node:events:518:28)

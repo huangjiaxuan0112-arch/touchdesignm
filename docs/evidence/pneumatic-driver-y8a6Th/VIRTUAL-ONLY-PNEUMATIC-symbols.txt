@@ -1,0 +1,269 @@
+         w serialEvent()
+00000000 W __heap_end
+00000000 a __tmp_reg__
+00000000 W __vector_default
+00000000 T __vectors
+00000001 a __zero_reg__
+00000003 A __FUSE_REGION_LENGTH__
+0000003d a __SP_L__
+0000003e a __SP_H__
+0000003f a __SREG__
+00000068 T __trampolines_end
+00000068 T __trampolines_start
+00000068 t BUBBLE_ACTIONS
+000000c5 t WAVE_ACTIONS
+000000e3 t WIND_ACTIONS
+00000107 t stateName(ControlState)::__c
+0000010d t stateName(ControlState)::__c
+00000117 t stateName(ControlState)::__c
+00000120 t stateName(ControlState)::__c
+00000128 t stateName(ControlState)::__c
+0000012d t experienceName(Experience)::__c
+00000134 t experienceName(Experience)::__c
+00000139 t experienceName(Experience)::__c
+0000013e t printError(char const*)::__c
+00000141 t printError(char const*)::__c
+0000015a t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__16_
+0000015c t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__15_
+00000197 t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__14_
+000001b7 t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__13_
+000001e2 t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__12_
+00000210 t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__11_
+0000021d t _ZZ20printAcknowledgementPKcS0_S0_b12ControlStateS0_S0_bE3__c__10_
+0000021f t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000229 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+0000022b t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+0000023c t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+0000023e t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000244 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000249 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000255 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000264 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000272 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+00000280 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)::__c
+0000028a t sendEvent(char const*, char const*)::__c
+0000028c t sendEvent(char const*, char const*)::__c
+0000028e t sendEvent(char const*, char const*)::__c
+00000298 t sendEvent(char const*, char const*)::__c
+0000029a t sendEvent(char const*, char const*)::__c
+000002ac t sendEvent(char const*, char const*)::__c
+000002ae t sendEvent(char const*, char const*)::__c
+000002c0 t sendEvent(char const*, char const*)::__c
+000002d9 t _ZZ10sendStatusPKcE3__c__18_
+000002fd t _ZZ10sendStatusPKcE3__c__17_
+00000302 t _ZZ10sendStatusPKcE3__c__16_
+00000304 t _ZZ10sendStatusPKcE3__c__15_
+00000306 t _ZZ10sendStatusPKcE3__c__14_
+00000314 t _ZZ10sendStatusPKcE3__c__13_
+00000319 t _ZZ10sendStatusPKcE3__c__12_
+00000328 t _ZZ10sendStatusPKcE3__c__11_
+00000336 t _ZZ10sendStatusPKcE3__c__10_
+0000033b t sendStatus(char const*)::__c
+0000033d t sendStatus(char const*)::__c
+0000033f t sendStatus(char const*)::__c
+0000034f t sendStatus(char const*)::__c
+00000351 t sendStatus(char const*)::__c
+00000353 t sendStatus(char const*)::__c
+00000358 t stateName(ControlState)::__c
+0000035e t sendStatus(char const*)::__c
+00000378 t sendStatus(char const*)::__c
+00000391 t sendStatus(char const*)::__c
+0000039d t sendStatus(char const*)::__c
+000003f6 t sendStatus(char const*)::__c
+00000400 A __LOCK_REGION_LENGTH__
+00000400 A __SIGNATURE_REGION_LENGTH__
+00000400 A __USER_SIGNATURE_REGION_LENGTH__
+00000415 t sendTimelineMarker(unsigned long)::__c
+00000418 t sendTimelineMarker(unsigned long)::__c
+00000422 t sendTimelineMarker(unsigned long)::__c
+0000042c t sendTimelineMarker(unsigned long)::__c
+0000043f t sendTimelineMarker(unsigned long)::__c
+0000046f t sendActionEvent(unsigned long, unsigned int, bool)::__c
+00000490 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+00000497 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+0000049e t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004a6 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004ae t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004b5 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004c5 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004d1 t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004db t sendActionEvent(unsigned long, unsigned int, bool)::__c
+000004ee t sendActionEvent(unsigned long, unsigned int, bool)::__c
+00000526 t experienceName(Experience)::__c
+0000052b t flushScheduledTelemetry()::__c
+0000052e t flushScheduledTelemetry()::__c
+00000539 t flushScheduledTelemetry()::__c
+00000549 t flushScheduledTelemetry()::__c
+00000559 t flushScheduledTelemetry()::__c
+00000563 t flushScheduledTelemetry()::__c
+0000056d t flushScheduledTelemetry()::__c
+00000580 t flushScheduledTelemetry()::__c
+000005b0 t port_to_mode_PGM
+000005ba t setup::__c
+00000630 t processLine()::__c
+00000648 t processLine()::__c
+0000064d t port_to_output_PGM
+00000657 t digital_pin_to_port_PGM
+0000066b t digital_pin_to_bit_mask_PGM
+0000067f t digital_pin_to_timer_PGM
+00000694 T __ctors_start
+00000696 T __ctors_end
+00000696 T __dtors_end
+00000696 T __dtors_start
+00000696 W __init
+000006a2 T __do_copy_data
+000006b8 T __do_clear_bss
+000006c0 t .do_clear_bss_loop
+000006c2 t .do_clear_bss_start
+000006c8 T __do_global_ctors
+000006e6 T __bad_interrupt
+000006e6 W __vector_1
+000006e6 W __vector_10
+000006e6 W __vector_12
+000006e6 W __vector_13
+000006e6 W __vector_14
+000006e6 W __vector_15
+000006e6 W __vector_17
+000006e6 W __vector_2
+000006e6 W __vector_20
+000006e6 W __vector_21
+000006e6 W __vector_22
+000006e6 W __vector_23
+000006e6 W __vector_24
+000006e6 W __vector_25
+000006e6 W __vector_3
+000006e6 W __vector_4
+000006e6 W __vector_5
+000006e6 W __vector_6
+000006e6 W __vector_7
+000006e6 W __vector_8
+000006e6 W __vector_9
+000006ea t digitalWrite
+00000782 t millis
+0000079a t Print::write(unsigned char const*, unsigned int)
+000007f4 t HardwareSerial::availableForWrite()
+00000812 t HardwareSerial::read()
+0000083a t HardwareSerial::peek()
+00000856 t HardwareSerial::available()
+0000086e t Serial0_available()
+00000882 t serialEventRun()
+00000896 t HardwareSerial::_tx_udr_empty_irq()
+000008da t HardwareSerial::write(unsigned char)
+000008ff W __stack
+00000974 t HardwareSerial::flush()
+000009b4 t Servo::writeMicroseconds(int)
+00000a22 t RealActuators::Driver::writePumpsOff() [clone .constprop.34]
+00000a4c t RealActuators::Driver::writeStop() [clone .constprop.32]
+00000a66 t RealActuators::Driver::stopAll() [clone .constprop.31]
+00000a86 t RealActuators::Driver::request(RealActuators::Driver::Mode) [clone .constprop.26]
+00000aea t Servo::attach(int)
+00000bda t collectSerialInput()
+00000c36 t readJsonString(char const*&, char*, unsigned char)
+00000ca4 t skipWhitespace(char const*&)
+00000cce t currentDuration()
+00000cf4 t elapsedTime(unsigned long)
+00000d70 t enterFault(char const*)
+00000ddc t processSafety(unsigned long)
+00000f18 t currentTimeline()
+00000f3e t beginScheduledAction()
+00001038 t processScheduler(unsigned long)
+00001126 t CooperativeProtocolWriter::write(unsigned char)
+0000114e t Print::print(__FlashStringHelper const*) [clone .constprop.17]
+00001184 t printEscaped(char const*)
+000011b8 t Print::flush()
+000011ba t Print::availableForWrite()
+000011c0 t validIdentifier(char const*, unsigned char) [clone .constprop.21]
+00001206 t Print::write(char const*) [clone .part.2] [clone .constprop.19]
+00001220 t Print::println(__FlashStringHelper const*) [clone .constprop.16]
+0000123c t printError(char const*)
+0000125c t Print::printNumber(unsigned long, unsigned char) [clone .constprop.14]
+000012e4 t Print::print(char const*) [clone .constprop.10]
+000012f2 t Print::print(int, int) [clone .constprop.5]
+00001300 t printAcknowledgement(char const*, char const*, char const*, bool, ControlState, char const*, char const*, bool)
+00001438 t rejectCommand(char const*, char const*, char const*)
+00001474 t sendEvent(char const*, char const*)
+00001530 t flushScheduledTelemetry()
+000019ce t sendCachedAcknowledgement(CachedAcknowledgement const&)
+00001a5e t findField(JsonField const*, unsigned char, char const*)
+00001aaa t processProtocolCommand(char const*) [clone .constprop.4]
+0000256e T __vector_16
+00002602 T __vector_19
+0000264e T __vector_18
+000026b2 T __vector_11
+0000282a t Servo::Servo()
+0000282a t Servo::Servo()
+00002860 t global constructors keyed to 65535_0_nature_touch_unified.ino.cpp.o.2127
+000028f8 T main
+00002b8e t sendStatus(char const*)
+00002d10 T __muluhisi3
+00002d26 T __udivmodsi4
+00002d32 t __udivmodsi4_loop
+00002d4c t __udivmodsi4_ep
+00002d6a T __umulhisi3
+00002d88 T __mulsi3
+00002da8 T __udivmodqi4
+00002dae t __udivmodqi4_loop
+00002db6 t __udivmodqi4_ep
+00002dc0 T __tablejump2__
+00002dcc T strcmp
+00002dde T strncpy
+00002dfc T _exit
+00002dfc W exit
+00002dfe t __stop_program
+00002e00 A __data_load_start
+00002e00 T _etext
+00003058 A __data_load_end
+0000ffa0 A __DATA_REGION_LENGTH__
+00010000 A __EEPROM_REGION_LENGTH__
+00020000 A __TEXT_REGION_LENGTH__
+00800060 A __DATA_REGION_ORIGIN__
+00800100 D __data_start
+00800100 d RealActuators::faultLatched
+00800101 d CSWTCH.276
+00800107 d CSWTCH.278
+0080010d d CSWTCH.272
+00800117 d RealActuators::DEFLATE
+0080011d d RealActuators::INFLATE
+00800123 d CSWTCH.274
+00800129 d CSWTCH.280
+0080012c d validCommandName(char const*)::commands
+00800138 d vtable for HardwareSerial
+0080014a d vtable for CooperativeProtocolWriter
+00800358 B __bss_start
+00800358 D __data_end
+00800358 D _edata
+00800358 b Channel
+00800359 b ServoCount
+0080035a b servos
+0080037e b timer0_overflow_count
+00800382 b timer0_fract
+00800383 b timer0_millis
+00800387 b operationHistoryIndex
+00800388 b actionCount
+0080038a b actionIndex
+0080038c b operationHistory
+008003d0 b inputLine
+00800470 b actionDeadline
+00800474 b operationStartedAt
+00800478 b requestCacheIndex
+00800479 b faultCode
+0080047b b faultEventPending
+0080047c b actionScheduled
+0080047d b runActive
+0080047e b activeOperationId
+0080048f b elapsedBeforeCurrentAction
+00800493 b selectedExperience
+00800495 b completionEventPending
+00800496 b pendingActionEvents
+0080049a b controlState
+0080049c b lastHostContactAt
+008004a0 b requestCache
+008005e8 b inputLineReady
+008005e9 b lineTooLong
+008005ea b inputLength
+008005eb b Serial
+00800688 b ProtocolOutput
+0080068c b RealActuators::driver
+0080069e B __bss_end
+0080069e N _end
+00810000 N __eeprom_end

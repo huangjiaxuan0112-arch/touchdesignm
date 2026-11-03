@@ -23,6 +23,8 @@ import type { SerialConnection, SerialTransport } from './serial-transport'
 interface ServiceOptions {
   readOnly?: boolean
   allowSimulationTest?: boolean
+  // Trusted deployment setting only; omitted by the shipped app (locked).
+  allowRealHardwareControl?: boolean
   commandTimeoutMs?: number
   identifyTimeoutMs?: number
   connectSettleMs?: number
@@ -69,6 +71,8 @@ export class ArduinoFirmwareService {
   private readonly readOnly: boolean
   private readonly allowSimulationTest: boolean
   private simulationIdentityConfirmed = false
+  private realIdentityConfirmed = false
+  private readonly allowRealHardwareControl: boolean
   private statusRequest: Promise<ExperienceStatusResponse> | undefined
 
   constructor(
@@ -77,6 +81,7 @@ export class ArduinoFirmwareService {
   ) {
     this.readOnly = options.readOnly ?? false
     this.allowSimulationTest = options.allowSimulationTest ?? false
+    this.allowRealHardwareControl = options.allowRealHardwareControl ?? false
     this.commandTimeoutMs = options.commandTimeoutMs ?? 1500
     this.identifyTimeoutMs = options.identifyTimeoutMs ?? 5000
     this.connectSettleMs = options.connectSettleMs ?? 2500
@@ -119,6 +124,7 @@ export class ArduinoFirmwareService {
     this.discardingLongLine = false
     this.remoteState = 'IDLE'
     this.simulationIdentityConfirmed = false
+    this.realIdentityConfirmed = false
     this.runStartedAt = undefined
     this.clearHeartbeat()
     this.updateSnapshot({
@@ -159,24 +165,31 @@ export class ArduinoFirmwareService {
         const code = typeof identity.code === 'string' ? identity.code : 'PROTOCOL_REJECTED'
         throw new Error(`Incompatible firmware: protocol v2 IDENTIFY was rejected (${code}). Disconnect and verify the installed firmware; do not upload during read-only integration.`)
       }
+      const capabilities = identity.capabilities
+      const isSimulation = identity.firmware === 'nature-touch-unified-simulation' &&
+        identity.hardwareOutputsEnabled === false
+      const isReal = identity.firmware === 'nature-touch-unified-real' &&
+        typeof identity.hardwareOutputsEnabled === 'boolean' && Array.isArray(capabilities) &&
+        ['WIND', 'WAVE', 'BUBBLE', 'REAL_ACTUATORS'].every(capability => capabilities.includes(capability))
       if (
         identity.type !== 'ACK' ||
         identity.command !== 'IDENTIFY' ||
         identity.protocol !== EXPERIENCE_PROTOCOL_VERSION ||
-        identity.firmware !== 'nature-touch-unified-simulation' ||
-        identity.hardwareOutputsEnabled !== false
+        identity.accepted !== true ||
+        (!isSimulation && !isReal)
       ) {
         throw new Error('Incompatible firmware: expected output-disabled Nature Touch protocol v2. Disconnect and verify the installed firmware; do not upload during read-only integration.')
       }
+      this.realIdentityConfirmed = isReal
       this.updateSnapshot({
         ...this.snapshot,
         identified: true,
         protocolVersion: EXPERIENCE_PROTOCOL_VERSION,
         firmware: String(identity.firmware),
+        hardwareOutputsEnabled: identity.hardwareOutputsEnabled === true,
       })
 
-      const capabilities = identity.capabilities
-      this.simulationIdentityConfirmed = identity.accepted === true && Array.isArray(capabilities) &&
+      this.simulationIdentityConfirmed = isSimulation && identity.accepted === true && Array.isArray(capabilities) &&
         ['WIND', 'WAVE', 'BUBBLE', 'SIMULATION_ONLY'].every((capability) => capabilities.includes(capability))
 
       const status = await this.readStatus()
@@ -353,6 +366,9 @@ export class ArduinoFirmwareService {
   async recover(requestId: string, confirmation?: { loadsIsolated: boolean; simulationFirmwareConfirmed: boolean }): Promise<ExperienceAcknowledgement> {
     this.requireIdentified()
     this.validateRequestId(requestId)
+    if (this.realIdentityConfirmed && (this.readOnly || !this.allowRealHardwareControl)) {
+      throw new Error('Real actuator control is locked: reviewed deployment permission is required.')
+    }
     let confirmedRecovery = false
     if (this.readOnly) {
       if (!this.allowSimulationTest || !this.simulationIdentityConfirmed ||
@@ -417,6 +433,12 @@ export class ArduinoFirmwareService {
     this.statusRequest = request
     try {
       const response = await request
+      if (this.realIdentityConfirmed &&
+          (response.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== this.snapshot.hardwareOutputsEnabled) {
+        const error = new Error('Real actuator output capability changed; reconnect and identify explicitly.')
+        if (this.connection) this.failSession(this.connection, error, 'INCOMPATIBLE_FIRMWARE')
+        throw error
+      }
       if (this.snapshot.simulationTestArmed &&
           (response.snapshot as ExperienceSnapshot & { hardwareOutputsEnabled?: unknown }).hardwareOutputsEnabled !== false) {
         const error = new Error('Simulation-only output flag lost; test session closed.')
@@ -434,7 +456,12 @@ export class ArduinoFirmwareService {
     requestId = this.requestIdFromPayload(payload) ?? this.nextRequestId(),
     options: { waitForStatus?: boolean; waitForStop?: boolean; timeoutMs?: number; confirmedRecovery?: boolean } = {},
   ): Promise<T> {
+    if (this.realIdentityConfirmed && ['SELECT', 'START', 'RECOVER'].includes(command) &&
+        (this.readOnly || !this.allowRealHardwareControl)) {
+      return Promise.reject(new Error('Real actuator control is locked: reviewed deployment permission is required.'))
+    }
     if (this.readOnly && command !== 'IDENTIFY' && command !== 'STATUS_QUERY' &&
+        !(this.realIdentityConfirmed && command === 'STOP') &&
         !(this.snapshot.simulationTestArmed && this.snapshot.identified &&
           this.snapshot.connectionState === 'connected' && ['SELECT', 'START', 'STOP'].includes(command)) &&
         !(command === 'RECOVER' && options.confirmedRecovery && this.allowSimulationTest &&
@@ -607,6 +634,10 @@ export class ArduinoFirmwareService {
   }
 
   private handleEvent(message: Record<string, unknown>): void {
+    if (message.name === 'READY' && this.snapshot.identified && this.connection) {
+      this.failSession(this.connection, new Error('Firmware reset detected; reconnect explicitly. START was not replayed.'), 'DEVICE_RESET')
+      return
+    }
     if (message.name === 'COMPLETED') {
       if (message.operationId !== this.snapshot.experience.operationId) return
       this.remoteState = 'COMPLETED'
@@ -779,6 +810,7 @@ export class ArduinoFirmwareService {
   }
 
   private updateSnapshot(snapshot: FirmwareControlSnapshot): void {
+    if (snapshot.connectionState !== 'connected' || !snapshot.identified) this.realIdentityConfirmed = false
     if (snapshot.connectionState !== 'connected' || !snapshot.identified || snapshot.experience.state === 'FAULT') {
       snapshot = { ...snapshot, simulationTestArmed: false }
     }

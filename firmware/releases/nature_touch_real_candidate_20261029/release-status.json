@@ -1,0 +1,126 @@
+{
+  "status": "CANDIDATE_BLOCKED_NO_REAL_HEX",
+  "createdUtc": "2026-10-29T06:32:16.560Z",
+  "source": "Existing NEW unified controller; not legacy sketches",
+  "parameters": {
+    "D5": {
+      "off": 1200,
+      "on": 1800
+    },
+    "D6": {
+      "off": 1200,
+      "on": 1800
+    },
+    "D7": {
+      "off": 1200,
+      "on": 1800
+    },
+    "pumpOffSettleMs": 500,
+    "valveSettleMs": 300,
+    "hostTimeoutMs": 5000
+  },
+  "evidence": {
+    "normalSwitching": "USER_REPORTED_PASS_WITH_SELECTED_CONFIGURATION",
+    "timingScope": "500/300ms functional operation reported; no worst-case electrical/airflow/valve timing margin claimed",
+    "usbCutoff": "USER_CONFIRMED_ALL_THREE_LOADS_LOSE_POWER_NO_BACKFEED",
+    "independentPressureProtection": "NOT_CONFIRMED_INSTALLED",
+    "pressureLimit": "UNKNOWN_UNCONFIGURED",
+    "airbagMaximumPressure": "UNKNOWN",
+    "powerLossRelief": "SLOW_FLATTENING_OBSERVED_MECHANISM_AND_TIME_UNKNOWN_NOT_VERIFIED",
+    "D6ActiveExtraction": "CONFIRMED_POWERED_NORMAL_FUNCTION_NOT_INDEPENDENT_PROTECTION",
+    "latestAirbagObservation": {
+      "source": "USER_CLARIFICATION",
+      "allThreeModesPhysicalFunctionalPass": true,
+      "noObservedRuptureAbnormalInflationOrDamage": true,
+      "pressureMeasurementAvailable": false,
+      "measuredMaximumPressure": null,
+      "isQuantifiedMaximumPressureTest": false
+    },
+    "previousPressureDeviceAnswerClarified": "Initial answer said pressure arrangements existed; detailed follow-up confirmed no independent limiter/relief valve/pressure sensor and no quantified airbag limit. Detailed clarification governs; do not mark overpressure protection verified."
+  },
+  "closedSourceGates": [
+    "PHYSICAL_OUTPUTS_PERMITTED",
+    "D5_D6_OUTPUTS_PERMITTED",
+    "D7_ACTIVATION_REVIEWED",
+    "OVERPRESSURE_PROTECTION_VERIFIED",
+    "STARTUP_AND_TRANSITION_BEHAVIOR_VERIFIED",
+    "STOP_VALVE_VERIFIED",
+    "PUMP_OFF_SETTLE_VERIFIED",
+    "VALVE_SETTLE_VERIFIED"
+  ],
+  "hostGate": {
+    "file": "desktop/electron/main.ts",
+    "field": "REAL_HARDWARE_DEPLOYMENT_REVIEWED",
+    "value": false,
+    "existingApi": "connectFirmware/queryFirmwareStatus/selectFirmwareExperience/startFirmwareExperience/stopFirmwareExperience",
+    "note": "Simulation ARM and exhibition card restrictions cannot authorize real output. Existing main-process permission stays closed until reviewed deployment."
+  },
+  "originalFinalDeflationMs": {
+    "WIND": 5000,
+    "WAVE": 5000,
+    "BUBBLE": 3000
+  },
+  "originalTimelineSha256": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+  "workingSourceSha256": {
+    "nature_touch_unified.ino": "47d22ea888bccafe6cc2469b9eb76da2fc115658df4dbd1353a20e78b31fe823",
+    "experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "actuator-driver.h": "76078824c6e9be9d34890ec6cc6616f176b322a86d98ea54044bdf901f0640b9",
+    "simulated-actuators.h": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b",
+    "real-actuators.h": "b324447b262ea071fe218571e9f1510cd55fd14c32b6061cca803b5ffa21c8bb"
+  },
+  "candidateSourceSha256": {
+    "nature_touch_unified.ino": "47d22ea888bccafe6cc2469b9eb76da2fc115658df4dbd1353a20e78b31fe823",
+    "experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "actuator-driver.h": "76078824c6e9be9d34890ec6cc6616f176b322a86d98ea54044bdf901f0640b9",
+    "simulated-actuators.h": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b",
+    "real-actuators.h": "5df330638c6a6562ab296ea21e288ea63cc058507479e929de788fc528c653ca"
+  },
+  "fqbn": "arduino:avr:nano:cpu=atmega328",
+  "buildSelector": "compiler.cpp.extra_flags=-DNATURE_TOUCH_ACTUATOR_DRIVER=1",
+  "uploaded": false,
+  "hexGenerated": false,
+  "uploadPlan": [
+    "Resolve physical protection and source review conditions; no blanket unlock",
+    "Compile this candidate, record real HEX SHA256 and Flash/SRAM",
+    "Request explicit upload authorization for that exact HEX",
+    "Re-discover the CH340 port, isolate loads, close competing serial sessions; Arduino CLI upload with --verify",
+    "Read IDENTIFY=nature-touch-unified-real Protocol 2 and STATUS inactive; no automatic START",
+    "Review existing Electron real permission; request separate first START authorization",
+    "One START then explicit STOP; user observes physical stop. FAULT or mismatch: cut USB; no automatic retries"
+  ],
+  "firstRunPolicy": "No change to calibrated timelines. First START invokes the selected existing experience, not a newly invented short cycle. STOP cancels pending ON; no extra deflation.",
+  "buildEntry": "build-real.ps1 -Compile",
+  "buildGateCheck": {
+    "result": "BLOCKED_AS_REQUIRED",
+    "compilerInvoked": false,
+    "comOpened": false,
+    "uploaded": false,
+    "reason": "Incomplete pressure/shutdown/startup/timing review and physical release permissions"
+  },
+  "releaseGateClasses": {
+    "physicalProtection": [
+      "OVERPRESSURE_PROTECTION_VERIFIED",
+      "STOP_VALVE_VERIFIED"
+    ],
+    "sourceReview": [
+      "STARTUP_AND_TRANSITION_BEHAVIOR_VERIFIED",
+      "PUMP_OFF_SETTLE_VERIFIED",
+      "VALVE_SETTLE_VERIFIED"
+    ],
+    "deploymentPermission": [
+      "PHYSICAL_OUTPUTS_PERMITTED",
+      "D5_D6_OUTPUTS_PERMITTED",
+      "D7_ACTIVATION_REVIEWED"
+    ],
+    "hostPermission": [
+      "desktop/electron/main.ts:REAL_HARDWARE_DEPLOYMENT_REVIEWED"
+    ]
+  },
+  "integrationPreservation": {
+    "nature_touch_unified.ino": "EXACT_MATCH_LOCKED_SOURCE",
+    "experience-timelines.h": "EXACT_MATCH_LOCKED_SOURCE",
+    "actuator-driver.h": "EXACT_MATCH_LOCKED_SOURCE",
+    "simulated-actuators.h": "EXACT_MATCH_LOCKED_SOURCE",
+    "realDriverLogic": "EXACT_MATCH_AFTER_CONFIGURATION_HEADER"
+  }
+}

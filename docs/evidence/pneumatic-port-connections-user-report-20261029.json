@@ -1,0 +1,49 @@
+{
+  "recordedUtc": "2026-10-29T04:30:30.833Z",
+  "source": "USER_REPORTED_EXISTING_PNEUMATIC_CONNECTIONS",
+  "rawUserReport": [
+    "P → 充气泵",
+    "A → 气囊",
+    "R → 排气路径，可能连接抽气泵"
+  ],
+  "portConnections": {
+    "P": {
+      "destination": "INFLATION_PUMP",
+      "status": "USER_CONFIRMED"
+    },
+    "A": {
+      "destination": "AIRBAG",
+      "status": "USER_CONFIRMED"
+    },
+    "R": {
+      "destination": "EXHAUST_PATH",
+      "status": "USER_CONFIRMED",
+      "suctionPumpConnection": "POSSIBLE_NOT_CONFIRMED",
+      "suctionPumpPort": "UNKNOWN"
+    }
+  },
+  "valveRoutingReference": "docs/evidence/d5-pneumatic-flow-user-report-20261029.json",
+  "candidateLogicalActions": {
+    "inflation": {
+      "D5": "ON: P-A",
+      "D7": "ON",
+      "D6": "OFF",
+      "status": "DERIVED_FROM_REPORTED_CONNECTIONS_NOT_SYSTEM_TESTED"
+    },
+    "passiveExhaustPath": {
+      "D5": "OFF: A-R",
+      "D7": "OFF",
+      "D6": "OFF",
+      "actualExhaustRateAndPressureSafety": "NOT_VERIFIED"
+    },
+    "activeDeflation": {
+      "D5": "OFF: A-R",
+      "D7": "OFF",
+      "D6": "DO_NOT_ENABLE_UNTIL_R_TO_SUCTION_INLET_CONFIRMED"
+    }
+  },
+  "nextReadOnlyPhysicalCheck": "With power disconnected and without removing or changing tubing, trace R to establish whether it reaches the suction pump inlet or vents to atmosphere.",
+  "productionDriverLocksChanged": false,
+  "physicalCommandsSentByAssistantThisTurn": [],
+  "uploadedThisTurn": false
+}

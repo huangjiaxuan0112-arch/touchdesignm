@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-10-27T05:10:34.773Z",
+  "kind": "REAL Electron UI + native SerialPort",
+  "portPath": "COM5",
+  "loadsIsolatedConfirmed": true,
+  "writes": [
+    "{\"type\":\"IDENTIFY\",\"protocol\":2,\"requestId\":\"r1\"}\n",
+    "{\"type\":\"STATUS_QUERY\",\"requestId\":\"r2\"}\n"
+  ],
+  "incoming": [
+    "{\"type\":\"EVENT\",\"name\":\"READY\",\"",
+    "deviceId\":\"nature-touch-nano-sim",
+    "ulation\",\"protocol\":2,\"hardwareO",
+    "utputsEnabled\":false}\r\n",
+    "{\"type\":\"ACK\",\"command\":\"IDENTIF",
+    "Y\",\"accepted\":true,\"requestId\":\"",
+    "r1\",\"state\":\"IDLE\",\"protocol\":2,",
+    "\"firmware\":\"nature-touch-unified",
+    "-simulation\",\"deviceId\":\"nature-",
+    "touch-nano-simulation\",\"hardware",
+    "OutputsEnabled\":false,\"capabilit",
+    "ies\":[\"WIND\",\"WAVE\",\"BUBBLE\",\"SI",
+    "MULATION_ONLY\"]}\r\n",
+    "{\"type\":\"ACK\",\"command\":\"STATUS_",
+    "QUERY\",\"accepted\":true,\"requestI",
+    "d\":\"r2\",\"state\":\"IDLE\"}\r\n{\"type\"",
+    ":\"STATUS\",\"requestId\":\"r2\",\"ackn",
+    "owledgement\":{\"type\":\"ACK\",\"comm",
+    "and\":\"STATUS_QUERY\",\"accepted\":t",
+    "rue,\"requestId\":\"r2\",\"state\":\"ID",
+    "LE\"},\"snapshot\":{\"state\":\"IDLE\",",
+    "\"selectedExperienceId\":null,\"ope",
+    "rationId\":null,\"elapsedMs\":0,\"du",
+    "rationMs\":null,\"faultCode\":null,",
+    "\"hardwareOutputsEnabled\":false}}",
+    "\r\n"
+  ],
+  "checks": {
+    "confirmationRequired": true,
+    "identify": true,
+    "realCardsDisabled": true,
+    "mainProcessMutationGuard": true,
+    "statusQuery": false
+  },
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n\n    at C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\test\\hardware-step1-electron.cjs:79:12"
+  ],
+  "ports": [
+    {
+      "path": "COM4",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM3",
+      "manufacturer": "Microsoft"
+    },
+    {
+      "path": "COM5",
+      "manufacturer": "wch.cn",
+      "vendorId": "1A86",
+      "productId": "7523",
+      "serialNumber": "5&26B53364&0&9"
+    }
+  ],
+  "connectedSnapshot": {
+    "connectionState": "connected",
+    "identified": true,
+    "protocolVersion": 2,
+    "firmware": "nature-touch-unified-simulation",
+    "hardwareOutputsEnabled": false,
+    "experience": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "progress": 0,
+      "faultCode": null
+    },
+    "lastEvent": null,
+    "lastError": null
+  },
+  "visibleText": "Device mode \nMock Device — simulated\nReal Arduino — read-only USB\n\nReal Arduino: connected (COM5)\n\nCOM port \nChoose a detected port\nCOM4 · Microsoft\nCOM3 · Microsoft\nCOM5 · wch.cn (1A86:7523)\nRefresh ports\nI confirm valve and both pumps are physically isolated from all power paths. USB/reset cannot energize them.\n\nOpening serial may reset an unknown installed sketch. Only IDENTIFY and STATUS_QUERY are permitted.\n\nDisconnect ArduinoSTATUS_QUERY\n\nIDENTIFY: nature-touch-unified-simulation · Protocol 2 · reports outputs disabled\n\n{\n  \"state\": \"IDLE\",\n  \"selectedExperienceId\": null,\n  \"operationId\": null,\n  \"elapsedMs\": 0,\n  \"durationMs\": null,\n  \"progress\": 0,\n  \"faultCode\": null\n}",
+  "statusSnapshot": {
+    "connectionState": "connected",
+    "identified": true,
+    "protocolVersion": 2,
+    "firmware": "nature-touch-unified-simulation",
+    "hardwareOutputsEnabled": false,
+    "experience": {
+      "state": "IDLE",
+      "selectedExperienceId": null,
+      "operationId": null,
+      "elapsedMs": 0,
+      "durationMs": null,
+      "faultCode": null,
+      "hardwareOutputsEnabled": false
+    },
+    "lastEvent": null,
+    "lastError": null
+  },
+  "result": "FAIL"
+}

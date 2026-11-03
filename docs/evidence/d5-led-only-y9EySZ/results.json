@@ -1,0 +1,3415 @@
+{
+  "result": "PASS",
+  "utc": "2026-10-29T04:11:20.349Z",
+  "compile": "Sketch uses 5316 bytes (17%) of program storage space. Maximum is 30720 bytes.\nGlobal variables use 354 bytes (17%) of dynamic memory, leaving 1694 bytes for local variables. Maximum is 2048 bytes.\n",
+  "before": {
+    "firmware/unified/nature_touch_unified/nature_touch_unified.ino": "4884a98c612bca4d2ad085592a2a5250a348a3281c7e2cb54b79d28b70d02c7f",
+    "firmware/unified/nature_touch_unified/real-actuators.h": "b910187360666a3699bc8a96dfc8fff8111d7028a273c0e52f6031b1af08cf65",
+    "firmware/unified/nature_touch_unified/actuator-driver.h": "74f53fdc98ed2d1507440d748c6c270198842a8d7c3cf41af4c989b41499c744",
+    "firmware/unified/nature_touch_unified/simulated-actuators.h": "21a1a831bfb8543a43fb3db34c62b0e241247e8b204d37b8bab677d9ec1a1d1b",
+    "firmware/unified/nature_touch_unified/experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+    "firmware/diagnostic/d7_start_stop/d7_start_stop.ino": "19d0819ec910560d888401d9261696fed97a6e1f6d2bc2f9ed95fd8e37b2f60c",
+    "firmware/diagnostic/d7_led_only/d7_led_only.ino": "8706e4478b679d7f2c0f8d7eabf6c6e4979bd2e087db6c6470573a886f895d5b",
+    "firmware/diagnostic/d7_led_only/windows-led.cjs": "3e801cdb0e4022b658ee4bf561261eaf931ebbcbfb776f09a63fcd7d31c6bc6b",
+    "firmware/diagnostic/d6_led_only/d6_led_only.ino": "f238591052cbe3af2f144df65a88536da9d51995e00b8cf82324aeec8a93b981",
+    "firmware/diagnostic/d6_led_only/windows-led.cjs": "8443841bae09f689ec8e32af2aa43290d9fbeea6de8d1dbc3c0b5baf098d0003",
+    "docs/evidence/d6-led-short-SDH3eW/trial.json": "301770517c5975efa76d7dac02f8f086e5b9a0ae5b2ee0c4895d332e84a17d09",
+    "docs/evidence/d6-legacy-endpoints-physical-pass-20261029.json": "ab91522276c7d3d4e6a903ad4dd56236bc11e619657599bea7623c8410ee0f94",
+    "docs/evidence/d7-reset-user-report-20261029.json": "56fdb31832ba32b73212c2d84191f99f6dc7948640872ab03512d0aa26b46505",
+    "docs/evidence/d7-reset-latest-pass-20261029.json": "3fa1938ff4eae64b7acf9bcb2eb47cbd095fd426f4de7331600a4ab616be0bb7"
+  },
+  "protectedFilesUnchanged": true,
+  "build": "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-d5-led-YL3kHx",
+  "config": "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-d5-led-YL3kHx\\arduino-cli.yaml",
+  "cli": "C:\\Users\\20676\\AppData\\Local\\Programs\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+  "fqbn": "arduino:avr:nano:cpu=atmega328",
+  "sourceSha256": "2933c37aba386f7b3ca85735f89eacb0af97e88f78f5686adacedcdeb4fa6feb",
+  "method": "Actual compiled Nano HEX in AVR8js with existing USART RXC compatibility adapter. No serial device, LED or physical reset/bootloader tested.",
+  "physicalObservations": [],
+  "repeatability": "NOT_TESTED",
+  "results": [
+    {
+      "name": "启动/复位无输出；未确认、错误编号、过期确认均不输出",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 136.9524375,
+          "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5599.3468125,
+          "text": "D5LED/1 t=5459 event=REJECT_CONFIRM attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5853.5156875,
+          "text": "D5LED/1 t=5711 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 6104.600375,
+          "text": "D5LED/1 t=5961 event=REJECT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 10852.1803125,
+          "text": "D5LED/1 t=10711 event=CONFIRM_EXPIRED attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 11550.38675,
+          "text": "D5LED/1 t=11409 event=REJECT_CONFIRM attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 11795.170875,
+          "text": "D5LED/1 t=11656 event=ERROR_COMMAND attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 12053.5140625,
+          "text": "D5LED/1 t=11914 event=ERROR_COMMAND attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 12302.4705,
+          "text": "D5LED/1 t=12162 event=REJECT_CONFIRM attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 12610.827125,
+          "text": "D5LED/1 t=12473 event=ERROR_FRAME attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 12800.3680625,
+          "text": "D5LED/1 t=12662 event=ERROR_FRAME attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        }
+      ],
+      "d5Edges": [],
+      "d6d7Activity": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "1200/1800us 实际波形；每次需新确认；STOP 移除信号",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 136.9524375,
+          "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 402.4671875,
+          "text": "D5LED/1 t=262 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 647.3365,
+          "text": "D5LED/1 t=509 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 920.2344375,
+          "text": "D5LED/1 t=760 event=REJECT_ACTIVE_USE_STOP_FIRST attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 1149.363125,
+          "text": "D5LED/1 t=1004 event=STOP_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 1899.3481875,
+          "text": "D5LED/1 t=1760 event=REJECT_CONFIRM attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2152.478125,
+          "text": "D5LED/1 t=2011 event=AWAIT_CONFIRM attached=0 active_us=0 applied=1 pending=2 requested_us=1800 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2398.3650625,
+          "text": "D5LED/1 t=2259 event=APPLIED attached=1 active_us=1800 applied=2 pending=0 requested_us=1800 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2671.276875,
+          "text": "D5LED/1 t=2510 event=REJECT_ACTIVE_USE_STOP_FIRST attached=1 active_us=1800 applied=2 pending=0 requested_us=1800 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2899.3600625,
+          "text": "D5LED/1 t=2754 event=STOP_SIGNAL_REMOVED attached=0 active_us=0 applied=2 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3649.3655625,
+          "text": "D5LED/1 t=3510 event=REJECT_CONFIRM attached=0 active_us=0 applied=2 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        }
+      ],
+      "d5Edges": [
+        {
+          "us": 563301.625,
+          "high": true
+        },
+        {
+          "us": 564501.5,
+          "high": false
+        },
+        {
+          "us": 583304.625,
+          "high": true
+        },
+        {
+          "us": 584504.5,
+          "high": false
+        },
+        {
+          "us": 603309.625,
+          "high": true
+        },
+        {
+          "us": 604509.5,
+          "high": false
+        },
+        {
+          "us": 623312.5625,
+          "high": true
+        },
+        {
+          "us": 624512,
+          "high": false
+        },
+        {
+          "us": 643315.5625,
+          "high": true
+        },
+        {
+          "us": 644515,
+          "high": false
+        },
+        {
+          "us": 663318.625,
+          "high": true
+        },
+        {
+          "us": 664518.5,
+          "high": false
+        },
+        {
+          "us": 683321.5625,
+          "high": true
+        },
+        {
+          "us": 684521,
+          "high": false
+        },
+        {
+          "us": 703324.5625,
+          "high": true
+        },
+        {
+          "us": 704524,
+          "high": false
+        },
+        {
+          "us": 723327.6875,
+          "high": true
+        },
+        {
+          "us": 724527.5625,
+          "high": false
+        },
+        {
+          "us": 743330.625,
+          "high": true
+        },
+        {
+          "us": 744530.5625,
+          "high": false
+        },
+        {
+          "us": 763333.625,
+          "high": true
+        },
+        {
+          "us": 764533.5,
+          "high": false
+        },
+        {
+          "us": 783336.5625,
+          "high": true
+        },
+        {
+          "us": 784536.0625,
+          "high": false
+        },
+        {
+          "us": 803339.5625,
+          "high": true
+        },
+        {
+          "us": 804539,
+          "high": false
+        },
+        {
+          "us": 823342.5625,
+          "high": true
+        },
+        {
+          "us": 824542.0625,
+          "high": false
+        },
+        {
+          "us": 843345.625,
+          "high": true
+        },
+        {
+          "us": 844545.5,
+          "high": false
+        },
+        {
+          "us": 863348.5625,
+          "high": true
+        },
+        {
+          "us": 864548.0625,
+          "high": false
+        },
+        {
+          "us": 883351.5625,
+          "high": true
+        },
+        {
+          "us": 884551,
+          "high": false
+        },
+        {
+          "us": 903354.5625,
+          "high": true
+        },
+        {
+          "us": 904554.0625,
+          "high": false
+        },
+        {
+          "us": 923357.625,
+          "high": true
+        },
+        {
+          "us": 924557.5625,
+          "high": false
+        },
+        {
+          "us": 943360.5625,
+          "high": true
+        },
+        {
+          "us": 944560,
+          "high": false
+        },
+        {
+          "us": 963363.6875,
+          "high": true
+        },
+        {
+          "us": 964563.5,
+          "high": false
+        },
+        {
+          "us": 983366.5625,
+          "high": true
+        },
+        {
+          "us": 984566,
+          "high": false
+        },
+        {
+          "us": 1003369.5625,
+          "high": true
+        },
+        {
+          "us": 1004569,
+          "high": false
+        },
+        {
+          "us": 2280532.625,
+          "high": true
+        },
+        {
+          "us": 2282332.5,
+          "high": false
+        },
+        {
+          "us": 2300535.5625,
+          "high": true
+        },
+        {
+          "us": 2302335.0625,
+          "high": false
+        },
+        {
+          "us": 2320538.5625,
+          "high": true
+        },
+        {
+          "us": 2322338,
+          "high": false
+        },
+        {
+          "us": 2340541.5625,
+          "high": true
+        },
+        {
+          "us": 2342341,
+          "high": false
+        },
+        {
+          "us": 2360544.625,
+          "high": true
+        },
+        {
+          "us": 2362344.5,
+          "high": false
+        },
+        {
+          "us": 2380547.5625,
+          "high": true
+        },
+        {
+          "us": 2382347.0625,
+          "high": false
+        },
+        {
+          "us": 2400550.5625,
+          "high": true
+        },
+        {
+          "us": 2402350.1875,
+          "high": false
+        },
+        {
+          "us": 2420553.6875,
+          "high": true
+        },
+        {
+          "us": 2422353.625,
+          "high": false
+        },
+        {
+          "us": 2440556.5625,
+          "high": true
+        },
+        {
+          "us": 2442356.125,
+          "high": false
+        },
+        {
+          "us": 2460559.625,
+          "high": true
+        },
+        {
+          "us": 2462359.5,
+          "high": false
+        },
+        {
+          "us": 2480562.5625,
+          "high": true
+        },
+        {
+          "us": 2482362,
+          "high": false
+        },
+        {
+          "us": 2500565.5625,
+          "high": true
+        },
+        {
+          "us": 2502365.0625,
+          "high": false
+        },
+        {
+          "us": 2520568.625,
+          "high": true
+        },
+        {
+          "us": 2522368.5,
+          "high": false
+        },
+        {
+          "us": 2540571.5625,
+          "high": true
+        },
+        {
+          "us": 2542371,
+          "high": false
+        },
+        {
+          "us": 2560574.5625,
+          "high": true
+        },
+        {
+          "us": 2562374.0625,
+          "high": false
+        },
+        {
+          "us": 2580577.5625,
+          "high": true
+        },
+        {
+          "us": 2582377.0625,
+          "high": false
+        },
+        {
+          "us": 2600580.625,
+          "high": true
+        },
+        {
+          "us": 2602380.5,
+          "high": false
+        },
+        {
+          "us": 2620583.625,
+          "high": true
+        },
+        {
+          "us": 2622383.5,
+          "high": false
+        },
+        {
+          "us": 2640586.5625,
+          "high": true
+        },
+        {
+          "us": 2642386.125,
+          "high": false
+        },
+        {
+          "us": 2660589.5625,
+          "high": true
+        },
+        {
+          "us": 2662389,
+          "high": false
+        },
+        {
+          "us": 2680592.5625,
+          "high": true
+        },
+        {
+          "us": 2682392,
+          "high": false
+        },
+        {
+          "us": 2700596.0625,
+          "high": true
+        },
+        {
+          "us": 2702395.5,
+          "high": false
+        },
+        {
+          "us": 2720599.0625,
+          "high": true
+        },
+        {
+          "us": 2722398.5,
+          "high": false
+        },
+        {
+          "us": 2740602.125,
+          "high": true
+        },
+        {
+          "us": 2742402,
+          "high": false
+        }
+      ],
+      "d6d7Activity": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "2秒主机超时；不会自动续发，旧确认失效",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 136.9524375,
+          "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 401.4266875,
+          "text": "D5LED/1 t=261 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1800 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 647.3338125,
+          "text": "D5LED/1 t=509 event=APPLIED attached=1 active_us=1800 applied=1 pending=0 requested_us=1800 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2662.4610625,
+          "text": "D5LED/1 t=2509 event=HOST_TIMEOUT_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3087.862375,
+          "text": "D5LED/1 t=2956 event=STATUS attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3349.3425625,
+          "text": "D5LED/1 t=3210 event=REJECT_CONFIRM attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        }
+      ],
+      "d5Edges": [
+        {
+          "us": 563295.625,
+          "high": true
+        },
+        {
+          "us": 565095.5,
+          "high": false
+        },
+        {
+          "us": 583298.9375,
+          "high": true
+        },
+        {
+          "us": 585098.5,
+          "high": false
+        },
+        {
+          "us": 603302.0625,
+          "high": true
+        },
+        {
+          "us": 605101.5625,
+          "high": false
+        },
+        {
+          "us": 623305.1875,
+          "high": true
+        },
+        {
+          "us": 625105.125,
+          "high": false
+        },
+        {
+          "us": 643308.1875,
+          "high": true
+        },
+        {
+          "us": 645108.5,
+          "high": false
+        },
+        {
+          "us": 663311.0625,
+          "high": true
+        },
+        {
+          "us": 665110.625,
+          "high": false
+        },
+        {
+          "us": 683314.0625,
+          "high": true
+        },
+        {
+          "us": 685113.5625,
+          "high": false
+        },
+        {
+          "us": 703317.0625,
+          "high": true
+        },
+        {
+          "us": 705116.5625,
+          "high": false
+        },
+        {
+          "us": 723320.0625,
+          "high": true
+        },
+        {
+          "us": 725119.5625,
+          "high": false
+        },
+        {
+          "us": 743323.125,
+          "high": true
+        },
+        {
+          "us": 745123,
+          "high": false
+        },
+        {
+          "us": 763326.125,
+          "high": true
+        },
+        {
+          "us": 765126.1875,
+          "high": false
+        },
+        {
+          "us": 783329.0625,
+          "high": true
+        },
+        {
+          "us": 785128.5,
+          "high": false
+        },
+        {
+          "us": 803332.0625,
+          "high": true
+        },
+        {
+          "us": 805131.625,
+          "high": false
+        },
+        {
+          "us": 823335.1875,
+          "high": true
+        },
+        {
+          "us": 825135.0625,
+          "high": false
+        },
+        {
+          "us": 843338.0625,
+          "high": true
+        },
+        {
+          "us": 845137.5625,
+          "high": false
+        },
+        {
+          "us": 863341.125,
+          "high": true
+        },
+        {
+          "us": 865141,
+          "high": false
+        },
+        {
+          "us": 883344.125,
+          "high": true
+        },
+        {
+          "us": 885144,
+          "high": false
+        },
+        {
+          "us": 903347.0625,
+          "high": true
+        },
+        {
+          "us": 905146.5625,
+          "high": false
+        },
+        {
+          "us": 923350.0625,
+          "high": true
+        },
+        {
+          "us": 925149.5,
+          "high": false
+        },
+        {
+          "us": 943353.0625,
+          "high": true
+        },
+        {
+          "us": 945152.5625,
+          "high": false
+        },
+        {
+          "us": 963356.1875,
+          "high": true
+        },
+        {
+          "us": 965156.0625,
+          "high": false
+        },
+        {
+          "us": 983359.0625,
+          "high": true
+        },
+        {
+          "us": 985158.625,
+          "high": false
+        },
+        {
+          "us": 1003362.125,
+          "high": true
+        },
+        {
+          "us": 1005162,
+          "high": false
+        },
+        {
+          "us": 1023365.125,
+          "high": true
+        },
+        {
+          "us": 1025165,
+          "high": false
+        },
+        {
+          "us": 1043368.25,
+          "high": true
+        },
+        {
+          "us": 1045168.1875,
+          "high": false
+        },
+        {
+          "us": 1063371.0625,
+          "high": true
+        },
+        {
+          "us": 1065170.5,
+          "high": false
+        },
+        {
+          "us": 1083374.0625,
+          "high": true
+        },
+        {
+          "us": 1085173.5625,
+          "high": false
+        },
+        {
+          "us": 1103377.1875,
+          "high": true
+        },
+        {
+          "us": 1105177.0625,
+          "high": false
+        },
+        {
+          "us": 1123380.0625,
+          "high": true
+        },
+        {
+          "us": 1125179.625,
+          "high": false
+        },
+        {
+          "us": 1143383.125,
+          "high": true
+        },
+        {
+          "us": 1145183,
+          "high": false
+        },
+        {
+          "us": 1163386.0625,
+          "high": true
+        },
+        {
+          "us": 1165185.5,
+          "high": false
+        },
+        {
+          "us": 1183389.25,
+          "high": true
+        },
+        {
+          "us": 1185189.1875,
+          "high": false
+        },
+        {
+          "us": 1203392.0625,
+          "high": true
+        },
+        {
+          "us": 1205191.6875,
+          "high": false
+        },
+        {
+          "us": 1223395.0625,
+          "high": true
+        },
+        {
+          "us": 1225194.5625,
+          "high": false
+        },
+        {
+          "us": 1243398.0625,
+          "high": true
+        },
+        {
+          "us": 1245197.5625,
+          "high": false
+        },
+        {
+          "us": 1263401.0625,
+          "high": true
+        },
+        {
+          "us": 1265200.625,
+          "high": false
+        },
+        {
+          "us": 1283404.0625,
+          "high": true
+        },
+        {
+          "us": 1285203.5,
+          "high": false
+        },
+        {
+          "us": 1303407.0625,
+          "high": true
+        },
+        {
+          "us": 1305206.5,
+          "high": false
+        },
+        {
+          "us": 1323410.3125,
+          "high": true
+        },
+        {
+          "us": 1325210.0625,
+          "high": false
+        },
+        {
+          "us": 1343413.5625,
+          "high": true
+        },
+        {
+          "us": 1345213.375,
+          "high": false
+        },
+        {
+          "us": 1363416.5625,
+          "high": true
+        },
+        {
+          "us": 1365216,
+          "high": false
+        },
+        {
+          "us": 1383419.625,
+          "high": true
+        },
+        {
+          "us": 1385219.5625,
+          "high": false
+        },
+        {
+          "us": 1403422.625,
+          "high": true
+        },
+        {
+          "us": 1405222.5625,
+          "high": false
+        },
+        {
+          "us": 1423425.5625,
+          "high": true
+        },
+        {
+          "us": 1425225,
+          "high": false
+        },
+        {
+          "us": 1443428.5625,
+          "high": true
+        },
+        {
+          "us": 1445228,
+          "high": false
+        },
+        {
+          "us": 1463431.5625,
+          "high": true
+        },
+        {
+          "us": 1465231.0625,
+          "high": false
+        },
+        {
+          "us": 1483434.5625,
+          "high": true
+        },
+        {
+          "us": 1485234.375,
+          "high": false
+        },
+        {
+          "us": 1503437.625,
+          "high": true
+        },
+        {
+          "us": 1505237.5625,
+          "high": false
+        },
+        {
+          "us": 1523440.625,
+          "high": true
+        },
+        {
+          "us": 1525240.5625,
+          "high": false
+        },
+        {
+          "us": 1543443.5625,
+          "high": true
+        },
+        {
+          "us": 1545243,
+          "high": false
+        },
+        {
+          "us": 1563446.5625,
+          "high": true
+        },
+        {
+          "us": 1565246,
+          "high": false
+        },
+        {
+          "us": 1583449.5625,
+          "high": true
+        },
+        {
+          "us": 1585249.0625,
+          "high": false
+        },
+        {
+          "us": 1603452.5625,
+          "high": true
+        },
+        {
+          "us": 1605252.0625,
+          "high": false
+        },
+        {
+          "us": 1623455.625,
+          "high": true
+        },
+        {
+          "us": 1625259.125,
+          "high": false
+        },
+        {
+          "us": 1643458.5625,
+          "high": true
+        },
+        {
+          "us": 1645258,
+          "high": false
+        },
+        {
+          "us": 1663461.625,
+          "high": true
+        },
+        {
+          "us": 1665261.5,
+          "high": false
+        },
+        {
+          "us": 1683464.625,
+          "high": true
+        },
+        {
+          "us": 1685264.5,
+          "high": false
+        },
+        {
+          "us": 1703467.5625,
+          "high": true
+        },
+        {
+          "us": 1705267,
+          "high": false
+        },
+        {
+          "us": 1723471,
+          "high": true
+        },
+        {
+          "us": 1725270.5625,
+          "high": false
+        },
+        {
+          "us": 1743474.0625,
+          "high": true
+        },
+        {
+          "us": 1745273.5,
+          "high": false
+        },
+        {
+          "us": 1763477.0625,
+          "high": true
+        },
+        {
+          "us": 1765276.5625,
+          "high": false
+        },
+        {
+          "us": 1783480.1875,
+          "high": true
+        },
+        {
+          "us": 1785280.0625,
+          "high": false
+        },
+        {
+          "us": 1803483.0625,
+          "high": true
+        },
+        {
+          "us": 1805282.625,
+          "high": false
+        },
+        {
+          "us": 1823486.125,
+          "high": true
+        },
+        {
+          "us": 1825286,
+          "high": false
+        },
+        {
+          "us": 1843489.125,
+          "high": true
+        },
+        {
+          "us": 1845289,
+          "high": false
+        },
+        {
+          "us": 1863492.25,
+          "high": true
+        },
+        {
+          "us": 1865292.1875,
+          "high": false
+        },
+        {
+          "us": 1883495.0625,
+          "high": true
+        },
+        {
+          "us": 1885294.6875,
+          "high": false
+        },
+        {
+          "us": 1903498.0625,
+          "high": true
+        },
+        {
+          "us": 1905297.5625,
+          "high": false
+        },
+        {
+          "us": 1923501.0625,
+          "high": true
+        },
+        {
+          "us": 1925300.5,
+          "high": false
+        },
+        {
+          "us": 1943504.0625,
+          "high": true
+        },
+        {
+          "us": 1945303.625,
+          "high": false
+        },
+        {
+          "us": 1963507.0625,
+          "high": true
+        },
+        {
+          "us": 1965306.5625,
+          "high": false
+        },
+        {
+          "us": 1983510.0625,
+          "high": true
+        },
+        {
+          "us": 1985309.5,
+          "high": false
+        },
+        {
+          "us": 2003513.25,
+          "high": true
+        },
+        {
+          "us": 2005313.1875,
+          "high": false
+        },
+        {
+          "us": 2023516.0625,
+          "high": true
+        },
+        {
+          "us": 2025315.6875,
+          "high": false
+        },
+        {
+          "us": 2043519.0625,
+          "high": true
+        },
+        {
+          "us": 2045318.5625,
+          "high": false
+        },
+        {
+          "us": 2063522.0625,
+          "high": true
+        },
+        {
+          "us": 2065321.5625,
+          "high": false
+        },
+        {
+          "us": 2083525.0625,
+          "high": true
+        },
+        {
+          "us": 2085324.625,
+          "high": false
+        },
+        {
+          "us": 2103528.0625,
+          "high": true
+        },
+        {
+          "us": 2105327.5,
+          "high": false
+        },
+        {
+          "us": 2123531.0625,
+          "high": true
+        },
+        {
+          "us": 2125330.5,
+          "high": false
+        },
+        {
+          "us": 2143534.3125,
+          "high": true
+        },
+        {
+          "us": 2145334.0625,
+          "high": false
+        },
+        {
+          "us": 2163537.5625,
+          "high": true
+        },
+        {
+          "us": 2165337.375,
+          "high": false
+        },
+        {
+          "us": 2183540.625,
+          "high": true
+        },
+        {
+          "us": 2185340.5625,
+          "high": false
+        },
+        {
+          "us": 2203543.625,
+          "high": true
+        },
+        {
+          "us": 2205343.5625,
+          "high": false
+        },
+        {
+          "us": 2223546.5625,
+          "high": true
+        },
+        {
+          "us": 2225346,
+          "high": false
+        },
+        {
+          "us": 2243549.5625,
+          "high": true
+        },
+        {
+          "us": 2245349,
+          "high": false
+        },
+        {
+          "us": 2263552.5625,
+          "high": true
+        },
+        {
+          "us": 2265352.0625,
+          "high": false
+        },
+        {
+          "us": 2283555.5625,
+          "high": true
+        },
+        {
+          "us": 2285355.0625,
+          "high": false
+        },
+        {
+          "us": 2303558.5625,
+          "high": true
+        },
+        {
+          "us": 2305358,
+          "high": false
+        },
+        {
+          "us": 2323561.5625,
+          "high": true
+        },
+        {
+          "us": 2325361,
+          "high": false
+        },
+        {
+          "us": 2343564.625,
+          "high": true
+        },
+        {
+          "us": 2345364.5625,
+          "high": false
+        },
+        {
+          "us": 2363567.5625,
+          "high": true
+        },
+        {
+          "us": 2365367,
+          "high": false
+        },
+        {
+          "us": 2383570.5625,
+          "high": true
+        },
+        {
+          "us": 2385370,
+          "high": false
+        },
+        {
+          "us": 2403573.5625,
+          "high": true
+        },
+        {
+          "us": 2405373.0625,
+          "high": false
+        },
+        {
+          "us": 2423576.5625,
+          "high": true
+        },
+        {
+          "us": 2425376.0625,
+          "high": false
+        },
+        {
+          "us": 2443579.625,
+          "high": true
+        },
+        {
+          "us": 2445379.5625,
+          "high": false
+        },
+        {
+          "us": 2463582.5625,
+          "high": true
+        },
+        {
+          "us": 2465382,
+          "high": false
+        },
+        {
+          "us": 2483585.5625,
+          "high": true
+        },
+        {
+          "us": 2485385,
+          "high": false
+        },
+        {
+          "us": 2503588.625,
+          "high": true
+        },
+        {
+          "us": 2505388.5,
+          "high": false
+        }
+      ],
+      "d6d7Activity": [],
+      "usartRepairs": []
+    },
+    {
+      "name": "有心跳仍在5秒结束；无自动重复周期",
+      "result": "PASS",
+      "frames": [
+        {
+          "at": 136.9524375,
+          "text": "D5LED/1 t=0 event=READY_NO_SIGNAL attached=0 active_us=0 applied=0 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 402.4671875,
+          "text": "D5LED/1 t=262 event=AWAIT_CONFIRM attached=0 active_us=0 applied=0 pending=1 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 647.3365,
+          "text": "D5LED/1 t=509 event=APPLIED attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 993.0791875,
+          "text": "D5LED/1 t=857 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 1344.1468125,
+          "text": "D5LED/1 t=1206 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 1694.131875,
+          "text": "D5LED/1 t=1556 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2044.1303125,
+          "text": "D5LED/1 t=1906 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2394.1275625,
+          "text": "D5LED/1 t=2256 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 2744.133875,
+          "text": "D5LED/1 t=2607 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3094.1365,
+          "text": "D5LED/1 t=2956 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3444.1405,
+          "text": "D5LED/1 t=3306 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 3794.1261875,
+          "text": "D5LED/1 t=3656 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 4144.1265625,
+          "text": "D5LED/1 t=4006 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 4494.1310625,
+          "text": "D5LED/1 t=4357 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 4844.1300625,
+          "text": "D5LED/1 t=4706 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5194.136875,
+          "text": "D5LED/1 t=5056 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5544.135125,
+          "text": "D5LED/1 t=5406 event=STATUS attached=1 active_us=1200 applied=1 pending=0 requested_us=1200 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5693.456,
+          "text": "D5LED/1 t=5509 event=MAX_TEST_SIGNAL_REMOVED attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 5887.855625,
+          "text": "D5LED/1 t=5756 event=STATUS attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 6237.8635,
+          "text": "D5LED/1 t=6107 event=STATUS attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 6587.85175,
+          "text": "D5LED/1 t=6456 event=STATUS attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        },
+        {
+          "at": 6937.857875,
+          "text": "D5LED/1 t=6806 event=STATUS attached=0 active_us=0 applied=1 pending=0 requested_us=0 physical_off=UNVERIFIED led=UNOBSERVED"
+        }
+      ],
+      "d5Edges": [
+        {
+          "us": 563301.625,
+          "high": true
+        },
+        {
+          "us": 564501.5,
+          "high": false
+        },
+        {
+          "us": 583304.625,
+          "high": true
+        },
+        {
+          "us": 584504.5,
+          "high": false
+        },
+        {
+          "us": 603309.625,
+          "high": true
+        },
+        {
+          "us": 604509.5,
+          "high": false
+        },
+        {
+          "us": 623312.5625,
+          "high": true
+        },
+        {
+          "us": 624512,
+          "high": false
+        },
+        {
+          "us": 643315.5625,
+          "high": true
+        },
+        {
+          "us": 644515,
+          "high": false
+        },
+        {
+          "us": 663318.625,
+          "high": true
+        },
+        {
+          "us": 664518.5,
+          "high": false
+        },
+        {
+          "us": 683321.5625,
+          "high": true
+        },
+        {
+          "us": 684521,
+          "high": false
+        },
+        {
+          "us": 703324.5625,
+          "high": true
+        },
+        {
+          "us": 704524,
+          "high": false
+        },
+        {
+          "us": 723327.6875,
+          "high": true
+        },
+        {
+          "us": 724527.5625,
+          "high": false
+        },
+        {
+          "us": 743330.625,
+          "high": true
+        },
+        {
+          "us": 744530.5625,
+          "high": false
+        },
+        {
+          "us": 763333.5625,
+          "high": true
+        },
+        {
+          "us": 764533,
+          "high": false
+        },
+        {
+          "us": 783336.5625,
+          "high": true
+        },
+        {
+          "us": 784536,
+          "high": false
+        },
+        {
+          "us": 803339.625,
+          "high": true
+        },
+        {
+          "us": 804539.5,
+          "high": false
+        },
+        {
+          "us": 823342.5625,
+          "high": true
+        },
+        {
+          "us": 824542,
+          "high": false
+        },
+        {
+          "us": 843345.5625,
+          "high": true
+        },
+        {
+          "us": 844545,
+          "high": false
+        },
+        {
+          "us": 863348.625,
+          "high": true
+        },
+        {
+          "us": 864548.5,
+          "high": false
+        },
+        {
+          "us": 883351.625,
+          "high": true
+        },
+        {
+          "us": 884551.5,
+          "high": false
+        },
+        {
+          "us": 903354.625,
+          "high": true
+        },
+        {
+          "us": 904554.5,
+          "high": false
+        },
+        {
+          "us": 923357.5625,
+          "high": true
+        },
+        {
+          "us": 924557.0625,
+          "high": false
+        },
+        {
+          "us": 943360.5625,
+          "high": true
+        },
+        {
+          "us": 944560,
+          "high": false
+        },
+        {
+          "us": 963363.6875,
+          "high": true
+        },
+        {
+          "us": 964563.5625,
+          "high": false
+        },
+        {
+          "us": 983366.5625,
+          "high": true
+        },
+        {
+          "us": 984566.125,
+          "high": false
+        },
+        {
+          "us": 1003369.625,
+          "high": true
+        },
+        {
+          "us": 1004569.625,
+          "high": false
+        },
+        {
+          "us": 1023372.9375,
+          "high": true
+        },
+        {
+          "us": 1024572.5625,
+          "high": false
+        },
+        {
+          "us": 1043376.125,
+          "high": true
+        },
+        {
+          "us": 1044576,
+          "high": false
+        },
+        {
+          "us": 1063379.125,
+          "high": true
+        },
+        {
+          "us": 1064579.1875,
+          "high": false
+        },
+        {
+          "us": 1083382.0625,
+          "high": true
+        },
+        {
+          "us": 1084587.1875,
+          "high": false
+        },
+        {
+          "us": 1103385.0625,
+          "high": true
+        },
+        {
+          "us": 1104584.5625,
+          "high": false
+        },
+        {
+          "us": 1123388.125,
+          "high": true
+        },
+        {
+          "us": 1124588,
+          "high": false
+        },
+        {
+          "us": 1143391.0625,
+          "high": true
+        },
+        {
+          "us": 1144590.625,
+          "high": false
+        },
+        {
+          "us": 1163394.125,
+          "high": true
+        },
+        {
+          "us": 1164594.0625,
+          "high": false
+        },
+        {
+          "us": 1183397.125,
+          "high": true
+        },
+        {
+          "us": 1184597,
+          "high": false
+        },
+        {
+          "us": 1203400.25,
+          "high": true
+        },
+        {
+          "us": 1204600,
+          "high": false
+        },
+        {
+          "us": 1223403.125,
+          "high": true
+        },
+        {
+          "us": 1224603,
+          "high": false
+        },
+        {
+          "us": 1243406.125,
+          "high": true
+        },
+        {
+          "us": 1244606,
+          "high": false
+        },
+        {
+          "us": 1263409.0625,
+          "high": true
+        },
+        {
+          "us": 1264608.5,
+          "high": false
+        },
+        {
+          "us": 1283412.0625,
+          "high": true
+        },
+        {
+          "us": 1284611.5,
+          "high": false
+        },
+        {
+          "us": 1303415.125,
+          "high": true
+        },
+        {
+          "us": 1304615,
+          "high": false
+        },
+        {
+          "us": 1323418.0625,
+          "high": true
+        },
+        {
+          "us": 1324617.5,
+          "high": false
+        },
+        {
+          "us": 1343421.4375,
+          "high": true
+        },
+        {
+          "us": 1344621.0625,
+          "high": false
+        },
+        {
+          "us": 1363424.625,
+          "high": true
+        },
+        {
+          "us": 1364624.5,
+          "high": false
+        },
+        {
+          "us": 1383427.5625,
+          "high": true
+        },
+        {
+          "us": 1384627.1875,
+          "high": false
+        },
+        {
+          "us": 1403430.5625,
+          "high": true
+        },
+        {
+          "us": 1404630.0625,
+          "high": false
+        },
+        {
+          "us": 1423433.5625,
+          "high": true
+        },
+        {
+          "us": 1424633,
+          "high": false
+        },
+        {
+          "us": 1443436.6875,
+          "high": true
+        },
+        {
+          "us": 1444636.5,
+          "high": false
+        },
+        {
+          "us": 1463439.625,
+          "high": true
+        },
+        {
+          "us": 1464639.5625,
+          "high": false
+        },
+        {
+          "us": 1483442.625,
+          "high": true
+        },
+        {
+          "us": 1484642.6875,
+          "high": false
+        },
+        {
+          "us": 1503445.5625,
+          "high": true
+        },
+        {
+          "us": 1504645,
+          "high": false
+        },
+        {
+          "us": 1523448.5625,
+          "high": true
+        },
+        {
+          "us": 1524648.0625,
+          "high": false
+        },
+        {
+          "us": 1543451.625,
+          "high": true
+        },
+        {
+          "us": 1544651.5,
+          "high": false
+        },
+        {
+          "us": 1563454.5625,
+          "high": true
+        },
+        {
+          "us": 1564659.25,
+          "high": false
+        },
+        {
+          "us": 1583457.5625,
+          "high": true
+        },
+        {
+          "us": 1584657,
+          "high": false
+        },
+        {
+          "us": 1603460.625,
+          "high": true
+        },
+        {
+          "us": 1604660.5,
+          "high": false
+        },
+        {
+          "us": 1623463.5625,
+          "high": true
+        },
+        {
+          "us": 1624663,
+          "high": false
+        },
+        {
+          "us": 1643466.5625,
+          "high": true
+        },
+        {
+          "us": 1644666.0625,
+          "high": false
+        },
+        {
+          "us": 1663469.625,
+          "high": true
+        },
+        {
+          "us": 1664669.5,
+          "high": false
+        },
+        {
+          "us": 1683473,
+          "high": true
+        },
+        {
+          "us": 1684673,
+          "high": false
+        },
+        {
+          "us": 1703476.0625,
+          "high": true
+        },
+        {
+          "us": 1704675.5,
+          "high": false
+        },
+        {
+          "us": 1723479.0625,
+          "high": true
+        },
+        {
+          "us": 1724678.5625,
+          "high": false
+        },
+        {
+          "us": 1743482.125,
+          "high": true
+        },
+        {
+          "us": 1744682,
+          "high": false
+        },
+        {
+          "us": 1763485.0625,
+          "high": true
+        },
+        {
+          "us": 1764684.5,
+          "high": false
+        },
+        {
+          "us": 1783488.0625,
+          "high": true
+        },
+        {
+          "us": 1784687.875,
+          "high": false
+        },
+        {
+          "us": 1803491.125,
+          "high": true
+        },
+        {
+          "us": 1804691,
+          "high": false
+        },
+        {
+          "us": 1823494.25,
+          "high": true
+        },
+        {
+          "us": 1824694.0625,
+          "high": false
+        },
+        {
+          "us": 1843497.0625,
+          "high": true
+        },
+        {
+          "us": 1844696.5,
+          "high": false
+        },
+        {
+          "us": 1863500.0625,
+          "high": true
+        },
+        {
+          "us": 1864699.5,
+          "high": false
+        },
+        {
+          "us": 1883503.0625,
+          "high": true
+        },
+        {
+          "us": 1884702.5625,
+          "high": false
+        },
+        {
+          "us": 1903506.0625,
+          "high": true
+        },
+        {
+          "us": 1904706.0625,
+          "high": false
+        },
+        {
+          "us": 1923509.0625,
+          "high": true
+        },
+        {
+          "us": 1924708.5,
+          "high": false
+        },
+        {
+          "us": 1943512.0625,
+          "high": true
+        },
+        {
+          "us": 1944711.5625,
+          "high": false
+        },
+        {
+          "us": 1963515.0625,
+          "high": true
+        },
+        {
+          "us": 1964714.5625,
+          "high": false
+        },
+        {
+          "us": 1983518.0625,
+          "high": true
+        },
+        {
+          "us": 1984717.625,
+          "high": false
+        },
+        {
+          "us": 2003521.0625,
+          "high": true
+        },
+        {
+          "us": 2004720.5625,
+          "high": false
+        },
+        {
+          "us": 2023524.125,
+          "high": true
+        },
+        {
+          "us": 2024724,
+          "high": false
+        },
+        {
+          "us": 2043527.0625,
+          "high": true
+        },
+        {
+          "us": 2044726.5625,
+          "high": false
+        },
+        {
+          "us": 2063533.6875,
+          "high": true
+        },
+        {
+          "us": 2064733.5,
+          "high": false
+        },
+        {
+          "us": 2083536.625,
+          "high": true
+        },
+        {
+          "us": 2084736.5625,
+          "high": false
+        },
+        {
+          "us": 2103539.75,
+          "high": true
+        },
+        {
+          "us": 2104739.5,
+          "high": false
+        },
+        {
+          "us": 2123542.5625,
+          "high": true
+        },
+        {
+          "us": 2124742,
+          "high": false
+        },
+        {
+          "us": 2143545.625,
+          "high": true
+        },
+        {
+          "us": 2144745.5,
+          "high": false
+        },
+        {
+          "us": 2163548.5625,
+          "high": true
+        },
+        {
+          "us": 2164748,
+          "high": false
+        },
+        {
+          "us": 2183551.5625,
+          "high": true
+        },
+        {
+          "us": 2184751,
+          "high": false
+        },
+        {
+          "us": 2203554.5625,
+          "high": true
+        },
+        {
+          "us": 2204754.0625,
+          "high": false
+        },
+        {
+          "us": 2223557.6875,
+          "high": true
+        },
+        {
+          "us": 2224757.5,
+          "high": false
+        },
+        {
+          "us": 2243560.5625,
+          "high": true
+        },
+        {
+          "us": 2244760.1875,
+          "high": false
+        },
+        {
+          "us": 2263563.5625,
+          "high": true
+        },
+        {
+          "us": 2264763,
+          "high": false
+        },
+        {
+          "us": 2283566.625,
+          "high": true
+        },
+        {
+          "us": 2284766.5625,
+          "high": false
+        },
+        {
+          "us": 2303569.5625,
+          "high": true
+        },
+        {
+          "us": 2304769,
+          "high": false
+        },
+        {
+          "us": 2323572.5625,
+          "high": true
+        },
+        {
+          "us": 2324772,
+          "high": false
+        },
+        {
+          "us": 2343575.5625,
+          "high": true
+        },
+        {
+          "us": 2344775.0625,
+          "high": false
+        },
+        {
+          "us": 2363578.5625,
+          "high": true
+        },
+        {
+          "us": 2364778.5,
+          "high": false
+        },
+        {
+          "us": 2383581.75,
+          "high": true
+        },
+        {
+          "us": 2384781.5,
+          "high": false
+        },
+        {
+          "us": 2403584.5625,
+          "high": true
+        },
+        {
+          "us": 2404784,
+          "high": false
+        },
+        {
+          "us": 2423587.5625,
+          "high": true
+        },
+        {
+          "us": 2424787.0625,
+          "high": false
+        },
+        {
+          "us": 2443590.6875,
+          "high": true
+        },
+        {
+          "us": 2444790.5,
+          "high": false
+        },
+        {
+          "us": 2463593.5625,
+          "high": true
+        },
+        {
+          "us": 2464793.1875,
+          "high": false
+        },
+        {
+          "us": 2483596.625,
+          "high": true
+        },
+        {
+          "us": 2484796.5,
+          "high": false
+        },
+        {
+          "us": 2503599.625,
+          "high": true
+        },
+        {
+          "us": 2504799.8125,
+          "high": false
+        },
+        {
+          "us": 2523602.5625,
+          "high": true
+        },
+        {
+          "us": 2524802.125,
+          "high": false
+        },
+        {
+          "us": 2543605.5625,
+          "high": true
+        },
+        {
+          "us": 2544805,
+          "high": false
+        },
+        {
+          "us": 2563608.625,
+          "high": true
+        },
+        {
+          "us": 2564808.5,
+          "high": false
+        },
+        {
+          "us": 2583611.5625,
+          "high": true
+        },
+        {
+          "us": 2584811,
+          "high": false
+        },
+        {
+          "us": 2603614.625,
+          "high": true
+        },
+        {
+          "us": 2604814.5,
+          "high": false
+        },
+        {
+          "us": 2623617.5625,
+          "high": true
+        },
+        {
+          "us": 2624817.0625,
+          "high": false
+        },
+        {
+          "us": 2643620.625,
+          "high": true
+        },
+        {
+          "us": 2644820.5,
+          "high": false
+        },
+        {
+          "us": 2663623.5625,
+          "high": true
+        },
+        {
+          "us": 2664823,
+          "high": false
+        },
+        {
+          "us": 2683626.6875,
+          "high": true
+        },
+        {
+          "us": 2684826.5,
+          "high": false
+        },
+        {
+          "us": 2703629.5625,
+          "high": true
+        },
+        {
+          "us": 2704829,
+          "high": false
+        },
+        {
+          "us": 2723632.6875,
+          "high": true
+        },
+        {
+          "us": 2724832.5625,
+          "high": false
+        },
+        {
+          "us": 2743635.5625,
+          "high": true
+        },
+        {
+          "us": 2744835,
+          "high": false
+        },
+        {
+          "us": 2763638.5625,
+          "high": true
+        },
+        {
+          "us": 2764838,
+          "high": false
+        },
+        {
+          "us": 2783641.5625,
+          "high": true
+        },
+        {
+          "us": 2784841.125,
+          "high": false
+        },
+        {
+          "us": 2803644.9375,
+          "high": true
+        },
+        {
+          "us": 2804844.5,
+          "high": false
+        },
+        {
+          "us": 2823648.0625,
+          "high": true
+        },
+        {
+          "us": 2824847.5,
+          "high": false
+        },
+        {
+          "us": 2843651.125,
+          "high": true
+        },
+        {
+          "us": 2844851.5,
+          "high": false
+        },
+        {
+          "us": 2863654.0625,
+          "high": true
+        },
+        {
+          "us": 2864853.5,
+          "high": false
+        },
+        {
+          "us": 2883657.0625,
+          "high": true
+        },
+        {
+          "us": 2884856.6875,
+          "high": false
+        },
+        {
+          "us": 2903660.125,
+          "high": true
+        },
+        {
+          "us": 2904860,
+          "high": false
+        },
+        {
+          "us": 2923663.0625,
+          "high": true
+        },
+        {
+          "us": 2924862.5,
+          "high": false
+        },
+        {
+          "us": 2943666.1875,
+          "high": true
+        },
+        {
+          "us": 2944866.0625,
+          "high": false
+        },
+        {
+          "us": 2963669.0625,
+          "high": true
+        },
+        {
+          "us": 2964868.5625,
+          "high": false
+        },
+        {
+          "us": 2983672.0625,
+          "high": true
+        },
+        {
+          "us": 2984871.5,
+          "high": false
+        },
+        {
+          "us": 3003675.0625,
+          "high": true
+        },
+        {
+          "us": 3004874.5625,
+          "high": false
+        },
+        {
+          "us": 3023678.0625,
+          "high": true
+        },
+        {
+          "us": 3024877.5,
+          "high": false
+        },
+        {
+          "us": 3043681.0625,
+          "high": true
+        },
+        {
+          "us": 3044880.5625,
+          "high": false
+        },
+        {
+          "us": 3063684.125,
+          "high": true
+        },
+        {
+          "us": 3064884.0625,
+          "high": false
+        },
+        {
+          "us": 3083687.1875,
+          "high": true
+        },
+        {
+          "us": 3084887,
+          "high": false
+        },
+        {
+          "us": 3103690.3125,
+          "high": true
+        },
+        {
+          "us": 3104890,
+          "high": false
+        },
+        {
+          "us": 3123693.6875,
+          "high": true
+        },
+        {
+          "us": 3124893.5625,
+          "high": false
+        },
+        {
+          "us": 3143696.625,
+          "high": true
+        },
+        {
+          "us": 3144896.875,
+          "high": false
+        },
+        {
+          "us": 3163699.5625,
+          "high": true
+        },
+        {
+          "us": 3164899,
+          "high": false
+        },
+        {
+          "us": 3183702.5625,
+          "high": true
+        },
+        {
+          "us": 3184902.0625,
+          "high": false
+        },
+        {
+          "us": 3203705.75,
+          "high": true
+        },
+        {
+          "us": 3204905.5,
+          "high": false
+        },
+        {
+          "us": 3223708.5625,
+          "high": true
+        },
+        {
+          "us": 3224908,
+          "high": false
+        },
+        {
+          "us": 3243711.625,
+          "high": true
+        },
+        {
+          "us": 3244911.5625,
+          "high": false
+        },
+        {
+          "us": 3263714.6875,
+          "high": true
+        },
+        {
+          "us": 3264914.5625,
+          "high": false
+        },
+        {
+          "us": 3283717.625,
+          "high": true
+        },
+        {
+          "us": 3284917.5625,
+          "high": false
+        },
+        {
+          "us": 3303720.5625,
+          "high": true
+        },
+        {
+          "us": 3304920.25,
+          "high": false
+        },
+        {
+          "us": 3323723.625,
+          "high": true
+        },
+        {
+          "us": 3324923.5,
+          "high": false
+        },
+        {
+          "us": 3343726.625,
+          "high": true
+        },
+        {
+          "us": 3344926.5,
+          "high": false
+        },
+        {
+          "us": 3363729.5625,
+          "high": true
+        },
+        {
+          "us": 3364929,
+          "high": false
+        },
+        {
+          "us": 3383732.5625,
+          "high": true
+        },
+        {
+          "us": 3384932,
+          "high": false
+        },
+        {
+          "us": 3403735.5625,
+          "high": true
+        },
+        {
+          "us": 3404935.0625,
+          "high": false
+        },
+        {
+          "us": 3423738.5625,
+          "high": true
+        },
+        {
+          "us": 3424938,
+          "high": false
+        },
+        {
+          "us": 3443741.5625,
+          "high": true
+        },
+        {
+          "us": 3444941.25,
+          "high": false
+        },
+        {
+          "us": 3463744.5625,
+          "high": true
+        },
+        {
+          "us": 3464944,
+          "high": false
+        },
+        {
+          "us": 3483747.5625,
+          "high": true
+        },
+        {
+          "us": 3484947,
+          "high": false
+        },
+        {
+          "us": 3503750.8125,
+          "high": true
+        },
+        {
+          "us": 3504950.5,
+          "high": false
+        },
+        {
+          "us": 3523757.625,
+          "high": true
+        },
+        {
+          "us": 3524957.5,
+          "high": false
+        },
+        {
+          "us": 3543760.5625,
+          "high": true
+        },
+        {
+          "us": 3544960.5,
+          "high": false
+        },
+        {
+          "us": 3563763.5625,
+          "high": true
+        },
+        {
+          "us": 3564963,
+          "high": false
+        },
+        {
+          "us": 3583766.5625,
+          "high": true
+        },
+        {
+          "us": 3584966,
+          "high": false
+        },
+        {
+          "us": 3603769.5625,
+          "high": true
+        },
+        {
+          "us": 3604969.0625,
+          "high": false
+        },
+        {
+          "us": 3623772.5625,
+          "high": true
+        },
+        {
+          "us": 3624972,
+          "high": false
+        },
+        {
+          "us": 3643775.625,
+          "high": true
+        },
+        {
+          "us": 3644975.625,
+          "high": false
+        },
+        {
+          "us": 3663778.625,
+          "high": true
+        },
+        {
+          "us": 3664978.5,
+          "high": false
+        },
+        {
+          "us": 3683781.5625,
+          "high": true
+        },
+        {
+          "us": 3684981,
+          "high": false
+        },
+        {
+          "us": 3703784.625,
+          "high": true
+        },
+        {
+          "us": 3704984.5,
+          "high": false
+        },
+        {
+          "us": 3723787.625,
+          "high": true
+        },
+        {
+          "us": 3724987.5,
+          "high": false
+        },
+        {
+          "us": 3743790.75,
+          "high": true
+        },
+        {
+          "us": 3744990.5,
+          "high": false
+        },
+        {
+          "us": 3763793.5625,
+          "high": true
+        },
+        {
+          "us": 3764993.125,
+          "high": false
+        },
+        {
+          "us": 3783796.5625,
+          "high": true
+        },
+        {
+          "us": 3784996.0625,
+          "high": false
+        },
+        {
+          "us": 3803799.5625,
+          "high": true
+        },
+        {
+          "us": 3804999,
+          "high": false
+        },
+        {
+          "us": 3823802.5625,
+          "high": true
+        },
+        {
+          "us": 3825002.0625,
+          "high": false
+        },
+        {
+          "us": 3843805.5625,
+          "high": true
+        },
+        {
+          "us": 3845005,
+          "high": false
+        },
+        {
+          "us": 3863808.75,
+          "high": true
+        },
+        {
+          "us": 3865008.5,
+          "high": false
+        },
+        {
+          "us": 3883811.625,
+          "high": true
+        },
+        {
+          "us": 3885011.5,
+          "high": false
+        },
+        {
+          "us": 3903814.5625,
+          "high": true
+        },
+        {
+          "us": 3905014,
+          "high": false
+        },
+        {
+          "us": 3923817.6875,
+          "high": true
+        },
+        {
+          "us": 3925017.5,
+          "high": false
+        },
+        {
+          "us": 3943820.5625,
+          "high": true
+        },
+        {
+          "us": 3945020,
+          "high": false
+        },
+        {
+          "us": 3963823.625,
+          "high": true
+        },
+        {
+          "us": 3965023.6875,
+          "high": false
+        },
+        {
+          "us": 3983826.5625,
+          "high": true
+        },
+        {
+          "us": 3985026,
+          "high": false
+        },
+        {
+          "us": 4003829.6875,
+          "high": true
+        },
+        {
+          "us": 4005035.0625,
+          "high": false
+        },
+        {
+          "us": 4023832.625,
+          "high": true
+        },
+        {
+          "us": 4025032.5,
+          "high": false
+        },
+        {
+          "us": 4043835.5625,
+          "high": true
+        },
+        {
+          "us": 4045035.0625,
+          "high": false
+        },
+        {
+          "us": 4063838.5625,
+          "high": true
+        },
+        {
+          "us": 4065038,
+          "high": false
+        },
+        {
+          "us": 4083841.5625,
+          "high": true
+        },
+        {
+          "us": 4085041,
+          "high": false
+        },
+        {
+          "us": 4103845.125,
+          "high": true
+        },
+        {
+          "us": 4105045,
+          "high": false
+        },
+        {
+          "us": 4123848.0625,
+          "high": true
+        },
+        {
+          "us": 4125047.5,
+          "high": false
+        },
+        {
+          "us": 4143851.125,
+          "high": true
+        },
+        {
+          "us": 4145051.0625,
+          "high": false
+        },
+        {
+          "us": 4163854.0625,
+          "high": true
+        },
+        {
+          "us": 4165053.5625,
+          "high": false
+        },
+        {
+          "us": 4183857.1875,
+          "high": true
+        },
+        {
+          "us": 4185057,
+          "high": false
+        },
+        {
+          "us": 4203860.25,
+          "high": true
+        },
+        {
+          "us": 4205060,
+          "high": false
+        },
+        {
+          "us": 4223863.0625,
+          "high": true
+        },
+        {
+          "us": 4225062.5625,
+          "high": false
+        },
+        {
+          "us": 4243866.125,
+          "high": true
+        },
+        {
+          "us": 4245066,
+          "high": false
+        },
+        {
+          "us": 4263869.0625,
+          "high": true
+        },
+        {
+          "us": 4265068.5,
+          "high": false
+        },
+        {
+          "us": 4283872.0625,
+          "high": true
+        },
+        {
+          "us": 4285071.5,
+          "high": false
+        },
+        {
+          "us": 4303875.0625,
+          "high": true
+        },
+        {
+          "us": 4305074.5625,
+          "high": false
+        },
+        {
+          "us": 4323878.1875,
+          "high": true
+        },
+        {
+          "us": 4325078,
+          "high": false
+        },
+        {
+          "us": 4343881.0625,
+          "high": true
+        },
+        {
+          "us": 4345080.5,
+          "high": false
+        },
+        {
+          "us": 4363884.0625,
+          "high": true
+        },
+        {
+          "us": 4365083.5,
+          "high": false
+        },
+        {
+          "us": 4383887.0625,
+          "high": true
+        },
+        {
+          "us": 4385086.5,
+          "high": false
+        },
+        {
+          "us": 4403890.0625,
+          "high": true
+        },
+        {
+          "us": 4405089.5625,
+          "high": false
+        },
+        {
+          "us": 4423893.125,
+          "high": true
+        },
+        {
+          "us": 4425093,
+          "high": false
+        },
+        {
+          "us": 4443896.125,
+          "high": true
+        },
+        {
+          "us": 4445096,
+          "high": false
+        },
+        {
+          "us": 4463899.125,
+          "high": true
+        },
+        {
+          "us": 4465099,
+          "high": false
+        },
+        {
+          "us": 4483902.25,
+          "high": true
+        },
+        {
+          "us": 4485102.0625,
+          "high": false
+        },
+        {
+          "us": 4503905.0625,
+          "high": true
+        },
+        {
+          "us": 4505104.5625,
+          "high": false
+        },
+        {
+          "us": 4523908.0625,
+          "high": true
+        },
+        {
+          "us": 4525107.5,
+          "high": false
+        },
+        {
+          "us": 4543911.0625,
+          "high": true
+        },
+        {
+          "us": 4545110.5,
+          "high": false
+        },
+        {
+          "us": 4563914.0625,
+          "high": true
+        },
+        {
+          "us": 4565113.5,
+          "high": false
+        },
+        {
+          "us": 4583917.4375,
+          "high": true
+        },
+        {
+          "us": 4585117,
+          "high": false
+        },
+        {
+          "us": 4603920.5625,
+          "high": true
+        },
+        {
+          "us": 4605120,
+          "high": false
+        },
+        {
+          "us": 4623923.625,
+          "high": true
+        },
+        {
+          "us": 4625123.6875,
+          "high": false
+        },
+        {
+          "us": 4643926.625,
+          "high": true
+        },
+        {
+          "us": 4645126.5,
+          "high": false
+        },
+        {
+          "us": 4663929.5625,
+          "high": true
+        },
+        {
+          "us": 4665129.0625,
+          "high": false
+        },
+        {
+          "us": 4683932.5625,
+          "high": true
+        },
+        {
+          "us": 4685132.0625,
+          "high": false
+        },
+        {
+          "us": 4703935.5625,
+          "high": true
+        },
+        {
+          "us": 4705135,
+          "high": false
+        },
+        {
+          "us": 4723938.625,
+          "high": true
+        },
+        {
+          "us": 4725138.5,
+          "high": false
+        },
+        {
+          "us": 4743941.625,
+          "high": true
+        },
+        {
+          "us": 4745141.5,
+          "high": false
+        },
+        {
+          "us": 4763944.5625,
+          "high": true
+        },
+        {
+          "us": 4765144.0625,
+          "high": false
+        },
+        {
+          "us": 4783947.5625,
+          "high": true
+        },
+        {
+          "us": 4785147.0625,
+          "high": false
+        },
+        {
+          "us": 4803950.625,
+          "high": true
+        },
+        {
+          "us": 4805150.5,
+          "high": false
+        },
+        {
+          "us": 4823953.5625,
+          "high": true
+        },
+        {
+          "us": 4825153.0625,
+          "high": false
+        },
+        {
+          "us": 4843956.625,
+          "high": true
+        },
+        {
+          "us": 4845156.5,
+          "high": false
+        },
+        {
+          "us": 4863960.0625,
+          "high": true
+        },
+        {
+          "us": 4865159.5625,
+          "high": false
+        },
+        {
+          "us": 4883963.0625,
+          "high": true
+        },
+        {
+          "us": 4885162.5,
+          "high": false
+        },
+        {
+          "us": 4903966.125,
+          "high": true
+        },
+        {
+          "us": 4905166,
+          "high": false
+        },
+        {
+          "us": 4923969.0625,
+          "high": true
+        },
+        {
+          "us": 4925168.5,
+          "high": false
+        },
+        {
+          "us": 4943972.0625,
+          "high": true
+        },
+        {
+          "us": 4945171.8125,
+          "high": false
+        },
+        {
+          "us": 4963975.125,
+          "high": true
+        },
+        {
+          "us": 4965175,
+          "high": false
+        },
+        {
+          "us": 4983981.625,
+          "high": true
+        },
+        {
+          "us": 4985181.5625,
+          "high": false
+        },
+        {
+          "us": 5003984.5625,
+          "high": true
+        },
+        {
+          "us": 5005184,
+          "high": false
+        },
+        {
+          "us": 5023987.5625,
+          "high": true
+        },
+        {
+          "us": 5025187,
+          "high": false
+        },
+        {
+          "us": 5043990.5625,
+          "high": true
+        },
+        {
+          "us": 5045190,
+          "high": false
+        },
+        {
+          "us": 5063993.625,
+          "high": true
+        },
+        {
+          "us": 5065193.5,
+          "high": false
+        },
+        {
+          "us": 5083996.5625,
+          "high": true
+        },
+        {
+          "us": 5085196,
+          "high": false
+        },
+        {
+          "us": 5103999.625,
+          "high": true
+        },
+        {
+          "us": 5105199.5,
+          "high": false
+        },
+        {
+          "us": 5124002.625,
+          "high": true
+        },
+        {
+          "us": 5125202.5,
+          "high": false
+        },
+        {
+          "us": 5144005.5625,
+          "high": true
+        },
+        {
+          "us": 5145205,
+          "high": false
+        },
+        {
+          "us": 5164008.5625,
+          "high": true
+        },
+        {
+          "us": 5165208,
+          "high": false
+        },
+        {
+          "us": 5184011.5625,
+          "high": true
+        },
+        {
+          "us": 5185211.0625,
+          "high": false
+        },
+        {
+          "us": 5204014.625,
+          "high": true
+        },
+        {
+          "us": 5205214.5,
+          "high": false
+        },
+        {
+          "us": 5224017.5625,
+          "high": true
+        },
+        {
+          "us": 5225217.0625,
+          "high": false
+        },
+        {
+          "us": 5244020.75,
+          "high": true
+        },
+        {
+          "us": 5245220.5,
+          "high": false
+        },
+        {
+          "us": 5264023.625,
+          "high": true
+        },
+        {
+          "us": 5265223.5625,
+          "high": false
+        },
+        {
+          "us": 5284026.625,
+          "high": true
+        },
+        {
+          "us": 5285226.5,
+          "high": false
+        },
+        {
+          "us": 5304029.6875,
+          "high": true
+        },
+        {
+          "us": 5305229.5,
+          "high": false
+        },
+        {
+          "us": 5324032.5625,
+          "high": true
+        },
+        {
+          "us": 5325232,
+          "high": false
+        },
+        {
+          "us": 5344035.5625,
+          "high": true
+        },
+        {
+          "us": 5345235,
+          "high": false
+        },
+        {
+          "us": 5364038.5625,
+          "high": true
+        },
+        {
+          "us": 5365238.0625,
+          "high": false
+        },
+        {
+          "us": 5384041.5625,
+          "high": true
+        },
+        {
+          "us": 5385241,
+          "high": false
+        },
+        {
+          "us": 5404044.5625,
+          "high": true
+        },
+        {
+          "us": 5405244,
+          "high": false
+        },
+        {
+          "us": 5424047.625,
+          "high": true
+        },
+        {
+          "us": 5425247.5,
+          "high": false
+        },
+        {
+          "us": 5444050.5625,
+          "high": true
+        },
+        {
+          "us": 5445250.0625,
+          "high": false
+        },
+        {
+          "us": 5464053.5625,
+          "high": true
+        },
+        {
+          "us": 5465253,
+          "high": false
+        },
+        {
+          "us": 5484056.625,
+          "high": true
+        },
+        {
+          "us": 5485256.5625,
+          "high": false
+        },
+        {
+          "us": 5504059.625,
+          "high": true
+        },
+        {
+          "us": 5505259.5,
+          "high": false
+        }
+      ],
+      "d6d7Activity": [],
+      "usartRepairs": []
+    }
+  ]
+}

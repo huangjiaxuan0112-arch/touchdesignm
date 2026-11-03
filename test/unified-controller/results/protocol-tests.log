@@ -1,0 +1,63 @@
+
+> nature-touch-desktop@0.1.0 test
+> tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts
+
+✔ identifies protocol v2 before status or experience commands and ignores stale replies (5.8157ms)
+✔ firmware request cache replays identical requests and rejects changed payloads (26.1476ms)
+✔ duplicate START replays its ACK without executing twice (1.3766ms)
+✔ firmware request cache retains four entries and evicts the oldest request (79.2734ms)
+✔ operation history prevents recent IDs from being started again (138.2664ms)
+✔ firmware rejects malformed requests with the existing protocol error codes (74.8626ms)
+✔ firmware rejects an oversized serial input line and resumes at the next newline (9.9578ms)
+✔ serial service handles split CRLF frames and asynchronous events among consecutive replies (11.1509ms)
+✔ serial service faults and closes on an oversized response frame (7.1141ms)
+✔ requests made while disconnected are rejected without opening a port (0.3762ms)
+✔ rejects a connected board without the simulation-only firmware identity (9.0345ms)
+✔ waits for the Nano bootloader reset interval before sending IDENTIFY (39.0228ms)
+✔ reports Phase 1B diagnostic firmware as incompatible instead of waiting for IDENTIFY timeout (9.9101ms)
+✔ IDENTIFY timeout closes the session and is recoverable only through explicit reconnect (37.7349ms)
+✔ a port disconnect during the IDENTIFY write rejects the pending command (1.8032ms)
+✔ rejects a concurrent connection attempt while the first port is opening (35.4193ms)
+✔ selects, starts, stops, and waits for the correlated STOPPED event (10.7496ms)
+✔ reports correlated natural completion and scheduled diagnostic events (10.0492ms)
+✔ rejects invalid-state commands and mismatched stop operation IDs (8.5256ms)
+✔ times out explicitly, faults the host session, and blocks future experience requests (29.1426ms)
+✔ recovers from a communication fault only after explicit reconnect and never resends START (29.6365ms)
+✔ status heartbeat faults a running host session when replies stop arriving (65.5269ms)
+✔ reset and reconnect perform identify/status only and never resume the prior operation (27.5641ms)
+✔ reconnect does not resume a firmware operation still reported as running (9.1895ms)
+✔ recovers an explicitly faulted firmware state to IDLE without selecting a mode (8.1665ms)
+✔ experience cycle durations match the original delay sums (1.2887ms)
+✔ wind and wave preserve the original ordered action durations (2.4053ms)
+✔ all generated actions preserve the original D5/D6/D7 signal values (1.5891ms)
+✔ bubble definition retains all source timestamps and stops events at 20 seconds (0.1802ms)
+✔ unified firmware action timelines exactly match all source-derived definitions (1.7726ms)
+✔ simulation firmware contains no actuator libraries, pin writes, or blocking delays (1.3877ms)
+✔ selects each supported experience while idle (0.9447ms)
+✔ rejects unknown experience identifiers (0.1239ms)
+✔ starts from IDLE and reports deterministic elapsed time and progress (0.2674ms)
+✔ completes naturally at the definition duration (0.1403ms)
+✔ STOP enters STOPPING and then returns to IDLE without resuming (0.2667ms)
+✔ rejects invalid state transitions (0.1223ms)
+✔ duplicate request IDs are idempotent and cannot change command payload (0.6263ms)
+✔ does not reuse an operation ID after completion and recovery (0.1754ms)
+✔ simulated faults stop progress and recover only through reset (0.1768ms)
+✔ connection loss faults a running simulation and never auto-resumes (0.2207ms)
+✔ status reports current simulation state (0.1424ms)
+✔ handles native SerialPort errors and rejects active writes without an uncaught error event (3.1771ms)
+✔ cancels queued writes when a native serial port closes (0.6954ms)
+✔ frames native serial writes with one newline delimiter (3.3778ms)
+✔ connects only to a discovered port and completes PING and STATUS (3.2974ms)
+✔ rejects a port that was not discovered (0.8743ms)
+✔ times out and closes the session when a diagnostic reply is missing (22.1375ms)
+✔ rejects invalid response and closes the session (18.5439ms)
+✔ reports disconnection and rejects a pending diagnostic (10.4549ms)
+✔ requires an explicit reconnect after USB disconnection (31.8179ms)
+ℹ tests 51
+ℹ suites 0
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 905.7049

@@ -1,0 +1,59 @@
+{
+  "recordDateLocal": "2026-10-29",
+  "timezone": "Asia/Tokyo",
+  "source": "USER_REPORTED_REAL_HARDWARE_OBSERVATIONS",
+  "simulation": false,
+  "rawUserReport": [
+    "1200 µs：OFF，实测通过",
+    "1800 µs：ON，实测通过",
+    "1800 → 1200 µs：成功关闭",
+    "单独移除 PWM 信号：观察到自动关闭",
+    "Arduino RESET：如果复位前 D7 是 ON，复位期间气泵继续运行，保持上一状态"
+  ],
+  "observations": [
+    {
+      "test": "D7_1200US",
+      "reportedResult": "OFF",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "test": "D7_1800US",
+      "reportedResult": "ON",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "test": "D7_1800_TO_1200US",
+      "reportedResult": "PUMP_STOPPED",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "test": "PWM_REMOVAL",
+      "reportedResult": "AUTOMATIC_OFF",
+      "result": "PASS_REPORTED_FOR_OBSERVED_CONDITION",
+      "removalMethod": null,
+      "offDelayMs": null
+    },
+    {
+      "test": "NANO_RESET_FROM_ON",
+      "reportedResult": "PUMP_CONTINUES_RUNNING_DURING_RESET",
+      "result": "FAIL_RESET_SHUTDOWN",
+      "resetHoldMs": null,
+      "behaviorAfterResetRelease": null
+    }
+  ],
+  "scope": "Preserve normal D7 ON/OFF results. Signal-removal observation is not generalized to reset/high-impedance behavior. New report is separate from earlier LED-only test and is not assigned to that test's serial log.",
+  "exactFirmwareUsedForReportedTests": null,
+  "rawSerialResponsesForTheseTests": null,
+  "oscilloscopeOrLoadCurrentEvidenceProvided": false,
+  "offLeakageAndTimingCharacterized": false,
+  "resetSafe": false,
+  "resetRootCauseConfirmed": false,
+  "physicalOutputsAuthorizedInThisTurn": false,
+  "physicalCommandsSentInThisTurn": [],
+  "uploadedInThisTurn": false,
+  "protectedSourcesSha256": {
+    "firmware/diagnostic/d7_led_only/d7_led_only.ino": "8706e4478b679d7f2c0f8d7eabf6c6e4979bd2e087db6c6470573a886f895d5b",
+    "firmware/diagnostic/d7_start_stop/d7_start_stop.ino": "19d0819ec910560d888401d9261696fed97a6e1f6d2bc2f9ed95fd8e37b2f60c",
+    "firmware/unified/nature_touch_unified/nature_touch_unified.ino": "4884a98c612bca4d2ad085592a2a5250a348a3281c7e2cb54b79d28b70d02c7f"
+  }
+}

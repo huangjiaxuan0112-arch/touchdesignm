@@ -1,0 +1,27 @@
+"C:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1/bin/avrdude" "-CC:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1/etc/avrdude.conf" -v  -patmega328p -carduino "-PCOM5" -b115200 -D "-Uflash:w:C:\Users\20676\OneDrive\桌面\touchdesign\docs\evidence\d7-led-upload-FrutY9/d7_led_only.ino.hex:i"
+New upload port: COM5 (serial)
+Avrdude version 8.0-arduino.1
+Copyright see https://github.com/avrdudes/avrdude/blob/main/AUTHORS
+
+System wide configuration file is C:\Users\20676\AppData\Local\Arduino15\packages\arduino\tools\avrdude\8.0.0-arduino1\etc\avrdude.conf
+
+Using port            : COM5
+Using programmer      : arduino
+Setting baud rate     : 115200
+AVR part              : ATmega328P
+Programming modes     : SPM, ISP, HVPP, debugWIRE
+Programmer type       : Arduino
+Description           : Arduino bootloader using STK500 v1 protocol
+HW Version            : 3
+FW Version            : 4.4
+
+AVR device initialized and ready to accept instructions
+Device signature = 1E 95 0F (ATmega328P, ATA6614Q, LGT8F328P)
+Reading 5316 bytes for flash from input file d7_led_only.ino.hex
+in 1 section [0, 0x14c3]: 42 pages and 60 pad bytes
+Writing 5316 bytes to flash
+Writing | ################################################## | 100% 0.79s
+Reading | ################################################## | 100% 0.64s
+5316 bytes of flash verified
+
+Avrdude done.  Thank you.

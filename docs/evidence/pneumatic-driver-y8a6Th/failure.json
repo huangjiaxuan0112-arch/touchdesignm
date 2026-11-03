@@ -1,0 +1,1488 @@
+{
+  "name": "STOP during initial handover cancels pending ON permanently",
+  "error": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(n.pulses(7).every(p => Math.abs(p.widthUs - 1200) <= 12))\n\n    at file:///C:/Users/20676/OneDrive/%E6%A1%8C%E9%9D%A2/touchdesign/test/d7-real-driver/verify.mjs:240:10\n    at test (file:///C:/Users/20676/OneDrive/%E6%A1%8C%E9%9D%A2/touchdesign/test/d7-real-driver/verify.mjs:187:19)\n    at file:///C:/Users/20676/OneDrive/%E6%A1%8C%E9%9D%A2/touchdesign/test/d7-real-driver/verify.mjs:238:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:647:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)",
+  "frames": [
+    {
+      "at": 124.1540625,
+      "message": {
+        "type": "EVENT",
+        "name": "READY",
+        "deviceId": "nature-touch-nano-simulation",
+        "protocol": 2,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 410.06675,
+      "message": {
+        "type": "ACK",
+        "command": "SELECT",
+        "accepted": true,
+        "requestId": "selectrun",
+        "state": "IDLE"
+      }
+    },
+    {
+      "at": 592.845,
+      "message": {
+        "type": "ACK",
+        "command": "START",
+        "accepted": true,
+        "requestId": "startrun",
+        "state": "RUNNING",
+        "operationId": "run"
+      }
+    },
+    {
+      "at": 704.581625,
+      "message": {
+        "type": "EVENT",
+        "name": "MARKER",
+        "operationId": "run",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "text": "INITIAL FILL"
+      }
+    },
+    {
+      "at": 898.8085,
+      "message": {
+        "type": "EVENT",
+        "name": "ACTUATOR_EVENT",
+        "operationId": "run",
+        "experienceId": "WIND",
+        "atMs": 0,
+        "action": "INFLATE",
+        "durationMs": 5000,
+        "D5": 180,
+        "D6": 180,
+        "D7": 0,
+        "hardwareOutputsEnabled": false
+      }
+    },
+    {
+      "at": 1012.6281875,
+      "message": {
+        "type": "ACK",
+        "command": "STOP",
+        "accepted": true,
+        "requestId": "cancel",
+        "state": "STOPPING",
+        "operationId": "run"
+      }
+    },
+    {
+      "at": 1070.059375,
+      "message": {
+        "type": "EVENT",
+        "name": "STOPPED",
+        "operationId": "run"
+      }
+    }
+  ],
+  "pulses": [
+    {
+      "pin": 5,
+      "riseUs": 53496.375,
+      "fallUs": 54696,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 5,
+      "riseUs": 73499.4375,
+      "fallUs": 74699.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 93502.5,
+      "fallUs": 94702.375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 113505.375,
+      "fallUs": 114704.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 133508.5,
+      "fallUs": 134708.3125,
+      "widthUs": 1199.8125
+    },
+    {
+      "pin": 5,
+      "riseUs": 153511.375,
+      "fallUs": 154710.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 173514.4375,
+      "fallUs": 174714.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 193517.4375,
+      "fallUs": 194717.8125,
+      "widthUs": 1200.375
+    },
+    {
+      "pin": 5,
+      "riseUs": 213520.4375,
+      "fallUs": 214720.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 233523.4375,
+      "fallUs": 234723.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 253526.625,
+      "fallUs": 254726.3125,
+      "widthUs": 1199.6875
+    },
+    {
+      "pin": 5,
+      "riseUs": 273529.9375,
+      "fallUs": 274729.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 293532.875,
+      "fallUs": 294732.5,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 5,
+      "riseUs": 313535.875,
+      "fallUs": 314735.5625,
+      "widthUs": 1199.6875
+    },
+    {
+      "pin": 5,
+      "riseUs": 333538.875,
+      "fallUs": 334738.4375,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 5,
+      "riseUs": 353541.9375,
+      "fallUs": 354741.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 373544.9375,
+      "fallUs": 374744.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 393547.9375,
+      "fallUs": 394747.9375,
+      "widthUs": 1200
+    },
+    {
+      "pin": 5,
+      "riseUs": 413550.875,
+      "fallUs": 414750.3125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 433554.0625,
+      "fallUs": 434753.8125,
+      "widthUs": 1199.75
+    },
+    {
+      "pin": 5,
+      "riseUs": 453556.9375,
+      "fallUs": 454756.875,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 473559.9375,
+      "fallUs": 474759.875,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 493562.875,
+      "fallUs": 494762.375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 513565.9375,
+      "fallUs": 514765.875,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 533568.875,
+      "fallUs": 534768.3125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 553571.875,
+      "fallUs": 554771.375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 573574.9375,
+      "fallUs": 574774.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 593583.6875,
+      "fallUs": 594783.3125,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 5,
+      "riseUs": 613586.9375,
+      "fallUs": 614786.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 633592.0625,
+      "fallUs": 635391.8125,
+      "widthUs": 1799.75
+    },
+    {
+      "pin": 5,
+      "riseUs": 653594.875,
+      "fallUs": 655394.3125,
+      "widthUs": 1799.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 673597.9375,
+      "fallUs": 675397.875,
+      "widthUs": 1799.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 693600.9375,
+      "fallUs": 695400.9375,
+      "widthUs": 1800
+    },
+    {
+      "pin": 5,
+      "riseUs": 713603.875,
+      "fallUs": 715403.3125,
+      "widthUs": 1799.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 733606.875,
+      "fallUs": 735406.375,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 753609.9375,
+      "fallUs": 755409.8125,
+      "widthUs": 1799.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 773612.875,
+      "fallUs": 775412.375,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 793615.9375,
+      "fallUs": 795416,
+      "widthUs": 1800.0625
+    },
+    {
+      "pin": 5,
+      "riseUs": 813618.875,
+      "fallUs": 815418.375,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 833622,
+      "fallUs": 834821.9375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 853624.875,
+      "fallUs": 854824.3125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 873627.9375,
+      "fallUs": 874827.875,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 893630.875,
+      "fallUs": 894830.3125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 913633.9375,
+      "fallUs": 914833.8125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 933636.875,
+      "fallUs": 934836.3125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 953639.875,
+      "fallUs": 954839.375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 973643,
+      "fallUs": 974842.8125,
+      "widthUs": 1199.8125
+    },
+    {
+      "pin": 5,
+      "riseUs": 993645.9375,
+      "fallUs": 994845.9375,
+      "widthUs": 1200
+    },
+    {
+      "pin": 5,
+      "riseUs": 1013649.4375,
+      "fallUs": 1014849.375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1033652.5,
+      "fallUs": 1034852.875,
+      "widthUs": 1200.375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1053655.375,
+      "fallUs": 1054854.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 1073658.4375,
+      "fallUs": 1074861,
+      "widthUs": 1202.5625
+    },
+    {
+      "pin": 5,
+      "riseUs": 1093661.375,
+      "fallUs": 1094860.9375,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 5,
+      "riseUs": 1113664.4375,
+      "fallUs": 1114864.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1133667.4375,
+      "fallUs": 1134867.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1153670.375,
+      "fallUs": 1154869.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 1173673.5,
+      "fallUs": 1174873.375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1193676.4375,
+      "fallUs": 1194876.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1213679.4375,
+      "fallUs": 1214879.375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1233682.375,
+      "fallUs": 1234881.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 1253685.4375,
+      "fallUs": 1254885.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1273688.4375,
+      "fallUs": 1274888.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1293691.375,
+      "fallUs": 1294890.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 1313694.4375,
+      "fallUs": 1314894.375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1333697.5,
+      "fallUs": 1334897.375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1353700.5,
+      "fallUs": 1354900.375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1373703.375,
+      "fallUs": 1374903.3125,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1393706.375,
+      "fallUs": 1394905.875,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 5,
+      "riseUs": 1413709.4375,
+      "fallUs": 1414909.3125,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 5,
+      "riseUs": 1433712.375,
+      "fallUs": 1434911.8125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1453715.375,
+      "fallUs": 1454914.8125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1473718.375,
+      "fallUs": 1474918,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 5,
+      "riseUs": 1493721.4375,
+      "fallUs": 1494921.375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1513724.375,
+      "fallUs": 1514923.8125,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 5,
+      "riseUs": 1533727.5,
+      "fallUs": 1534927.3125,
+      "widthUs": 1199.8125
+    },
+    {
+      "pin": 5,
+      "riseUs": 1553730.5625,
+      "fallUs": 1554930.3125,
+      "widthUs": 1199.75
+    },
+    {
+      "pin": 5,
+      "riseUs": 1573733.5,
+      "fallUs": 1574933.3125,
+      "widthUs": 1199.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 33503,
+      "fallUs": 34046.75,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 54705,
+      "fallUs": 55248.5625,
+      "widthUs": 543.5625
+    },
+    {
+      "pin": 6,
+      "riseUs": 74708.3125,
+      "fallUs": 75252.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 94711.375,
+      "fallUs": 95255.125,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 114713.875,
+      "fallUs": 115257.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 134717.3125,
+      "fallUs": 135261.25,
+      "widthUs": 543.9375
+    },
+    {
+      "pin": 6,
+      "riseUs": 154719.875,
+      "fallUs": 155263.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 174723.3125,
+      "fallUs": 175267.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 194726.8125,
+      "fallUs": 195270.6875,
+      "widthUs": 543.875
+    },
+    {
+      "pin": 6,
+      "riseUs": 214729.3125,
+      "fallUs": 215273.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 234732.3125,
+      "fallUs": 235276.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 254735.3125,
+      "fallUs": 255279.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 274738.8125,
+      "fallUs": 275283.125,
+      "widthUs": 544.3125
+    },
+    {
+      "pin": 6,
+      "riseUs": 294741.5,
+      "fallUs": 295285.0625,
+      "widthUs": 543.5625
+    },
+    {
+      "pin": 6,
+      "riseUs": 314744.5625,
+      "fallUs": 315288.0625,
+      "widthUs": 543.5
+    },
+    {
+      "pin": 6,
+      "riseUs": 334747.4375,
+      "fallUs": 335291.0625,
+      "widthUs": 543.625
+    },
+    {
+      "pin": 6,
+      "riseUs": 354750.8125,
+      "fallUs": 355294.5625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 374753.8125,
+      "fallUs": 375297.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 394756.9375,
+      "fallUs": 395301,
+      "widthUs": 544.0625
+    },
+    {
+      "pin": 6,
+      "riseUs": 414759.3125,
+      "fallUs": 415303.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 434762.8125,
+      "fallUs": 435306.6875,
+      "widthUs": 543.875
+    },
+    {
+      "pin": 6,
+      "riseUs": 454765.875,
+      "fallUs": 455309.625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 474768.875,
+      "fallUs": 475312.8125,
+      "widthUs": 543.9375
+    },
+    {
+      "pin": 6,
+      "riseUs": 494771.375,
+      "fallUs": 495315.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 514774.875,
+      "fallUs": 515318.625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 534777.3125,
+      "fallUs": 535321.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 554780.375,
+      "fallUs": 555324.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 574783.8125,
+      "fallUs": 575327.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 594792.3125,
+      "fallUs": 595336.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 614795.8125,
+      "fallUs": 615339.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 635400.8125,
+      "fallUs": 635944.5625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 655403.3125,
+      "fallUs": 655947.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 675406.875,
+      "fallUs": 675950.625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 695409.9375,
+      "fallUs": 695953.5625,
+      "widthUs": 543.625
+    },
+    {
+      "pin": 6,
+      "riseUs": 715412.3125,
+      "fallUs": 715956.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 735415.375,
+      "fallUs": 735959.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 755418.8125,
+      "fallUs": 755962.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 775421.375,
+      "fallUs": 775965.125,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 795425,
+      "fallUs": 795968.5625,
+      "widthUs": 543.5625
+    },
+    {
+      "pin": 6,
+      "riseUs": 815427.375,
+      "fallUs": 815971.1875,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 834830.9375,
+      "fallUs": 835374.625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 854833.3125,
+      "fallUs": 855377.1875,
+      "widthUs": 543.875
+    },
+    {
+      "pin": 6,
+      "riseUs": 874836.875,
+      "fallUs": 875380.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 894839.3125,
+      "fallUs": 895383.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 914842.8125,
+      "fallUs": 915386.5625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 934845.3125,
+      "fallUs": 935389.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 954848.375,
+      "fallUs": 955392.125,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 974851.8125,
+      "fallUs": 975395.6875,
+      "widthUs": 543.875
+    },
+    {
+      "pin": 6,
+      "riseUs": 994854.9375,
+      "fallUs": 995398.6875,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1014858.375,
+      "fallUs": 1015402.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1034861.875,
+      "fallUs": 1035405.75,
+      "widthUs": 543.875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1054863.875,
+      "fallUs": 1055407.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1074870,
+      "fallUs": 1075413.5625,
+      "widthUs": 543.5625
+    },
+    {
+      "pin": 6,
+      "riseUs": 1094869.9375,
+      "fallUs": 1095413.875,
+      "widthUs": 543.9375
+    },
+    {
+      "pin": 6,
+      "riseUs": 1114873.3125,
+      "fallUs": 1115417.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1134876.3125,
+      "fallUs": 1135420.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1154878.875,
+      "fallUs": 1155422.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1174882.375,
+      "fallUs": 1175426.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1194885.3125,
+      "fallUs": 1195429.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1214888.375,
+      "fallUs": 1215432.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1234890.875,
+      "fallUs": 1235434.625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1254894.3125,
+      "fallUs": 1255438.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1274897.3125,
+      "fallUs": 1275441.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1294899.875,
+      "fallUs": 1295443.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1314903.375,
+      "fallUs": 1315447.3125,
+      "widthUs": 543.9375
+    },
+    {
+      "pin": 6,
+      "riseUs": 1334906.375,
+      "fallUs": 1335450.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1354909.375,
+      "fallUs": 1355453.0625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1374912.3125,
+      "fallUs": 1375456.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1394914.875,
+      "fallUs": 1395458.5625,
+      "widthUs": 543.6875
+    },
+    {
+      "pin": 6,
+      "riseUs": 1414918.3125,
+      "fallUs": 1415462.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1434920.8125,
+      "fallUs": 1435464.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1454923.8125,
+      "fallUs": 1455467.5625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1474927,
+      "fallUs": 1475470.5625,
+      "widthUs": 543.5625
+    },
+    {
+      "pin": 6,
+      "riseUs": 1494930.375,
+      "fallUs": 1495474.125,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1514932.8125,
+      "fallUs": 1515476.625,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 6,
+      "riseUs": 1534936.3125,
+      "fallUs": 1535480.0625,
+      "widthUs": 543.75
+    },
+    {
+      "pin": 6,
+      "riseUs": 1554939.3125,
+      "fallUs": 1555483.125,
+      "widthUs": 543.8125
+    },
+    {
+      "pin": 7,
+      "riseUs": 34055.125,
+      "fallUs": 35255.375,
+      "widthUs": 1200.25
+    },
+    {
+      "pin": 7,
+      "riseUs": 55256.9375,
+      "fallUs": 56456.5625,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 7,
+      "riseUs": 75260.4375,
+      "fallUs": 76460.125,
+      "widthUs": 1199.6875
+    },
+    {
+      "pin": 7,
+      "riseUs": 95263.5,
+      "fallUs": 96463,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 115265.9375,
+      "fallUs": 116465.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 135269.625,
+      "fallUs": 136469.625,
+      "widthUs": 1200
+    },
+    {
+      "pin": 7,
+      "riseUs": 155271.9375,
+      "fallUs": 156471.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 175275.5,
+      "fallUs": 176474.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 195279.0625,
+      "fallUs": 196478.9375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 7,
+      "riseUs": 215281.4375,
+      "fallUs": 216480.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 235284.5,
+      "fallUs": 236484.0625,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 255287.5,
+      "fallUs": 256486.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 275291.5,
+      "fallUs": 276490.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 295293.4375,
+      "fallUs": 296493,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 315296.4375,
+      "fallUs": 316495.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 335299.4375,
+      "fallUs": 336498.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 355302.9375,
+      "fallUs": 356502.5,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 375306,
+      "fallUs": 376505.5,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 395309.375,
+      "fallUs": 396508.9375,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 415311.4375,
+      "fallUs": 416510.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 435315.0625,
+      "fallUs": 436515,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 7,
+      "riseUs": 455318,
+      "fallUs": 456517.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 475321.1875,
+      "fallUs": 476520.9375,
+      "widthUs": 1199.75
+    },
+    {
+      "pin": 7,
+      "riseUs": 495323.4375,
+      "fallUs": 496523,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 515327,
+      "fallUs": 516526.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 535329.5,
+      "fallUs": 536529,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 555332.4375,
+      "fallUs": 556531.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 575336,
+      "fallUs": 576535.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 595344.4375,
+      "fallUs": 596544.0625,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 7,
+      "riseUs": 615348,
+      "fallUs": 616547.5,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 635952.9375,
+      "fallUs": 637152.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 655955.5,
+      "fallUs": 657155.4375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 7,
+      "riseUs": 675959,
+      "fallUs": 677158.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 695961.9375,
+      "fallUs": 697161.5,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 715964.4375,
+      "fallUs": 717164.1875,
+      "widthUs": 1199.75
+    },
+    {
+      "pin": 7,
+      "riseUs": 735967.4375,
+      "fallUs": 737766.9375,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 755971,
+      "fallUs": 757770.5,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 775973.5,
+      "fallUs": 777773,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 795976.9375,
+      "fallUs": 797776.4375,
+      "widthUs": 1799.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 815979.5625,
+      "fallUs": 817779.5,
+      "widthUs": 1799.9375
+    },
+    {
+      "pin": 7,
+      "riseUs": 835383,
+      "fallUs": 836582.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 855385.5625,
+      "fallUs": 856585.4375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 7,
+      "riseUs": 875388.9375,
+      "fallUs": 876588.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 895391.4375,
+      "fallUs": 896590.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 915394.9375,
+      "fallUs": 916594.5,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 935397.4375,
+      "fallUs": 936597,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 955400.5,
+      "fallUs": 956599.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 975404.0625,
+      "fallUs": 976603.9375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 7,
+      "riseUs": 995407.0625,
+      "fallUs": 996606.9375,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 7,
+      "riseUs": 1015410.4375,
+      "fallUs": 1016609.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1035414.125,
+      "fallUs": 1036614,
+      "widthUs": 1199.875
+    },
+    {
+      "pin": 7,
+      "riseUs": 1055415.9375,
+      "fallUs": 1056615.9375,
+      "widthUs": 1200
+    },
+    {
+      "pin": 7,
+      "riseUs": 1075421.9375,
+      "fallUs": 1076621.625,
+      "widthUs": 1199.6875
+    },
+    {
+      "pin": 7,
+      "riseUs": 1095422.25,
+      "fallUs": 1096622,
+      "widthUs": 1199.75
+    },
+    {
+      "pin": 7,
+      "riseUs": 1115425.4375,
+      "fallUs": 1116625,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 1135428.5,
+      "fallUs": 1136627.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1155430.9375,
+      "fallUs": 1156630.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1175434.4375,
+      "fallUs": 1176634.0625,
+      "widthUs": 1199.625
+    },
+    {
+      "pin": 7,
+      "riseUs": 1195437.5,
+      "fallUs": 1196637,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1215440.4375,
+      "fallUs": 1216639.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1235443,
+      "fallUs": 1236642.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1255446.5,
+      "fallUs": 1256646,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1275449.5,
+      "fallUs": 1276648.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1295451.9375,
+      "fallUs": 1296651.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1315455.6875,
+      "fallUs": 1316655.5,
+      "widthUs": 1199.8125
+    },
+    {
+      "pin": 7,
+      "riseUs": 1335458.4375,
+      "fallUs": 1336657.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1355461.4375,
+      "fallUs": 1356660.9375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1375464.5,
+      "fallUs": 1376664,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1395466.9375,
+      "fallUs": 1396666.625,
+      "widthUs": 1199.6875
+    },
+    {
+      "pin": 7,
+      "riseUs": 1415470.5,
+      "fallUs": 1416670.4375,
+      "widthUs": 1199.9375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1435473,
+      "fallUs": 1436672.5,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1455475.9375,
+      "fallUs": 1456675.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1475478.9375,
+      "fallUs": 1476678.4375,
+      "widthUs": 1199.5
+    },
+    {
+      "pin": 7,
+      "riseUs": 1495482.5,
+      "fallUs": 1496681.9375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1515485,
+      "fallUs": 1516684.4375,
+      "widthUs": 1199.4375
+    },
+    {
+      "pin": 7,
+      "riseUs": 1535488.4375,
+      "fallUs": 1536688,
+      "widthUs": 1199.5625
+    },
+    {
+      "pin": 7,
+      "riseUs": 1555491.5,
+      "fallUs": 1556690.9375,
+      "widthUs": 1199.4375
+    }
+  ],
+  "modes": [
+    {
+      "us": 693.4375,
+      "pin": 6,
+      "output": true
+    },
+    {
+      "us": 723.25,
+      "pin": 7,
+      "output": true
+    },
+    {
+      "us": 739.125,
+      "pin": 5,
+      "output": true
+    }
+  ]
+}

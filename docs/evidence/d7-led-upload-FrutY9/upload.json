@@ -1,0 +1,52 @@
+{
+  "result": "PASS",
+  "startedUtc": "2026-10-29T03:19:20.418Z",
+  "authorization": "User confirmed all five isolation/readiness conditions and explicitly authorized D7 LED-only diagnostic upload in this chat. No pulse-test authorization.",
+  "sourceSha256": "8706e4478b679d7f2c0f8d7eabf6c6e4979bd2e087db6c6470573a886f895d5b",
+  "hexSha256": "064244ace1e94c123ca887cd6956ba42dad11147f84af92cec8f13ccd6883536",
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "command": {
+    "executable": "C:\\Users\\20676\\AppData\\Local\\Programs\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+    "args": [
+      "--config-file",
+      "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-d7-led-mLC17t\\arduino-cli.yaml",
+      "upload",
+      "--fqbn",
+      "arduino:avr:nano:cpu=atmega328",
+      "--port",
+      "COM5",
+      "--input-file",
+      "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\docs\\evidence\\d7-led-upload-FrutY9\\d7_led_only.ino.hex",
+      "--verify",
+      "--verbose"
+    ]
+  },
+  "physicalControlCommands": [],
+  "physicalObservations": [
+    {
+      "utc": "2026-10-29T03:20:23.217Z",
+      "phase": "POST_UPLOAD_BEFORE_PULSE_TEST",
+      "source": "USER_REPORT",
+      "userQuote": "现在是亮的",
+      "led": "ON",
+      "pulseCommandSent": false,
+      "physicalOffVerified": false,
+      "notes": "No application serial status captured after upload; LED does not establish load current or signal-loss safety."
+    }
+  ],
+  "ledA": "NOT_TESTED",
+  "ledB": "NOT_TESTED",
+  "repeatability": "NOT_TESTED",
+  "finishedUtc": "2026-10-29T03:19:26.406Z",
+  "exitCode": 0,
+  "verified": true
+}

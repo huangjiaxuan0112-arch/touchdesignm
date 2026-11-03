@@ -1,0 +1,59 @@
+{
+  "recordedUtc": "2026-10-29T04:32:33.851Z",
+  "source": "USER_REPORTED_PHYSICAL_ROUTING",
+  "latestUserQuote": "主动抽气路径 到抽气泵的吸入口",
+  "previousUncertainRecordPreserved": "docs/evidence/pneumatic-port-connections-user-report-20261029.json",
+  "confirmedConnections": {
+    "P": "INFLATION_PUMP",
+    "A": "AIRBAG",
+    "R": "SUCTION_PUMP_INLET"
+  },
+  "valveRouting": {
+    "electricalOff": "A-R; P blocked",
+    "electricalOn": "P-A; R blocked"
+  },
+  "derivedActions": {
+    "inflate": {
+      "D5": "ON",
+      "D6": "OFF",
+      "D7": "ON",
+      "path": "Inflation pump -> P -> A -> airbag"
+    },
+    "activeDeflate": {
+      "D5": "OFF",
+      "D6": "ON",
+      "D7": "OFF",
+      "path": "Airbag -> A -> R -> suction pump inlet"
+    },
+    "stopPumps": {
+      "D6": "OFF",
+      "D7": "OFF",
+      "passivePressureReliefGuaranteed": false,
+      "note": "R leads to pump inlet; a stopped pump is not a proven unrestricted path to atmosphere. Valve STOP policy and pressure arrangements need explicit review."
+    }
+  },
+  "perChannelReportedElectricalMappingUs": {
+    "D5": {
+      "OFF": 1200,
+      "ON": 1800,
+      "reference": "docs/evidence/d5-electrical-physical-pass-20261029.json"
+    },
+    "D6": {
+      "OFF": 544,
+      "ON": 2400,
+      "approximateMeasuredEndpoints": true,
+      "intermediate1200Or1800NotVerified": true,
+      "reference": "docs/evidence/d6-legacy-endpoints-physical-pass-20261029.json"
+    },
+    "D7": {
+      "OFF": 1200,
+      "ON": 1800,
+      "reference": "docs/evidence/d7-reset-latest-pass-20261029.json"
+    }
+  },
+  "combinationActuationRetestedByAssistant": false,
+  "oldInflateDeflateFunctionsNotUsedAsTruthSource": true,
+  "productionDriverLocksChanged": false,
+  "physicalCommandsSentByAssistantThisTurn": [],
+  "firmwareUploadedThisTurn": false
+}

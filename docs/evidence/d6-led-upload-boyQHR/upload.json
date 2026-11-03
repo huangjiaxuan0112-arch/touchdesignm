@@ -1,0 +1,52 @@
+{
+  "result": "PASS",
+  "startedUtc": "2026-10-29T04:04:54.104Z",
+  "authorization": "User confirmed all five isolation/readiness conditions and explicitly authorized D6 LED-only diagnostic upload in this chat. No pulse-test authorization.",
+  "sourceSha256": "f238591052cbe3af2f144df65a88536da9d51995e00b8cf82324aeec8a93b981",
+  "hexSha256": "9ba869e05bff6654b6d513065279d8002dc7d64a16e2ca3358fa6798c57af889",
+  "device": {
+    "path": "COM5",
+    "manufacturer": "wch.cn",
+    "serialNumber": "5&26B53364&0&9",
+    "pnpId": "USB\\VID_1A86&PID_7523\\5&26B53364&0&9",
+    "locationId": "Port_#0009.Hub_#0001",
+    "friendlyName": "USB-SERIAL CH340 (COM5)",
+    "vendorId": "1A86",
+    "productId": "7523"
+  },
+  "command": {
+    "executable": "C:\\Users\\20676\\AppData\\Local\\Programs\\Arduino IDE\\resources\\app\\lib\\backend\\resources\\arduino-cli.exe",
+    "args": [
+      "--config-file",
+      "C:\\Users\\20676\\AppData\\Local\\Temp\\nature-touch-d6-led-LdPm8f\\arduino-cli.yaml",
+      "upload",
+      "--fqbn",
+      "arduino:avr:nano:cpu=atmega328",
+      "--port",
+      "COM5",
+      "--input-file",
+      "C:\\Users\\20676\\OneDrive\\桌面\\touchdesign\\docs\\evidence\\d6-led-upload-boyQHR\\d6_led_only.ino.hex",
+      "--verify",
+      "--verbose"
+    ]
+  },
+  "physicalControlCommands": [],
+  "physicalObservations": [
+    {
+      "utc": "2026-10-29T04:05:54.737Z",
+      "phase": "POST_UPLOAD_BEFORE_PULSE_TEST",
+      "source": "USER_REPORT",
+      "userQuote": "你还没发送测试所以现在没亮呢",
+      "indicatorLocation": "D6_C93_MODULE",
+      "led": "OFF",
+      "pulseCommandSent": false,
+      "physicalOffVerified": false
+    }
+  ],
+  "ledA": "NOT_TESTED",
+  "ledB": "NOT_TESTED",
+  "repeatability": "NOT_TESTED",
+  "finishedUtc": "2026-10-29T04:04:58.877Z",
+  "exitCode": 0,
+  "verified": true
+}

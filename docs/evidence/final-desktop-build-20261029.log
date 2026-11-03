@@ -1,0 +1,33 @@
+
+> nature-touch-desktop@0.1.0 build
+> electron-vite build
+
+vite v6.4.5 building SSR bundle for production...
+transforming...
+✓ 10 modules transformed.
+rendering chunks...
+out/main/main.js  65.88 kB
+✓ built in 821ms
+vite v6.4.5 building SSR bundle for production...
+transforming...
+✓ 1 modules transformed.
+rendering chunks...
+out/preload/preload.cjs  3.58 kB
+✓ built in 69ms
+vite v6.4.5 building for production...
+transforming...
+✓ 2430 modules transformed.
+rendering chunks...
+../out/renderer/index.html                                    0.46 kB
+../out/renderer/assets/wind-poster-CptwKMVE.png             264.94 kB
+../out/renderer/assets/waves-poster-B3rCs3T2.png            418.51 kB
+../out/renderer/assets/bubbles-poster-Cz_p-kwv.png          604.74 kB
+../out/renderer/assets/waves-preview-aiRqhpmy.mp4         5,209.32 kB
+../out/renderer/assets/wind-preview-D3Gy5Sg6.mp4          6,301.53 kB
+../out/renderer/assets/bubbles-preview-Dju7DUTj.mp4      12,774.08 kB
+../out/renderer/assets/东风长3_15秒音视频合成-CsJm9tnX.mp4        37,427.75 kB
+../out/renderer/assets/waves-experience-CT8b_JR6.mp4    109,790.95 kB
+../out/renderer/assets/bubbles-experience-DLYWOwH6.mp4  116,880.12 kB
+../out/renderer/assets/index-CsdVcWEu.css                    14.38 kB
+../out/renderer/assets/index-C0bXtzJp.js                  1,198.91 kB
+✓ built in 27.04s

@@ -1,0 +1,37 @@
+{
+  "recordedUtc": "2026-10-29T04:10:13.240Z",
+  "source": "USER_REPORTED_PHYSICAL_TEST",
+  "rawUserReport": "测试完成inflate() 时 D6 约 2400 µs，开关 ON、负载侧有电；deflate() 时约 544 µs，开关 OFF、负载侧无电",
+  "observations": [
+    {
+      "channel": "D6",
+      "legacyPhase": "inflate()",
+      "legacyServoCommand": 180,
+      "reportedPulseUsApprox": 2400,
+      "switchState": "ON",
+      "loadSide": "POWER_PRESENT",
+      "result": "PASS_REPORTED"
+    },
+    {
+      "channel": "D6",
+      "legacyPhase": "deflate()",
+      "legacyServoCommand": 0,
+      "reportedPulseUsApprox": 544,
+      "switchState": "OFF",
+      "loadSide": "NO_POWER_REPORTED",
+      "result": "PASS_REPORTED"
+    }
+  ],
+  "physicalMappingConfirmedByUser": true,
+  "numericalLoadVoltageCurrentAndInstrumentationProvided": false,
+  "transitionFromOnToOffExplicitlyDocumented": false,
+  "mapping1200And1800Verified": false,
+  "signalLossVerified": false,
+  "resetVerified": false,
+  "powerRecoveryVerified": false,
+  "pneumaticFlowDirectionVerifiedByThisReport": false,
+  "previousLedOnlyRecord": "docs/evidence/d6-led-short-SDH3eW/trial.json",
+  "physicalCommandsSentByAssistantThisTurn": [],
+  "firmwareUploadedThisTurn": false,
+  "scope": "Actual user-reported D6 endpoint and load-side observations; not simulation. Does not prove pneumatic role, intermediate pulse mapping, signal-loss or reset behavior. Earlier LED observations preserved."
+}

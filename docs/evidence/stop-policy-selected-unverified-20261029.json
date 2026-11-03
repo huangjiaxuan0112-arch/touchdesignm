@@ -1,0 +1,69 @@
+{
+  "recordedUtc": "2026-10-29T04:54:27.272Z",
+  "source": "USER_SELECTED_STOP_POLICY_AND_REPORTED_PROTECTION_STATUS",
+  "stop": {
+    "D5": {
+      "electricalState": "OFF",
+      "pulseUs": 1200,
+      "route": "A-R; P blocked",
+      "status": "SELECTED_PENDING_BENCH_CONFIRMATION",
+      "verified": false
+    },
+    "D6": "OFF: 544us",
+    "D7": "OFF: 1200us",
+    "additionalDeflationMs": 0
+  },
+  "scope": "Selected route matches user-reported deenergized valve route. Normal deenergized routing is not proof of every USB/switch power-failure condition or reliable depressurization.",
+  "passiveDeflation": {
+    "slowFlatteningPreviouslyReported": true,
+    "actualLeakPathVerified": false,
+    "pressureDataAvailable": false,
+    "reliableReliefVerified": false
+  },
+  "timings": {
+    "PUMP_OFF_SETTLE_MS": "UINT16_MAX: UNMEASURED",
+    "VALVE_SETTLE_MS": "UINT16_MAX: UNMEASURED",
+    "simulation100MsNotPhysicalValue": true
+  },
+  "pendingBenchMeasurement": {
+    "configuration": "Pumps isolated from airbag; test fixture and energy limits require review before any action",
+    "pumpOff": "Measure requested-OFF to load electrical OFF criterion and actual airflow cessation; use slower response. Include signal frame/phase propagation if scope starts at a later input edge.",
+    "valve": "Measure command/input change to actual route change in both directions.",
+    "repeats": "Record several trials, worst observed delay and justified margin; no numeric value selected now."
+  },
+  "energyCutoff": {
+    "selected": "Disconnect sole USB manually",
+    "role": "MANUAL_EMERGENCY_CUTOFF",
+    "automaticFailSafePowerCutoffVerified": false
+  },
+  "pressureLimitingAvailable": false,
+  "reliablePressureReliefAvailable": false,
+  "productionActivationPermitted": false,
+  "physicalCommandsSentThisTurn": [],
+  "firmwareUploadedThisTurn": false,
+  "activeDeflationUpdate": {
+    "recordedUtc": "2026-10-29T06:21:39.360Z",
+    "source": "USER_REPORT_OF_HARDWARE_FRIEND_CONFIRMATION",
+    "existingD6ActiveAirExtractionConfirmed": true,
+    "confirmationScope": "Existing D6 pump can actively extract air during powered normal operation; no pressure-zero or independent overpressure protection claim",
+    "originalFinalDeflationMs": {
+      "WIND": 5000,
+      "WAVE": 5000,
+      "BUBBLE": 3000
+    },
+    "additionalDeflationMs": 0,
+    "normalCompletion": "Original final deflation then both pumps OFF",
+    "stopFaultAndHostTimeout": "Cancel pending ON and maintain both pumps OFF; no added deflation",
+    "powerLoss": "Active D6 extraction unavailable without power",
+    "independentReliefVerified": false,
+    "independentOverpressureProtectionVerified": false,
+    "newReliefPumpRequiredByThisUpdate": false,
+    "firmwareChanged": false,
+    "timelinesChanged": false,
+    "protectionFlagsChanged": false,
+    "comAccessed": false,
+    "uploaded": false,
+    "actuationCommandsSent": []
+  },
+  "pressureAvailabilityFieldScope": "Existing pressureLimitingAvailable/reliablePressureReliefAvailable=false describe unconfirmed independent pressure protection and reliable residual-pressure handling, not the absence of normal powered D6 extraction."
+}

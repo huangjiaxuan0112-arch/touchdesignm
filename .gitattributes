@@ -1,0 +1,2 @@
+desktop/renderer/src/assets/**/*.mp4 filter=lfs diff=lfs merge=lfs -text
+卒研music/wind/*15秒*.mp4 filter=lfs diff=lfs merge=lfs -text

@@ -41,8 +41,8 @@ const api: NatureTouchApi = {
   armFirmwareSimulationTest: (loadsIsolated, simulationFirmwareConfirmed) =>
     ipcRenderer.invoke('firmware:arm-simulation', { loadsIsolated, simulationFirmwareConfirmed }),
   disarmFirmwareSimulationTest: () => ipcRenderer.invoke('firmware:disarm-simulation'),
-  connectFirmware: (portPath, baudRate, loadsIsolated = false) =>
-    ipcRenderer.invoke('firmware:connect', { portPath, baudRate, loadsIsolated }),
+  connectFirmware: (portPath, baudRate, loadsIsolated = false, benchFixtureConfirmed = false) =>
+    ipcRenderer.invoke('firmware:connect', { portPath, baudRate, loadsIsolated, benchFixtureConfirmed }),
   disconnectFirmware: () => ipcRenderer.invoke('firmware:disconnect'),
   onFirmwareState: (listener) => {
     const handler = (_event: Electron.IpcRendererEvent, snapshot: FirmwareControlSnapshot) => {

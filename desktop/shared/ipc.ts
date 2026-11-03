@@ -37,7 +37,7 @@ export interface NatureTouchApi {
   getFirmwareState(): Promise<FirmwareControlSnapshot>
   armFirmwareSimulationTest(loadsIsolated: boolean, simulationFirmwareConfirmed: boolean): Promise<FirmwareControlSnapshot>
   disarmFirmwareSimulationTest(): Promise<FirmwareControlSnapshot>
-  connectFirmware(portPath: string, baudRate: number, loadsIsolated?: boolean): Promise<FirmwareControlSnapshot>
+  connectFirmware(portPath: string, baudRate: number, loadsIsolated?: boolean, benchFixtureConfirmed?: boolean): Promise<FirmwareControlSnapshot>
   disconnectFirmware(): Promise<FirmwareControlSnapshot>
   onFirmwareState(listener: (snapshot: FirmwareControlSnapshot) => void): () => void
   selectFirmwareExperience(experienceId: ExperienceId, requestId: string): Promise<ExperienceAcknowledgement>

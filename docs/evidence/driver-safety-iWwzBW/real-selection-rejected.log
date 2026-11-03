@@ -1,0 +1,9 @@
+
+Used library Version Path
+Servo        1.3.0   C:\Users\20676\AppData\Local\Arduino15\libraries\Servo
+
+Used platform Version Path
+arduino:avr   1.8.8   C:\Users\20676\AppData\Local\Arduino15\packages\arduino\hardware\avr\1.8.8
+In file included from C:\Users\20676\OneDrive\桌面\touchdesign\firmware\unified\nature_touch_unified\nature_touch_unified.ino:3:0:
+C:\Users\20676\OneDrive\桌面\touchdesign\firmware\unified\nature_touch_unified\actuator-driver.h:10:1: error: static assertion failed: Real actuator driver BLOCKED: STOP/transition/power/pressure conditions are not verified.
+Error during build: exit status 1

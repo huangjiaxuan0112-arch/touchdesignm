@@ -22,8 +22,10 @@ const cli = process.env.ARDUINO_CLI || join(homedir(), 'AppData/Local/Programs/A
 const gccRoot = join(homedir(), 'AppData/Local/Arduino15/packages/arduino/tools/avr-gcc');
 const nm = process.env.AVR_NM || join(gccRoot, readdirSync(gccRoot).sort().at(-1), 'bin/avr-nm.exe');
 const build = mkdtempSync(join(tmpdir(), 'nature-touch-unified-step4-'));
+const config = join(build, 'arduino-cli.yaml');
+writeFileSync(config, `directories:\n  data: ${JSON.stringify(join(homedir(), 'AppData/Local/Arduino15'))}\n  user: ${JSON.stringify(build)}\n  downloads: ${JSON.stringify(join(build, 'downloads'))}\nbuild_cache:\n  path: ${JSON.stringify(join(build, 'cache'))}\n`);
 const sketch = join(root, 'firmware/unified/nature_touch_unified');
-const compileArgs = ['compile', '--fqbn', 'arduino:avr:nano:cpu=atmega328', '--build-path', build, sketch];
+const compileArgs = ['--config-file', config, 'compile', '--fqbn', 'arduino:avr:nano:cpu=atmega328', '--build-path', build, sketch];
 const compileLog = execFileSync(cli, compileArgs, { encoding: 'utf8', timeout: 180000 });
 writeFileSync(join(output, 'compile.log'), compileLog);
 const stdioBridge = process.argv.includes('--stdio-bridge');
@@ -183,11 +185,18 @@ if (stdioBridge) {
   };
   send({ kind: 'ready' });
   deliver();
-  const timer = setInterval(() => { n.advance(10); deliver(); }, 10);
+  // Exhibition tests keep the CPU idle until the virtual serial port opens.
+  let bridgePaused = process.argv.includes('--start-paused');
+  const timer = setInterval(() => {
+    if (bridgePaused) return;
+    n.advance(10);
+    deliver();
+  }, 10);
   const input = createInterface({ input: process.stdin });
   let rejectNextRecovery = false;
   input.on('line', text => {
     const message = JSON.parse(text);
+    if (message.resume) bridgePaused = false;
     if (message.rejectNextRecovery) rejectNextRecovery = true;
     if (message.line) {
       if (rejectNextRecovery && JSON.parse(message.line).type === 'RECOVER') {

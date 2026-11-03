@@ -1,0 +1,204 @@
+{
+  "checks": [
+    {
+      "name": "Idle: real posters, no autoplay, reference card layout preserved",
+      "result": "PASS"
+    },
+    {
+      "name": "Hover delay prevents immediate playback",
+      "result": "PASS"
+    },
+    {
+      "name": "WIND: exclusive muted looping hover preview",
+      "result": "PASS"
+    },
+    {
+      "name": "WAVE: exclusive muted looping hover preview",
+      "result": "PASS"
+    },
+    {
+      "name": "BUBBLE: exclusive muted looping hover preview",
+      "result": "PASS"
+    },
+    {
+      "name": "Leaving cards pauses every preview",
+      "result": "PASS"
+    },
+    {
+      "name": "Rapid movement cancels pending timers; hover sends no device/experience commands",
+      "result": "PASS"
+    },
+    {
+      "name": "Play/pause, mute/unmute, keyboard volume reflect actual native media",
+      "result": "PASS"
+    },
+    {
+      "name": "WIND: correct immersive media, background previews stopped",
+      "result": "PASS"
+    },
+    {
+      "name": "WAVE: correct immersive media, background previews stopped",
+      "result": "PASS"
+    },
+    {
+      "name": "BUBBLE: correct immersive media, background previews stopped",
+      "result": "PASS"
+    },
+    {
+      "name": "Hidden application cancels preview playback",
+      "result": "PASS"
+    },
+    {
+      "name": "Missing preview preserves poster and leaves other cards usable",
+      "result": "PASS"
+    },
+    {
+      "name": "Missing full video falls back to existing poster and readable error",
+      "result": "PASS"
+    },
+    {
+      "name": "Hiding stops the active timeline and both media; visibility and late readiness never restart it",
+      "result": "PASS"
+    },
+    {
+      "name": "STOP uses existing mock IPC and waits for IDLE cancellation",
+      "result": "PASS"
+    },
+    {
+      "name": "Failed STOP retains immersive view; successful retry exits safely",
+      "result": "PASS"
+    },
+    {
+      "name": "Mock controls never open COM or START Arduino",
+      "result": "PASS"
+    },
+    {
+      "name": "Keyboard Enter opens; Escape safely stops and returns",
+      "result": "PASS"
+    },
+    {
+      "name": "Reduced motion prevents decorative autoplay",
+      "result": "PASS"
+    },
+    {
+      "name": "Touch enters directly; mobile home/player have no horizontal overflow",
+      "result": "PASS"
+    }
+  ],
+  "ipc": [
+    "firmware:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:start",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:stop",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state",
+    "firmware:get-state",
+    "experience:get-state",
+    "experience:get-state",
+    "experience:select",
+    "experience:get-state",
+    "experience:get-state"
+  ],
+  "overlap": [],
+  "errors": [],
+  "volumeDebug": {
+    "keys": [
+      {
+        "key": "ArrowLeft",
+        "target": "<span role=\"slider\" aria-label=\"音量\" aria-valuemin=\"0\" aria-valuemax=\"1\" aria-orientation=\"horizontal\" data-orientation=\"horizontal\" tabindex=\"0\" class=\"playback-slider__thumb\" data-radix-collection-item=\"\" aria-valuenow=\"1\" style=\"\"></span>"
+      }
+    ],
+    "active": "<span role=\"slider\" aria-label=\"音量\" aria-valuemin=\"0\" aria-valuemax=\"1\" aria-orientation=\"horizontal\" data-orientation=\"horizontal\" tabindex=\"0\" class=\"playback-slider__thumb\" data-radix-collection-item=\"\" aria-valuenow=\"0.99\" style=\"\"></span>",
+    "volume": 1,
+    "slider": "<span role=\"slider\" aria-label=\"音量\" aria-valuemin=\"0\" aria-valuemax=\"1\" aria-orientation=\"horizontal\" data-orientation=\"horizontal\" tabindex=\"0\" class=\"playback-slider__thumb\" data-radix-collection-item=\"\" aria-valuenow=\"0.99\" style=\"\"></span>"
+  }
+}
