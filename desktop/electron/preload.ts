@@ -12,6 +12,7 @@ import {
 
 const api: NatureTouchApi = {
   getRuntimeInfo: () => ipcRenderer.invoke(IPC_CHANNELS.runtimeInfo),
+  logMediaError: (code) => ipcRenderer.invoke(IPC_CHANNELS.logMediaError, code),
   listSerialPorts: () => ipcRenderer.invoke(IPC_CHANNELS.serialListPorts),
   getSerialState: () => ipcRenderer.invoke(IPC_CHANNELS.serialGetState),
   connectSerial: (portPath, baudRate) =>

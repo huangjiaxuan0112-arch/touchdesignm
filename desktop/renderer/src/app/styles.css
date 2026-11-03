@@ -59,21 +59,10 @@ button { -webkit-tap-highlight-color: transparent; }
 .exhibition-alert:empty { display: none; }
 .exhibition-footer { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: calc(30 * var(--u)); width: 100%; margin-top: auto; padding-top: calc(45 * var(--u)); color: #838c98; font-family: "Yu Gothic", Meiryo, sans-serif; font-size: calc(15 * var(--u)); letter-spacing: .09em; line-height: 1.6; }
 .exhibition-footer__instruction { margin: 0; text-align: center; letter-spacing: .18em; }
+.exhibition-footer__device { margin: 0; }
 .exhibition-footer__media { display: flex; justify-content: flex-end; gap: calc(30 * var(--u)); margin: 0; white-space: nowrap; }
 .exhibition-footer__media span { display: inline-flex; align-items: center; gap: calc(12 * var(--u)); }
 .status-dot--muted { background: #c7c7c7; }
-.device-panel { position: relative; min-width: 0; }
-.device-panel > summary { display: flex; align-items: center; gap: calc(13 * var(--u)); cursor: pointer; list-style: none; }
-.device-panel > summary::-webkit-details-marker { display: none; }
-.device-panel > summary:focus-visible { outline: 1px solid #86bfc0; outline-offset: 5px; }
-.device-panel__content { position: absolute; z-index: 5; left: 0; bottom: calc(100% + 20px); width: min(620px, calc(100vw - 48px)); max-height: 72vh; overflow: auto; padding: 24px; border: 1px solid #e4e2df; border-radius: 8px; background: #fbfaf8; box-shadow: 0 16px 60px rgb(24 32 36 / 14%); }
-.device-connection { color: #596572; font: 13px/1.6 "Yu Gothic", Meiryo, sans-serif; letter-spacing: normal; }
-.device-connection label { display: flex; align-items: flex-start; gap: 8px; margin: 10px 0; }
-.device-connection p { margin: 10px 0; }
-.device-connection button, .device-connection select { border: 1px solid #d4d8da; border-radius: 4px; padding: 7px 10px; background: #fff; color: #304859; }
-.device-connection button { margin: 4px 8px 4px 0; cursor: pointer; }
-.device-connection button:disabled { opacity: .4; cursor: default; }
-.device-connection pre { white-space: pre-wrap; font-size: 11px; }
 .experience-dialog { position: fixed; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; color: #f2f0eb; background: #141d22; }
 .experience-dialog[open] { display: grid; }
 .experience-dialog::backdrop { background: #141d22; }

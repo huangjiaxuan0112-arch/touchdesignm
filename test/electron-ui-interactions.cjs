@@ -1,13 +1,13 @@
 // Real Electron UI with Mock services. Serial access is blocked before Main loads.
 const { app, BrowserWindow, ipcMain } = require('electron')
 const assert = require('node:assert/strict')
-const { mkdirSync, writeFileSync } = require('node:fs')
+const { mkdirSync, readFileSync, writeFileSync } = require('node:fs')
 const { resolve } = require('node:path')
 
 app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion')
 app.commandLine.appendSwitch('disable-background-media-suspend')
 
-const output = resolve(__dirname, '../desktop/out/interaction-check')
+const output = resolve(process.env.NATURE_TOUCH_UI_RESULTS_DIR || resolve(__dirname, '../desktop/out/interaction-check'))
 mkdirSync(output, { recursive: true })
 const evidence = { checks: [], commands: [], overlaps: [], errors: [] }
 const countedCommands = new Map()
@@ -116,8 +116,30 @@ app.once('browser-window-created', (_event, browserWindow) => {
       await wait(`!!document.querySelector('[data-experience="WAVE"]')`)
       const posters = await js(`([...document.querySelectorAll('.nature-card__poster')].length===3 && [...document.querySelectorAll('.nature-card__poster')].every(image=>image.complete&&image.naturalWidth>0))`)
       assert.equal(posters, true, 'home should show the three existing posters')
+      assert.equal(await js(`!!document.querySelector('[aria-label="Device mode"]')`), false,
+        'the exhibition UI must not expose firmware mode or ARM controls')
+      assert.equal(await js(`document.body.innerText.includes('Arm Real Arduino Simulation Test')`), false)
       assert.equal(await js(`[...document.querySelectorAll('.nature-card video')].filter(video=>!video.paused).length`), 0)
       pass('Home displays posters; previews are available without autoplay')
+      await js(`window.natureTouch.logMediaError('video-load-failed')`)
+      const logPath = resolve(app.getPath('userData'), 'logs', 'app.jsonl')
+      const logDeadline = Date.now() + 5000
+      let mediaErrorRow
+      while (Date.now() < logDeadline) {
+        try {
+          mediaErrorRow = readFileSync(logPath, 'utf8').split('\n')
+            .filter(Boolean).map(line => JSON.parse(line))
+            .find(row => row.event === 'media.error' && row.reason === 'video-load-failed')
+        } catch (error) {
+          if (error.code !== 'ENOENT') throw error
+        }
+        if (mediaErrorRow) break
+        await pause(50)
+      }
+      assert.ok(mediaErrorRow, 'media errors should be written to the Electron userData log')
+      assert.match(mediaErrorRow.appCommit, /^[0-9a-f]{40}$/)
+      assert.equal(mediaErrorRow.hardwareConfigVersion, 'UNVERSIONED')
+      pass('Media error is persisted with build and hardware configuration identity')
 
       const selectsBeforeCancel = count('SELECT'), startsBeforeCancel = count('START'), stopsBeforeCancel = count('STOP')
       await js(`(()=>{

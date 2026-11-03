@@ -1,6 +1,6 @@
 import { app, BrowserWindow, ipcMain, session } from 'electron'
 import { join } from 'node:path'
-import { appendFileSync, mkdirSync } from 'node:fs'
+import { LocalEventLog } from './local-event-log'
 import { SerialDiagnosticService } from './serial/serial-diagnostic-service'
 import { NativeSerialTransport } from './serial/native-serial-transport'
 import { ArduinoFirmwareService } from './serial/arduino-firmware-service'
@@ -17,7 +17,9 @@ import type { SerialStateSnapshot } from '../shared/serial-protocol'
 import type { FirmwareControlSnapshot } from '../shared/firmware-control-protocol'
 
 declare const __NATURE_TOUCH_DEV_CSP_NONCE__: string
+declare const __NATURE_TOUCH_GIT_COMMIT__: string
 
+app.setName('Nature Touch')
 const serialService = new SerialDiagnosticService(new NativeSerialTransport())
 // Source-level deployment permission. Never set by renderer input or dev mode.
 // Remains false until shutdown/power/pressure provisions and deployment are approved.
@@ -27,24 +29,37 @@ const REAL_HARDWARE_DEPLOYMENT_REVIEWED = false
 const OPEN_AIR_BENCH_UI_REVIEWED = true
 const OPEN_AIR_BENCH_SESSION = OPEN_AIR_BENCH_UI_REVIEWED && process.argv.includes('--open-air-bench')
 const REAL_CONTROL_PERMITTED = REAL_HARDWARE_DEPLOYMENT_REVIEWED || OPEN_AIR_BENCH_SESSION
-const benchEvidence = join(__dirname, '../../../docs/evidence', `real-react-bench-${Date.now()}.jsonl`)
-function benchLog(kind: string, value: unknown): void {
-  if (!OPEN_AIR_BENCH_SESSION) return
-  mkdirSync(join(__dirname, '../../../docs/evidence'), { recursive: true })
-  appendFileSync(benchEvidence, JSON.stringify({ at: new Date().toISOString(), kind, value }) + '\n')
+const HARDWARE_CONFIG_VERSION = 'UNVERSIONED'
+const MEDIA_ERROR_CODES: ReadonlySet<string> = new Set([
+  'audio-load-failed',
+  'audio-play-failed',
+  'audio-position-invalid',
+  'experience-start-failed',
+  'media-prepare-failed',
+  'video-load-failed',
+  'video-play-failed',
+])
+let localEventLog: LocalEventLog | undefined
+function logEvent(event: string, fields: Parameters<LocalEventLog['record']>[1] = {}): void {
+  localEventLog?.record(event, fields)
 }
+
 const firmwareTransport = new NativeSerialTransport()
 if (OPEN_AIR_BENCH_SESSION) {
   const open = firmwareTransport.open.bind(firmwareTransport)
   firmwareTransport.open = async (path, baud) => {
     const connection = await open(path, baud)
     const write = connection.write.bind(connection)
-    connection.write = async line => { benchLog('TX', JSON.parse(line)); await write(line) }
+    connection.write = async line => {
+      logEvent('firmware.transport_tx')
+      await write(line)
+    }
     let buffer = ''
     connection.onData(chunk => {
       buffer += chunk
       for (let cut; (cut = buffer.indexOf('\n')) >= 0;) {
-        benchLog('RX', buffer.slice(0, cut).trim()); buffer = buffer.slice(cut + 1)
+        logEvent('firmware.transport_rx')
+        buffer = buffer.slice(cut + 1)
       }
     })
     return connection
@@ -62,7 +77,6 @@ function realControlEligible(snapshot: FirmwareControlSnapshot): boolean {
 }
 
 function rendererFirmwareSnapshot(snapshot = firmwareService.getSnapshot()): FirmwareControlSnapshot {
-  benchLog('STATE', snapshot)
   return {
     ...snapshot,
     openAirBenchSession: OPEN_AIR_BENCH_SESSION,
@@ -113,6 +127,74 @@ function serializeSerialPortOperation<T>(operation: () => Promise<T>): Promise<T
   return result
 }
 
+interface ControlRequestLog {
+  type: 'SELECT' | 'START' | 'STOP' | 'STATUS'
+  mode: 'mock' | 'firmware'
+  operationId?: string
+}
+
+function getControlRequestLog(channel: string, args: unknown[]): ControlRequestLog | undefined {
+  const legacyChannels: Record<string, { type: ControlRequestLog['type']; mode: ControlRequestLog['mode'] }> = {
+    [IPC_CHANNELS.experienceSelect]: { type: 'SELECT', mode: 'mock' },
+    [IPC_CHANNELS.experienceStart]: { type: 'START', mode: 'mock' },
+    [IPC_CHANNELS.experienceStop]: { type: 'STOP', mode: 'mock' },
+    [IPC_CHANNELS.firmwareSelect]: { type: 'SELECT', mode: 'firmware' },
+    [IPC_CHANNELS.firmwareStart]: { type: 'START', mode: 'firmware' },
+    [IPC_CHANNELS.firmwareStop]: { type: 'STOP', mode: 'firmware' },
+  }
+  const payload = args[0]
+  if (!payload || typeof payload !== 'object') return undefined
+
+  const request = payload as Record<string, unknown>
+  const defaults = legacyChannels[channel]
+  const type = channel === IPC_CHANNELS.experienceDispatch ? request.type : defaults?.type
+  const mode = channel === IPC_CHANNELS.experienceDispatch ? request.mode : defaults?.mode
+  if ((type !== 'SELECT' && type !== 'START' && type !== 'STOP' && type !== 'STATUS') ||
+      (mode !== 'mock' && mode !== 'firmware')) return undefined
+
+  return {
+    type,
+    mode,
+    operationId: typeof request.operationId === 'string' ? request.operationId : undefined,
+  }
+}
+
+function errorKind(error: unknown): string {
+  return error instanceof Error ? error.name : 'UnknownError'
+}
+
+function logFirmwareSnapshot(snapshot: FirmwareControlSnapshot, previous: FirmwareControlSnapshot): void {
+  if (snapshot.connectionState !== previous.connectionState) {
+    logEvent('serial.connection', {
+      phase: snapshot.connectionState,
+      deviceIdentity: snapshot.firmware ?? undefined,
+    })
+  }
+  if (snapshot.identified !== previous.identified) {
+    logEvent('firmware.identify', {
+      level: snapshot.identified ? 'info' : 'warn',
+      phase: snapshot.identified ? 'accepted' : 'invalidated',
+      deviceIdentity: snapshot.firmware ?? undefined,
+      reason: !snapshot.identified && snapshot.experience.faultCode
+        ? snapshot.experience.faultCode
+        : undefined,
+    })
+  }
+  if (snapshot.lastEvent !== previous.lastEvent && snapshot.lastEvent === 'STOPPED') {
+    logEvent('firmware.event', {
+      phase: snapshot.lastEvent,
+      operationId: snapshot.experience.operationId ?? undefined,
+    })
+  }
+  if (snapshot.lastError && snapshot.lastError !== previous.lastError &&
+      snapshot.experience.state !== 'FAULT') {
+    logEvent('firmware.error', {
+      level: 'error',
+      reason: snapshot.experience.faultCode ?? 'firmware-error',
+    })
+  }
+}
+
 function installContentSecurityPolicy(): void {
   const isDevelopment = Boolean(process.env.ELECTRON_RENDERER_URL)
   const nonceSource = isDevelopment && __NATURE_TOUCH_DEV_CSP_NONCE__
@@ -143,8 +225,21 @@ function installContentSecurityPolicy(): void {
 }
 
 function registerIpcHandlers(): void {
+  const previousExperience = new Map<string, { state: string; operationId: string | null }>()
   for (const mode of ['mock', 'firmware'] as const) {
     experienceCoordinator.subscribe(mode, event => {
+      const { state, operationId, faultCode } = event.snapshot.experience
+      const previous = previousExperience.get(mode)
+      if (!previous || previous.state !== state || previous.operationId !== operationId) {
+        logEvent('experience.state', {
+          level: state === 'FAULT' ? 'error' : 'info',
+          mode,
+          phase: state,
+          operationId: operationId ?? undefined,
+          reason: faultCode ?? undefined,
+        })
+        previousExperience.set(mode, { state, operationId })
+      }
       if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.webContents.send(IPC_CHANNELS.experienceEvent, event)
       }
@@ -153,13 +248,54 @@ function registerIpcHandlers(): void {
   for (const [channel, handler] of Object.entries(
     createExperienceIpcHandlers(experienceCommandServices, experienceCoordinator),
   )) {
-    ipcMain.handle(channel, (_event, ...args: unknown[]) => handler(...args))
+    ipcMain.handle(channel, async (_event, ...args: unknown[]) => {
+      const request = getControlRequestLog(channel, args)
+      if (!request) return handler(...args)
+      const fields = {
+        mode: request.mode,
+        operationId: request.operationId,
+        phase: request.type,
+        deviceIdentity: request.mode === 'firmware'
+          ? firmwareService.getSnapshot().firmware ?? undefined
+          : undefined,
+      }
+      logEvent('experience.command.requested', fields)
+      try {
+        const result = await handler(...args)
+        const response = result && typeof result === 'object'
+          ? result as Record<string, unknown>
+          : {}
+        const responseType = typeof response.type === 'string' ? response.type : 'resolved'
+        logEvent('experience.command.result', {
+          ...fields,
+          level: responseType === 'NACK' ? 'warn' : 'info',
+          phase: `${request.type}:${responseType}`,
+          reason: responseType === 'NACK' && typeof response.code === 'string'
+            ? response.code
+            : undefined,
+        })
+        return result
+      } catch (error) {
+        logEvent('experience.command.failed', {
+          ...fields,
+          level: 'error',
+          reason: errorKind(error),
+        })
+        throw error
+      }
+    })
   }
 
   ipcMain.handle(IPC_CHANNELS.runtimeInfo, (): RuntimeInfo => ({
     appVersion: app.getVersion(),
     platform: process.platform,
   }))
+  ipcMain.handle(IPC_CHANNELS.logMediaError, (_event, code: unknown): void => {
+    if (typeof code !== 'string' || !MEDIA_ERROR_CODES.has(code)) {
+      throw new Error('Invalid media error code.')
+    }
+    logEvent('media.error', { level: 'error', reason: code })
+  })
 
   ipcMain.handle(IPC_CHANNELS.experienceGetState, () => mockExperienceController.getSnapshot())
   ipcMain.handle(IPC_CHANNELS.serialListPorts, () => serialService.listPorts())
@@ -242,7 +378,10 @@ function registerIpcHandlers(): void {
       mainWindow.webContents.send(IPC_CHANNELS.serialState, snapshot)
     }
   })
+  let previousFirmwareSnapshot = firmwareService.getSnapshot()
   firmwareService.onStateChange((snapshot) => {
+    logFirmwareSnapshot(snapshot, previousFirmwareSnapshot)
+    previousFirmwareSnapshot = snapshot
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send(IPC_CHANNELS.firmwareState, rendererFirmwareSnapshot(snapshot))
     }
@@ -278,6 +417,11 @@ function createWindow(): void {
 }
 
 app.whenReady().then(() => {
+  localEventLog = new LocalEventLog(join(app.getPath('userData'), 'logs'), {
+    appCommit: __NATURE_TOUCH_GIT_COMMIT__,
+    hardwareConfigVersion: HARDWARE_CONFIG_VERSION,
+  })
+  logEvent('app.started', { phase: app.getVersion() })
   installContentSecurityPolicy()
   registerIpcHandlers()
   createWindow()
@@ -291,15 +435,36 @@ app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
 
+let quitCleanupStarted = false
+let allowQuit = false
 app.on('before-quit', (event) => {
-  if (serialService.getState().state === 'disconnected' &&
-      firmwareService.getSnapshot().connectionState === 'disconnected') return
+  if (allowQuit) return
   event.preventDefault()
-  void Promise.allSettled([serialService.disconnect(), firmwareService.disconnect()])
+  if (quitCleanupStarted) return
+  quitCleanupStarted = true
+  logEvent('app.shutdown_requested')
+  const isConnected = serialService.getState().state !== 'disconnected' ||
+    firmwareService.getSnapshot().connectionState !== 'disconnected'
+  const cleanup = isConnected
+    ? Promise.allSettled([serialService.disconnect(), firmwareService.disconnect()])
+    : Promise.resolve([])
+  void cleanup
     .then((results) => {
       for (const result of results) {
-        if (result.status === 'rejected') console.error('Serial shutdown failed:', result.reason)
+        if (result.status === 'rejected') {
+          logEvent('app.shutdown_cleanup_failed', { level: 'error', reason: errorKind(result.reason) })
+          console.error('Serial shutdown failed:', result.reason)
+        }
       }
+    })
+    .then(async () => {
+      await localEventLog?.flush()
+    })
+    .catch(error => {
+      console.error('Application shutdown cleanup failed:', error)
+    })
+    .finally(() => {
+      allowQuit = true
       app.quit()
     })
 })

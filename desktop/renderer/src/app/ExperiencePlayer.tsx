@@ -4,6 +4,7 @@ import { ArrowLeft, Maximize, Minimize, Volume2, VolumeX } from 'lucide-react'
 import { Button, Slider, Tooltip, TooltipProvider } from '../components/ui/playback-controls'
 import type { ExperienceId } from '../../../shared/experience-definitions'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
+import type { MediaErrorCode } from '../../../shared/ipc'
 import { isDeviceUnavailable } from './stop-active-experience'
 
 type MediaState = 'loading' | 'playing' | 'paused' | 'stopped' | 'error'
@@ -96,11 +97,14 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
     }
     if (video.current) video.current.playbackRate = 1
   }
-  function mediaError(message: string) {
+  function mediaError(message: string, code: MediaErrorCode) {
     if (!mounted.current || failureHandled.current) return
     failureHandled.current = true
     autoStarted.current = true
     clearMedia()
+    void window.natureTouch?.logMediaError(code).catch(error => {
+      console.error('Failed to report media error:', error)
+    })
     setBusy(false)
     setPhase('error')
     setStatus('error'); setError(message)
@@ -127,12 +131,12 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
         const a = audio.current
         if (a && !audioPlaybackStarted.current) {
           void a.play().catch(cause => {
-            if (mounted.current && token === generation.current) mediaError('音声を再生できません。' + String(cause))
+            if (mounted.current && token === generation.current) mediaError('音声を再生できません。' + String(cause), 'audio-play-failed')
           })
         }
       } catch (cause) {
         if (mounted.current && token === generation.current) {
-          mediaError('映像を再生できません。' + String(cause))
+          mediaError('映像を再生できません。' + String(cause), 'video-play-failed')
         }
       } finally {
         if (token === generation.current) videoStart.current = null
@@ -147,16 +151,16 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
     setPhase('starting-media')
     const offset = Math.max(0, elapsed) / 1000
     if (Number.isFinite(a.duration) && offset >= a.duration) {
-      mediaError('音声の再生位置がファイルの長さを超えています。')
+      mediaError('音声の再生位置がファイルの長さを超えています。', 'audio-position-invalid')
       return
     }
     try { a.currentTime = offset } catch (cause) {
-      mediaError('音声の再生位置を設定できません。' + String(cause))
+      mediaError('音声の再生位置を設定できません。' + String(cause), 'audio-position-invalid')
       return
     }
     if (video.current) startVideoAfterAudio(token)
     else void a.play().catch(cause => {
-      if (mounted.current && token === generation.current) mediaError('音声を再生できません。' + String(cause))
+      if (mounted.current && token === generation.current) mediaError('音声を再生できません。' + String(cause), 'audio-play-failed')
     })
   }
   function syncPlayback() {
@@ -204,7 +208,7 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
         timer.current = setInterval(syncPlayback, 20)
         syncPlayback()
       } catch (cause) {
-        if (mounted.current && token === generation.current) mediaError('体験を開始できません。' + String(cause))
+        if (mounted.current && token === generation.current) mediaError('体験を開始できません。' + String(cause), 'experience-start-failed')
       } finally {
         starting.current = null
         if (mounted.current) setBusy(false)
@@ -234,7 +238,7 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
       void begin()
     }).catch(cause => {
       if (controller.signal.aborted || (cause instanceof DOMException && cause.name === 'AbortError')) return
-      mediaError('音声と映像を準備できません。' + String(cause))
+      mediaError('音声と映像を準備できません。' + String(cause), 'media-prepare-failed')
     })
     return () => {
       mounted.current = false; clearMedia(); dialog.current?.close()
@@ -329,7 +333,7 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
             }}
             onPause={() => { if (!stopped.current) setStatus(audio.current?.paused ? 'paused' : 'loading') }}
             onWaiting={() => { if (!stopped.current) setStatus('loading') }}
-            onError={() => mediaError('映像を読み込めません。ポスターを表示しています。')} />}
+            onError={() => mediaError('映像を読み込めません。ポスターを表示しています。', 'video-load-failed')} />}
           <audio ref={audio} src={experienceAudio} preload="auto"
             onPlaying={() => {
               if (!runtime.current || stopped.current || !audioStartRequested.current) {
@@ -353,7 +357,7 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
                 setPhase('buffering'); setStatus('loading')
               }
             }}
-            onError={() => mediaError('音声を読み込めません。')} />
+            onError={() => mediaError('音声を読み込めません。', 'audio-load-failed')} />
         </div>
         <div className="experience-player__bottom">
           <p className="experience-player__status" role="status" aria-live="polite"><i className={`status-dot${status === 'playing' ? '' : ' status-dot--muted'}`} />{experienceVideo ? labels[status] : labels.error}<span>映像・音声</span></p>

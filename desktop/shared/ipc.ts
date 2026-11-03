@@ -22,6 +22,7 @@ import type { FirmwareControlSnapshot } from './firmware-control-protocol'
 
 export const IPC_CHANNELS = {
   runtimeInfo: 'app:get-runtime-info',
+  logMediaError: 'app:log-media-error',
   serialListPorts: 'serial:list-ports',
   serialGetState: 'serial:get-state',
   serialConnect: 'serial:connect',
@@ -51,6 +52,15 @@ export const IPC_CHANNELS = {
   firmwareState: 'firmware:state',
 } as const
 
+export type MediaErrorCode =
+  | 'audio-load-failed'
+  | 'audio-play-failed'
+  | 'audio-position-invalid'
+  | 'experience-start-failed'
+  | 'media-prepare-failed'
+  | 'video-load-failed'
+  | 'video-play-failed'
+
 export interface RuntimeInfo {
   appVersion: string
   platform: string
@@ -58,6 +68,7 @@ export interface RuntimeInfo {
 
 export interface NatureTouchApi {
   getRuntimeInfo(): Promise<RuntimeInfo>
+  logMediaError(code: MediaErrorCode): Promise<void>
   listSerialPorts(): Promise<SerialPortInfo[]>
   getSerialState(): Promise<SerialStateSnapshot>
   connectSerial(portPath: string, baudRate: number): Promise<SerialStateSnapshot>
@@ -80,7 +91,12 @@ export interface NatureTouchApi {
   getFirmwareState(): Promise<FirmwareControlSnapshot>
   armFirmwareSimulationTest(loadsIsolated: boolean, simulationFirmwareConfirmed: boolean): Promise<FirmwareControlSnapshot>
   disarmFirmwareSimulationTest(): Promise<FirmwareControlSnapshot>
-  connectFirmware(portPath: string, baudRate: number, loadsIsolated?: boolean, benchFixtureConfirmed?: boolean): Promise<FirmwareControlSnapshot>
+  connectFirmware(
+    portPath: string,
+    baudRate: number,
+    loadsIsolated?: boolean,
+    benchFixtureConfirmed?: boolean,
+  ): Promise<FirmwareControlSnapshot>
   disconnectFirmware(): Promise<FirmwareControlSnapshot>
   onFirmwareState(listener: (snapshot: FirmwareControlSnapshot) => void): () => void
   selectFirmwareExperience(experienceId: ExperienceId, requestId: RequestId): Promise<ExperienceAcknowledgement>

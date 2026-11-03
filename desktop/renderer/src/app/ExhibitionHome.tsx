@@ -4,15 +4,12 @@ import { ExperiencePlayer } from './ExperiencePlayer'
 import { stopActiveExperience } from './stop-active-experience'
 import { selectExperienceIntent, startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import type { ExperienceMode } from '../../../shared/experience-application-contract'
 import {
   EXPERIENCE_DEFINITIONS,
   EXPERIENCE_DISPLAY_NAMES,
   type ExperienceId,
 } from '../../../shared/experience-definitions'
 import { NatureVideoCard } from './NatureVideoCard'
-import { ArduinoConnection } from '../device/ArduinoConnection'
-import { INITIAL_FIRMWARE_CONTROL_SNAPSHOT } from '../../../shared/firmware-control-protocol'
 import windPoster from '../assets/wind/wind-poster.png'
 import wavePoster from '../assets/waves/waves-poster.png'
 import bubblePoster from '../assets/bubbles/bubbles-poster.png'
@@ -79,9 +76,6 @@ const initialExperienceState: ExperienceSnapshot = {
 }
 
 export default function ExhibitionHome() {
-  const [realMode, setRealMode] = useState(false)
-  const [firmwareState, setFirmwareState] = useState(INITIAL_FIRMWARE_CONTROL_SNAPSHOT)
-  const [deviceBusy, setDeviceBusy] = useState(false)
   const [experienceState, setExperienceState] = useState(initialExperienceState)
   const [activeExperienceId, setActiveExperienceId] = useState<ExperienceId>('WIND')
   const [switchingExperienceId, setSwitchingExperienceId] = useState<ExperienceId | null>(null)
@@ -94,7 +88,7 @@ export default function ExhibitionHome() {
   const pendingStop = useRef<Promise<void> | null>(null)
   const pendingStart = useRef<Promise<ExperienceSnapshot> | null>(null)
   const activeOperationId = useRef<string | null>(null)
-  const snapshotRevisions = useRef<Record<ExperienceMode, number>>({ mock: -1, firmware: -1 })
+  const snapshotRevision = useRef(-1)
   const selecting = useRef(false)
   const reducedMotion = useReducedMotion()
 
@@ -107,8 +101,7 @@ export default function ExhibitionHome() {
   function requestSafeStop(): Promise<void> {
     if (pendingStop.current) return pendingStop.current
     const operationId = activeOperationId.current ?? experienceState.operationId
-    const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
-    const request = stopActiveExperience(window.natureTouch, mode, operationId)
+    const request = stopActiveExperience(window.natureTouch, 'mock', operationId)
       .then(() => {
         if (activeOperationId.current === operationId) activeOperationId.current = null
       })
@@ -138,19 +131,15 @@ export default function ExhibitionHome() {
     let unsubscribe: (() => void) | undefined
     if (!api) return
 
-    const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
-    void api.subscribeExperience(mode, (event) => {
+    void api.subscribeExperience('mock', (event) => {
       if (!mounted) return
-      if (event.snapshot.revision <= snapshotRevisions.current[mode]) return
-      snapshotRevisions.current[mode] = event.snapshot.revision
+      if (event.snapshot.revision <= snapshotRevision.current) return
+      snapshotRevision.current = event.snapshot.revision
       const snapshot = event.snapshot.experience
       setExperienceState(snapshot)
       if (snapshot.selectedExperienceId) setActiveExperienceId(snapshot.selectedExperienceId)
       if (snapshot.operationId) activeOperationId.current = snapshot.operationId
       else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
-      if (mode === 'firmware') {
-        setFirmwareState(current => ({ ...current, experience: snapshot }))
-      }
     }).then((removeListener) => {
       if (mounted) unsubscribe = removeListener
       else removeListener()
@@ -162,11 +151,7 @@ export default function ExhibitionHome() {
       mounted = false
       unsubscribe?.()
     }
-  }, [realMode])
-
-  const benchReady = firmwareState.openAirBenchSession === true && firmwareState.realControlEligible === true &&
-    firmwareState.hardwareOutputsEnabled === true && firmwareState.connectionState === 'connected' && firmwareState.identified
-  const realSessionReady = firmwareState.simulationTestArmed === true || benchReady
+  }, [])
 
   function startMediaExperience(): Promise<ExperienceSnapshot> {
     if (pendingStart.current) return pendingStart.current
@@ -174,7 +159,7 @@ export default function ExhibitionHome() {
     const request = (async () => {
       if (pendingStop.current) throw new Error('Wait for the current stop request to finish.')
       // Browser preview plays media locally; device control requires Electron.
-      if (!window.natureTouch && !realMode) return {
+      if (!window.natureTouch) return {
         ...initialExperienceState, state: 'RUNNING' as const,
         selectedExperienceId: dialogExperienceId,
         durationMs: EXPERIENCE_DEFINITIONS[dialogExperienceId].totalDurationMs,
@@ -183,7 +168,7 @@ export default function ExhibitionHome() {
       activeOperationId.current = operationId
       return startSelectedExperience(
         window.natureTouch,
-        realMode ? 'firmware' : 'mock',
+        'mock',
         operationId,
       )
     })().finally(() => { pendingStart.current = null })
@@ -205,16 +190,14 @@ export default function ExhibitionHome() {
     setActionError('')
     try {
       await pendingStop.current
-      const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
-      const selected = await selectExperienceIntent(api, mode, experienceId)
-      if (selected.revision >= snapshotRevisions.current[mode]) {
-        snapshotRevisions.current[mode] = selected.revision
+      const selected = await selectExperienceIntent(api, 'mock', experienceId)
+      if (selected.revision >= snapshotRevision.current) {
+        snapshotRevision.current = selected.revision
         const snapshot = selected.experience
         if (snapshot.operationId) activeOperationId.current = snapshot.operationId
         else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
         setActiveExperienceId(snapshot.selectedExperienceId ?? experienceId)
         setExperienceState(snapshot)
-        if (mode === 'firmware') setFirmwareState(current => ({ ...current, experience: snapshot }))
       }
       if (openVideo) setDialogExperienceId(experienceId)
     } catch (error) {
@@ -256,8 +239,6 @@ export default function ExhibitionHome() {
               onLeavePreview={clearPreview}
               disabled={
                 dialogExperienceId !== null ||
-                (realMode && !realSessionReady) ||
-                (realMode && deviceBusy) ||
                 switchingExperienceId !== null
               }
               onSelect={() => void selectExperience(card.id, !!card.experienceVideo)}
@@ -272,20 +253,7 @@ export default function ExhibitionHome() {
       </p>
 
       <footer className="exhibition-footer">
-        <details className="device-panel">
-          <summary aria-label="Device controls">
-            <span className={`status-dot${realMode && !firmwareState.identified ? ' status-dot--muted' : ''}`} aria-hidden="true" />
-            {realMode
-              ? `実機接続：${firmwareState.connectionState}（${firmwareState.openAirBenchSession ? '無圧ベンチ・気囊接続禁止' : '実出力制御はロック中'}）`
-              : 'Mock モード（実機は未接続）'}
-          </summary>
-          <div className="device-panel__content">
-            <ArduinoConnection realMode={realMode} onModeChange={setRealMode}
-              onSnapshot={setFirmwareState}
-              onBusyChange={setDeviceBusy}
-              disabled={switchingExperienceId !== null || experienceState.state === 'RUNNING' || experienceState.state === 'STOPPING'} />
-          </div>
-        </details>
+        <p className="exhibition-footer__device">ソフトウェア再生（実機出力なし）</p>
         <p className="exhibition-footer__instruction" lang="ja">
           音をえらんでください
         </p>
@@ -301,10 +269,8 @@ export default function ExhibitionHome() {
       }}>
         {dialogCard && <ExperiencePlayer key={dialogCard.id} {...dialogCard}
           runState={experienceState}
-          connectionReady={!realMode || (firmwareState.connectionState === 'connected' && firmwareState.identified && (firmwareState.hardwareOutputsEnabled === false || benchReady))}
-          deviceLabel={realMode
-            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${experienceState.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
-            : 'Mock モード · 実機は未接続'}
+          connectionReady
+          deviceLabel="ソフトウェア再生 · 実機出力なし"
           onSafeStop={requestSafeStop}
           onStart={startMediaExperience}
           onExit={() => setDialogExperienceId(null)} />}
