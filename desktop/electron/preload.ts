@@ -72,23 +72,14 @@ const api: NatureTouchApi = {
   dispatchExperienceCommand: (command: ExperienceCommand) =>
     ipcRenderer.invoke(IPC_CHANNELS.experienceDispatch, command),
   getExperienceState: () => ipcRenderer.invoke(IPC_CHANNELS.experienceGetState),
-  onExperienceState: (listener) => {
-    const handler = (_event: Electron.IpcRendererEvent, snapshot: Parameters<typeof listener>[0]) => {
-      listener(snapshot)
-    }
-    ipcRenderer.on(IPC_CHANNELS.experienceState, handler)
-    return () => ipcRenderer.removeListener(IPC_CHANNELS.experienceState, handler)
-  },
   selectExperience: (experienceId, requestId) =>
     ipcRenderer.invoke(IPC_CHANNELS.experienceSelect, { experienceId, requestId }),
   startExperience: (requestId, operationId) =>
     ipcRenderer.invoke(IPC_CHANNELS.experienceStart, { requestId, operationId }),
   stopExperience: (requestId, operationId) =>
     ipcRenderer.invoke(IPC_CHANNELS.experienceStop, { requestId, operationId }),
-  queryExperienceStatus: (requestId) => ipcRenderer.invoke(IPC_CHANNELS.experienceStatus, requestId),
   simulateExperienceFault: (code) => ipcRenderer.invoke(IPC_CHANNELS.experienceSimulateFault, code),
   simulateConnectionLoss: () => ipcRenderer.invoke(IPC_CHANNELS.experienceSimulateConnectionLoss),
-  recoverExperience: (requestId) => ipcRenderer.invoke(IPC_CHANNELS.experienceRecover, requestId),
   getFirmwareState: () => ipcRenderer.invoke(IPC_CHANNELS.firmwareGetState),
   armFirmwareSimulationTest: (loadsIsolated, simulationFirmwareConfirmed) =>
     ipcRenderer.invoke(IPC_CHANNELS.firmwareArmSimulation, { loadsIsolated, simulationFirmwareConfirmed }),

@@ -5,16 +5,14 @@ import { SerialDiagnosticService } from './serial/serial-diagnostic-service'
 import { NativeSerialTransport } from './serial/native-serial-transport'
 import { ArduinoFirmwareService } from './serial/arduino-firmware-service'
 import { MockExperienceController } from '../experience/mock-experience-controller'
-import { dispatchExperienceCommand } from './experience-command-dispatcher'
+import {
+  type ExperienceCommandServices,
+} from './experience-command-dispatcher'
+import { ExperienceCoordinator, type ExperienceCoordinatorServices } from './experience-coordinator'
+import { createExperienceIpcHandlers } from './experience-ipc-handlers'
 import { IPC_CHANNELS, type RuntimeInfo } from '../shared/ipc'
 import { EXPERIENCE_IDS, type ExperienceId } from '../shared/experience-definitions'
 import type { ExperienceSnapshot as DeviceExperienceSnapshot } from '../shared/experience-control-protocol'
-import {
-  isExperienceMode,
-  type ExperienceEvent,
-  type ExperienceMode,
-  type ExperienceSnapshot,
-} from '../shared/experience-application-contract'
 import type { SerialStateSnapshot } from '../shared/serial-protocol'
 import type { FirmwareControlSnapshot } from '../shared/firmware-control-protocol'
 
@@ -57,43 +55,57 @@ const firmwareService = new ArduinoFirmwareService(firmwareTransport, {
   allowSimulationTest: !app.isPackaged && !OPEN_AIR_BENCH_SESSION,
   allowRealHardwareControl: REAL_CONTROL_PERMITTED,
 })
+function realControlEligible(snapshot: FirmwareControlSnapshot): boolean {
+  return (REAL_HARDWARE_DEPLOYMENT_REVIEWED || OPEN_AIR_BENCH_SESSION) &&
+    snapshot.identified && snapshot.connectionState === 'connected' &&
+    snapshot.firmware === 'nature-touch-unified-real' && snapshot.hardwareOutputsEnabled === true
+}
+
 function rendererFirmwareSnapshot(snapshot = firmwareService.getSnapshot()): FirmwareControlSnapshot {
   benchLog('STATE', snapshot)
   return {
     ...snapshot,
     openAirBenchSession: OPEN_AIR_BENCH_SESSION,
-    realControlEligible: OPEN_AIR_BENCH_SESSION && snapshot.identified &&
-      snapshot.connectionState === 'connected' && snapshot.firmware === 'nature-touch-unified-real' &&
-      snapshot.hardwareOutputsEnabled === true,
+    realControlEligible: realControlEligible(snapshot),
   }
 }
 const mockExperienceController = new MockExperienceController()
+const experienceCommandServices: ExperienceCommandServices = {
+  mock: mockExperienceController,
+  firmware: firmwareService,
+}
+const coordinatorServices: ExperienceCoordinatorServices = {
+  mock: {
+    selectExperience: (requestId, experienceId) =>
+      mockExperienceController.selectExperience(requestId, experienceId),
+    start: (requestId, operationId) => mockExperienceController.start(requestId, operationId),
+    stop: (requestId, operationId) => mockExperienceController.stop(requestId, operationId),
+    queryStatus: requestId => mockExperienceController.queryStatus(requestId),
+    recover: requestId => mockExperienceController.recover(requestId),
+    getExperienceSnapshot: () => mockExperienceController.getSnapshot(),
+    canStart: () => true,
+    onStateChange: listener => mockExperienceController.onStateChange(() => listener()),
+  },
+  firmware: {
+    selectExperience: (requestId, experienceId) => firmwareService.selectExperience(requestId, experienceId),
+    start: (requestId, operationId) => firmwareService.start(requestId, operationId),
+    stop: (requestId, operationId) => firmwareService.stop(requestId, operationId),
+    queryStatus: requestId => firmwareService.queryStatus(requestId),
+    getExperienceSnapshot: () => firmwareService.getSnapshot().experience,
+    canStart: () => {
+      const state = firmwareService.getSnapshot()
+      const simulationReady = state.simulationTestArmed === true && state.hardwareOutputsEnabled === false
+      const reviewedRealControl = realControlEligible(state)
+      return state.identified && state.connectionState === 'connected' &&
+        (simulationReady || reviewedRealControl)
+    },
+    onStateChange: listener => firmwareService.onStateChange(() => listener()),
+  },
+}
+const experienceCoordinator = new ExperienceCoordinator(coordinatorServices)
 let mainWindow: BrowserWindow | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
 let serialPortOperationQueue: Promise<void> = Promise.resolve()
-const experienceRevisions: Record<ExperienceMode, number> = { mock: 0, firmware: 0 }
-
-function currentExperience(mode: ExperienceMode): DeviceExperienceSnapshot {
-  return mode === 'mock'
-    ? mockExperienceController.getSnapshot()
-    : firmwareService.getSnapshot().experience
-}
-
-function getExperienceSnapshot(mode: ExperienceMode): ExperienceSnapshot {
-  return {
-    mode,
-    revision: experienceRevisions[mode],
-    experience: currentExperience(mode),
-  }
-}
-
-function publishExperienceEvent(mode: ExperienceMode): void {
-  experienceRevisions[mode] += 1
-  if (!mainWindow || mainWindow.isDestroyed()) return
-
-  const event: ExperienceEvent = { type: 'SNAPSHOT', snapshot: getExperienceSnapshot(mode) }
-  mainWindow.webContents.send(IPC_CHANNELS.experienceEvent, event)
-}
 
 function serializeSerialPortOperation<T>(operation: () => Promise<T>): Promise<T> {
   const result = serialPortOperationQueue.then(operation, operation)
@@ -131,11 +143,25 @@ function installContentSecurityPolicy(): void {
 }
 
 function registerIpcHandlers(): void {
+  for (const mode of ['mock', 'firmware'] as const) {
+    experienceCoordinator.subscribe(mode, event => {
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send(IPC_CHANNELS.experienceEvent, event)
+      }
+    })
+  }
+  for (const [channel, handler] of Object.entries(
+    createExperienceIpcHandlers(experienceCommandServices, experienceCoordinator),
+  )) {
+    ipcMain.handle(channel, (_event, ...args: unknown[]) => handler(...args))
+  }
+
   ipcMain.handle(IPC_CHANNELS.runtimeInfo, (): RuntimeInfo => ({
     appVersion: app.getVersion(),
     platform: process.platform,
   }))
 
+  ipcMain.handle(IPC_CHANNELS.experienceGetState, () => mockExperienceController.getSnapshot())
   ipcMain.handle(IPC_CHANNELS.serialListPorts, () => serialService.listPorts())
   ipcMain.handle(IPC_CHANNELS.serialGetState, () => serialService.getState())
   ipcMain.handle(IPC_CHANNELS.serialConnect, (): Promise<SerialStateSnapshot> => {
@@ -192,31 +218,6 @@ function registerIpcHandlers(): void {
       return snapshot
     }),
   )
-  ipcMain.handle(IPC_CHANNELS.firmwareSelect, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Firmware selection payload is required.')
-    const request = payload as { experienceId?: unknown; requestId?: unknown }
-    if (!EXPERIENCE_IDS.includes(request.experienceId as ExperienceId) ||
-        typeof request.requestId !== 'string') {
-      throw new Error('Invalid firmware selection request.')
-    }
-    return firmwareService.selectExperience(request.requestId, request.experienceId as ExperienceId)
-  })
-  ipcMain.handle(IPC_CHANNELS.firmwareStart, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Firmware start payload is required.')
-    const request = payload as { requestId?: unknown; operationId?: unknown }
-    if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
-      throw new Error('Invalid firmware start request.')
-    }
-    return firmwareService.start(request.requestId, request.operationId)
-  })
-  ipcMain.handle(IPC_CHANNELS.firmwareStop, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Firmware stop payload is required.')
-    const request = payload as { requestId?: unknown; operationId?: unknown }
-    if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
-      throw new Error('Invalid firmware stop request.')
-    }
-    return firmwareService.stop(request.requestId, request.operationId)
-  })
   ipcMain.handle(IPC_CHANNELS.firmwareStatus, (_event, requestId: unknown) => {
     if (typeof requestId !== 'string') throw new Error('A firmware request ID is required.')
     return firmwareService.queryStatus(requestId)
@@ -228,44 +229,6 @@ function registerIpcHandlers(): void {
       loadsIsolated: request.loadsIsolated === true, simulationFirmwareConfirmed: request.simulationFirmwareConfirmed === true,
     })
   })
-  ipcMain.handle(IPC_CHANNELS.experienceGetSnapshot, (_event, mode: unknown): ExperienceSnapshot => {
-    if (!isExperienceMode(mode)) throw new Error('A valid experience mode is required.')
-    return getExperienceSnapshot(mode)
-  })
-  ipcMain.handle(IPC_CHANNELS.experienceDispatch, (_event, payload: unknown) => {
-    return dispatchExperienceCommand(payload, {
-      mock: mockExperienceController,
-      firmware: firmwareService,
-    })
-  })
-  ipcMain.handle(IPC_CHANNELS.experienceSelect, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Experience selection payload is required.')
-    const request = payload as { experienceId?: unknown; requestId?: unknown }
-    if (!EXPERIENCE_IDS.includes(request.experienceId as ExperienceId) || typeof request.requestId !== 'string') {
-      throw new Error('Invalid experience selection request.')
-    }
-    return mockExperienceController.selectExperience(request.requestId, request.experienceId as ExperienceId)
-  })
-  ipcMain.handle(IPC_CHANNELS.experienceStart, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Start payload is required.')
-    const request = payload as { requestId?: unknown; operationId?: unknown }
-    if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
-      throw new Error('Invalid experience start request.')
-    }
-    return mockExperienceController.start(request.requestId, request.operationId)
-  })
-  ipcMain.handle(IPC_CHANNELS.experienceStop, (_event, payload: unknown) => {
-    if (!payload || typeof payload !== 'object') throw new Error('Stop payload is required.')
-    const request = payload as { requestId?: unknown; operationId?: unknown }
-    if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
-      throw new Error('Invalid experience stop request.')
-    }
-    return mockExperienceController.stop(request.requestId, request.operationId)
-  })
-  ipcMain.handle(IPC_CHANNELS.experienceStatus, (_event, requestId: unknown) => {
-    if (typeof requestId !== 'string') throw new Error('A request ID is required.')
-    return mockExperienceController.queryStatus(requestId)
-  })
   ipcMain.handle(IPC_CHANNELS.experienceSimulateFault, (_event, code: unknown): DeviceExperienceSnapshot => {
     if (typeof code !== 'string' || code.length > 64) throw new Error('Invalid simulation fault code.')
     return mockExperienceController.simulateFault(code)
@@ -273,27 +236,16 @@ function registerIpcHandlers(): void {
   ipcMain.handle(IPC_CHANNELS.experienceSimulateConnectionLoss, () =>
     mockExperienceController.simulateConnectionLoss(),
   )
-  ipcMain.handle(IPC_CHANNELS.experienceRecover, (_event, requestId: unknown) => {
-    if (typeof requestId !== 'string') throw new Error('A request ID is required.')
-    return mockExperienceController.recover(requestId)
-  })
 
   serialService.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send(IPC_CHANNELS.serialState, snapshot)
     }
   })
-  mockExperienceController.onStateChange((snapshot) => {
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send(IPC_CHANNELS.experienceState, snapshot)
-    }
-    publishExperienceEvent('mock')
-  })
   firmwareService.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send(IPC_CHANNELS.firmwareState, rendererFirmwareSnapshot(snapshot))
     }
-    publishExperienceEvent('firmware')
   })
 }
 

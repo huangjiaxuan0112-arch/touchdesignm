@@ -4,6 +4,7 @@ import { ArrowLeft, Maximize, Minimize, Volume2, VolumeX } from 'lucide-react'
 import { Button, Slider, Tooltip, TooltipProvider } from '../components/ui/playback-controls'
 import { EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
+import { isDeviceUnavailable } from './stop-active-experience'
 
 type MediaState = 'loading' | 'playing' | 'paused' | 'stopped' | 'error'
 const labels: Record<MediaState, string> = { loading: '読み込み中', playing: '再生中', paused: '一時停止', stopped: '停止中', error: '再生を停止しました' }
@@ -288,7 +289,13 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
   async function back() {
     if (exiting.current) return
     exiting.current = true
-    if (!await stop()) { exiting.current = false; return }
+    if (isDeviceUnavailable(runState, connectionReady)) {
+      autoStarted.current = true
+      clearMedia()
+    } else if (!await stop()) {
+      exiting.current = false
+      return
+    }
     try {
       if (document.fullscreenElement === dialog.current) await document.exitFullscreen()
       onExit()

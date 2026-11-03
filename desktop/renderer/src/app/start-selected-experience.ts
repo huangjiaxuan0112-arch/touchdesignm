@@ -1,40 +1,56 @@
 import type { NatureTouchApi } from '../../../shared/ipc'
 import type { ExperienceId } from '../../../shared/experience-definitions'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import type { ExperienceMode } from '../../../shared/experience-application-contract'
+import type {
+  ExperienceMode,
+  ExperienceSnapshot as ApplicationExperienceSnapshot,
+} from '../../../shared/experience-application-contract'
 
-// One UI intent, existing IPC only. Never arm, reconnect or recover hardware.
-export async function startSelectedExperience(api: NatureTouchApi | undefined, realMode: boolean,
-  id: ExperienceId): Promise<ExperienceSnapshot> {
-  if (!api) throw new Error('Electron connection is required to start the experience.')
-  const requestId = () => crypto.randomUUID().replace(/-/g, '').slice(0, 16)
-  const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
-  const firmware = realMode ? await api.getFirmwareState() : null
-  const benchReady = firmware?.openAirBenchSession === true && firmware.realControlEligible === true &&
-    firmware.firmware === 'nature-touch-unified-real' && firmware.hardwareOutputsEnabled === true
-  const simulationReady = firmware?.simulationTestArmed === true && firmware.hardwareOutputsEnabled === false
-  if (firmware && (!firmware.identified || firmware.connectionState !== 'connected' ||
-      (!simulationReady && !benchReady))) {
-    throw new Error('An explicitly armed, output-disabled simulation or reviewed open-air bench session is required.')
-  }
-  const current = firmware?.experience ?? (await api.getExperienceSnapshot(mode)).experience
-  if (current.state === 'RUNNING' && current.selectedExperienceId === id) return current
-  if (current.state !== 'IDLE' && current.state !== 'COMPLETED') throw new Error(`Cannot start in ${current.state}.`)
-  if (current.state === 'COMPLETED' || current.selectedExperienceId !== id) {
-    const selected = await api.dispatchExperienceCommand({
-      type: 'SELECT', mode, experienceId: id, requestId: requestId(),
-    })
-    if (!('accepted' in selected)) throw new Error('SELECT returned an invalid response.')
-    if (!selected.accepted) throw new Error(`SELECT rejected: ${selected.code ?? 'UNKNOWN'}`)
-  }
-  const ack = await api.dispatchExperienceCommand({
-    type: 'START', mode, requestId: requestId(), operationId: requestId(),
+function requestId(): string {
+  return crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+}
+
+function assertAccepted(result: { accepted: boolean; code?: string }, command: string): void {
+  if (!result.accepted) throw new Error(`${command} rejected: ${result.code ?? 'UNKNOWN'}`)
+}
+
+export async function selectExperienceIntent(
+  api: NatureTouchApi,
+  mode: ExperienceMode,
+  experienceId: ExperienceId,
+): Promise<ApplicationExperienceSnapshot> {
+  const result = await api.dispatchExperienceCommand({
+    type: 'SELECT',
+    mode,
+    experienceId,
+    requestId: requestId(),
   })
-  if (!('accepted' in ack)) throw new Error('START returned an invalid response.')
-  if (!ack.accepted) throw new Error(`START rejected: ${ack.code ?? 'UNKNOWN'}`)
-  const status = await api.dispatchExperienceCommand({ type: 'STATUS', mode, requestId: requestId() })
+  if (!('accepted' in result)) throw new Error('SELECT returned an invalid response.')
+  assertAccepted(result, 'SELECT')
+  const snapshot = await api.getExperienceSnapshot(mode)
+  return snapshot
+}
+
+export async function startSelectedExperience(
+  api: NatureTouchApi | undefined,
+  mode: ExperienceMode,
+  operationId: string,
+): Promise<ExperienceSnapshot> {
+  if (!api) throw new Error('Electron connection is required to start the experience.')
+  const result = await api.dispatchExperienceCommand({
+    type: 'START',
+    mode,
+    requestId: requestId(),
+    operationId,
+  })
+  if (!('accepted' in result)) throw new Error('START returned an invalid response.')
+  assertAccepted(result, 'START')
+
+  const status = await api.dispatchExperienceCommand({
+    type: 'STATUS',
+    mode,
+    requestId: requestId(),
+  })
   if (!('snapshot' in status)) throw new Error('STATUS returned an invalid response.')
-  const state = status.snapshot
-  if (state.state !== 'RUNNING' || state.selectedExperienceId !== id) throw new Error('START did not establish the selected running experience.')
-  return state
+  return status.snapshot
 }

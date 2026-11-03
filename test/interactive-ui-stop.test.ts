@@ -1,101 +1,324 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { stopActiveExperience } from '../desktop/renderer/src/app/stop-active-experience'
-import { startSelectedExperience } from '../desktop/renderer/src/app/start-selected-experience'
+import {
+  selectExperienceIntent,
+  startSelectedExperience,
+} from '../desktop/renderer/src/app/start-selected-experience'
+import { isDeviceUnavailable, stopActiveExperience } from '../desktop/renderer/src/app/stop-active-experience'
 import type { NatureTouchApi } from '../desktop/shared/ipc'
 import type { ExperienceSnapshot } from '../desktop/shared/experience-control-protocol'
+import { EXPERIENCE_IDS } from '../desktop/shared/experience-definitions'
 
-const running: ExperienceSnapshot = { state: 'RUNNING', selectedExperienceId: 'WIND', operationId: 'operation-1', elapsedMs: 0, durationMs: 24000, progress: 0, faultCode: null }
+const idle: ExperienceSnapshot = {
+  state: 'IDLE',
+  selectedExperienceId: 'WIND',
+  operationId: null,
+  elapsedMs: 0,
+  durationMs: null,
+  progress: 0,
+  faultCode: null,
+}
+const running: ExperienceSnapshot = {
+  ...idle,
+  state: 'RUNNING',
+  operationId: 'operation-1',
+  durationMs: 24_000,
+}
+const completed: ExperienceSnapshot = { ...running, state: 'COMPLETED', progress: 1 }
 const appSnapshot = (experience: ExperienceSnapshot, mode: 'mock' | 'firmware' = 'mock') => ({
   mode,
-  revision: 0,
+  revision: 1,
   experience,
 })
 
-test('media-only idle/browser exit sends no STOP or START', async () => {
-  await stopActiveExperience(undefined, false)
-  const api = { getExperienceSnapshot: async () => appSnapshot({ ...running, state: 'IDLE' }) } as unknown as NatureTouchApi
-  await stopActiveExperience(api, false)
-})
-test('mock UI stop waits for cancellation instead of treating ACK as IDLE', async () => {
-  let reads = 0, stops = 0
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(++reads === 1 ? running : { ...running, state: reads === 2 ? 'STOPPING' : 'IDLE' }),
-    dispatchExperienceCommand: async (command: { type: string; operationId?: string }) => {
-      if (command.type === 'STOP') { assert.equal(command.operationId, running.operationId); stops++; return { accepted: true } }
-      return { snapshot: { ...running, state: 'IDLE' } }
-    },
-  } as unknown as NatureTouchApi
-  await stopActiveExperience(api, false)
-  assert.equal(stops, 1); assert.equal(reads, 1)
-})
-test('real UI stop reuses firmware STOP and STATUS; never reconnects or STARTs', async () => {
-  let stops = 0, queries = 0
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(running, 'firmware'),
-    dispatchExperienceCommand: async (command: { type: string }) => {
-      if (command.type === 'STOP') { stops++; return { accepted: true } }
-      queries++
-      return { snapshot: { ...running, state: 'IDLE' } }
-    },
-  } as unknown as NatureTouchApi
-  await stopActiveExperience(api, true)
-  assert.equal(stops, 1); assert.equal(queries, 1)
-})
-test('rejected STOP cannot approve safe exit', async () => {
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(running),
-    dispatchExperienceCommand: async () => ({ accepted: false, code: 'INVALID_STATE' }),
-  } as unknown as NatureTouchApi
-  await assert.rejects(stopActiveExperience(api, false), /STOP rejected/)
-})
-test('FAULT during STOP preserves failure instead of reporting successful cancellation', async () => {
-  let reads = 0
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(running),
-    dispatchExperienceCommand: async (command: { type: string }) => {
-      if (command.type === 'STOP') return { accepted: true }
-      reads++
-      return { snapshot: { ...running, state: 'FAULT', faultCode: 'HOST_TIMEOUT' } }
-    },
-  } as unknown as NatureTouchApi
-  await assert.rejects(stopActiveExperience(api, false), /HOST_TIMEOUT/)
-})
-test('disconnect during STOP cannot approve safe exit', async () => {
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(running, 'firmware'),
-    dispatchExperienceCommand: async () => { throw Error('Device disconnected') },
-  } as unknown as NatureTouchApi
-  await assert.rejects(stopActiveExperience(api, true), /disconnected/)
+function fakeApi(
+  dispatchExperienceCommand: NatureTouchApi['dispatchExperienceCommand'],
+  getExperienceSnapshot: NatureTouchApi['getExperienceSnapshot'] = async () => appSnapshot(idle),
+): NatureTouchApi {
+  return { dispatchExperienceCommand, getExperienceSnapshot } as unknown as NatureTouchApi
+}
+
+test('selection helper sends exactly one selection intent and returns the coordinator snapshot', async () => {
+  const commands: Array<{ type: string; mode: string }> = []
+  const api = fakeApi(async command => {
+    commands.push(command)
+    return { type: 'ACK', command: 'SELECT', requestId: command.requestId, accepted: true, state: 'IDLE' }
+  }, async mode => appSnapshot({ ...idle, selectedExperienceId: 'BUBBLE' }, mode))
+
+  const selected = await selectExperienceIntent(api, 'mock', 'BUBBLE')
+
+  assert.deepEqual(commands.map(({ type, mode }) => [type, mode]), [['SELECT', 'mock']])
+  assert.equal(selected.experience.selectedExperienceId, 'BUBBLE')
+  assert.equal(selected.revision, 1)
 })
 
-test('media START reuses selected mock mode and returns its running clock', async () => {
-  let starts = 0
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot(starts ? running : { ...running, state: 'IDLE', operationId: null }),
-    dispatchExperienceCommand: async (command: { type: string }) => {
-      if (command.type === 'START') { starts++; return { accepted: true } }
-      return { snapshot: running }
-    },
-  } as unknown as NatureTouchApi
-  const snapshot = await startSelectedExperience(api, false, 'WIND')
-  assert.equal(starts, 1); assert.equal(snapshot.state, 'RUNNING')
-  await startSelectedExperience(api, false, 'WIND')
-  assert.equal(starts, 1, 'Already-running media does not duplicate START')
+test('selection rejection does not query or alter a selected device mode', async () => {
+  let snapshotReads = 0
+  const api = fakeApi(async () => ({
+    type: 'NACK',
+    command: 'SELECT',
+    requestId: 'select',
+    accepted: false,
+    state: 'FAULT',
+    code: 'INVALID_STATE',
+  }), async () => {
+    snapshotReads++
+    return appSnapshot(idle)
+  })
+
+  await assert.rejects(selectExperienceIntent(api, 'firmware', 'WIND'), /SELECT rejected/)
+  assert.equal(snapshotReads, 0)
 })
 
-test('media cannot START a disconnected, unarmed or output-enabled firmware', async () => {
-  for (const extra of [{ connectionState: 'disconnected' }, { simulationTestArmed: false }, { hardwareOutputsEnabled: true }]) {
-    const api = { getFirmwareState: async () => ({ identified: true, connectionState: 'connected', simulationTestArmed: true,
-      hardwareOutputsEnabled: false, experience: running, ...extra }) } as unknown as NatureTouchApi
-    await assert.rejects(startSelectedExperience(api, true, 'WIND'), /armed, output-disabled/)
+test('media-ready START helper sends only START then reads the confirmed snapshot', async () => {
+  const commands: string[] = []
+  let statusReads = 0
+  const api = fakeApi(async command => {
+    commands.push(command.type)
+    if (command.type === 'START') {
+      return {
+        type: 'ACK',
+        command: 'START',
+        requestId: command.requestId,
+        accepted: true,
+        state: 'RUNNING',
+        operationId: command.operationId,
+      }
+    }
+    statusReads++
+    return {
+      type: 'STATUS',
+      requestId: command.requestId,
+      acknowledgement: {
+        type: 'ACK',
+        command: 'STATUS_QUERY',
+        requestId: command.requestId,
+        accepted: true,
+        state: 'RUNNING',
+      },
+      snapshot: running,
+    }
+  })
+
+  const result = await startSelectedExperience(api, 'mock', 'operation-1')
+
+  assert.deepEqual(commands, ['START', 'STATUS'])
+  assert.equal(statusReads, 1)
+  assert.equal(result.state, 'RUNNING')
+})
+
+test('all experience selections flow into exactly one media-ready START in both modes', async () => {
+  for (const mode of ['mock', 'firmware'] as const) {
+    for (const experienceId of EXPERIENCE_IDS) {
+      const commands: string[] = []
+      const selectedSnapshot = { ...running, selectedExperienceId: experienceId }
+      const api = fakeApi(async command => {
+        commands.push(command.type)
+        if (command.type === 'SELECT') {
+          assert.equal(command.experienceId, experienceId)
+          return {
+            type: 'ACK',
+            command: 'SELECT',
+            requestId: command.requestId,
+            accepted: true,
+            state: 'IDLE',
+          }
+        }
+        if (command.type === 'START') {
+          return {
+            type: 'ACK',
+            command: 'START',
+            requestId: command.requestId,
+            accepted: true,
+            state: 'RUNNING',
+            operationId: command.operationId,
+          }
+        }
+        if (command.type === 'STATUS') {
+          return {
+            type: 'STATUS',
+            requestId: command.requestId,
+            acknowledgement: {
+              type: 'ACK',
+              command: 'STATUS_QUERY',
+              requestId: command.requestId,
+              accepted: true,
+              state: 'RUNNING',
+            },
+            snapshot: selectedSnapshot,
+          }
+        }
+        throw new Error(`Unexpected ${command.type} command`)
+      }, async requestedMode => appSnapshot({ ...idle, selectedExperienceId: experienceId }, requestedMode))
+
+      await selectExperienceIntent(api, mode, experienceId)
+      const started = await startSelectedExperience(api, mode, `operation-${mode}-${experienceId}`)
+
+      assert.deepEqual(commands, ['SELECT', 'START', 'STATUS'])
+      assert.equal(started.selectedExperienceId, experienceId)
+    }
   }
 })
 
-test('media start rejection never claims a running experience', async () => {
-  const api = {
-    getExperienceSnapshot: async () => appSnapshot({ ...running, state: 'IDLE' }),
-    dispatchExperienceCommand: async () => ({ accepted: false, code: 'INVALID_STATE' }),
-  } as unknown as NatureTouchApi
-  await assert.rejects(startSelectedExperience(api, false, 'WIND'), /START rejected/)
+test('firmware and all experience modes use the same lightweight START adapter', async () => {
+  for (const mode of ['mock', 'firmware'] as const) {
+    const commands: string[] = []
+    const api = fakeApi(async command => {
+      commands.push(command.type)
+      if (command.type === 'START') {
+        return {
+          type: 'ACK',
+          command: 'START',
+          requestId: command.requestId,
+          accepted: true,
+          state: 'RUNNING',
+          operationId: command.operationId,
+        }
+      }
+      return {
+        type: 'STATUS',
+        requestId: command.requestId,
+        acknowledgement: {
+          type: 'ACK',
+          command: 'STATUS_QUERY',
+          requestId: command.requestId,
+          accepted: true,
+          state: 'RUNNING',
+        },
+        snapshot: running,
+      }
+    })
+
+    await startSelectedExperience(api, mode, `operation-${mode}`)
+
+    assert.deepEqual(commands, ['START', 'STATUS'])
+  }
+})
+
+test('rejected START does not issue STATUS or claim playback can begin', async () => {
+  let commands = 0
+  const api = fakeApi(async () => {
+    commands++
+    return {
+      type: 'NACK',
+      command: 'START',
+      requestId: 'start',
+      accepted: false,
+      state: 'FAULT',
+      code: 'INVALID_STATE',
+    }
+  })
+
+  await assert.rejects(startSelectedExperience(api, 'mock', 'operation-1'), /START rejected/)
+  assert.equal(commands, 1)
+})
+
+test('STOP adapter submits a single intent and accepts only confirmed inactive snapshots', async () => {
+  let stops = 0
+  const api = fakeApi(async command => {
+    assert.equal(command.type, 'STOP')
+    assert.equal(command.mode, 'firmware')
+    assert.equal(command.operationId, 'operation-1')
+    stops++
+    return {
+      type: 'STATUS',
+      requestId: command.requestId,
+      acknowledgement: {
+        type: 'ACK',
+        command: 'STATUS_QUERY',
+        requestId: command.requestId,
+        accepted: true,
+        state: 'COMPLETED',
+      },
+      snapshot: completed,
+    }
+  })
+
+  await stopActiveExperience(api, 'firmware', 'operation-1')
+  assert.equal(stops, 1)
+})
+
+test('STOP adapter does not treat an ACK alone as proof that the device is stopped', async () => {
+  const api = fakeApi(async command => {
+    if (command.type !== 'STOP') throw new Error('Expected STOP')
+    return {
+      type: 'ACK',
+      command: 'STOP',
+      requestId: command.requestId,
+      accepted: true,
+      state: 'STOPPING',
+      operationId: command.operationId,
+    }
+  })
+
+  await assert.rejects(stopActiveExperience(api, 'mock', 'operation-1'), /no inactive device state/)
+})
+
+test('STOP adapter rejects an unconfirmed STATUS even when its snapshot appears inactive', async () => {
+  const api = fakeApi(async command => ({
+    type: 'STATUS',
+    requestId: command.requestId,
+    acknowledgement: {
+      type: 'NACK',
+      command: 'STATUS_QUERY',
+      requestId: command.requestId,
+      accepted: false,
+      state: 'COMPLETED',
+      code: 'STATUS_UNAVAILABLE',
+    },
+    snapshot: completed,
+  }))
+
+  await assert.rejects(stopActiveExperience(api, 'mock', 'operation-1'), /STATUS_UNAVAILABLE/)
+})
+
+test('STOP failure, fault, or disconnect is surfaced without claiming safe exit', async () => {
+  const rejected = fakeApi(async command => {
+    if (command.type !== 'STOP') throw new Error('Expected STOP')
+    return {
+      type: 'NACK',
+      command: 'STOP',
+      requestId: command.requestId,
+      accepted: false,
+      state: 'RUNNING',
+      operationId: command.operationId,
+      code: 'INVALID_STATE',
+    }
+  })
+  await assert.rejects(stopActiveExperience(rejected, 'mock', 'operation-1'), /STOP rejected/)
+
+  const faulted = fakeApi(async command => ({
+    type: 'STATUS',
+    requestId: command.requestId,
+    acknowledgement: {
+      type: 'ACK',
+      command: 'STATUS_QUERY',
+      requestId: command.requestId,
+      accepted: true,
+      state: 'FAULT',
+    },
+    snapshot: { ...running, state: 'FAULT', faultCode: 'HOST_TIMEOUT' },
+  }))
+  await assert.rejects(stopActiveExperience(faulted, 'mock', 'operation-1'), /HOST_TIMEOUT/)
+
+  const disconnected = fakeApi(async () => { throw new Error('Device disconnected') })
+  await assert.rejects(stopActiveExperience(disconnected, 'firmware', 'operation-1'), /disconnected/)
+})
+
+test('cancelled media preparation without a START operation sends no STOP', async () => {
+  let commands = 0
+  const api = fakeApi(async () => {
+    commands++
+    throw new Error('Unexpected command')
+  })
+
+  await stopActiveExperience(api, 'mock', null)
+  assert.equal(commands, 0)
+})
+
+test('only authoritative FAULT or unavailable connection permits exit without device STOP', () => {
+  assert.equal(isDeviceUnavailable({ state: 'FAULT' }, true), true)
+  assert.equal(isDeviceUnavailable({ state: 'RUNNING' }, false), true)
+  assert.equal(isDeviceUnavailable({ state: 'RUNNING' }, true), false)
+  assert.equal(isDeviceUnavailable({ state: 'COMPLETED' }, true), false)
 })

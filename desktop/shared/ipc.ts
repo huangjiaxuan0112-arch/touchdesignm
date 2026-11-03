@@ -33,14 +33,11 @@ export const IPC_CHANNELS = {
   experienceDispatch: 'experience:dispatch',
   experienceEvent: 'experience:event',
   experienceGetState: 'experience:get-state',
-  experienceState: 'experience:state',
   experienceSelect: 'experience:select',
   experienceStart: 'experience:start',
   experienceStop: 'experience:stop',
-  experienceStatus: 'experience:status',
   experienceSimulateFault: 'experience:simulate-fault',
   experienceSimulateConnectionLoss: 'experience:simulate-connection-loss',
-  experienceRecover: 'experience:recover',
   firmwareGetState: 'firmware:get-state',
   firmwareArmSimulation: 'firmware:arm-simulation',
   firmwareDisarmSimulation: 'firmware:disarm-simulation',
@@ -75,14 +72,11 @@ export interface NatureTouchApi {
   ): Promise<() => void>
   dispatchExperienceCommand(command: ExperienceCommand): Promise<ExperienceCommandResult>
   getExperienceState(): Promise<DeviceExperienceSnapshot>
-  onExperienceState(listener: (snapshot: DeviceExperienceSnapshot) => void): () => void
   selectExperience(experienceId: ExperienceId, requestId: RequestId): Promise<ExperienceAcknowledgement>
   startExperience(requestId: RequestId, operationId: OperationId): Promise<ExperienceAcknowledgement>
   stopExperience(requestId: RequestId, operationId: OperationId): Promise<ExperienceAcknowledgement>
-  queryExperienceStatus(requestId: RequestId): Promise<ExperienceStatusResponse>
   simulateExperienceFault(code: string): Promise<DeviceExperienceSnapshot>
   simulateConnectionLoss(): Promise<DeviceExperienceSnapshot>
-  recoverExperience(requestId: RequestId): Promise<ExperienceAcknowledgement>
   getFirmwareState(): Promise<FirmwareControlSnapshot>
   armFirmwareSimulationTest(loadsIsolated: boolean, simulationFirmwareConfirmed: boolean): Promise<FirmwareControlSnapshot>
   disarmFirmwareSimulationTest(): Promise<FirmwareControlSnapshot>

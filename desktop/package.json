@@ -9,7 +9,7 @@
     "build": "electron-vite build",
     "preview": "electron-vite preview",
     "typecheck": "tsc --noEmit --project tsconfig.node.json && tsc --noEmit --project tsconfig.web.json",
-    "test": "tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/experience-application-contract.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-protocol.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts ../test/interactive-ui-stop.test.ts",
+    "test": "tsx --test ../test/serial-diagnostic-service.test.ts ../test/experience-definitions.test.ts ../test/experience-application-contract.test.ts ../test/mock-experience-controller.test.ts ../test/arduino-firmware-service.test.ts ../test/firmware-protocol.test.ts ../test/firmware-timeline.test.ts ../test/native-serial-transport.test.ts ../test/experience-coordinator.test.ts ../test/interactive-ui-stop.test.ts",
     "test:ui": "electron ../test/electron-ui-interactions.cjs",
     "test:audio": "electron ../test/electron-ui-audio.cjs",
     "test:unified-actuators": "node ../test/unified-controller/verify.mjs",

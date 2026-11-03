@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, useReducedMotion } from 'motion/react'
 import { ExperiencePlayer } from './ExperiencePlayer'
 import { stopActiveExperience } from './stop-active-experience'
-import { startSelectedExperience } from './start-selected-experience'
+import { selectExperienceIntent, startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
 import type { ExperienceMode } from '../../../shared/experience-application-contract'
 import {
@@ -93,6 +93,8 @@ export default function ExhibitionHome() {
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const pendingStop = useRef<Promise<void> | null>(null)
   const pendingStart = useRef<Promise<ExperienceSnapshot> | null>(null)
+  const activeOperationId = useRef<string | null>(null)
+  const snapshotRevisions = useRef<Record<ExperienceMode, number>>({ mock: -1, firmware: -1 })
   const selecting = useRef(false)
   const reducedMotion = useReducedMotion()
 
@@ -104,11 +106,12 @@ export default function ExhibitionHome() {
   }
   function requestSafeStop(): Promise<void> {
     if (pendingStop.current) return pendingStop.current
-    const request = (async () => {
-      // A cancelled media load must not let an in-flight START finish afterward.
-      await pendingStart.current?.catch(() => undefined)
-      await stopActiveExperience(window.natureTouch, realMode)
-    })()
+    const operationId = activeOperationId.current ?? experienceState.operationId
+    const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
+    const request = stopActiveExperience(window.natureTouch, mode, operationId)
+      .then(() => {
+        if (activeOperationId.current === operationId) activeOperationId.current = null
+      })
       .finally(() => { pendingStop.current = null })
     pendingStop.current = request
     return request
@@ -138,9 +141,16 @@ export default function ExhibitionHome() {
     const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
     void api.subscribeExperience(mode, (event) => {
       if (!mounted) return
+      if (event.snapshot.revision <= snapshotRevisions.current[mode]) return
+      snapshotRevisions.current[mode] = event.snapshot.revision
       const snapshot = event.snapshot.experience
       setExperienceState(snapshot)
       if (snapshot.selectedExperienceId) setActiveExperienceId(snapshot.selectedExperienceId)
+      if (snapshot.operationId) activeOperationId.current = snapshot.operationId
+      else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
+      if (mode === 'firmware') {
+        setFirmwareState(current => ({ ...current, experience: snapshot }))
+      }
     }).then((removeListener) => {
       if (mounted) unsubscribe = removeListener
       else removeListener()
@@ -154,8 +164,7 @@ export default function ExhibitionHome() {
     }
   }, [realMode])
 
-  const displayedState = realMode ? firmwareState.experience : experienceState
-  const canSwitchExperience = displayedState.state === 'IDLE' || displayedState.state === 'COMPLETED'
+  const displayedState = experienceState
   const benchReady = firmwareState.openAirBenchSession === true && firmwareState.realControlEligible === true &&
     firmwareState.hardwareOutputsEnabled === true && firmwareState.connectionState === 'connected' && firmwareState.identified
   const realSessionReady = firmwareState.simulationTestArmed === true || benchReady
@@ -164,14 +173,20 @@ export default function ExhibitionHome() {
     if (pendingStart.current) return pendingStart.current
     if (!dialogExperienceId) return Promise.reject(new Error('Select an experience first.'))
     const request = (async () => {
-      await pendingStop.current
+      if (pendingStop.current) throw new Error('Wait for the current stop request to finish.')
       // Browser preview plays media locally; device control requires Electron.
       if (!window.natureTouch && !realMode) return {
         ...initialExperienceState, state: 'RUNNING' as const,
         selectedExperienceId: dialogExperienceId,
         durationMs: EXPERIENCE_DEFINITIONS[dialogExperienceId].totalDurationMs,
       }
-      return startSelectedExperience(window.natureTouch, realMode, dialogExperienceId)
+      const operationId = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+      activeOperationId.current = operationId
+      return startSelectedExperience(
+        window.natureTouch,
+        realMode ? 'firmware' : 'mock',
+        operationId,
+      )
     })().finally(() => { pendingStart.current = null })
     pendingStart.current = request
     return request
@@ -179,7 +194,6 @@ export default function ExhibitionHome() {
 
   async function selectExperience(experienceId: ExperienceId, openVideo = false): Promise<void> {
     if (selecting.current) return
-    if (realMode && !realSessionReady) return
     selecting.current = true
     const api = window.natureTouch
     if (!api) {
@@ -193,27 +207,15 @@ export default function ExhibitionHome() {
     try {
       await pendingStop.current
       const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
-      const previous = (await api.getExperienceSnapshot(mode)).experience
-      if (previous.state === 'RUNNING' || previous.state === 'STOPPING') await requestSafeStop()
-      if (!realMode && previous.state === 'FAULT') {
-        // A new manual card selection may reset the local mock, never hardware.
-        const recovered = await api.recoverExperience(crypto.randomUUID().replace(/-/g, '').slice(0, 16))
-        if (!recovered.accepted) throw new Error('Mock recovery rejected.')
-      }
-      const acknowledgement = await api.dispatchExperienceCommand({
-        type: 'SELECT',
-        mode,
-        experienceId,
-        requestId: crypto.randomUUID().replace(/-/g, '').slice(0, 16),
-      })
-      if (!('accepted' in acknowledgement)) throw new Error('SELECT returned an invalid response.')
-      if (!acknowledgement.accepted) {
-        throw new Error(`Mode selection rejected: ${acknowledgement.code ?? 'INVALID_COMMAND'}`)
-      }
-      if (realMode) setFirmwareState(await api.getFirmwareState())
-      else {
-        setActiveExperienceId(experienceId)
-        setExperienceState((await api.getExperienceSnapshot(mode)).experience)
+      const selected = await selectExperienceIntent(api, mode, experienceId)
+      if (selected.revision >= snapshotRevisions.current[mode]) {
+        snapshotRevisions.current[mode] = selected.revision
+        const snapshot = selected.experience
+        if (snapshot.operationId) activeOperationId.current = snapshot.operationId
+        else if (['IDLE', 'COMPLETED', 'FAULT'].includes(snapshot.state)) activeOperationId.current = null
+        setActiveExperienceId(snapshot.selectedExperienceId ?? experienceId)
+        setExperienceState(snapshot)
+        if (mode === 'firmware') setFirmwareState(current => ({ ...current, experience: snapshot }))
       }
       if (openVideo) setDialogExperienceId(experienceId)
     } catch (error) {
@@ -225,7 +227,8 @@ export default function ExhibitionHome() {
   }
 
   const dialogCard = cards.find((card) => card.id === dialogExperienceId)
-  const activeCard = cards.find((card) => card.id === (realMode ? firmwareState.experience.selectedExperienceId : activeExperienceId))
+  const selectedExperienceId = experienceState.selectedExperienceId ?? activeExperienceId
+  const activeCard = cards.find((card) => card.id === selectedExperienceId)
 
   return (
     <main className="exhibition-home">
@@ -241,7 +244,7 @@ export default function ExhibitionHome() {
 
       <section className="nature-card-grid" aria-label="Choose a nature experience">
         {cards.map((card) => {
-          const active = (realMode ? firmwareState.experience.selectedExperienceId : activeExperienceId) === card.id
+          const active = selectedExperienceId === card.id
           return (
             <NatureVideoCard
               key={card.id}
@@ -256,8 +259,7 @@ export default function ExhibitionHome() {
                 dialogExperienceId !== null ||
                 (realMode && !realSessionReady) ||
                 (realMode && deviceBusy) ||
-                switchingExperienceId !== null ||
-                (realMode ? !canSwitchExperience : (!active && !canSwitchExperience && displayedState.state !== 'FAULT'))
+                switchingExperienceId !== null
               }
               onSelect={() => void selectExperience(card.id, !!card.experienceVideo)}
               onReplay={() => void selectExperience(card.id, true)}
@@ -302,7 +304,7 @@ export default function ExhibitionHome() {
           runState={displayedState}
           connectionReady={!realMode || (firmwareState.connectionState === 'connected' && firmwareState.identified && (firmwareState.hardwareOutputsEnabled === false || benchReady))}
           deviceLabel={realMode
-            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${firmwareState.experience.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
+            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${displayedState.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
             : 'Mock モード · 実機は未接続'}
           onSafeStop={requestSafeStop}
           onStart={startMediaExperience}

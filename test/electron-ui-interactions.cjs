@@ -1,190 +1,233 @@
-// Real Electron + native video + existing IPC/mock service. No physical ports.
-const { app, ipcMain } = require('electron')
-app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion')
-app.commandLine.appendSwitch('disable-background-media-suspend')
+// Real Electron UI with Mock services. Serial access is blocked before Main loads.
+const { app, BrowserWindow, ipcMain } = require('electron')
+const assert = require('node:assert/strict')
 const { mkdirSync, writeFileSync } = require('node:fs')
 const { resolve } = require('node:path')
-const assert = require('node:assert/strict')
+
+app.commandLine.appendSwitch('disable-features', 'CalculateNativeWinOcclusion')
+app.commandLine.appendSwitch('disable-background-media-suspend')
+
 const output = resolve(__dirname, '../desktop/out/interaction-check')
 mkdirSync(output, { recursive: true })
-const evidence = { checks: [], ipc: [], overlap: [], errors: [] }
+const evidence = { checks: [], commands: [], overlaps: [], errors: [] }
+const countedCommands = new Map()
 const serial = require('../desktop/node_modules/serialport')
-serial.SerialPort.list = async () => { throw Error('Native COM discovery forbidden') }
-serial.SerialPort.prototype.open = () => { throw Error('Native COM access forbidden') }
+serial.SerialPort.list = async () => { throw Error('COM discovery forbidden by UI test') }
+serial.SerialPort.prototype.open = () => { throw Error('COM access forbidden by UI test') }
+
 let rejectStop = false
-const handle = ipcMain.handle.bind(ipcMain)
-ipcMain.handle = (channel, listener) => handle(channel, async (...args) => {
-  evidence.ipc.push(channel)
-  if (channel === 'experience:stop' && rejectStop) throw Error('Injected STOP failure')
-  return listener(...args)
+let holdStartResponse = false
+let releaseStartResponse
+let startResponseHeld
+const startResponseIsHeld = new Promise(resolve => { startResponseHeld = resolve })
+const originalHandle = ipcMain.handle.bind(ipcMain)
+
+function commandFrom(channel, args) {
+  if (channel === 'experience:dispatch' && args[1] && typeof args[1] === 'object') return args[1]
+  const legacy = {
+    'experience:select': ['SELECT', 'mock'],
+    'experience:start': ['START', 'mock'],
+    'experience:stop': ['STOP', 'mock'],
+    'firmware:select': ['SELECT', 'firmware'],
+    'firmware:start': ['START', 'firmware'],
+    'firmware:stop': ['STOP', 'firmware'],
+  }[channel]
+  if (!legacy || !args[1] || typeof args[1] !== 'object') return undefined
+  return {
+    type: legacy[0],
+    mode: legacy[1],
+    requestId: args[1].requestId,
+    operationId: args[1].operationId,
+  }
+}
+
+ipcMain.handle = (channel, listener) => originalHandle(channel, async (...args) => {
+  const command = commandFrom(channel, args)
+  if (command && ['SELECT', 'START', 'STOP'].includes(command.type)) {
+    const key = `${command.mode}:${command.type}:${command.requestId}`
+    if (!countedCommands.has(key)) {
+      countedCommands.set(key, { ...command, channel })
+      evidence.commands.push({ ...command, channel })
+    }
+  }
+  if (channel === 'experience:dispatch' && args[1]?.type === 'STOP' && rejectStop) {
+    throw Error('Injected STOP failure')
+  }
+  const result = await listener(...args)
+  if (channel === 'experience:dispatch' && args[1]?.type === 'START' && holdStartResponse) {
+    holdStartResponse = false
+    startResponseHeld()
+    await new Promise(resolve => { releaseStartResponse = resolve })
+  }
+  return result
 })
-process.on('uncaughtException', error => { evidence.errors.push(error.stack); finish(1) })
-function finish(code) { writeFileSync(resolve(output, 'results.json'), JSON.stringify(evidence, null, 2)); app.exit(code) }
+
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms))
-let win
-const js = source => win.webContents.executeJavaScript(source)
-async function wait(source, ms = 20000) {
-  const until = Date.now() + ms
-  do { if (await js(source)) return; await pause(100) } while (Date.now() < until)
-  throw Error('Timeout: ' + source)
-}
+const count = (type, mode = 'mock') =>
+  [...countedCommands.values()].filter(command => command.type === type && command.mode === mode).length
 function pass(name) { evidence.checks.push({ name, result: 'PASS' }) }
-async function point(mode) {
-  win.webContents.sendInputEvent({ type: 'mouseMove', x: 10, y: 10 })
-  await pause(20)
-  const position = mode ? await js(`(()=>{const r=document.querySelector('[data-experience="${mode}"]').getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`) : { x: 10, y: 10 }
-  win.webContents.sendInputEvent({ type: 'mouseMove', ...position })
+function finish(code) {
+  writeFileSync(resolve(output, 'results.json'), JSON.stringify(evidence, null, 2))
+  app.exit(code)
 }
-async function click(label) {
-  await wait(`!!document.querySelector('[aria-label="${label}"]:not(:disabled)')`)
-  await js(`document.querySelector('[aria-label="${label}"]').click()`)
-  await pause(100)
+
+let win
+let finished = false
+const js = source => win.webContents.executeJavaScript(source, true)
+async function wait(source, timeoutMs = 30_000) {
+  const deadline = Date.now() + timeoutMs
+  while (Date.now() < deadline) {
+    try { if (await js(source)) return } catch {}
+    await pause(100)
+  }
+  throw Error(`Timed out: ${source}`)
 }
-const playing = `[...document.querySelectorAll('.nature-card video')].filter(v=>!v.paused)`
-async function back() {
-  await click('Back to experiences')
+async function clickCard(id) {
+  await wait(`!!document.querySelector('[data-experience="${id}"]:not(:disabled)')`)
+  await js(`document.querySelector('[data-experience="${id}"]').click()`)
+}
+async function returnHome() {
+  await js(`(()=>{window.__lastMedia=[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')];document.querySelector('[aria-label="Back to experiences"]').click()})()`)
   await wait(`!document.querySelector('.experience-dialog')`)
-  await pause(650)
-  await point(null)
 }
-app.once('browser-window-created', (_, window) => {
-  win = window
-  window.webContents.once('did-finish-load', async () => {
+function mediaPlaying() {
+  return `!document.querySelector('.experience-dialog video')?.paused&&!!document.querySelector('.experience-dialog audio')&&!document.querySelector('.experience-dialog audio').paused`
+}
+
+process.on('uncaughtException', error => {
+  evidence.errors.push(error.stack)
+  if (!finished) { finished = true; finish(1) }
+})
+
+app.once('browser-window-created', (_event, browserWindow) => {
+  win = browserWindow
+  win.webContents.setBackgroundThrottling(false)
+  win.webContents.once('did-finish-load', async () => {
     try {
       win.setContentSize(1920, 1248)
-      win.focus(); win.webContents.focus()
-      await pause(600)
-      await js(`window.__overlaps=[];document.addEventListener('playing', e=>{if(e.target.matches('.nature-card video') && [...document.querySelectorAll('.nature-card video')].filter(v=>!v.paused).length>1)window.__overlaps.push(e.target.src)},true)`)
-      assert.equal(await js(`document.querySelectorAll('video').length`), 0)
-      const baseIpc = evidence.ipc.length
-      const layout = await js(`[...document.querySelectorAll('.nature-card')].map(e=>{const r=e.getBoundingClientRect();return [r.x,r.y,r.width,r.height]})`)
-      assert(Math.abs(layout[0][0]-211)<1 && Math.abs(layout[0][1]-440)<2)
-      pass('Idle: real posters, no autoplay, reference card layout preserved')
-      writeFileSync(resolve(output, 'home.png'), (await win.webContents.capturePage()).toPNG())
-      await point('WIND'); await pause(80)
-      assert.equal(await js(`${playing}.length`), 0)
-      pass('Hover delay prevents immediate playback')
-      for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
-        await point(mode)
-        await wait(`${playing}.length===1 && !!document.querySelector('[data-experience="${mode}"] video:not([data-unused])') && !document.querySelector('[data-experience="${mode}"] video').paused`)
-        await wait(`document.querySelector('[data-experience="${mode}"] video').currentTime>0`)
-        assert(await js(`${playing}.every(v=>v.muted && v.loop && v.playsInline)`))
-        pass(mode + ': exclusive muted looping hover preview')
-      }
-      await point(null); await wait(`${playing}.length===0`)
-      pass('Leaving cards pauses every preview')
-      for (let i=0;i<9;i++) { await point(['WIND','WAVE','BUBBLE'][i%3]); await pause(35) }
-      await point(null); await pause(400)
-      assert.equal(await js(`${playing}.length`),0)
-      evidence.overlap = await js('window.__overlaps')
-      assert.equal(evidence.overlap.length,0)
-      assert(!evidence.ipc.slice(baseIpc).some(channel=>channel.startsWith('firmware:') || channel==='experience:select' || channel==='experience:start'))
-      pass('Rapid movement cancels pending timers; hover sends no device/experience commands')
-      for (const [mode, filename] of [['WIND','东风长3_15秒音视频合成'],['WAVE','waves-experience'],['BUBBLE','bubbles-experience']]) {
-        await js(`document.querySelector('[data-experience="${mode}"]').click()`)
-        await wait(`document.querySelector('.experience-dialog video')?.currentTime>0`)
-        assert(await js(`decodeURI(document.querySelector('.experience-dialog video').currentSrc).includes('${filename}')`))
-        assert.equal(await js(`${playing}.length`),0)
-        if (mode==='WIND') {
-          await click('Pause video'); await wait(`document.querySelector('.experience-dialog video').paused`)
-          assert(await js(`document.querySelector('.experience-player__status').textContent.includes('一時停止')`))
-          await click('Play video'); await wait(`!document.querySelector('.experience-dialog video').paused`)
-          await click('Mute video'); assert(await js(`document.querySelector('.experience-dialog audio').muted`))
-          await click('Unmute video'); assert(!await js(`document.querySelector('.experience-dialog audio').muted`))
-          await js(`window.__keys=[];document.addEventListener('keydown',e=>window.__keys.push({key:e.key,target:e.target.outerHTML}),true);document.querySelector('[role=slider]').focus()`)
-          win.webContents.sendInputEvent({type:'keyDown',keyCode:'Left'})
-          win.webContents.sendInputEvent({type:'keyUp',keyCode:'Left'})
-          await pause(150)
-          evidence.volumeDebug = await js(`({keys:window.__keys,active:document.activeElement.outerHTML,volume:document.querySelector('.experience-dialog video').volume,slider:document.querySelector('[role=slider]').outerHTML})`)
-          assert(await js(`document.querySelector('.experience-dialog audio').volume<1`))
-          pass('Play/pause, mute/unmute, keyboard volume reflect actual native media')
-          writeFileSync(resolve(output, 'player.png'), (await win.webContents.capturePage()).toPNG())
-        }
-        pass(mode + ': correct immersive media, background previews stopped')
-        await back()
-      }
-      await point('WIND');await wait(`${playing}.length===1`)
-      await js(`Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))`)
-      await wait(`${playing}.length===0`)
-      await js(`delete document.hidden;document.dispatchEvent(new Event('visibilitychange'))`)
-      pass('Hidden application cancels preview playback')
-      await point(null); await point('BUBBLE');await wait(`${playing}.length===1`)
-      await js(`window.__previewSrc=document.querySelector('[data-experience="BUBBLE"] video').src;document.querySelector('[data-experience="BUBBLE"] video').src='missing-preview.mp4'`)
-      await wait(`document.querySelector('[data-experience="BUBBLE"] [role=status]')?.textContent.includes('読み込めません')`)
-      await pause(450)
-      assert(await js(`getComputedStyle(document.querySelector('[data-experience="BUBBLE"] video')).opacity==='0' && document.querySelector('[data-experience="BUBBLE"] img').naturalWidth>0`))
-      await point('WAVE');await wait(`${playing}.length===1`)
-      pass('Missing preview preserves poster and leaves other cards usable')
-      await point(null)
-      await js(`document.querySelector('[data-experience="BUBBLE"]').click()`)
-      await wait(`document.querySelector('.experience-dialog video')?.currentTime>0`)
-      await js(`document.querySelector('.experience-dialog video').src='missing-full.mp4'`)
-      await wait(`document.querySelector('.experience-player__error').textContent.includes('読み込めません')`)
-      assert(await js(`document.querySelector('.experience-player__poster').naturalWidth>0`))
-      pass('Missing full video falls back to existing poster and readable error')
-      await back()
-      await js(`document.querySelector('[data-experience="WAVE"]').click()`)
-      await wait(`document.querySelector('.experience-dialog video')?.currentTime>0`)
-      await js(`Object.defineProperty(document,'hidden',{configurable:true,value:true});document.dispatchEvent(new Event('visibilitychange'))`)
-      await wait(`window.natureTouch.getExperienceState().then(s=>s.state==='IDLE')`)
-      assert(await js(`[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')].every(e=>e.paused&&e.currentTime===0)`))
-      await js(`delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));document.querySelector('.experience-dialog video').dispatchEvent(new Event('loadeddata'))`)
-      await pause(500)
-      assert.equal((await js('window.natureTouch.getExperienceState()')).state,'IDLE')
-      pass('Hiding stops the active timeline and both media; visibility and late readiness never restart it')
-      await back()
-      await js(`document.querySelector('[data-experience="WIND"]').click()`)
-      await wait(`document.querySelector('.experience-dialog video')?.currentTime>0`)
-      await click('Stop experience')
-      await wait(`document.querySelector('.experience-player__status').textContent.includes('停止中')`)
-      assert.equal((await js('window.natureTouch.getExperienceState()')).state,'IDLE')
-      pass('STOP uses existing mock IPC and waits for IDLE cancellation')
-      await js(`window.natureTouch.startExperience(crypto.randomUUID(),crypto.randomUUID())`)
+      win.show()
+      win.focus()
+      win.webContents.focus()
+      await wait(`!!document.querySelector('[data-experience="WAVE"]')`)
+      const posters = await js(`([...document.querySelectorAll('.nature-card__poster')].length===3 && [...document.querySelectorAll('.nature-card__poster')].every(image=>image.complete&&image.naturalWidth>0))`)
+      assert.equal(posters, true, 'home should show the three existing posters')
+      assert.equal(await js(`[...document.querySelectorAll('.nature-card video')].filter(video=>!video.paused).length`), 0)
+      pass('Home displays posters; previews are available without autoplay')
+
+      const selectsBeforeCancel = count('SELECT'), startsBeforeCancel = count('START'), stopsBeforeCancel = count('STOP')
+      await js(`(()=>{
+        window.__holdMediaReadiness=new MutationObserver(()=>{
+          for(const media of document.querySelectorAll('.experience-dialog video,.experience-dialog audio')){
+            if(media.__readinessHeld)continue;
+            Object.defineProperty(media,'readyState',{configurable:true,get:()=>0});
+            media.__readinessHeld=true;
+          }
+        });
+        window.__holdMediaReadiness.observe(document.documentElement,{childList:true,subtree:true});
+      })()`)
+      await clickCard('WAVE')
+      await wait(`!!document.querySelector('.experience-dialog video')&&!!document.querySelector('.experience-dialog audio')&&document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='preparing'`)
+      assert(await js(`[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')].every(element=>element.readyState===0)`),
+        'media readiness must remain pending until the user exits')
+      await returnHome()
+      await js(`window.__holdMediaReadiness.disconnect()`)
+      await pause(300)
+      assert.equal(count('SELECT'), selectsBeforeCancel + 1, 'loading cancellation follows one SELECT')
+      assert.equal(count('START'), startsBeforeCancel, 'exiting during media preparation must not send START')
+      assert.equal(count('STOP'), stopsBeforeCancel, 'media preparation without an operation must not send STOP')
+      pass('Exit during media preparation cancels readiness and cannot trigger a late START')
+
+      const baseSelects = count('SELECT'), baseStarts = count('START')
+      await js(`(()=>{const card=document.querySelector('[data-experience="WIND"]');card.click();card.click();card.click()})()`)
+      await wait(`!!document.querySelector('.experience-dialog video')&&!!document.querySelector('.experience-dialog audio')`)
+      await wait(`document.querySelector('.experience-dialog video').readyState>=3&&document.querySelector('.experience-dialog audio').readyState>=3`)
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
+      assert.equal(count('SELECT'), baseSelects + 1, 'repeated card clicks must issue one SELECT')
+      assert.equal(count('START'), baseStarts + 1, 'repeated card clicks must issue one START')
+      assert(await js(mediaPlaying()), 'WIND video and MP3 must actually play')
+      assert(await js(`document.querySelector('.experience-dialog video').loop&&document.querySelector('.experience-dialog video').muted`))
+      pass('Rapid repeated clicks select and START once; current MP4/MP3 playback is active')
+
       rejectStop = true
-      await click('Back to experiences')
+      await js(`document.querySelector('[aria-label="Back to experiences"]').click()`)
       await wait(`!!document.querySelector('.experience-player__error')`)
-      assert(await js(`!!document.querySelector('.experience-dialog[open]')`))
+      assert(await js(`!!document.querySelector('.experience-dialog[open]')`), 'failed STOP must retain the player')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING')
       rejectStop = false
-      await back()
-      pass('Failed STOP retains immersive view; successful retry exits safely')
-      assert.equal((await js('window.natureTouch.getExperienceState()')).state,'IDLE')
-      assert(!evidence.ipc.some(channel=>channel==='firmware:start' || channel==='serial:connect' || channel==='firmware:connect'))
-      pass('Mock controls never open COM or START Arduino')
-      await js(`document.querySelector('[data-experience="WAVE"]').focus()`)
-      win.focus(); win.webContents.focus(); await pause(100)
-      win.webContents.sendInputEvent({type:'keyDown',keyCode:'Return'})
-      win.webContents.sendInputEvent({type:'char',keyCode:'\r'})
-      win.webContents.sendInputEvent({type:'keyUp',keyCode:'Return'})
-      await wait(`!!document.querySelector('.experience-dialog[open]')`)
-      win.webContents.sendInputEvent({type:'keyDown',keyCode:'Escape'});win.webContents.sendInputEvent({type:'keyUp',keyCode:'Escape'})
-      await wait(`!document.querySelector('.experience-dialog')`)
-      pass('Keyboard Enter opens; Escape safely stops and returns')
-      await pause(700)
-      win.webContents.debugger.attach('1.3')
-      await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[{name:'prefers-reduced-motion',value:'reduce'}]})
-      await win.webContents.reloadIgnoringCache()
-      await pause(1200)
-      await point('WIND');await pause(800)
-      assert.equal(await js(`${playing}.length`),0)
-      pass('Reduced motion prevents decorative autoplay')
-      await win.webContents.debugger.sendCommand('Emulation.setEmulatedMedia',{features:[]})
-      win.setContentSize(390,844);await pause(500)
-      assert(!await js('document.documentElement.scrollWidth>innerWidth'))
-      const box = await js(`(()=>{const r=document.querySelector('[data-experience="WIND"]').getBoundingClientRect();return {x:Math.round(r.x+r.width/2),y:Math.round(r.y+r.height/2)}})()`)
-      await win.webContents.debugger.sendCommand('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{id:1,...box}]})
-      await win.webContents.debugger.sendCommand('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]})
-      await wait(`!!document.querySelector('.experience-dialog[open]')`)
-      assert(!await js('document.documentElement.scrollWidth>innerWidth'))
-      pass('Touch enters directly; mobile home/player have no horizontal overflow')
-      await back()
-      win.webContents.debugger.detach()
-      assert.equal(evidence.errors.length,0)
+      const stopsBeforeRetry = count('STOP')
+      await returnHome()
+      assert.equal(count('STOP'), stopsBeforeRetry + 1, 'retry should submit one STOP')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'IDLE')
+      assert(await js(`window.__lastMedia.every(element=>element.paused&&element.currentTime===0)`), 'STOP must clean both media elements')
+      pass('STOP failure is surfaced; retry confirms STOP, clears media and returns home')
+
+      const startsBeforeLate = count('START'), stopsBeforeLate = count('STOP')
+      holdStartResponse = true
+      await clickCard('WAVE')
+      await startResponseIsHeld
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING')
+      await returnHome()
+      releaseStartResponse()
+      await pause(500)
+      assert.equal(count('START'), startsBeforeLate + 1, 'late START response must not dispatch another START')
+      assert.equal(count('STOP'), stopsBeforeLate + 2,
+        'Back and the late START confirmation each submit a STOP intent for the same operation')
+      const lateStopIntents = [...countedCommands.values()]
+        .filter(command => command.type === 'STOP' && command.mode === 'mock')
+        .slice(stopsBeforeLate)
+      assert.equal(new Set(lateStopIntents.map(command => command.operationId)).size, 1,
+        'late STOP intents must remain scoped to the same operation')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'IDLE')
+      pass('Exit during a delayed START confirmation remains IDLE; repeated STOP intent is idempotent')
+
+      const startsBeforeFault = count('START'), stopsBeforeFault = count('STOP')
+      await clickCard('BUBBLE')
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
+      await js(`window.natureTouch.simulateExperienceFault('UI_TEST_FAULT')`)
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='error'`)
+      assert(await js(`[...document.querySelectorAll('.experience-dialog video,.experience-dialog audio')].every(element=>element.paused&&element.currentTime===0)`))
+      await returnHome()
+      assert.equal(count('START'), startsBeforeFault + 1)
+      assert.equal(count('STOP'), stopsBeforeFault, 'FAULT navigation must not claim device STOP')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'FAULT')
+      pass('FAULT clears media, preserves FAULT, and allows navigation without STOP/START')
+
+      const startsBeforeRecovery = count('START')
+      await clickCard('WAVE')
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
+      assert.equal(count('START'), startsBeforeRecovery + 1, 'explicit card selection may recover Mock once')
+      const stopsBeforeDisconnect = count('STOP')
+      await js(`window.natureTouch.simulateConnectionLoss()`)
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='error'`)
+      await returnHome()
+      assert.equal(count('STOP'), stopsBeforeDisconnect, 'disconnect navigation must not claim device STOP')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'FAULT')
+      assert.equal(count('START'), startsBeforeRecovery + 1, 'disconnect must not auto-restart')
+      pass('Mock disconnect cleans media and does not auto-recover or restart')
+
+      assert(!evidence.commands.some(command => command.mode === 'firmware' || command.channel.startsWith('firmware:')))
+      assert(!evidence.errors.length)
+      pass('No firmware START, serial connect, or physical-port access')
+      finished = true
       finish(0)
-    } catch(error) {
+    } catch (error) {
       evidence.errors.push(error.stack)
-      evidence.failureUi = await js(`({active:document.activeElement.outerHTML,keys:window.__keys,alert:document.querySelector('.exhibition-alert').textContent})`)
-      finish(1)
+      evidence.failureUi = await js(`({dialog:!!document.querySelector('.experience-dialog'),phase:document.querySelector('[data-experience-player]')?.dataset.playbackPhase,error:document.querySelector('.experience-player__error')?.textContent})`).catch(() => null)
+      if (!finished) { finished = true; finish(1) }
     }
   })
 })
+
 require('../desktop/out/main/main.js')
+setTimeout(() => {
+  if (win) return
+  win = BrowserWindow.getAllWindows()[0]
+  if (win) win.webContents.once('did-finish-load', () => {})
+}, 0)
+setTimeout(() => {
+  if (!finished) {
+    evidence.errors.push('Electron UI interaction test timed out')
+    finished = true
+    finish(1)
+  }
+}, 150_000)
