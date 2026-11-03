@@ -5,15 +5,21 @@ import { SerialDiagnosticService } from './serial/serial-diagnostic-service'
 import { NativeSerialTransport } from './serial/native-serial-transport'
 import { ArduinoFirmwareService } from './serial/arduino-firmware-service'
 import { MockExperienceController } from '../experience/mock-experience-controller'
-import type { RuntimeInfo } from '../shared/ipc'
+import { dispatchExperienceCommand } from './experience-command-dispatcher'
+import { IPC_CHANNELS, type RuntimeInfo } from '../shared/ipc'
 import { EXPERIENCE_IDS, type ExperienceId } from '../shared/experience-definitions'
-import type { ExperienceSnapshot } from '../shared/experience-control-protocol'
+import type { ExperienceSnapshot as DeviceExperienceSnapshot } from '../shared/experience-control-protocol'
+import {
+  isExperienceMode,
+  type ExperienceEvent,
+  type ExperienceMode,
+  type ExperienceSnapshot,
+} from '../shared/experience-application-contract'
 import type { SerialStateSnapshot } from '../shared/serial-protocol'
 import type { FirmwareControlSnapshot } from '../shared/firmware-control-protocol'
 
 declare const __NATURE_TOUCH_DEV_CSP_NONCE__: string
 
-const runtimeInfoChannel = 'app:get-runtime-info'
 const serialService = new SerialDiagnosticService(new NativeSerialTransport())
 // Source-level deployment permission. Never set by renderer input or dev mode.
 // Remains false until shutdown/power/pressure provisions and deployment are approved.
@@ -65,6 +71,29 @@ const mockExperienceController = new MockExperienceController()
 let mainWindow: BrowserWindow | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
 let serialPortOperationQueue: Promise<void> = Promise.resolve()
+const experienceRevisions: Record<ExperienceMode, number> = { mock: 0, firmware: 0 }
+
+function currentExperience(mode: ExperienceMode): DeviceExperienceSnapshot {
+  return mode === 'mock'
+    ? mockExperienceController.getSnapshot()
+    : firmwareService.getSnapshot().experience
+}
+
+function getExperienceSnapshot(mode: ExperienceMode): ExperienceSnapshot {
+  return {
+    mode,
+    revision: experienceRevisions[mode],
+    experience: currentExperience(mode),
+  }
+}
+
+function publishExperienceEvent(mode: ExperienceMode): void {
+  experienceRevisions[mode] += 1
+  if (!mainWindow || mainWindow.isDestroyed()) return
+
+  const event: ExperienceEvent = { type: 'SNAPSHOT', snapshot: getExperienceSnapshot(mode) }
+  mainWindow.webContents.send(IPC_CHANNELS.experienceEvent, event)
+}
 
 function serializeSerialPortOperation<T>(operation: () => Promise<T>): Promise<T> {
   const result = serialPortOperationQueue.then(operation, operation)
@@ -102,32 +131,32 @@ function installContentSecurityPolicy(): void {
 }
 
 function registerIpcHandlers(): void {
-  ipcMain.handle(runtimeInfoChannel, (): RuntimeInfo => ({
+  ipcMain.handle(IPC_CHANNELS.runtimeInfo, (): RuntimeInfo => ({
     appVersion: app.getVersion(),
     platform: process.platform,
   }))
 
-  ipcMain.handle('serial:list-ports', () => serialService.listPorts())
-  ipcMain.handle('serial:get-state', () => serialService.getState())
-  ipcMain.handle('serial:connect', (): Promise<SerialStateSnapshot> => {
+  ipcMain.handle(IPC_CHANNELS.serialListPorts, () => serialService.listPorts())
+  ipcMain.handle(IPC_CHANNELS.serialGetState, () => serialService.getState())
+  ipcMain.handle(IPC_CHANNELS.serialConnect, (): Promise<SerialStateSnapshot> => {
     throw new Error('Legacy serial diagnostics are disabled during read-only hardware integration.')
   })
-  ipcMain.handle('serial:disconnect', () =>
+  ipcMain.handle(IPC_CHANNELS.serialDisconnect, () =>
     serializeSerialPortOperation(async () => {
       const snapshot = await serialService.disconnect()
       if (serialPortOwner === 'diagnostic') serialPortOwner = null
       return snapshot
     }),
   )
-  ipcMain.handle('serial:ping', () => { throw new Error('Read-only Protocol v2 mode: legacy PING is disabled.') })
-  ipcMain.handle('serial:status', () => { throw new Error('Read-only Protocol v2 mode: legacy STATUS is disabled.') })
-  ipcMain.handle('firmware:get-state', (): FirmwareControlSnapshot => rendererFirmwareSnapshot())
-  ipcMain.handle('firmware:arm-simulation', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.serialPing, () => { throw new Error('Read-only Protocol v2 mode: legacy PING is disabled.') })
+  ipcMain.handle(IPC_CHANNELS.serialStatus, () => { throw new Error('Read-only Protocol v2 mode: legacy STATUS is disabled.') })
+  ipcMain.handle(IPC_CHANNELS.firmwareGetState, (): FirmwareControlSnapshot => rendererFirmwareSnapshot())
+  ipcMain.handle(IPC_CHANNELS.firmwareArmSimulation, (_event, payload: unknown) => {
     const confirmation = payload as { loadsIsolated?: unknown; simulationFirmwareConfirmed?: unknown } | null
     return firmwareService.armSimulationTest(confirmation?.loadsIsolated === true, confirmation?.simulationFirmwareConfirmed === true)
   })
-  ipcMain.handle('firmware:disarm-simulation', () => firmwareService.disarmSimulationTest())
-  ipcMain.handle('firmware:connect', (_event, payload: unknown): Promise<FirmwareControlSnapshot> => {
+  ipcMain.handle(IPC_CHANNELS.firmwareDisarmSimulation, () => firmwareService.disarmSimulationTest())
+  ipcMain.handle(IPC_CHANNELS.firmwareConnect, (_event, payload: unknown): Promise<FirmwareControlSnapshot> => {
     if (!payload || typeof payload !== 'object') throw new Error('A port path and baud rate are required.')
     const request = payload as { portPath?: unknown; baudRate?: unknown; loadsIsolated?: unknown; benchFixtureConfirmed?: unknown }
     if (OPEN_AIR_BENCH_SESSION ? request.benchFixtureConfirmed !== true : request.loadsIsolated !== true) {
@@ -156,14 +185,14 @@ function registerIpcHandlers(): void {
       return rendererFirmwareSnapshot(snapshot)
     })
   })
-  ipcMain.handle('firmware:disconnect', () =>
+  ipcMain.handle(IPC_CHANNELS.firmwareDisconnect, () =>
     serializeSerialPortOperation(async () => {
       const snapshot = await firmwareService.disconnect()
       if (serialPortOwner === 'firmware') serialPortOwner = null
       return snapshot
     }),
   )
-  ipcMain.handle('firmware:select', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.firmwareSelect, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Firmware selection payload is required.')
     const request = payload as { experienceId?: unknown; requestId?: unknown }
     if (!EXPERIENCE_IDS.includes(request.experienceId as ExperienceId) ||
@@ -172,7 +201,7 @@ function registerIpcHandlers(): void {
     }
     return firmwareService.selectExperience(request.requestId, request.experienceId as ExperienceId)
   })
-  ipcMain.handle('firmware:start', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.firmwareStart, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Firmware start payload is required.')
     const request = payload as { requestId?: unknown; operationId?: unknown }
     if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
@@ -180,7 +209,7 @@ function registerIpcHandlers(): void {
     }
     return firmwareService.start(request.requestId, request.operationId)
   })
-  ipcMain.handle('firmware:stop', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.firmwareStop, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Firmware stop payload is required.')
     const request = payload as { requestId?: unknown; operationId?: unknown }
     if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
@@ -188,19 +217,28 @@ function registerIpcHandlers(): void {
     }
     return firmwareService.stop(request.requestId, request.operationId)
   })
-  ipcMain.handle('firmware:status', (_event, requestId: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.firmwareStatus, (_event, requestId: unknown) => {
     if (typeof requestId !== 'string') throw new Error('A firmware request ID is required.')
     return firmwareService.queryStatus(requestId)
   })
-  ipcMain.handle('firmware:recover', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.firmwareRecover, (_event, payload: unknown) => {
     const request = payload as { requestId?: unknown; loadsIsolated?: unknown; simulationFirmwareConfirmed?: unknown } | null
     if (typeof request?.requestId !== 'string') throw new Error('A firmware request ID is required.')
     return firmwareService.recover(request.requestId, {
       loadsIsolated: request.loadsIsolated === true, simulationFirmwareConfirmed: request.simulationFirmwareConfirmed === true,
     })
   })
-  ipcMain.handle('experience:get-state', () => mockExperienceController.getSnapshot())
-  ipcMain.handle('experience:select', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.experienceGetSnapshot, (_event, mode: unknown): ExperienceSnapshot => {
+    if (!isExperienceMode(mode)) throw new Error('A valid experience mode is required.')
+    return getExperienceSnapshot(mode)
+  })
+  ipcMain.handle(IPC_CHANNELS.experienceDispatch, (_event, payload: unknown) => {
+    return dispatchExperienceCommand(payload, {
+      mock: mockExperienceController,
+      firmware: firmwareService,
+    })
+  })
+  ipcMain.handle(IPC_CHANNELS.experienceSelect, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Experience selection payload is required.')
     const request = payload as { experienceId?: unknown; requestId?: unknown }
     if (!EXPERIENCE_IDS.includes(request.experienceId as ExperienceId) || typeof request.requestId !== 'string') {
@@ -208,7 +246,7 @@ function registerIpcHandlers(): void {
     }
     return mockExperienceController.selectExperience(request.requestId, request.experienceId as ExperienceId)
   })
-  ipcMain.handle('experience:start', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.experienceStart, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Start payload is required.')
     const request = payload as { requestId?: unknown; operationId?: unknown }
     if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
@@ -216,7 +254,7 @@ function registerIpcHandlers(): void {
     }
     return mockExperienceController.start(request.requestId, request.operationId)
   })
-  ipcMain.handle('experience:stop', (_event, payload: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.experienceStop, (_event, payload: unknown) => {
     if (!payload || typeof payload !== 'object') throw new Error('Stop payload is required.')
     const request = payload as { requestId?: unknown; operationId?: unknown }
     if (typeof request.requestId !== 'string' || typeof request.operationId !== 'string') {
@@ -224,36 +262,38 @@ function registerIpcHandlers(): void {
     }
     return mockExperienceController.stop(request.requestId, request.operationId)
   })
-  ipcMain.handle('experience:status', (_event, requestId: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.experienceStatus, (_event, requestId: unknown) => {
     if (typeof requestId !== 'string') throw new Error('A request ID is required.')
     return mockExperienceController.queryStatus(requestId)
   })
-  ipcMain.handle('experience:simulate-fault', (_event, code: unknown): ExperienceSnapshot => {
+  ipcMain.handle(IPC_CHANNELS.experienceSimulateFault, (_event, code: unknown): DeviceExperienceSnapshot => {
     if (typeof code !== 'string' || code.length > 64) throw new Error('Invalid simulation fault code.')
     return mockExperienceController.simulateFault(code)
   })
-  ipcMain.handle('experience:simulate-connection-loss', () =>
+  ipcMain.handle(IPC_CHANNELS.experienceSimulateConnectionLoss, () =>
     mockExperienceController.simulateConnectionLoss(),
   )
-  ipcMain.handle('experience:recover', (_event, requestId: unknown) => {
+  ipcMain.handle(IPC_CHANNELS.experienceRecover, (_event, requestId: unknown) => {
     if (typeof requestId !== 'string') throw new Error('A request ID is required.')
     return mockExperienceController.recover(requestId)
   })
 
   serialService.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('serial:state', snapshot)
+      mainWindow.webContents.send(IPC_CHANNELS.serialState, snapshot)
     }
   })
   mockExperienceController.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('experience:state', snapshot)
+      mainWindow.webContents.send(IPC_CHANNELS.experienceState, snapshot)
     }
+    publishExperienceEvent('mock')
   })
   firmwareService.onStateChange((snapshot) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
-      mainWindow.webContents.send('firmware:state', rendererFirmwareSnapshot(snapshot))
+      mainWindow.webContents.send(IPC_CHANNELS.firmwareState, rendererFirmwareSnapshot(snapshot))
     }
+    publishExperienceEvent('firmware')
   })
 }
 

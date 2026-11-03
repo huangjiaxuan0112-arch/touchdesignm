@@ -1,6 +1,11 @@
 export const EXPERIENCE_IDS = ['WIND', 'WAVE', 'BUBBLE'] as const
 
 export type ExperienceId = (typeof EXPERIENCE_IDS)[number]
+export const EXPERIENCE_DISPLAY_NAMES = {
+  WIND: 'WIND',
+  WAVE: 'WAVES',
+  BUBBLE: 'BUBBLES',
+} as const satisfies Readonly<Record<ExperienceId, string>>
 export type LegacyServoValue = 0 | 180
 
 export interface LegacyServoWrites {

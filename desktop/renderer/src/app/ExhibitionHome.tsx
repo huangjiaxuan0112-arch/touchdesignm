@@ -4,7 +4,12 @@ import { ExperiencePlayer } from './ExperiencePlayer'
 import { stopActiveExperience } from './stop-active-experience'
 import { startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import { EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
+import type { ExperienceMode } from '../../../shared/experience-application-contract'
+import {
+  EXPERIENCE_DEFINITIONS,
+  EXPERIENCE_DISPLAY_NAMES,
+  type ExperienceId,
+} from '../../../shared/experience-definitions'
 import { NatureVideoCard } from './NatureVideoCard'
 import { ArduinoConnection } from '../device/ArduinoConnection'
 import { INITIAL_FIRMWARE_CONTROL_SNAPSHOT } from '../../../shared/firmware-control-protocol'
@@ -33,7 +38,7 @@ const cards: Array<{
 }> = [
   {
     id: 'WIND',
-    label: 'WIND',
+    label: EXPERIENCE_DISPLAY_NAMES.WIND,
     title: '風',
     description: 'ゆっくり、やさしく流れる。',
     poster: windPoster,
@@ -43,7 +48,7 @@ const cards: Array<{
   },
   {
     id: 'WAVE',
-    label: 'WAVES',
+    label: EXPERIENCE_DISPLAY_NAMES.WAVE,
     title: '波',
     description: '寄せては返す、穏やかなリズム。',
     poster: wavePoster,
@@ -53,7 +58,7 @@ const cards: Array<{
   },
   {
     id: 'BUBBLE',
-    label: 'BUBBLES',
+    label: EXPERIENCE_DISPLAY_NAMES.BUBBLE,
     title: '泡',
     description: '小さく弾ける、軽やかな感覚。',
     poster: bubblePoster,
@@ -127,29 +132,27 @@ export default function ExhibitionHome() {
   useEffect(() => {
     const api = window.natureTouch
     let mounted = true
+    let unsubscribe: (() => void) | undefined
     if (!api) return
 
-    void api.getExperienceState().then((snapshot) => {
+    const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
+    void api.subscribeExperience(mode, (event) => {
       if (!mounted) return
+      const snapshot = event.snapshot.experience
       setExperienceState(snapshot)
-      if (snapshot.selectedExperienceId) {
-        setActiveExperienceId(snapshot.selectedExperienceId)
-      }
+      if (snapshot.selectedExperienceId) setActiveExperienceId(snapshot.selectedExperienceId)
+    }).then((removeListener) => {
+      if (mounted) unsubscribe = removeListener
+      else removeListener()
     }).catch((error: unknown) => {
       if (mounted) setActionError(error instanceof Error ? error.message : String(error))
     })
 
-    const removeListener = api.onExperienceState((snapshot) => {
-      setExperienceState(snapshot)
-      if (snapshot.selectedExperienceId) {
-        setActiveExperienceId(snapshot.selectedExperienceId)
-      }
-    })
     return () => {
       mounted = false
-      removeListener()
+      unsubscribe?.()
     }
-  }, [])
+  }, [realMode])
 
   const displayedState = realMode ? firmwareState.experience : experienceState
   const canSwitchExperience = displayedState.state === 'IDLE' || displayedState.state === 'COMPLETED'
@@ -189,23 +192,28 @@ export default function ExhibitionHome() {
     setActionError('')
     try {
       await pendingStop.current
-      const previous = realMode ? (await api.getFirmwareState()).experience : await api.getExperienceState()
+      const mode: ExperienceMode = realMode ? 'firmware' : 'mock'
+      const previous = (await api.getExperienceSnapshot(mode)).experience
       if (previous.state === 'RUNNING' || previous.state === 'STOPPING') await requestSafeStop()
       if (!realMode && previous.state === 'FAULT') {
         // A new manual card selection may reset the local mock, never hardware.
         const recovered = await api.recoverExperience(crypto.randomUUID().replace(/-/g, '').slice(0, 16))
         if (!recovered.accepted) throw new Error('Mock recovery rejected.')
       }
-      const acknowledgement = realMode
-        ? await api.selectFirmwareExperience(experienceId, crypto.randomUUID().replace(/-/g, '').slice(0, 16))
-        : await api.selectExperience(experienceId, crypto.randomUUID())
+      const acknowledgement = await api.dispatchExperienceCommand({
+        type: 'SELECT',
+        mode,
+        experienceId,
+        requestId: crypto.randomUUID().replace(/-/g, '').slice(0, 16),
+      })
+      if (!('accepted' in acknowledgement)) throw new Error('SELECT returned an invalid response.')
       if (!acknowledgement.accepted) {
         throw new Error(`Mode selection rejected: ${acknowledgement.code ?? 'INVALID_COMMAND'}`)
       }
       if (realMode) setFirmwareState(await api.getFirmwareState())
       else {
         setActiveExperienceId(experienceId)
-        setExperienceState(await api.getExperienceState())
+        setExperienceState((await api.getExperienceSnapshot(mode)).experience)
       }
       if (openVideo) setDialogExperienceId(experienceId)
     } catch (error) {
