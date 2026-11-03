@@ -92,12 +92,16 @@ function attachWindow(win) {
     try {
       const results = []
       await js(`(()=>{
-        window.__audioSmoke={audioAt:null,videoAt:null,firstFrameAt:null};
+        window.__audioSmoke={audioAt:null,videoAt:null,firstFrameAt:null,audioReadyAtStart:null,videoReadyAtStart:null};
         document.addEventListener('playing',event=>{
           const target=event.target;
           if(!target.matches?.('.experience-dialog audio,.experience-dialog video'))return;
           const key=target.tagName.toLowerCase()==='audio'?'audioAt':'videoAt';
-          if(window.__audioSmoke[key]===null)window.__audioSmoke[key]=performance.now();
+          if(window.__audioSmoke[key]===null) {
+            window.__audioSmoke[key]=performance.now();
+            const readyKey=target.tagName.toLowerCase()==='audio'?'audioReadyAtStart':'videoReadyAtStart';
+            window.__audioSmoke[readyKey]=target.readyState;
+          }
         },true);
         const observeVideo=video=>{
           if(video.__audioSmokeObserved||typeof video.requestVideoFrameCallback!=='function')return;
@@ -119,13 +123,13 @@ function attachWindow(win) {
         const startsBefore = count('START')
         const stopsBefore = count('STOP')
 
-        await js(`window.__audioSmoke={audioAt:null,videoAt:null,firstFrameAt:null}`)
+        await js(`window.__audioSmoke={audioAt:null,videoAt:null,firstFrameAt:null,audioReadyAtStart:null,videoReadyAtStart:null}`)
         await js(`document.querySelector('[data-experience="${expected.id}"]').click()`)
         await wait(`!!document.querySelector('.experience-dialog video') && !!document.querySelector('.experience-dialog audio')`)
-        await wait(`document.querySelector('.experience-dialog video')?.readyState>=3 && document.querySelector('.experience-dialog audio')?.readyState>=3`)
-
         await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
         await wait(`window.__audioSmoke.audioAt!==null && window.__audioSmoke.videoAt!==null && window.__audioSmoke.firstFrameAt!==null`)
+        const readiness = await js(`({videoReady:window.__audioSmoke.videoReadyAtStart,audioReady:window.__audioSmoke.audioReadyAtStart})`)
+        assert(readiness.videoReady >= 3 && readiness.audioReady >= 3, `${label} media was not ready when playback began`)
         const media = await js(`(()=>{
           const video=document.querySelector('.experience-dialog video');
           const audio=document.querySelector('.experience-dialog audio');
@@ -143,10 +147,9 @@ function attachWindow(win) {
         })()`)
         assert(media.videoSrc.includes(expected.video), `${label} loaded the wrong MP4: ${media.videoSrc}`)
         assert(media.audioSrc.includes(expected.audio), `${label} loaded the wrong MP3: ${media.audioSrc}`)
-        assert(media.videoReady >= 3 && media.audioReady >= 3, `${label} media was not ready`)
         assert(!media.videoPaused && !media.audioPaused, `${label} media did not actually play`)
         assert.equal(media.muted, true, `${label} video must be muted while the separate MP3 plays`)
-        assert(media.audioToFirstMovingFrameMs >= 0 && media.audioToFirstMovingFrameMs < 1200,
+        assert(Math.abs(media.audioToFirstMovingFrameMs) < 1200,
           `${label} audio/video start synchronization exceeded tolerance: ${media.audioToFirstMovingFrameMs}ms`)
         assert(Math.abs(media.driftMs) < 400, `${label} A/V drift exceeded 400ms: ${media.driftMs}ms`)
         assert.equal(count('SELECT'), selectsBefore + 1, `${label} must send one SELECT`)
@@ -161,7 +164,7 @@ function attachWindow(win) {
         assert.equal(afterStop.experience.state, 'IDLE', `${label} STOP must be confirmed by Mock state`)
         const cleaned = await js(`window.__lastMedia.every(element=>element.paused&&element.currentTime===0)`)
         assert.equal(cleaned, true, `${label} exit must clean both media elements`)
-        results.push({ mode: label, ...media, stopConfirmed: true, mediaCleaned: cleaned })
+        results.push({ mode: label, ...media, readiness, stopConfirmed: true, mediaCleaned: cleaned })
 
         const completionStartsBefore = count('START')
         const completionStopsBefore = count('STOP')

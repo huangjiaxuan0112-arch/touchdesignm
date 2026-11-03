@@ -164,7 +164,6 @@ export default function ExhibitionHome() {
     }
   }, [realMode])
 
-  const displayedState = experienceState
   const benchReady = firmwareState.openAirBenchSession === true && firmwareState.realControlEligible === true &&
     firmwareState.hardwareOutputsEnabled === true && firmwareState.connectionState === 'connected' && firmwareState.identified
   const realSessionReady = firmwareState.simulationTestArmed === true || benchReady
@@ -301,10 +300,10 @@ export default function ExhibitionHome() {
         clearPreview()
       }}>
         {dialogCard && <ExperiencePlayer key={dialogCard.id} {...dialogCard}
-          runState={displayedState}
+          runState={experienceState}
           connectionReady={!realMode || (firmwareState.connectionState === 'connected' && firmwareState.identified && (firmwareState.hardwareOutputsEnabled === false || benchReady))}
           deviceLabel={realMode
-            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${displayedState.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
+            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${experienceState.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
             : 'Mock モード · 実機は未接続'}
           onSafeStop={requestSafeStop}
           onStart={startMediaExperience}

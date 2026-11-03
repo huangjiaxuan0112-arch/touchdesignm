@@ -17,6 +17,7 @@ serial.SerialPort.prototype.open = () => { throw Error('COM access forbidden by 
 
 let rejectStop = false
 let holdStartResponse = false
+let clampPlayerDuration = false
 let releaseStartResponse
 let startResponseHeld
 const startResponseIsHeld = new Promise(resolve => { startResponseHeld = resolve })
@@ -53,7 +54,11 @@ ipcMain.handle = (channel, listener) => originalHandle(channel, async (...args) 
   if (channel === 'experience:dispatch' && args[1]?.type === 'STOP' && rejectStop) {
     throw Error('Injected STOP failure')
   }
-  const result = await listener(...args)
+  let result = await listener(...args)
+  if (channel === 'experience:dispatch' && args[1]?.type === 'STATUS' && clampPlayerDuration) {
+    clampPlayerDuration = false
+    result = { ...result, snapshot: { ...result.snapshot, durationMs: 1 } }
+  }
   if (channel === 'experience:dispatch' && args[1]?.type === 'START' && holdStartResponse) {
     holdStartResponse = false
     startResponseHeld()
@@ -137,16 +142,31 @@ app.once('browser-window-created', (_event, browserWindow) => {
       assert.equal(count('STOP'), stopsBeforeCancel, 'media preparation without an operation must not send STOP')
       pass('Exit during media preparation cancels readiness and cannot trigger a late START')
 
-      const baseSelects = count('SELECT'), baseStarts = count('START')
+      const baseSelects = count('SELECT'), baseStarts = count('START'), baseStops = count('STOP')
+      clampPlayerDuration = true
       await js(`(()=>{const card=document.querySelector('[data-experience="WIND"]');card.click();card.click();card.click()})()`)
       await wait(`!!document.querySelector('.experience-dialog video')&&!!document.querySelector('.experience-dialog audio')`)
       await wait(`document.querySelector('.experience-dialog video').readyState>=3&&document.querySelector('.experience-dialog audio').readyState>=3`)
       await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
+      await pause(250)
       assert.equal(count('SELECT'), baseSelects + 1, 'repeated card clicks must issue one SELECT')
       assert.equal(count('START'), baseStarts + 1, 'repeated card clicks must issue one START')
+      assert.equal(count('STOP'), baseStops, 'the player must not end the device operation from its local duration')
+      assert.equal((await js(`window.natureTouch.getExperienceSnapshot('mock')`)).experience.state, 'RUNNING',
+        'device state must remain authoritative when media duration differs')
       assert(await js(mediaPlaying()), 'WIND video and MP3 must actually play')
       assert(await js(`document.querySelector('.experience-dialog video').loop&&document.querySelector('.experience-dialog video').muted`))
-      pass('Rapid repeated clicks select and START once; current MP4/MP3 playback is active')
+      pass('Repeated clicks START once; media plays and local duration cannot stop device')
+
+      const startsBeforeBufferRecovery = count('START')
+      await js(`(()=>{const audio=document.querySelector('.experience-dialog audio');audio.pause();audio.dispatchEvent(new Event('waiting'))})()`)
+      await wait(`document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='buffering'&&document.querySelector('.experience-dialog video').paused`)
+      await js(`document.querySelector('.experience-dialog audio').play()`)
+      await wait(`!document.querySelector('.experience-dialog audio').paused&&document.querySelector('[data-experience-player]')?.dataset.playbackPhase==='playing'`)
+      assert.equal(await js(`document.querySelector('.experience-dialog video').paused`), false,
+        'audio buffering recovery must resume the paused video')
+      assert.equal(count('START'), startsBeforeBufferRecovery, 'buffering recovery must not issue another START')
+      pass('Audio buffering recovery resumes video without another device START')
 
       rejectStop = true
       await js(`document.querySelector('[aria-label="Back to experiences"]').click()`)

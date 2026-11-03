@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { ArrowLeft, Maximize, Minimize, Volume2, VolumeX } from 'lucide-react'
 import { Button, Slider, Tooltip, TooltipProvider } from '../components/ui/playback-controls'
-import { EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
+import type { ExperienceId } from '../../../shared/experience-definitions'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
 import { isDeviceUnavailable } from './stop-active-experience'
 
 type MediaState = 'loading' | 'playing' | 'paused' | 'stopped' | 'error'
 const labels: Record<MediaState, string> = { loading: '読み込み中', playing: '再生中', paused: '一時停止', stopped: '停止中', error: '再生を停止しました' }
-type PlaybackPhase = 'preparing' | 'waiting' | 'starting-media' | 'playing' | 'buffering' | 'stopped' | 'error'
+type PlaybackPhase = 'preparing' | 'starting-media' | 'playing' | 'buffering' | 'stopped' | 'error'
 
 function waitForMediaReady(element: HTMLMediaElement, signal: AbortSignal): Promise<void> {
   if (element.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) return Promise.resolve()
@@ -61,7 +61,7 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
   const stopping = useRef<Promise<boolean> | null>(null)
   const exiting = useRef(false)
   const timer = useRef<ReturnType<typeof setInterval> | null>(null)
-  const runtime = useRef<{ at: number; elapsed: number; duration: number; operationId: string | null } | null>(null)
+  const runtime = useRef<{ at: number; elapsed: number } | null>(null)
   const audioStartRequested = useRef(false)
   const audioPlaybackStarted = useRef(false)
   const videoStarted = useRef(false)
@@ -77,7 +77,6 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
   const [muted, setMuted] = useState(false)
   const [fullscreen, setFullscreen] = useState(false)
   const reducedMotion = useReducedMotion()
-  const definition = EXPERIENCE_DEFINITIONS[id]
 
   function clearMedia() {
     generation.current++
@@ -164,10 +163,6 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
     const clock = runtime.current
     if (!clock || stopped.current) return
     const elapsed = clock.elapsed + performance.now() - clock.at
-    if (elapsed >= clock.duration) {
-      void back()
-      return
-    }
     if (!audioStartRequested.current) {
       startAudioAtPlayback(elapsed, generation.current)
     }
@@ -204,8 +199,6 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
         runtime.current = {
           at: performance.now(),
           elapsed: snapshot.elapsedMs,
-          duration: snapshot.durationMs ?? definition.totalDurationMs,
-          operationId: snapshot.operationId,
         }
         setPhase('starting-media')
         timer.current = setInterval(syncPlayback, 20)
@@ -350,7 +343,8 @@ export function ExperiencePlayer({ id, label, title, poster, experienceVideo, ex
                 try { v.currentTime = a.currentTime % v.duration } catch { /* Wait for the next media frame. */ }
               }
               if (videoStarted.current) {
-                setPhase('playing'); setStatus('playing'); setError('')
+                if (v?.paused) startVideoAfterAudio(generation.current)
+                else { setPhase('playing'); setStatus('playing'); setError('') }
               }
             }}
             onWaiting={() => {
