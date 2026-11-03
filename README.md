@@ -35,6 +35,11 @@ utility also remains outside the default test and build path. S01 uses the
 existing local MP4 assets as temporary media; Waiting visuals are explicitly
 marked temporary. Device completion is owned by the Main Mock controller.
 
+An optional S03 iPad controller is served by Electron Main over HTTPS. It uses
+the same Main-owned exhibition lifecycle and Mock service, never controls
+Arduino directly, and only binds to an explicitly configured private LAN
+interface. The iPad page does not play the Windows experience video.
+
 The active firmware source is
 `firmware/unified/nature_touch_unified/`. The retained `firmware/releases/`
 directories are historical snapshots and build from their own sources; they
@@ -74,6 +79,7 @@ Electron Mock lifecycle and media tests:
 $env:NATURE_TOUCH_UI_RESULTS_DIR = Join-Path $env:TEMP "NatureTouch-UI-$([guid]::NewGuid().ToString('N'))"
 npm run test:ui
 npm run test:audio
+npm run test:ipad
 ```
 
 Both commands run the same current lifecycle fixture. It replaces the SerialPort
@@ -99,6 +105,35 @@ The current package version is `0.1.0` and is not a release designation.
 baseline; it does not identify this v3.0 prototype build. The P0-05 firmware
 source and configuration audit is in
 [`docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md`](docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md).
+
+## Optional iPad Safari controller
+
+The LAN server is disabled unless all four required environment variables are
+set before starting the Windows app:
+
+- `NATURE_TOUCH_IPAD_BIND_ADDRESS`: an assigned private IPv4 (RFC1918) or IPv6
+  ULA address on the Windows host. Wildcard, loopback, public, and unassigned
+  addresses are rejected.
+- `NATURE_TOUCH_IPAD_TLS_KEY_PATH` and `NATURE_TOUCH_IPAD_TLS_CERT_PATH`:
+  absolute paths to the TLS private key and certificate. The certificate must
+  be trusted by the iPad and include the selected LAN address in its SAN.
+- `NATURE_TOUCH_IPAD_PASSWORD`: a non-empty password of at least 12 characters.
+  Supply it through the launch environment or a protected secret manager; do
+  not put it in source, the web page, or command-line arguments.
+
+`NATURE_TOUCH_IPAD_PORT` optionally selects a port from 1024 through 65535
+(default `8443`). The service uses HTTPS only, exact Host/Origin checks,
+HttpOnly/Secure/SameSite session cookies, in-memory expiring sessions, bounded
+login attempts, CSP, and revisioned Server-Sent Events. It has no CORS endpoint,
+database, firmware route, public bind, or direct hardware path. Use the printed
+`https://<configured-lan-address>:<port>/` URL in Safari. A self-signed
+certificate must first be installed and trusted on the iPad; otherwise Safari
+will correctly reject the connection.
+
+In PowerShell, set the address, TLS file paths, and password in the process
+environment before launching `npm run dev`. Avoid saving the password in a
+script or shell history. The integration tests use a test-only certificate and
+an assigned private interface; they do not represent Safari trust testing.
 
 ## Hardware boundary
 

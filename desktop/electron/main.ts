@@ -11,6 +11,7 @@ import {
 } from './experience-command-dispatcher'
 import { ExperienceCoordinator, type ExperienceCoordinatorServices } from './experience-coordinator'
 import { createExperienceIpcHandlers } from './experience-ipc-handlers'
+import { createIpadLanServer, readIpadLanServerConfig } from './ipad-lan-server'
 import { IPC_CHANNELS, type RuntimeInfo } from '../shared/ipc'
 import { EXPERIENCE_IDS, type ExperienceId } from '../shared/experience-definitions'
 import type { ExperienceSnapshot as DeviceExperienceSnapshot } from '../shared/experience-control-protocol'
@@ -126,6 +127,7 @@ const exhibitionLifecycleController = new ExhibitionLifecycleController(
   mockExperienceController,
 )
 let mainWindow: BrowserWindow | undefined
+let ipadLanServer: ReturnType<typeof createIpadLanServer> | undefined
 let serialPortOwner: 'diagnostic' | 'firmware' | null = null
 let serialPortOperationQueue: Promise<void> = Promise.resolve()
 
@@ -434,7 +436,7 @@ function createWindow(): void {
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
   localEventLog = new LocalEventLog(join(app.getPath('userData'), 'logs'), {
     appCommit: __NATURE_TOUCH_GIT_COMMIT__,
     hardwareConfigVersion: HARDWARE_CONFIG_VERSION,
@@ -442,11 +444,23 @@ app.whenReady().then(() => {
   logEvent('app.started', { phase: app.getVersion() })
   installContentSecurityPolicy()
   registerIpcHandlers()
+  const ipadConfig = readIpadLanServerConfig(process.env, undefined, app.getAppPath())
+  if (ipadConfig) {
+    ipadLanServer = createIpadLanServer(ipadConfig, exhibitionLifecycleController)
+    const port = await ipadLanServer.start()
+    const host = ipadConfig.bindAddress.includes(':')
+      ? `[${ipadConfig.bindAddress}]`
+      : ipadConfig.bindAddress
+    console.info(`iPad exhibition UI available at https://${host}:${port}/`)
+  }
   createWindow()
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
+}).catch(error => {
+  console.error('Application startup failed:', error)
+  app.quit()
 })
 
 app.on('window-all-closed', () => {
@@ -463,9 +477,11 @@ app.on('before-quit', (event) => {
   logEvent('app.shutdown_requested')
   const isConnected = serialService.getState().state !== 'disconnected' ||
     firmwareService.getSnapshot().connectionState !== 'disconnected'
-  const cleanup = isConnected
-    ? Promise.allSettled([serialService.disconnect(), firmwareService.disconnect()])
-    : Promise.resolve([])
+  const cleanupOperations = [
+    ...(isConnected ? [serialService.disconnect(), firmwareService.disconnect()] : []),
+    ...(ipadLanServer ? [ipadLanServer.close()] : []),
+  ]
+  const cleanup = Promise.allSettled(cleanupOperations)
   void cleanup
     .then((results) => {
       for (const result of results) {

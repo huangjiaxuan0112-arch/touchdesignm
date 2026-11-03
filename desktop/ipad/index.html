@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-Hans">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#f5f4ef">
+    <title>Nature Touch</title>
+    <link rel="stylesheet" href="/ipad.css">
+    <script src="/ipad.js" defer></script>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <p class="eyebrow">NATURE TOUCH · EXHIBITION</p>
+        <h1>自然触感</h1>
+        <p class="subtitle">选择一种自然体验</p>
+      </header>
+
+      <section id="login-panel" class="panel login-panel" aria-labelledby="login-title">
+        <h2 id="login-title">展览控制登录</h2>
+        <p>请输入 Windows 展览主机提供的访问密码。</p>
+        <form id="login-form">
+          <label for="password">访问密码</label>
+          <input id="password" name="password" type="password" autocomplete="current-password"
+            minlength="12" required>
+          <button class="primary-button" type="submit">登录</button>
+        </form>
+        <p id="login-error" class="error" role="alert"></p>
+      </section>
+
+      <section id="control-panel" class="panel control-panel" hidden aria-labelledby="control-title">
+        <div class="status-heading">
+          <div>
+            <p class="eyebrow">EXHIBITION STATUS</p>
+            <h2 id="control-title">当前状态</h2>
+          </div>
+          <span id="connection" class="connection" role="status">正在连接</span>
+        </div>
+        <div class="phase-card" aria-live="polite">
+          <span id="phase" class="phase">READY</span>
+          <p id="phase-description"></p>
+        </div>
+        <p id="selection-error" class="error" role="alert"></p>
+        <div class="experience-grid" aria-label="选择体验">
+          <button class="experience-button" type="button" data-experience="WIND">
+            <span class="experience-name">WIND</span><span class="experience-title">风</span>
+          </button>
+          <button class="experience-button" type="button" data-experience="WAVE">
+            <span class="experience-name">WAVES</span><span class="experience-title">波</span>
+          </button>
+          <button class="experience-button" type="button" data-experience="BUBBLE">
+            <span class="experience-name">BUBBLES</span><span class="experience-title">泡</span>
+          </button>
+        </div>
+        <p class="footnote">体验开始后，请等待其自然完成。</p>
+      </section>
+
+      <footer>WINDOWS MOCK CONTROL · 不直接连接设备</footer>
+    </main>
+  </body>
+</html>

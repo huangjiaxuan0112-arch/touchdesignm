@@ -123,6 +123,9 @@ export default function ExhibitionHome() {
       exhibitionRevision.current = snapshot.revision
       setExhibitionState(snapshot)
       if (snapshot.experienceId) setActiveExperienceId(snapshot.experienceId)
+      if (snapshot.phase === 'STARTING' && snapshot.experienceId) {
+        setDialogExperienceId(current => current ?? snapshot.experienceId)
+      }
       if (snapshot.phase === 'READY' || snapshot.phase === 'FAULT') {
         setSwitchingExperienceId(null)
       }

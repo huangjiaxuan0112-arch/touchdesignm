@@ -23,6 +23,7 @@ export class ExhibitionLifecycleController {
   private readonly listeners = new Set<Listener>()
   private cancelTimer: (() => void) | undefined
   private pendingStart: { operationId: string; promise: ReturnType<ExperienceCoordinator['start']> } | undefined
+  private pendingSelection = false
   private activeOperationId: string | null = null
   private internalStopOperationId: string | null = null
   private deviceCompleted = false
@@ -46,17 +47,34 @@ export class ExhibitionLifecycleController {
   }
 
   async select(command: Extract<ExperienceCommand, { type: 'SELECT' }>) {
-    this.assertPhase('READY', 'An exhibition experience is already in progress or cooling down.')
-    const acknowledgement = await this.coordinator.select(command)
-    if (acknowledgement.accepted) {
-      this.deviceCompleted = false
-      this.activeOperationId = null
-      this.transition('STARTING', command.experienceId, null, null)
+    if (this.pendingSelection) {
+      throw new Error('Another exhibition selection is already pending.')
     }
-    return acknowledgement
+    this.assertPhase('READY', 'An exhibition experience is already in progress or cooling down.')
+    this.pendingSelection = true
+    try {
+      const acknowledgement = await this.coordinator.select(command)
+      if (acknowledgement.accepted) {
+        if (this.snapshot.phase !== 'READY') {
+          throw new Error('Exhibition selection was invalidated by a device fault.')
+        }
+        this.deviceCompleted = false
+        this.activeOperationId = null
+        this.transition('STARTING', command.experienceId, null, null)
+      }
+      return acknowledgement
+    } catch (error) {
+      if (this.snapshot.phase !== 'FAULT') this.fail('SELECT_FAILED')
+      throw error
+    } finally {
+      this.pendingSelection = false
+    }
   }
 
   start(command: Extract<ExperienceCommand, { type: 'START' }>) {
+    if (this.pendingSelection) {
+      return Promise.reject(new Error('An exhibition selection is still pending.'))
+    }
     if (this.pendingStart) {
       if (this.pendingStart.operationId === command.operationId) return this.pendingStart.promise
       return Promise.reject(new Error('Another exhibition START is already pending.'))
