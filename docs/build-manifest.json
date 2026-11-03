@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "app": {
+    "gitCommit": "02528785b2bd65b20009c5a791e483cb38b6b4e2",
+    "branch": "refactor/phase0-technical-debt",
+    "version": "0.1.0",
+    "buildType": "phase0-refactor",
+    "builtAt": "2026-11-03T09:46:34.434Z",
+    "buildTool": "electron-vite",
+    "release": false
+  },
+  "firmware": {
+    "activeSource": "firmware/unified/nature_touch_unified/",
+    "sourceFilesSha256": {
+      "nature_touch_unified.ino": "c564eaefbf4a302d5dd491672baae5db0566deac3c60a56a5952a08bc0f036e9",
+      "experience-timelines.h": "8e1dac9eff6e246b88b7a99c54baeeed096bdc4ae5e780780fed7649ab69cbff",
+      "actuator-driver.h": "177f7dd40ee5e636c8b24546e5bff41c91d372d2e02cc1fe0373aed7069488d4",
+      "real-actuators.h": "2bd11f3b79be88cd36fe00bcd01183b24e6f13ec1e07a1ec0d1403da77994156",
+      "simulated-actuators.h": "d3fae82cc3393ae08105d3f424f9b31a77cd1309926d81d78c2ad423e61355ba"
+    },
+    "hexSha256": null,
+    "flashedAt": null,
+    "flashVerified": false,
+    "identityReported": null,
+    "hardwareConfigVersion": "UNVERSIONED",
+    "validationStatus": "unverified",
+    "offlineSimulation": {
+      "result": "PASS",
+      "checksPassed": 11,
+      "target": "Arduino Nano / ATmega328P, simulated in AVR8js",
+      "hexSha256": "1033aa59cb4b8ec21a5ac913c1fca5c813978c3dffab171875e53847858d708b",
+      "flashBytes": 10770,
+      "sramBytes": 1379,
+      "timelineMs": {
+        "WIND": 24000,
+        "WAVE": 25000,
+        "BUBBLE": 27420
+      }
+    }
+  },
+  "environment": {
+    "os": "Windows",
+    "node": "v24.19.0",
+    "npm": "12.2.0",
+    "electron": "33.4.11",
+    "typescript": "5.9.3",
+    "arduinoCli": "1.5.1",
+    "arduinoAvrCore": "1.8.8",
+    "avrGcc": "7.3.0-atmel3.6.1-arduino7",
+    "avr8js": "0.21.1"
+  },
+  "hardware": {
+    "normalLaunchRealOutputEnabled": false,
+    "restrictedOpenAirBenchProfilePreserved": true,
+    "physicalComAccessed": false,
+    "firmwareUploaded": false,
+    "physicalActuatorStarted": false,
+    "validationStatus": "unverified"
+  },
+  "tests": {
+    "result": "PASS",
+    "results": {
+      "npm run typecheck": "PASS",
+      "npm test": {
+        "result": "PASS",
+        "passed": 118,
+        "failed": 0
+      },
+      "npm run build": "PASS",
+      "npm run test:ui": {
+        "result": "PASS",
+        "checksPassed": 10,
+        "checksFailed": 0,
+        "realSerialEnumerationOrOpen": false
+      },
+      "npm run test:audio": {
+        "result": "PASS",
+        "modes": [
+          "WIND",
+          "WAVE",
+          "BUBBLE"
+        ],
+        "actualPlaybackAndCleanup": true,
+        "mockNaturalCompletion": true
+      },
+      "npm run test:firmware": {
+        "result": "PASS",
+        "unifiedAvr8jsChecksPassed": 11,
+        "realDriverSafetyChecksPassed": 5,
+        "realSelectorCompilationBlocked": true,
+        "gpioEdges": 0,
+        "gpioOutputModeTransitions": 0
+      },
+      "git diff --check": "PASS"
+    },
+    "evidenceDirectoryOutsideRepository": "D:\\touch\\NatureTouch-Phase0-Evidence\\P006-P007-Commit-0252878-20261103-174601-49145168"
+  },
+  "limitations": [
+    "This manifest describes a development build, not a packaged exhibition release.",
+    "The offline simulation HEX is not a released or flashed firmware image.",
+    "Physical configuration, pressure safety, device identity, and real actuator behavior remain unverified."
+  ]
+}
