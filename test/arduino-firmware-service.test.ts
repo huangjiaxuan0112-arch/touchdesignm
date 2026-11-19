@@ -466,16 +466,16 @@ test('loss of simulation-only status disarms and closes the session', async () =
   } finally { await service.disconnect() }
 })
 
-test('STOP waits for an in-flight heartbeat then confirms STOPPED', async () => {
+test('one-shot run sends no periodic STATUS_QUERY and STOP remains available', async () => {
   const { transport, commands } = createFirmwareTransport({ responseDelayMs: 20 })
-  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0, heartbeatIntervalMs: 10 })
+  const service = new ArduinoFirmwareService(transport, { readOnly: true, allowSimulationTest: true, connectSettleMs: 0 })
   try {
     await service.connect('COM3')
     await service.armSimulationTest(true, true)
     await service.selectExperience('s1', 'WIND')
     await service.start('s2', 'op1')
-    await new Promise((resolve) => setTimeout(resolve, 15))
-    assert.equal(JSON.parse(commands.at(-1)!).type, 'STATUS_QUERY')
+    await new Promise((resolve) => setTimeout(resolve, 40))
+    assert.deepEqual(commands.map(line => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY', 'STATUS_QUERY', 'SELECT', 'START'])
     assert.equal((await service.stop('s3', 'op1')).accepted, true)
     assert.equal(service.getSnapshot().experience.state, 'IDLE')
   } finally { await service.disconnect() }
@@ -509,7 +509,6 @@ function createService(
     commandTimeoutMs?: number
     identifyTimeoutMs?: number
     connectSettleMs?: number
-    heartbeatIntervalMs?: number
     maxLineLength?: number
     onDiagnostic?: (event: import('../desktop/electron/serial/firmware-session-controller').FirmwareDiagnosticEvent) => void
   } = {},
@@ -518,7 +517,6 @@ function createService(
     connectSettleMs: options.connectSettleMs ?? 0,
     commandTimeoutMs: options.commandTimeoutMs ?? 100,
     identifyTimeoutMs: options.identifyTimeoutMs ?? options.commandTimeoutMs ?? 100,
-    heartbeatIntervalMs: options.heartbeatIntervalMs ?? 10_000,
     maxLineLength: options.maxLineLength,
     onDiagnostic: options.onDiagnostic,
   })
@@ -979,40 +977,19 @@ test('recovers from a communication fault only after explicit reconnect and neve
   await service.disconnect()
 })
 
-test('status heartbeat faults a running host session when replies stop arriving', async () => {
-  let shouldDropStatus = false
-  const { transport } = createFirmwareTransport({ dropStatus: () => shouldDropStatus })
-  const diagnostics: import('../desktop/electron/serial/firmware-session-controller').FirmwareDiagnosticEvent[] = []
-  const service = createService(transport, {
-    commandTimeoutMs: 15,
-    heartbeatIntervalMs: 5,
-    onDiagnostic: event => diagnostics.push(event),
-  })
-  const originalConsoleError = console.error
-  console.error = () => undefined
+test('USB loss during a one-shot run faults the host view without sending polling traffic', async () => {
+  const { transport, commands } = createFirmwareTransport()
+  const service = createService(transport)
   try {
     await service.connect('COM3')
     await service.selectExperience('r1', 'WIND')
     await service.start('r2', 'o1')
-    shouldDropStatus = true
-    await new Promise((resolve) => setTimeout(resolve, 40))
+    await new Promise((resolve) => setTimeout(resolve, 30))
+    assert.deepEqual(commands.map(line => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY', 'SELECT', 'START'])
+    transport.lastConnection!.disconnect()
     assert.equal(service.getSnapshot().connectionState, 'faulted')
-    assert.equal(service.getSnapshot().experience.faultCode, 'COMMUNICATION_FAILURE')
-    assert.ok(diagnostics.some(event =>
-      event.stage === 'request.timeout' &&
-      event.command === 'STATUS_QUERY' &&
-      event.source === 'heartbeat' &&
-      typeof event.elapsedMs === 'number' &&
-      event.elapsedMs >= 15,
-    ))
-    assert.ok(diagnostics.some(event =>
-      event.stage === 'session.failure' &&
-      event.responseType === 'COMMUNICATION_FAILURE' &&
-      event.detail?.includes('Timed out waiting for STATUS_QUERY'),
-    ))
-  } finally {
-    console.error = originalConsoleError
-  }
+    assert.equal(service.getSnapshot().experience.faultCode, 'CONNECTION_LOST')
+  } finally { await service.disconnect() }
 })
 
 test('serial transport errors are logged separately from response timeouts', async () => {
@@ -1022,7 +999,6 @@ test('serial transport errors are logged separately from response timeouts', asy
     readOnly: false,
     allowRealHardwareControl: true,
     connectSettleMs: 0,
-    heartbeatIntervalMs: 60_000,
     onDiagnostic: event => diagnostics.push(event),
   })
   try {
@@ -1120,7 +1096,7 @@ test('real identity connects for status but cannot use simulation arming or defa
 test('read-only real connection permits explicit STOP of a confirmed active operation', async () => {
   const { transport, commands } = createFirmwareTransport(realIdentity)
   const starter = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
-    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+    connectSettleMs: 0})
   await starter.connect('COM3')
   await starter.selectExperience('prepare', 'WIND')
   await starter.start('preparestart', 'active')
@@ -1140,7 +1116,7 @@ test('read-only real connection permits explicit STOP of a confirmed active oper
 test('explicit real deployment permission enables protocol commands without automatic START', async () => {
   const { transport, commands } = createFirmwareTransport(realIdentity)
   const service = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
-    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+    connectSettleMs: 0})
   try {
     await service.connect('COM3')
     assert.deepEqual(commands.map(line => JSON.parse(line).type), ['IDENTIFY', 'STATUS_QUERY'])
@@ -1154,7 +1130,7 @@ test('explicit real deployment permission enables protocol commands without auto
 test('runtime RESET closes real session and never replays START or reconnects', async () => {
   const { transport, commands } = createFirmwareTransport(realIdentity)
   const service = new ArduinoFirmwareService(transport, { readOnly: false, allowRealHardwareControl: true,
-    connectSettleMs: 0, heartbeatIntervalMs: 10000 })
+    connectSettleMs: 0})
   try {
     await service.connect('COM3')
     await service.selectExperience('realselect', 'WIND')
@@ -1248,12 +1224,12 @@ test('real v2 STATUS without progress is normalized for snapshots and subscriber
 for (const code of ['HOST_TIMEOUT','ACTUATOR_FAULT']) test('async real firmware '+code+' latches immediately and ignores late COMPLETED',async()=>{
  const fixture=createFirmwareTransport(realIdentity)
  const diagnostics: import('../desktop/electron/serial/firmware-session-controller').FirmwareDiagnosticEvent[] = []
- const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0,heartbeatIntervalMs:60000,onDiagnostic:event=>diagnostics.push(event)})
+ const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0,onDiagnostic:event=>diagnostics.push(event)})
  try{
   await service.connect('COM3');await service.selectExperience('faultselect','WIND');await service.start('faultstart','faultop')
   const count=fixture.commands.length
   fixture.transport.lastConnection!.emitData(JSON.stringify({type:'EVENT',name:'FAULT',operationId:'faultop',code})+'\n')
-  assert.equal(service.getSnapshot().experience.state,'FAULT','must consume asynchronous FAULT before the next status heartbeat')
+  assert.equal(service.getSnapshot().experience.state,'FAULT','must consume asynchronous FAULT before the next status poll')
   assert.equal(service.getSnapshot().experience.faultCode,code)
   assert.ok(diagnostics.some(event=>event.stage==='firmware.fault'&&event.detail===code))
   assert.equal(diagnostics.some(event=>event.stage==='session.failure'),false,'firmware-reported FAULT is distinct from a host communication failure')
@@ -1271,7 +1247,7 @@ for(const command of ['SELECT','START'] as const)test('same-frame '+command+' AC
    connection.emitData(JSON.stringify({type:'ACK',command,requestId:request.requestId,accepted:true,state:command==='START'?'RUNNING':'IDLE',...(command==='START'?{operationId:request.operationId}:{})})+'\n'+JSON.stringify({type:'EVENT',name:'FAULT',code:'ACTUATOR_FAULT',operationId:request.operationId??''})+'\n')
   }
  }})
- const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0,heartbeatIntervalMs:60000})
+ const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0})
  try{
   await service.connect('COM3');if(command==='START')await service.selectExperience('prerequisite','WIND');armed=true
   await assert.rejects(command==='SELECT'?service.selectExperience('ackfaultselect','WIND'):service.start('ackfaultstart','ackfaultop'),/fault/i)
@@ -1293,7 +1269,7 @@ test('concurrent explicit STATUS reads serialize and preserve each request ID',a
 })
 test('late STATUS response cannot clear an asynchronous real firmware fault',async()=>{
  const fixture=createFirmwareTransport({...realIdentity,responseDelayMs:20})
- const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0,heartbeatIntervalMs:60000})
+ const service=new ArduinoFirmwareService(fixture.transport,{readOnly:false,allowRealHardwareControl:true,connectSettleMs:0})
  try{
   await service.connect('COM3');await service.selectExperience('statusfaultsel','WIND');await service.start('statusfaultstart','statusfaultop')
   const pending=service.queryStatus('old-status')

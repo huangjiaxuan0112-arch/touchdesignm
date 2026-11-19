@@ -40,7 +40,6 @@ export interface FirmwareServiceOptions {
   commandTimeoutMs?: number
   identifyTimeoutMs?: number
   connectSettleMs?: number
-  heartbeatIntervalMs?: number
   maxLineLength?: number
   onDiagnostic?: (event: FirmwareDiagnosticEvent) => void
 }
@@ -57,7 +56,6 @@ export interface FirmwareDiagnosticEvent {
     | 'protocol.invalid'
     | 'firmware.fault'
     | 'session.failure'
-    | 'heartbeat.error'
     | 'response.frame'
     | 'protocol.rx-aborted'
   command?: ExperienceCommandName
@@ -100,8 +98,6 @@ export class FirmwareSessionController {
   private readonly commandTimeoutMs: number
   private readonly identifyTimeoutMs: number
   private readonly connectSettleMs: number
-  private readonly heartbeatIntervalMs: number
-  private heartbeatTimer: ReturnType<typeof setTimeout> | undefined
   private cleanupPromise: Promise<void> = Promise.resolve()
   private readonly readOnly: boolean
   private readonly allowSimulationTest: boolean
@@ -120,7 +116,6 @@ export class FirmwareSessionController {
     this.commandTimeoutMs = options.commandTimeoutMs ?? 1500
     this.identifyTimeoutMs = options.identifyTimeoutMs ?? 5000
     this.connectSettleMs = options.connectSettleMs ?? 2500
-    this.heartbeatIntervalMs = options.heartbeatIntervalMs ?? 1000
     this.lineDecoder = new FirmwareJsonlDecoder(options.maxLineLength ?? 384)
   }
 
@@ -159,7 +154,6 @@ export class FirmwareSessionController {
     this.wireProbe.reset()
     this.recentTx = []
     this.session.beginConnection()
-    this.clearHeartbeat()
     this.updateSnapshot({
       ...INITIAL_FIRMWARE_CONTROL_SNAPSHOT,
       connectionState: 'connecting',
@@ -287,7 +281,6 @@ export class FirmwareSessionController {
     this.connection = undefined
     this.detachListeners()
     this.session.clearRun()
-    this.clearHeartbeat()
     const experience = this.snapshot.experience
     const interrupted = experience.state === 'RUNNING' || experience.state === 'STOPPING'
     this.updateSnapshot({
@@ -387,7 +380,6 @@ export class FirmwareSessionController {
         progress: 0,
         faultCode: null,
       })
-      this.scheduleHeartbeat()
     }
     return response
   }
@@ -396,10 +388,9 @@ export class FirmwareSessionController {
     this.requireIdentified()
     this.validateRequestId(requestId)
     this.validateOperationId(operationId)
-    this.clearHeartbeat()
     if (this.statusRequest) await this.statusRequest
     if (this.session.remoteState !== 'RUNNING') throw new Error('Firmware has no confirmed running operation to stop.')
-    this.clearHeartbeat()
+
     return this.sendRequest<ExperienceAcknowledgement>(
       'STOP',
       { operationId, requestId },
@@ -479,7 +470,7 @@ export class FirmwareSessionController {
     apply = true,
     source = 'explicit',
   ): Promise<ExperienceStatusResponse> {
-    while (this.statusRequest) await this.statusRequest // Preserve request correlation while serializing explicit and heartbeat reads.
+    while (this.statusRequest) await this.statusRequest // Preserve request correlation while serializing explicit reads.
     const request = this.sendRequest<ExperienceStatusResponse>(
       'STATUS_QUERY',
       { requestId },
@@ -760,7 +751,6 @@ export class FirmwareSessionController {
     if (pending.waitForStop) {
       pending.acknowledgement = acknowledgement
       this.session.setRemoteState('STOPPING')
-      this.clearHeartbeat()
       this.updateExperience({ ...this.snapshot.experience, state: 'STOPPING' })
       return
     }
@@ -777,7 +767,6 @@ export class FirmwareSessionController {
       const code = typeof message.code === 'string' && message.code ? message.code : 'FIRMWARE_FAULT'
       this.session.setRemoteState('FAULT')
       this.session.clearRun()
-      this.clearHeartbeat()
       this.updateSnapshot({ ...this.snapshot,
         experience: { ...this.snapshot.experience, state: 'FAULT', faultCode: code },
         lastEvent: 'FAULT', lastError: 'Firmware fault: ' + code })
@@ -791,7 +780,6 @@ export class FirmwareSessionController {
       if (this.snapshot.experience.state !== 'RUNNING' || message.operationId !== this.snapshot.experience.operationId) return
       this.session.setRemoteState('COMPLETED')
       this.session.clearRun()
-      this.clearHeartbeat()
       this.updateExperience({
         ...this.snapshot.experience,
         state: 'COMPLETED',
@@ -813,7 +801,6 @@ export class FirmwareSessionController {
       this.clearPending()
       this.session.setRemoteState('IDLE')
       this.session.clearRun()
-      this.clearHeartbeat()
       this.updateExperience({
         ...this.snapshot.experience,
         state: 'IDLE',
@@ -843,7 +830,6 @@ export class FirmwareSessionController {
     if (this.snapshot.experience.state === 'FAULT' && snapshot.state !== 'FAULT') return // Only verified explicit RECOVER/reconnect may clear a fault.
     this.session.setRemoteState(snapshot.state)
     this.session.setRunStartedAt(snapshot.state === 'RUNNING' ? Date.now() : undefined)
-    if (snapshot.state !== 'RUNNING') this.clearHeartbeat()
     this.updateExperience(snapshot)
   }
 
@@ -872,7 +858,6 @@ export class FirmwareSessionController {
     this.lineDecoder.reset()
     this.wireProbe.reset()
     this.session.clearRun()
-    this.clearHeartbeat()
     this.updateSnapshot({
       ...this.snapshot,
       connectionState: 'faulted',
@@ -906,7 +891,6 @@ export class FirmwareSessionController {
     this.connection = undefined
     this.detachListeners()
     this.session.clearRun()
-    this.clearHeartbeat()
     this.updateSnapshot({
       ...this.snapshot,
       connectionState: 'faulted',
@@ -924,41 +908,6 @@ export class FirmwareSessionController {
     if (!this.pendingRequest) return
     clearTimeout(this.pendingRequest.timeout)
     this.pendingRequest = undefined
-  }
-
-  private scheduleHeartbeat(): void {
-    this.clearHeartbeat()
-    this.heartbeatTimer = setTimeout(() => {
-      this.heartbeatTimer = undefined
-      if (
-        !this.connection ||
-        this.snapshot.experience.state !== 'RUNNING' ||
-        this.snapshot.connectionState !== 'connected'
-      ) return
-      if (this.pendingRequest) {
-        this.scheduleHeartbeat()
-        return
-      }
-      void this.readStatus(this.nextRequestId(), true, 'heartbeat')
-        .then(() => {
-          if (this.snapshot.experience.state === 'RUNNING') this.scheduleHeartbeat()
-        })
-        .catch((error: unknown) => {
-          this.emitDiagnostic({
-            stage: 'heartbeat.error',
-            command: 'STATUS_QUERY',
-            source: 'heartbeat',
-            detail: this.errorMessage(error),
-          })
-          console.error('Firmware status heartbeat failed:', this.errorMessage(error))
-        })
-    }, this.heartbeatIntervalMs)
-  }
-
-  private clearHeartbeat(): void {
-    if (!this.heartbeatTimer) return
-    clearTimeout(this.heartbeatTimer)
-    this.heartbeatTimer = undefined
   }
 
   private rejectPending(error: Error): void {

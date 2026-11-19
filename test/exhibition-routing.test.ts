@@ -39,7 +39,7 @@ test('real exhibition gate rejects unknown, mismatched, disconnected or unreview
 test('exhibition identity matches the active 30s firmware and rejects historical firmware',()=>{
  const header=readFileSync(fileURLToPath(new URL('../firmware/unified/nature_touch_unified/firmware-version.h',import.meta.url)),'utf8')
  assert.equal(EXHIBITION_FIRMWARE_TARGET.firmwareVersion,'3.0.0-30s')
- assert.equal(EXHIBITION_FIRMWARE_TARGET.timelineVersion,'30s-2bcc1b95')
+ assert.equal(EXHIBITION_FIRMWARE_TARGET.timelineVersion,'30s-4292e376')
  assert.ok(header.includes('"'+EXHIBITION_FIRMWARE_TARGET.sourceRevision+'"'))
  assert.match(header,/NATURE_TOUCH_FIRMWARE_VERSION "3\.0\.0-30s"/)
  const candidate=header.match(/NATURE_TOUCH_TIMELINE_VERSION "(30s-[a-f0-9]{8})"/)

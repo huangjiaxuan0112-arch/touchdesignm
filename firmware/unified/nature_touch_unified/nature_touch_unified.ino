@@ -13,9 +13,10 @@ const uint8_t REQUEST_CACHE_SIZE = 4;
 const uint8_t OPERATION_HISTORY_SIZE = 4;
 const uint8_t PROTOCOL_VERSION = 2;
 const unsigned long BAUD_RATE = 9600;
-// Existing Windows STATUS_QUERY heartbeats normally arrive every 1000 ms.
-// This is a protocol lease, not an electrical USB disconnect detector.
+// Host silence never interrupts an accepted one-shot operation. Idle actuator
+// preparation still expires after this interval; active runs have a local cap.
 const uint32_t HOST_TIMEOUT_MS = 5000;
+const uint32_t RUN_TIMEOUT_MARGIN_MS = 1000;
 
 char inputLine[LINE_BUFFER_SIZE];
 uint8_t inputLength = 0;
@@ -471,8 +472,10 @@ void enterFault(const char* code) {
 void processSafety(uint32_t now) {
   if (Actuators::faultLatched && controlState != STATE_FAULT) {
     enterFault("ACTUATOR_FAULT");
-  } else if (runActive && static_cast<uint32_t>(now - lastHostContactAt) >= HOST_TIMEOUT_MS) {
-    enterFault("HOST_TIMEOUT");
+  } else if (runActive &&
+             static_cast<uint32_t>(now - operationStartedAt) >=
+                 static_cast<uint32_t>(currentDuration()) + RUN_TIMEOUT_MARGIN_MS) {
+    enterFault("RUN_TIMEOUT");
   }
   if (!runActive && Actuators::preparingReady() &&
       uint32_t(now - lastHostContactAt) >= HOST_TIMEOUT_MS) {

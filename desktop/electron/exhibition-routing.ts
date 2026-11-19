@@ -17,7 +17,7 @@ export function audienceEvents(event: ExperienceEvent, selectedMode: ExperienceM
   return [event, { ...event, snapshot: audienceSnapshot(event.snapshot) }]
 }
 
-export const EXHIBITION_FIRMWARE_TARGET = { firmwareVersion: '3.0.0-30s', timelineVersion: '30s-2bcc1b95', sourceRevision: '5356f28e' } as const
+export const EXHIBITION_FIRMWARE_TARGET = { firmwareVersion: '3.0.0-30s', timelineVersion: '30s-4292e376', sourceRevision: '5356f28e' } as const
 export function firmwareExhibitionReady(state: FirmwareControlSnapshot, deploymentReviewed: boolean): boolean {
   return deploymentReviewed && state.identified && state.protocolVersion === 2 && state.connectionState === 'connected' &&
     state.firmware === 'nature-touch-unified-real' && state.hardwareOutputsEnabled === true &&

@@ -199,7 +199,7 @@ const stateIs = (state) => `document.querySelector('[aria-label="Arduino status"
     require('../desktop/node_modules/tsx/dist/cjs/index.cjs')
     const { ArduinoFirmwareService } = require('../desktop/electron/serial/arduino-firmware-service.ts')
     const { NativeSerialTransport } = require('../desktop/electron/serial/native-serial-transport.ts')
-    probe = new ArduinoFirmwareService(new NativeSerialTransport(), { readOnly: true, allowSimulationTest: true, heartbeatIntervalMs: 15000 })
+    probe = new ArduinoFirmwareService(new NativeSerialTransport(), { readOnly: true, allowSimulationTest: true })
     await probe.connect(portPath)
     await probe.armSimulationTest(true, true)
     await probe.selectExperience('leaseSelect', 'WIND')

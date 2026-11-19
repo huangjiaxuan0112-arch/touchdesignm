@@ -57,7 +57,7 @@ function http(port:number,path:string,body?:unknown,cookie?:string){
 }
 async function system(version: string = EXHIBITION_FIRMWARE_TARGET.firmwareVersion,approved=true){
   const clock=new Clock(),board=device(version)
-  const service=new ArduinoFirmwareService(board.transport,{readOnly:!approved,allowRealHardwareControl:approved,connectSettleMs:0,heartbeatIntervalMs:60000})
+  const service=new ArduinoFirmwareService(board.transport,{readOnly:!approved,allowRealHardwareControl:approved,connectSettleMs:0})
   await service.connect('OFFLINE_NANO')
   const mock=new MockExperienceController({clock})
   const adapter={

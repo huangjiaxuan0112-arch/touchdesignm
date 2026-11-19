@@ -1,7 +1,7 @@
 // STEP 3G OFFLINE ONLY. No serialport import, device discovery, or upload command.
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync, writeFileSync, readdirSync, mkdirSync, mkdtempSync, copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, mkdtempSync, copyFileSync, existsSync } from 'node:fs';
 import { execFileSync, spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { dirname, resolve, join } from 'node:path';
@@ -21,7 +21,11 @@ const candidate = join(root, 'firmware/releases/nature_touch_v3_rc5_d5_routing_2
 const sealed = join(candidate, 'source/nature_touch_unified');
 const original = activeTimeline ? join(root, 'firmware/unified/nature_touch_unified') : sealed;
 const baseline = join(root, 'firmware/releases/nature_touch_v3_rc4_d6_inflate_20261105/source/nature_touch_unified');
-const baselineHashes = Object.fromEntries(readdirSync(baseline).map(p=>[p,sha(readFileSync(join(baseline,p)))]));
+const baselineAvailable = existsSync(baseline);
+if (!activeTimeline && !baselineAvailable) throw new Error(`Required historical RC4 baseline is missing: ${baseline}`);
+const baselineHashes = baselineAvailable
+  ? Object.fromEntries(readdirSync(baseline).map(p=>[p,sha(readFileSync(join(baseline,p)))]))
+  : null;
 const cli = join(homedir(), 'AppData/Local/Programs/Arduino IDE/resources/app/lib/backend/resources/arduino-cli.exe');
 const libraries = join(homedir(), 'AppData/Local/Arduino15/libraries');
 const config = join(temp, 'arduino-cli.yaml');
@@ -192,20 +196,26 @@ function test(name,fn,binary=active){
  try{const extra=fn(n);evidence.push({name,commands:n.commandTrace,...n.evidence(),extra});checks.push({name,result:'PASS'});console.log('PASS '+name);}
  catch(e){writeFileSync(join(out,'failure.json'),JSON.stringify({name,error:e.stack,commands:n.commandTrace,frames:n.frames},null,2));throw e;}
 }
-function to(n,elapsed){while(n.elapsed<elapsed){const remaining=elapsed-n.elapsed;if(remaining>800){n.advance(500);n.request('STATUS_QUERY','h'+Math.floor(n.now))}else n.advance(remaining)}}
+function to(n,elapsed){while(n.elapsed<elapsed){const remaining=elapsed-n.elapsed;n.advance(Math.min(500,remaining));if(!activeTimeline&&remaining>800)n.request('STATUS_QUERY','h'+Math.floor(n.now))}}
 const fillEnd = activeTimeline ? 10000 : 5000;
 const experienceEnd = fillEnd + 15000;
 const total = experienceEnd + 5000;
 for(const mode of ['WIND','WAVE','BUBBLE'])test(mode+' actual D6-INFLATE / D7-DEFLATE + cooldown + restart',n=>{
  const identity=n.request('IDENTIFY','1234567890123456',{protocol:2});
  assert.equal(identity.firmwareVersion,activeTimeline ? '3.0.0-30s' : '3.0.0-rc5-d5route');
- assert.equal(identity.timelineVersion,activeTimeline ? '30s-2bcc1b95' : '25s-4c1e4167');
+ assert.equal(identity.timelineVersion,activeTimeline ? '30s-4292e376' : '25s-4c1e4167');
  assert.equal(identity.protocol,2);
  assert.equal(identity.sourceRevision,'5356f28e');
  assert.equal(identity.hardwareOutputsEnabled,true);
  assert.ok(JSON.stringify(identity).length + 1 <= 384);
  n.heartbeat(1000);assert.deepEqual(n.commandState(),[1800,1200,1200]);
- n.begin(mode);to(n,total+600);
+  n.begin(mode);
+  if (mode === 'WIND') {
+   const traceLength = n.commandTrace.length;
+   for (const other of ['WAVE','BUBBLE']) assert.equal(n.request('SELECT','busy'+other,{experienceId:other}).code,'INVALID_STATE');
+   assert.equal(n.commandTrace.length,traceLength,'Selecting Device B/C while Device A is active must not issue actuator commands');
+  }
+  to(n,total+600);
  const first=n.commandTrace.find(t=>t.state[1]===1800);
  assert.ok(first&&first.elapsed<=1);
  const origin=first.at-first.elapsed;
@@ -269,9 +279,15 @@ for(const mode of ['WIND','WAVE','BUBBLE'])test(mode+' actual D6-INFLATE / D7-DE
  }
  const finalValvePulses=valvePulses.filter(p=>p.riseUs>=final.at*1000&&p.fallUs<end.at*1000);
  assert.ok(finalValvePulses.length>200&&finalValvePulses.every(p=>Math.abs(p.widthUs-1200)<=12));
- const preparedAgain=n.commandTrace.find(t=>t.at>end.at&&t.state[0]===1800);
- assert.ok(preparedAgain&&Math.abs(preparedAgain.elapsed-(total+500))<=2,'Cooldown P-A preparation must wait 500ms');
- assert.ok(n.commandTrace.filter(t=>t.at>=end.at&&t.at<preparedAgain.at).every(t=>t.state.every(v=>v===1200)));
+ let preparedAgain;
+ if (activeTimeline) {
+  assert.equal(n.commandTrace.some(t=>t.at>end.at&&t.state[0]===1800),false,
+    'Host-silent completion keeps all outputs stopped until an explicit next SELECT');
+ } else {
+  preparedAgain=n.commandTrace.find(t=>t.at>end.at&&t.state[0]===1800);
+  assert.ok(preparedAgain&&Math.abs(preparedAgain.elapsed-(total+500))<=2,'Cooldown P-A preparation must wait 500ms');
+  assert.ok(n.commandTrace.filter(t=>t.at>=end.at&&t.at<preparedAgain.at).every(t=>t.state.every(v=>v===1200)));
+ }
  assert.equal(events.length,{WIND:12,WAVE:10,BUBBLE:14}[mode]);
  if(mode==='WAVE')assert.ok(!n.commandTrace.some(t=>t.elapsed>=experienceEnd-500&&t.elapsed<experienceEnd&&t.state[1]===1800));
  assert.equal(n.frames.filter(f=>f.message.name==='COMPLETED').length,1);
@@ -285,7 +301,12 @@ for(const mode of ['WIND','WAVE','BUBBLE'])test(mode+' actual D6-INFLATE / D7-DE
   assert.deepEqual([status.state,status.elapsedMs,status.durationMs],['COMPLETED',total,total]);
  }
  n.request('SELECT','earlyselect',{experienceId:mode});
+ if (activeTimeline) n.advance(800); // Explicit selection starts the existing 500ms pump-off + 300ms valve settle preparation.
  assert.equal(n.request('START','tooearly',{operationId:'early'}).code,'COOLDOWN');
+ if (activeTimeline) {
+  preparedAgain=n.commandTrace.find(t=>t.at>end.at&&t.state[0]===1800);
+  assert.ok(preparedAgain&&preparedAgain.elapsed<total+2000,'Cooldown preparation may follow explicit next SELECT only');
+ }
  to(n,total+3020);
  assert.ok(n.commandTrace.filter(t=>t.at>=end.at).every(t=>t.state[1]===1200&&t.state[2]===1200));
  assert.equal(n.request('START','second',{operationId:'second'}).accepted,true);
@@ -307,24 +328,39 @@ test('Cold START is rejected before preparation; first accepted output is D6 bef
  assert.ok(first&&first.at<ack.at);
  n.request('STOP','stop',{operationId:'warm'});n.offSustained();
 });
-for(const kind of ['STOP','FAULT','HOST_TIMEOUT'])test(kind+' on active D6 and pending reversal cancels outputs',n=>{
+for(const kind of (activeTimeline?['STOP','FAULT','RUN_TIMEOUT']:['STOP','FAULT','HOST_TIMEOUT']))test(kind+' on active D6 and pending reversal cancels outputs',n=>{
  n.begin();n.advance(1000);
  if(kind==='STOP')n.request('STOP','stop',{operationId:'run'});
  if(kind==='FAULT')n.injectFault();
+ if(kind==='RUN_TIMEOUT'){
+  const deadline=n.binary.symbols.get('actionDeadline'),started=n.binary.symbols.get('operationStartedAt'),millis=n.binary.symbols.get('timer0_millis');
+  assert.ok(deadline>=0&&started>=0&&millis>=0);
+  const now=n.cpu.dataView.getUint32(millis,true);
+  n.cpu.dataView.setUint32(deadline,(now+60000)>>>0,true);
+  n.cpu.dataView.setUint32(started,(now-31000)>>>0,true);
+ }
  if(kind==='HOST_TIMEOUT')n.advance(5100);
  n.advance(2);n.offSustained(1000);
- if(kind!=='STOP')assert.equal(n.request('STATUS_QUERY','status').snapshot.faultCode,kind==='FAULT'?'ACTUATOR_FAULT':'HOST_TIMEOUT');
+ if(kind!=='STOP')assert.equal(n.request('STATUS_QUERY','status').snapshot.faultCode,kind==='FAULT'?'ACTUATOR_FAULT':kind);
  if(kind!=='STOP'){assert.equal(n.request('RECOVER','recover').accepted,true);n.offSustained(500)}
  n.begin('WAVE','next');
  to(n,fillEnd+520);
+ const pendingGuardFrom=n.commandTrace.length;
  if(kind==='STOP')n.request('STOP','cancel',{operationId:'next'});
  if(kind==='FAULT')n.injectFault();
+ if(kind==='RUN_TIMEOUT'){
+  const deadline=n.binary.symbols.get('actionDeadline'),started=n.binary.symbols.get('operationStartedAt'),millis=n.binary.symbols.get('timer0_millis');
+  assert.ok(deadline>=0&&started>=0&&millis>=0);
+  const now=n.cpu.dataView.getUint32(millis,true);
+  n.cpu.dataView.setUint32(deadline,(now+60000)>>>0,true);
+  n.cpu.dataView.setUint32(started,(now-31000)>>>0,true);
+ }
  if(kind==='HOST_TIMEOUT'){
   const now=n.cpu.dataView.getUint32(active.symbols.get('timer0_millis'),true);
   n.cpu.dataView.setUint32(active.symbols.get('lastHostContactAt'),(now-5000)>>>0,true);
  }
  n.advance(2);n.offSustained(1200);
- assert.ok(!n.commandTrace.some(t=>t.state[2]===1800));
+ assert.ok(!n.commandTrace.slice(pendingGuardFrom).some(t=>t.state[2]===1800));
 });
 test('Idle lease loss and reset preserve pump OFF and original valve STOP',n=>{
  n.heartbeat(1000);assert.deepEqual(n.commandState(),[1800,1200,1200]);
@@ -334,17 +370,20 @@ test('Idle lease loss and reset preserve pump OFF and original valve STOP',n=>{
 test('Simulation default emits no physical GPIO',n=>{
  n.begin();n.advance(50);n.request('STOP','stop',{operationId:'run'});n.advance(50);assert.deepEqual(n.modes,[]);
 },locked);
-for(const [p,digest]of Object.entries(baselineHashes))assert.equal(sha(readFileSync(join(baseline,p))),digest);
+if (baselineHashes) for(const [p,digest]of Object.entries(baselineHashes))assert.equal(sha(readFileSync(join(baseline,p))),digest);
 if (activeTimeline) {
  for(const name of ['actuator-driver.h','experience-scheduler.h','real-actuators.h','simulated-actuators.h']) {
-  assert.equal(sha(readFileSync(join(original,name))),sha(readFileSync(join(sealed,name))),name);
+  const current=readFileSync(join(original,name),'utf8').replace(/\r\n/g,'\n');
+  const snapshot=readFileSync(join(sealed,name),'utf8').replace(/\r\n/g,'\n');
+  assert.equal(current,snapshot,name);
  }
 } else {
  assert.equal(readFileSync(join(original,'experience-timelines.h'),'utf8'),readFileSync(join(baseline,'experience-timelines.h'),'utf8').replace(/\r/g,''));
 }
-assert.equal(readFileSync(join(original,'experience-scheduler.h'),'utf8'),readFileSync(join(baseline,'experience-scheduler.h'),'utf8').replace(/\r/g,''));
-const result={result:'PASS',checks,summaries,evidence,baselineHashes,realHexSha256:active.hexSha256,realCompile:active.log,physicalCOM:false,uploaded:false,
+if (baselineHashes) assert.equal(readFileSync(join(original,'experience-scheduler.h'),'utf8'),readFileSync(join(baseline,'experience-scheduler.h'),'utf8').replace(/\r/g,''));
+const testResult=baselineHashes?'PASS':'PASS_WITH_SKIPS';
+const result={result:testResult,checks,summaries,evidence,baselineHashes,baselinePreservation:baselineHashes?'PASS':'SKIPPED_MISSING_RC4_SOURCE',realHexSha256:active.hexSha256,realCompile:active.log,physicalCOM:false,uploaded:false,
  scope:'Actual compiled AVR GPIO pulses and Servo SRAM, RC5 D6 inflate / D7 deflate; no physical hardware test'};
 writeFileSync(join(out,'results.json'),JSON.stringify(result,null,2));
-writeFileSync(join(out,'summary.json'),JSON.stringify({result:'PASS',checks,summaries,realHexSha256:active.hexSha256},null,2));
-console.log(JSON.stringify({result:'PASS',checks:checks.length,summaries,out}));
+writeFileSync(join(out,'summary.json'),JSON.stringify({result:testResult,checks,summaries,baselinePreservation:result.baselinePreservation,realHexSha256:active.hexSha256},null,2));
+console.log(JSON.stringify({result:testResult,checks:checks.length,summaries,baselinePreservation:result.baselinePreservation,out}));

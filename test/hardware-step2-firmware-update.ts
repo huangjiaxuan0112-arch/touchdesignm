@@ -42,7 +42,7 @@ async function main() {
       return connection
     },
   }
-  const service = new ArduinoFirmwareService(audited, { readOnly: true, allowSimulationTest: true, heartbeatIntervalMs: 15000 })
+  const service = new ArduinoFirmwareService(audited, { readOnly: true, allowSimulationTest: true })
   const pause = (ms: number) => new Promise((done) => setTimeout(done, ms))
   try {
     evidence.ports = await service.listPorts()

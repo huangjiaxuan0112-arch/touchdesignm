@@ -146,13 +146,8 @@ class VirtualNano {
     assert.equal(this.request('START', `${prefix}start`, { operationId }).accepted, true);
     this.waitFor(() => this.intent === 'INFLATING');
   }
-  runWithHeartbeat(ms) {
-    const end = this.now + ms;
-    let id = 0;
-    while (this.now < end) {
-      this.advance(Math.min(1200, end - this.now));
-      this.request('STATUS_QUERY', `hb${id++}`);
-    }
+  runOffline(ms) {
+    this.advance(ms);
   }
   verifyDisabled() {
     assert.deepEqual(this.enabledPins, [], 'D5/D6/D7 were configured as outputs');
@@ -255,7 +250,7 @@ for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
     assert.equal(identity.hardwareOutputsEnabled, false);
     assert.equal(n.intent, 'STOPPED');
     n.start(mode, `run${mode}`);
-    n.runWithHeartbeat(EXPERIENCE_DEFINITIONS[mode].totalDurationMs + 600);
+    n.runOffline(EXPERIENCE_DEFINITIONS[mode].totalDurationMs + 600);
     const status = n.request('STATUS_QUERY', 'final');
     assert.equal(status.snapshot.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
     assert.equal(status.snapshot.durationMs, 30000);
@@ -278,7 +273,7 @@ for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
     const timing = intentions.map((r, i) => ({ actionIndex: i, nominalMs: expected[i].atMs,
       actualMs: r.recordedAtMs - intentions[0].recordedAtMs,
       latenessMs: r.recordedAtMs - intentions[0].recordedAtMs - expected[i].atMs }));
-    assert.ok(timing.every(t => Math.abs(t.latenessMs) <= 2), 'Logical action deadline missed by more than 2 ms under heartbeats');
+    assert.ok(timing.every(t => Math.abs(t.latenessMs) <= 2), 'Logical action deadline missed by more than 2 ms without host polling');
     assert.ok(Math.abs(stopped.recordedAtMs - intentions[0].recordedAtMs - EXPERIENCE_DEFINITIONS[mode].totalDurationMs) <= 2,
       'Logical completion deadline missed by more than 2 ms');
     completions.push({ mode, nominalMs: EXPERIENCE_DEFINITIONS[mode].totalDurationMs,
@@ -289,9 +284,9 @@ for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
       assert.equal(intentions.length, expected.length);
       assert.deepEqual(intentions.slice(0, 2).map(r => r.intent), ['INFLATING', 'DEFLATING']);
       assert.ok(Math.abs(intentions[1].recordedAtMs - intentions[0].recordedAtMs - expected[1].atMs) <= 2);
-      n.runWithHeartbeat(2100);
+      n.runOffline(2100);
       n.start('BUBBLE', 'repeatB', 'r');
-      n.runWithHeartbeat(EXPERIENCE_DEFINITIONS.BUBBLE.totalDurationMs + 600);
+      n.runOffline(EXPERIENCE_DEFINITIONS.BUBBLE.totalDurationMs + 600);
       assert.equal(n.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
       assert.equal(n.frames.filter(f => f.message.name === 'COMPLETED').length, 2);
       const repeat = n.frames.filter(f => f.message.name === 'ACTUATOR_EVENT' && f.message.operationId === 'repeatB').map(f => f.message);
@@ -338,24 +333,34 @@ test('duplicate and conflicting commands do not add actuator actions', () => {
   assert.equal(n.request('START', 'reuse', { operationId: 'dup' }).code, 'OPERATION_ID_REUSED');
   evidence.push(n.evidence());
 });
-test('host protocol silence faults, cancels, and requires explicit RECOVER', () => {
-  const n = new VirtualNano('host-timeout'); n.start('WIND', 'timeout');
-  n.advance(5600); assert.equal(n.state, 'FAULT'); assert.equal(n.intent, 'STOPPED');
-  const first = n.outputRecords.find(r => r.intent === 'INFLATING'), stop = n.outputRecords.at(-1);
-  assert.ok(stop.recordedAtMs - first.recordedAtMs >= 5000 && stop.recordedAtMs - first.recordedAtMs < 5010);
-  const count = n.outputRecords.length; n.advance(3000); noActionsAfter(n, count);
-  const status = n.request('STATUS_QUERY', 'status'); assert.equal(status.snapshot.faultCode, 'HOST_TIMEOUT');
-  assert.equal(n.request('START', 'blocked', { operationId: 'blocked' }).code, 'INVALID_STATE');
-  ack(n, 'RECOVER', 'recover'); assert.equal(n.intent, 'STOPPED'); assert.equal(n.state, 'IDLE');
-  assert.equal(n.request('START', 'noSelect', { operationId: 'new' }).code, 'NO_EXPERIENCE_SELECTED');
-  n.advance(1000); noActionsAfter(n, count);
+test('host silence completes one-shot autonomously, stops outputs, and honors cooldown', () => {
+  const n = new VirtualNano('autonomous-silence'); n.start('WIND', 'offline');
+  // Allow the final 9600-baud EVENT frame to finish serializing with no poll.
+  n.runOffline(30200);
+  assert.equal(n.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
+  assert.equal(n.frames.filter(f => f.message.name === 'COMPLETED').length, 1,
+    `COMPLETED event missing: frames=${JSON.stringify(n.frames.slice(-8))}, partial=${JSON.stringify(n.line)}, pending=${n.cpu.data[address('completionEventPending')]}`);
+  assert.equal(n.request('START', 'cooldown', { operationId: 'tooSoon' }).code, 'COOLDOWN');
+  n.advance(2950);
+  assert.equal(n.request('SELECT', 'afterCooldown', { experienceId: 'WAVE' }).accepted, true);
+  assert.equal(n.state, 'IDLE');
+  const count = n.outputRecords.length; n.advance(1000); noActionsAfter(n, count);
   evidence.push(n.evidence());
 });
-test('invalid traffic does not keep a running host lease alive', () => {
+test('local run limit faults safely if the scheduled timeline stalls', () => {
+  const n = new VirtualNano('run-timeout'); n.start('WAVE', 'stalled');
+  n.cpu.dataView.setUint32(address('actionDeadline'), Math.floor(n.now + 60_000), true);
+  n.runOffline(31_100);
+  assert.equal(n.state, 'FAULT'); assert.equal(n.intent, 'STOPPED');
+  assert.ok(n.frames.some(f => f.message.name === 'FAULT' && f.message.code === 'RUN_TIMEOUT'));
+  const count = n.outputRecords.length; n.advance(3000); noActionsAfter(n, count);
+  evidence.push(n.evidence());
+});
+test('invalid traffic does not interrupt a running one-shot', () => {
   const n = new VirtualNano('invalid-traffic'); n.start('WAVE', 'noise');
   for (let i = 0; i < 6; i++) { n.advance(850); n.request('NOPE', `bad${i}`); }
-  assert.equal(n.state, 'FAULT'); assert.equal(n.intent, 'STOPPED');
-  assert.equal(n.request('STATUS_QUERY', 'status').snapshot.faultCode, 'HOST_TIMEOUT');
+  n.runOffline(24900);
+  assert.equal(n.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
   evidence.push(n.evidence());
 });
 test('simulated actuator fault stops immediately; recovery cannot resume old work', () => {
