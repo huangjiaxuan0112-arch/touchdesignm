@@ -1,0 +1,30 @@
+// Isolated real Electron test: no serial I/O, no port 8443, no visible windows.
+import {spawn} from 'node:child_process';
+import {createServer} from 'node:net';
+import {networkInterfaces} from 'node:os';
+import {readFileSync,writeFileSync,mkdirSync,existsSync} from 'node:fs';
+import {resolve,join} from 'node:path';
+import assert from 'node:assert/strict';
+import '../tools/official-rc5/verify.mjs';
+const root=resolve(import.meta.dirname,'..');
+const bind=Object.values(networkInterfaces()).flat().find(i=>i?.family==='IPv4'&&!i.internal&&existsSync(join(root,'.local/ipad-lan/cert-'+i.address+'.pem')))?.address;
+if(!bind)throw Error('No interface with existing TLS test certificate');
+const dir=join(root,'.validation/official-rc5-'+new Date().toISOString().replace(/[:.]/g,'-'));mkdirSync(dir,{recursive:true});
+const fixture=join(root,'test/official-rc5-startup-fixture.cjs');
+let source=readFileSync(join(root,'test/rc3-final-startup.cjs'),'utf8');
+assert.ok(source.includes("desktop/out-exhibition-rc3"));
+source=source.replace("desktop/out-exhibition-rc3","desktop/out-exhibition-rc5-valve")
+ .replace("mode==='startup-rc2'?'RC2':'RC3'","'RC5'");
+writeFileSync(fixture,source);
+const port=await new Promise((done,reject)=>{const s=createServer();s.once('error',reject);s.listen(0,bind,()=>{const p=s.address().port;s.close(()=>done(p));});});
+assert.notEqual(port,8443);
+const env={...process.env,RC3_RUNTIME_EVIDENCE:dir,RC3_TEST_BIND:bind,RC3_TEST_PORT:String(port)};
+delete env.NODE_PATH;delete env.ELECTRON_RUN_AS_NODE;delete env.ELECTRON_RENDERER_URL;
+const child=spawn(join(root,'desktop/node_modules/electron/dist/electron.exe'),[fixture,'--test-mode=startup'],{cwd:root,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
+let stdout='',stderr='';child.stdout.on('data',b=>stdout+=b);child.stderr.on('data',b=>stderr+=b);
+const code=await new Promise((done,reject)=>{child.once('error',reject);child.once('exit',done)});
+writeFileSync(join(dir,'stdout.log'),stdout);writeFileSync(join(dir,'stderr.log'),stderr);
+const result=JSON.parse(readFileSync(join(dir,'result.json'),'utf8'));
+if(code!==0||result.result!=='PASS')throw Error(JSON.stringify({code,errors:result.errors,dir}));
+assert.equal(result.startupStatus.release,'RC5');assert.equal(result.startupStatus.firmwareVersion,'3.0.0-rc5-d5route');
+console.log(JSON.stringify({result:'PASS',evidence:dir,checks:result.checks,https:result.https,serialAccess:false,port8443Used:false,physicalWindowsVisible:false}));

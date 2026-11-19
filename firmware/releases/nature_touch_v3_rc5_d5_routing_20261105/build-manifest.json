@@ -1,0 +1,465 @@
+{
+  "status": "DEPLOYED_READONLY_VERIFIED_NO_START",
+  "deployment": "firmware/releases/nature_touch_v3_rc5_d5_routing_20261105/onsite-logs/RC5-deployment-result.json",
+  "version": "3.0.0-rc5-d5route",
+  "generatedAt": "2026-11-05T10:55:01.504Z",
+  "protocolVersion": 2,
+  "timelineVersion": "25s-4c1e4167",
+  "sourceRevision": "5356f28e",
+  "firmware": {
+    "hex": "real/nature_touch_unified.ino.hex",
+    "sha256": "3f7a1edf383dab1d11367aa39d30c445f2e5b367b52fc5767fd6d74326c5e09c",
+    "flashBytes": 12942,
+    "sramBytes": 1423,
+    "sramRemainingBytes": 625,
+    "sourceHashes": {
+      "actuator-driver.h": "76078824c6e9be9d34890ec6cc6616f176b322a86d98ea54044bdf901f0640b9",
+      "experience-scheduler.h": "46ad99d3070126e7693f82be0ef7bdada7cb9c540e6d6dc6267eeb8e12ac101b",
+      "experience-timelines.h": "8bd277fffb38ac38d3c6ccb13dde7ee104687784885e57b7e46fdee286319e08",
+      "firmware-version.h": "ed95a6097e4ddc5e61a8fc8a43b38fba96208f5021c94a643290e4a226fb3f8e",
+      "nature_touch_unified.ino": "7fb2d842ebf1ef1806489558163050d1957ef46212020e0f697125c106505159",
+      "real-actuators.h": "bdf7bb997129370d9bc7e1d57a20e4605e0d423d435140ad0c5f86f69768dd68",
+      "simulated-actuators.h": "9911ca5bf8824b871dc0dca98c31dcd8eb297d969d3aac3d807cbd52dce32211"
+    }
+  },
+  "main": {
+    "path": "desktop/out-exhibition-rc5-valve",
+    "entry": "main/bootstrap.cjs",
+    "version": "3.0.0-rc5-d5route",
+    "sha256": "fe81638aed3eb500ea8c3e76a6d7a1f98864660ae77094f9b8e1f133ec04bff9",
+    "checksummedFiles": 24
+  },
+  "routing": {
+    "inflate": {
+      "D5Us": 1800,
+      "D6Us": 1800,
+      "D7Us": 1200,
+      "path": "P-A; R blocked"
+    },
+    "deflate": {
+      "D5Us": 1200,
+      "D6Us": 1200,
+      "D7Us": 1800,
+      "path": "A-R; P blocked"
+    },
+    "stop": {
+      "D5Us": 1200,
+      "D6Us": 1200,
+      "D7Us": 1200,
+      "pressureZeroProven": false
+    },
+    "ready": {
+      "D5Us": 1800,
+      "D6Us": 1200,
+      "D7Us": 1200,
+      "physicalResidualSafetyProven": false
+    }
+  },
+  "verification": {
+    "avrScenarios": 12,
+    "avrResult": "PASS",
+    "relatedSoftwareTests": 6,
+    "softwareResult": "PASS",
+    "typeScriptNoEmit": "PASS",
+    "actualAvrGpioAndServo": true,
+    "physicalHardwareTest": false,
+    "guiHttpsCommunicationRetested": true
+  },
+  "timing": [
+    {
+      "mode": "WIND",
+      "firstOnPin": 6,
+      "firstOnElapsedMs": 1,
+      "initialD6NominalMs": 4999,
+      "finalOnPin": 7,
+      "finalD7StartMs": 20801,
+      "finalD7NominalMs": 4199,
+      "d6OnMs": 7851.041749999998,
+      "d7OnMs": 8345.373125,
+      "completedMs": 25000,
+      "cooldownMs": 3000,
+      "decodedHandover": [
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801329.375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800108.0625
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801329.875
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800112.125
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801330.4375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800115.1875
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801337.9375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800113.625
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801329.375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800114.6875
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801333
+        }
+      ],
+      "finalValveUs": 1200,
+      "finalValvePulseCount": 210,
+      "valveChanges": [
+        {
+          "elapsed": 5500,
+          "valveUs": 1200,
+          "offBeforeMs": 499.5339374999985
+        },
+        {
+          "elapsed": 7100,
+          "valveUs": 1800,
+          "offBeforeMs": 500.53199999999924
+        },
+        {
+          "elapsed": 8501,
+          "valveUs": 1200,
+          "offBeforeMs": 501.03581250000025
+        },
+        {
+          "elapsed": 10050,
+          "valveUs": 1800,
+          "offBeforeMs": 499.5349375000005
+        },
+        {
+          "elapsed": 11201,
+          "valveUs": 1200,
+          "offBeforeMs": 500.5334375000002
+        },
+        {
+          "elapsed": 13200,
+          "valveUs": 1800,
+          "offBeforeMs": 500.53118749999885
+        },
+        {
+          "elapsed": 14901,
+          "valveUs": 1200,
+          "offBeforeMs": 500.53199999999924
+        },
+        {
+          "elapsed": 16750,
+          "valveUs": 1800,
+          "offBeforeMs": 499.531062500002
+        },
+        {
+          "elapsed": 18300,
+          "valveUs": 1200,
+          "offBeforeMs": 500.03531250000015
+        },
+        {
+          "elapsed": 19450,
+          "valveUs": 1800,
+          "offBeforeMs": 499.5326249999998
+        },
+        {
+          "elapsed": 20500,
+          "valveUs": 1200,
+          "offBeforeMs": 501.0322500000002
+        }
+      ],
+      "cooldownFillPathAtMs": 25500,
+      "physicalValveRoutingAcceptance": false
+    },
+    {
+      "mode": "WAVE",
+      "firstOnPin": 6,
+      "firstOnElapsedMs": 1,
+      "initialD6NominalMs": 4999,
+      "finalOnPin": 7,
+      "finalD7StartMs": 20300,
+      "finalD7NominalMs": 4700,
+      "d6OnMs": 10098.6959375,
+      "d7OnMs": 8499.384062499998,
+      "completedMs": 25000,
+      "cooldownMs": 3000,
+      "decodedHandover": [
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801330.875
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800115.5
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801328.375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800118.125
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801328.375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800115.625
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801332.3125
+        }
+      ],
+      "finalValveUs": 1200,
+      "finalValvePulseCount": 235,
+      "valveChanges": [
+        {
+          "elapsed": 5500,
+          "valveUs": 1200,
+          "offBeforeMs": 499.5329375000001
+        },
+        {
+          "elapsed": 7500,
+          "valveUs": 1800,
+          "offBeforeMs": 499.5348749999994
+        },
+        {
+          "elapsed": 10000,
+          "valveUs": 1200,
+          "offBeforeMs": 501.03568749999977
+        },
+        {
+          "elapsed": 12000,
+          "valveUs": 1800,
+          "offBeforeMs": 500.53399999999965
+        },
+        {
+          "elapsed": 14500,
+          "valveUs": 1200,
+          "offBeforeMs": 499.53349999999773
+        },
+        {
+          "elapsed": 16500,
+          "valveUs": 1800,
+          "offBeforeMs": 500.0321249999979
+        },
+        {
+          "elapsed": 19000,
+          "valveUs": 1200,
+          "offBeforeMs": 500.5298124999972
+        }
+      ],
+      "cooldownFillPathAtMs": 25500,
+      "physicalValveRoutingAcceptance": false
+    },
+    {
+      "mode": "BUBBLE",
+      "firstOnPin": 6,
+      "firstOnElapsedMs": 1,
+      "initialD6NominalMs": 4999,
+      "finalOnPin": 7,
+      "finalD7StartMs": 20801,
+      "finalD7NominalMs": 4199,
+      "d6OnMs": 8450.578624999996,
+      "d7OnMs": 6148.222562499999,
+      "completedMs": 25000,
+      "cooldownMs": 3000,
+      "decodedHandover": [
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801336.375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800114.1875
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801332.3125
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800116.125
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801333.3125
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800114.125
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801328.9375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800112.625
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801328.9375
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800117.125
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801331.875
+        },
+        {
+          "from": 7,
+          "to": 6,
+          "gapUs": 800117.0625
+        },
+        {
+          "from": 6,
+          "to": 7,
+          "gapUs": 801332.4375
+        }
+      ],
+      "finalValveUs": 1200,
+      "finalValvePulseCount": 210,
+      "valveChanges": [
+        {
+          "elapsed": 5500,
+          "valveUs": 1200,
+          "offBeforeMs": 499.5335625000007
+        },
+        {
+          "elapsed": 6581,
+          "valveUs": 1800,
+          "offBeforeMs": 500.53231249999953
+        },
+        {
+          "elapsed": 7900,
+          "valveUs": 1200,
+          "offBeforeMs": 500.0326249999998
+        },
+        {
+          "elapsed": 9115,
+          "valveUs": 1800,
+          "offBeforeMs": 499.5306249999994
+        },
+        {
+          "elapsed": 10600,
+          "valveUs": 1200,
+          "offBeforeMs": 500.53387499999917
+        },
+        {
+          "elapsed": 11567,
+          "valveUs": 1800,
+          "offBeforeMs": 499.535249999999
+        },
+        {
+          "elapsed": 12750,
+          "valveUs": 1200,
+          "offBeforeMs": 499.53381249999984
+        },
+        {
+          "elapsed": 14032,
+          "valveUs": 1800,
+          "offBeforeMs": 499.53381250000166
+        },
+        {
+          "elapsed": 15600,
+          "valveUs": 1200,
+          "offBeforeMs": 500.03350000000137
+        },
+        {
+          "elapsed": 16702,
+          "valveUs": 1800,
+          "offBeforeMs": 500.53268749999916
+        },
+        {
+          "elapsed": 18050,
+          "valveUs": 1200,
+          "offBeforeMs": 499.53143750000163
+        },
+        {
+          "elapsed": 19152,
+          "valveUs": 1800,
+          "offBeforeMs": 500.03349999999773
+        },
+        {
+          "elapsed": 20500,
+          "valveUs": 1200,
+          "offBeforeMs": 501.0343749999993
+        }
+      ],
+      "cooldownFillPathAtMs": 25500,
+      "physicalValveRoutingAcceptance": false
+    }
+  ],
+  "baseline": {
+    "release": "nature_touch_v3_rc4_d6_inflate_20261105",
+    "hexSha256": "e133cbb9cfa4f56b379c7b562ba4a4679e880af4db1eee00e8ad595be580aa1d",
+    "mainSha256": "fdb4e9c496a86784946cdb392b7f11234da03333dff2da2072f2076d11d7f81b",
+    "sourceHashes": {
+      "actuator-driver.h": "76078824c6e9be9d34890ec6cc6616f176b322a86d98ea54044bdf901f0640b9",
+      "experience-scheduler.h": "46ad99d3070126e7693f82be0ef7bdada7cb9c540e6d6dc6267eeb8e12ac101b",
+      "experience-timelines.h": "8bd277fffb38ac38d3c6ccb13dde7ee104687784885e57b7e46fdee286319e08",
+      "firmware-version.h": "82f5b56432f9bea65e082f1a5054e9f2c4acc9d8e58d7dede5014e913d63679c",
+      "nature_touch_unified.ino": "758dfabccad746f8d69fe787a77f67485486e845bd2950235948a1b7c7da7f98",
+      "real-actuators.h": "c8449e6ae0ead1a76f865244de8ddae40dc9db3621c44b391103024f4e8a4e59",
+      "simulated-actuators.h": "9911ca5bf8824b871dc0dca98c31dcd8eb297d969d3aac3d807cbd52dce32211"
+    },
+    "untouched": true
+  },
+  "limitations": [
+    "No COM access, upload, real START, load supply restoration or running Main modification.",
+    "Simulation confirms control outputs only; installed valve position, gas flow and residual pressure are not measured.",
+    "STOP/FAULT at 1200us routes A to stopped suction pump; it is not guaranteed venting.",
+    "Cooldown reselects P-A after 500ms pump OFF and waits 300ms before prepared; residual trapping or reverse flow needs onsite validation.",
+    "25s schedule unchanged; final D7 ON remains 4.2/4.7/4.2s and WAVE 500ms fill remains guard-limited."
+  ]
+}

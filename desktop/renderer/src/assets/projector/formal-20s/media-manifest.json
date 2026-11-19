@@ -1,0 +1,39 @@
+{
+  "version": "step4a-silent-20s",
+  "audioPolicy": "User confirmed silent sources are correct; no separate audio",
+  "files": {
+    "WIND": {
+      "source": "C:/Users/20676/Downloads/WIND_20s_%E9%9D%99%E9%9F%B3%E6%8A%95%E5%BD%B1 (6).mp4",
+      "file": "desktop\\renderer\\src\\assets\\projector\\formal-20s\\wind-20s-silent.mp4",
+      "bytes": 4844523,
+      "sha256": "f316ca8d1c376e97918b1a0d06a519b0f095f8b2ba1e7645aa768b033ec7cbfc",
+      "durationMs": 20000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    },
+    "WAVE": {
+      "source": "C:/Users/20676/Downloads/WAVE_20s_%E9%9D%99%E9%9F%B3%E6%8A%95%E5%BD%B1.mp4",
+      "file": "desktop\\renderer\\src\\assets\\projector\\formal-20s\\wave-20s-silent.mp4",
+      "bytes": 40011381,
+      "sha256": "b6af9900d3377c38c9ef23498fdfc7a1f8cdf30e8b15d4b4793871631a83f0cb",
+      "durationMs": 20000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    },
+    "BUBBLE": {
+      "source": "C:/Users/20676/Downloads/BUBBLE_20s_%E9%9D%99%E9%9F%B3%E6%8A%95%E5%BD%B1 (4).mp4",
+      "file": "desktop\\renderer\\src\\assets\\projector\\formal-20s\\bubble-20s-silent.mp4",
+      "bytes": 17278388,
+      "sha256": "8d09061579774948d7ef6f766ada049f39ffb901e9679d793d694a6f907cbb22",
+      "durationMs": 20000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    }
+  }
+}

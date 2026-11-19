@@ -1,0 +1,20 @@
+#include <Arduino.h>
+#include "real-actuators.h"
+volatile uint32_t operationStartedAt = 1000;
+uint8_t step = 0;
+void setup() {
+  RealActuators::initializeOutputs();
+  Serial.begin(9600);
+  Serial.println(F("{\"name\":\"READY\"}"));
+}
+void loop() {
+  const uint32_t now = millis();
+  RealActuators::service(now);
+  if (step == 0 && now >= 1000) { RealActuators::inflate(); step++; }
+  if (step == 1 && now >= 2000) { RealActuators::inflate(); step++; }
+  if (step == 2 && now >= 2200) { RealActuators::inflate(); step++; }
+  if (step == 3 && now >= 3000) { RealActuators::deflate(); step++; }
+  if (step == 4 && now >= 3500) { RealActuators::deflate(); step++; }
+  if (step == 5 && now >= 4400) { RealActuators::deflate(); step++; }
+  if (step == 6 && now >= 5000) { RealActuators::stopAll(); step++; }
+}

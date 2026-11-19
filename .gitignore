@@ -34,3 +34,7 @@ docs/evidence/**/default-build/
 *.a
 *.bin
 *.cache
+
+# Onsite generated private TLS material
+/.local/
+/.handover-backups/

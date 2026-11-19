@@ -46,6 +46,10 @@ bool deflate() {
 void stopAll() {
   record(STOPPED);
 }
+inline void allowReadyPreparation() {}
+inline bool preparedStartReady() { return false; }
+inline bool readyPreparationRequired() { return false; }
+inline bool preparingReady() { return false; }
 inline void service(uint32_t) {} // common interface; simulation has no handover
 } // namespace ActuatorSimulation
 

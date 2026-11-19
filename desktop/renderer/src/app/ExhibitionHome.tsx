@@ -1,13 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, useReducedMotion } from 'motion/react'
 import { ExperiencePlayer } from './ExperiencePlayer'
-import { stopActiveExperience } from './stop-active-experience'
-import { startSelectedExperience } from './start-selected-experience'
+import { PreparingPage } from './PreparingPage'
+import { selectExperienceIntent, startSelectedExperience } from './start-selected-experience'
 import type { ExperienceSnapshot } from '../../../shared/experience-control-protocol'
-import { EXPERIENCE_DEFINITIONS, type ExperienceId } from '../../../shared/experience-definitions'
+import type { ExhibitionLifecycleSnapshot } from '../../../shared/exhibition-lifecycle'
+import { EXPERIENCE_DISPLAY_NAMES, type ExperienceId } from '../../../shared/experience-definitions'
 import { NatureVideoCard } from './NatureVideoCard'
-import { ArduinoConnection } from '../device/ArduinoConnection'
-import { INITIAL_FIRMWARE_CONTROL_SNAPSHOT } from '../../../shared/firmware-control-protocol'
 import windPoster from '../assets/wind/wind-poster.png'
 import wavePoster from '../assets/waves/waves-poster.png'
 import bubblePoster from '../assets/bubbles/bubbles-poster.png'
@@ -17,9 +16,6 @@ import wavesPreviewVideo from '../assets/waves/waves-preview.mp4'
 import wavesExperienceVideo from '../assets/waves/waves-experience.mp4'
 import bubblesPreviewVideo from '../assets/bubbles/bubbles-preview.mp4'
 import bubblesExperienceVideo from '../assets/bubbles/bubbles-experience.mp4'
-import windAudio from '../../../../卒研music/wind/东风声.mp3'
-import waveAudio from '../../../../卒研music/ocean waves/海浪声.mp3'
-import bubbleAudio from '../../../../卒研music/bubbles/voicebosch-bubbles-171716.mp3'
 
 const cards: Array<{
   id: ExperienceId
@@ -28,38 +24,34 @@ const cards: Array<{
   description: string
   poster: string
   previewVideo?: string
-  experienceVideo?: string
-  experienceAudio: string
+  experienceVideo: string
 }> = [
   {
     id: 'WIND',
-    label: 'WIND',
+    label: EXPERIENCE_DISPLAY_NAMES.WIND,
     title: '風',
     description: 'ゆっくり、やさしく流れる。',
     poster: windPoster,
     previewVideo: windPreviewVideo,
     experienceVideo: windExperienceVideo,
-    experienceAudio: windAudio,
   },
   {
     id: 'WAVE',
-    label: 'WAVES',
+    label: EXPERIENCE_DISPLAY_NAMES.WAVE,
     title: '波',
     description: '寄せては返す、穏やかなリズム。',
     poster: wavePoster,
     previewVideo: wavesPreviewVideo,
     experienceVideo: wavesExperienceVideo,
-    experienceAudio: waveAudio,
   },
   {
     id: 'BUBBLE',
-    label: 'BUBBLES',
+    label: EXPERIENCE_DISPLAY_NAMES.BUBBLE,
     title: '泡',
     description: '小さく弾ける、軽やかな感覚。',
     poster: bubblePoster,
     previewVideo: bubblesPreviewVideo,
     experienceVideo: bubblesExperienceVideo,
-    experienceAudio: bubbleAudio,
   },
 ]
 
@@ -73,22 +65,34 @@ const initialExperienceState: ExperienceSnapshot = {
   faultCode: null,
 }
 
+const initialExhibitionState: ExhibitionLifecycleSnapshot = {
+  revision: 0,
+  phase: 'READY',
+  experienceId: null,
+  operationId: null,
+  faultCode: null,
+}
+
 export default function ExhibitionHome() {
-  const [realMode, setRealMode] = useState(false)
-  const [firmwareState, setFirmwareState] = useState(INITIAL_FIRMWARE_CONTROL_SNAPSHOT)
-  const [deviceBusy, setDeviceBusy] = useState(false)
+  const [realDevice, setRealDevice] = useState(false)
+  useEffect(() => { void window.natureTouch?.getRuntimeInfo().then(info => setRealDevice(info.exhibitionDeviceSource === 'firmware')) }, [])
   const [experienceState, setExperienceState] = useState(initialExperienceState)
+  const [exhibitionState, setExhibitionState] = useState(initialExhibitionState)
   const [activeExperienceId, setActiveExperienceId] = useState<ExperienceId>('WIND')
   const [switchingExperienceId, setSwitchingExperienceId] = useState<ExperienceId | null>(null)
   const [dialogExperienceId, setDialogExperienceId] = useState<ExperienceId | null>(null)
+  const [recoveryInteractionBlocked, setRecoveryInteractionBlocked] = useState(false)
   const [actionError, setActionError] = useState('')
   const [focusedId, setFocusedId] = useState<ExperienceId | null>(null)
   const [previewId, setPreviewId] = useState<ExperienceId | null>(null)
   const [visible, setVisible] = useState(!document.hidden)
   const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-  const pendingStop = useRef<Promise<void> | null>(null)
   const pendingStart = useRef<Promise<ExperienceSnapshot> | null>(null)
+  const snapshotRevision = useRef(-1)
+  const exhibitionRevision = useRef(-1)
   const selecting = useRef(false)
+  const previousExhibitionPhase = useRef<ExhibitionLifecycleSnapshot['phase']>('READY')
+  const recoveryInteractionTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
   const reducedMotion = useReducedMotion()
 
   function clearPreview() {
@@ -96,17 +100,6 @@ export default function ExhibitionHome() {
     hoverTimer.current = null
     setFocusedId(null)
     setPreviewId(null)
-  }
-  function requestSafeStop(): Promise<void> {
-    if (pendingStop.current) return pendingStop.current
-    const request = (async () => {
-      // A cancelled media load must not let an in-flight START finish afterward.
-      await pendingStart.current?.catch(() => undefined)
-      await stopActiveExperience(window.natureTouch, realMode)
-    })()
-      .finally(() => { pendingStop.current = null })
-    pendingStop.current = request
-    return request
   }
   function focusPreview(id: ExperienceId) {
     clearPreview()
@@ -127,87 +120,97 @@ export default function ExhibitionHome() {
   useEffect(() => {
     const api = window.natureTouch
     let mounted = true
+    let unsubscribeExhibition: (() => void) | undefined
+    let unsubscribeExperience: (() => void) | undefined
     if (!api) return
 
-    void api.getExperienceState().then((snapshot) => {
-      if (!mounted) return
-      setExperienceState(snapshot)
-      if (snapshot.selectedExperienceId) {
-        setActiveExperienceId(snapshot.selectedExperienceId)
+    void api.subscribeExhibition(snapshot => {
+      if (!mounted || snapshot.revision <= exhibitionRevision.current) return
+      exhibitionRevision.current = snapshot.revision
+      const previousPhase = previousExhibitionPhase.current
+      previousExhibitionPhase.current = snapshot.phase
+      setExhibitionState(snapshot)
+      if (snapshot.experienceId) setActiveExperienceId(snapshot.experienceId)
+      if (snapshot.phase === 'STARTING' && snapshot.experienceId) {
+        setDialogExperienceId(current => current ?? snapshot.experienceId)
       }
+      if (snapshot.phase === 'READY') {
+        setSwitchingExperienceId(null)
+        if (previousPhase === 'FAULT') {
+          setRecoveryInteractionBlocked(true)
+          if (recoveryInteractionTimer.current) clearTimeout(recoveryInteractionTimer.current)
+          recoveryInteractionTimer.current = setTimeout(() => {
+            recoveryInteractionTimer.current = null
+            setRecoveryInteractionBlocked(false)
+          }, 800)
+        }
+      }
+    }).then(removeListener => {
+      if (mounted) unsubscribeExhibition = removeListener
+      else removeListener()
     }).catch((error: unknown) => {
       if (mounted) setActionError(error instanceof Error ? error.message : String(error))
     })
 
-    const removeListener = api.onExperienceState((snapshot) => {
+    void api.subscribeExperience('mock', (event) => {
+      if (!mounted) return
+      if (event.snapshot.revision <= snapshotRevision.current) return
+      snapshotRevision.current = event.snapshot.revision
+      const snapshot = event.snapshot.experience
       setExperienceState(snapshot)
-      if (snapshot.selectedExperienceId) {
-        setActiveExperienceId(snapshot.selectedExperienceId)
-      }
+      if (snapshot.selectedExperienceId) setActiveExperienceId(snapshot.selectedExperienceId)
+    }).then((removeListener) => {
+      if (mounted) unsubscribeExperience = removeListener
+      else removeListener()
+    }).catch((error: unknown) => {
+      if (mounted) setActionError(error instanceof Error ? error.message : String(error))
     })
+
     return () => {
       mounted = false
-      removeListener()
+      unsubscribeExhibition?.()
+      unsubscribeExperience?.()
+      if (recoveryInteractionTimer.current) clearTimeout(recoveryInteractionTimer.current)
     }
   }, [])
-
-  const displayedState = realMode ? firmwareState.experience : experienceState
-  const canSwitchExperience = displayedState.state === 'IDLE' || displayedState.state === 'COMPLETED'
-  const benchReady = firmwareState.openAirBenchSession === true && firmwareState.realControlEligible === true &&
-    firmwareState.hardwareOutputsEnabled === true && firmwareState.connectionState === 'connected' && firmwareState.identified
-  const realSessionReady = firmwareState.simulationTestArmed === true || benchReady
 
   function startMediaExperience(): Promise<ExperienceSnapshot> {
     if (pendingStart.current) return pendingStart.current
     if (!dialogExperienceId) return Promise.reject(new Error('Select an experience first.'))
+    const expectedExperienceId = dialogExperienceId
     const request = (async () => {
-      await pendingStop.current
-      // Browser preview plays media locally; device control requires Electron.
-      if (!window.natureTouch && !realMode) return {
-        ...initialExperienceState, state: 'RUNNING' as const,
-        selectedExperienceId: dialogExperienceId,
-        durationMs: EXPERIENCE_DEFINITIONS[dialogExperienceId].totalDurationMs,
-      }
-      return startSelectedExperience(window.natureTouch, realMode, dialogExperienceId)
+      if (!window.natureTouch) throw new Error('The exhibition requires the Electron application.')
+      const operationId = crypto.randomUUID().replace(/-/g, '').slice(0, 16)
+      return startSelectedExperience(
+        window.natureTouch,
+        'mock',
+        operationId,
+        expectedExperienceId,
+      )
     })().finally(() => { pendingStart.current = null })
     pendingStart.current = request
     return request
   }
 
-  async function selectExperience(experienceId: ExperienceId, openVideo = false): Promise<void> {
-    if (selecting.current) return
-    if (realMode && !realSessionReady) return
+  async function selectExperience(experienceId: ExperienceId): Promise<void> {
+    if (selecting.current || recoveryInteractionBlocked || exhibitionState.phase !== 'READY') return
     selecting.current = true
     const api = window.natureTouch
     if (!api) {
-      setActiveExperienceId(experienceId)
-      if (openVideo) setDialogExperienceId(experienceId)
+      setActionError('The exhibition requires the Electron application.')
       selecting.current = false
       return
     }
     setSwitchingExperienceId(experienceId)
     setActionError('')
     try {
-      await pendingStop.current
-      const previous = realMode ? (await api.getFirmwareState()).experience : await api.getExperienceState()
-      if (previous.state === 'RUNNING' || previous.state === 'STOPPING') await requestSafeStop()
-      if (!realMode && previous.state === 'FAULT') {
-        // A new manual card selection may reset the local mock, never hardware.
-        const recovered = await api.recoverExperience(crypto.randomUUID().replace(/-/g, '').slice(0, 16))
-        if (!recovered.accepted) throw new Error('Mock recovery rejected.')
+      const selected = await selectExperienceIntent(api, 'mock', experienceId)
+      if (selected.revision >= snapshotRevision.current) {
+        snapshotRevision.current = selected.revision
+        const snapshot = selected.experience
+        setActiveExperienceId(snapshot.selectedExperienceId ?? experienceId)
+        setExperienceState(snapshot)
       }
-      const acknowledgement = realMode
-        ? await api.selectFirmwareExperience(experienceId, crypto.randomUUID().replace(/-/g, '').slice(0, 16))
-        : await api.selectExperience(experienceId, crypto.randomUUID())
-      if (!acknowledgement.accepted) {
-        throw new Error(`Mode selection rejected: ${acknowledgement.code ?? 'INVALID_COMMAND'}`)
-      }
-      if (realMode) setFirmwareState(await api.getFirmwareState())
-      else {
-        setActiveExperienceId(experienceId)
-        setExperienceState(await api.getExperienceState())
-      }
-      if (openVideo) setDialogExperienceId(experienceId)
     } catch (error) {
       setActionError(error instanceof Error ? error.message : String(error))
     } finally {
@@ -216,8 +219,17 @@ export default function ExhibitionHome() {
     }
   }
 
+  const preparingConnectionReady = Boolean(window.natureTouch)
+  const preparingBackendReady = exhibitionState.phase === 'WAITING' &&
+    preparingConnectionReady &&
+    experienceState.state === 'RUNNING' &&
+    experienceState.selectedExperienceId === exhibitionState.experienceId
+  const preparingBackendState = exhibitionState.phase === 'FAULT' ? 'FAULT' : experienceState.state
+  const preparingCard = exhibitionState.phase === 'WAITING'
+    ? cards.find(card => card.id === exhibitionState.experienceId) : undefined
   const dialogCard = cards.find((card) => card.id === dialogExperienceId)
-  const activeCard = cards.find((card) => card.id === (realMode ? firmwareState.experience.selectedExperienceId : activeExperienceId))
+  const selectedExperienceId = exhibitionState.experienceId ?? experienceState.selectedExperienceId ?? activeExperienceId
+  const activeCard = cards.find((card) => card.id === selectedExperienceId)
 
   return (
     <main className="exhibition-home">
@@ -233,7 +245,7 @@ export default function ExhibitionHome() {
 
       <section className="nature-card-grid" aria-label="Choose a nature experience">
         {cards.map((card) => {
-          const active = (realMode ? firmwareState.experience.selectedExperienceId : activeExperienceId) === card.id
+          const active = selectedExperienceId === card.id
           return (
             <NatureVideoCard
               key={card.id}
@@ -245,14 +257,12 @@ export default function ExhibitionHome() {
               onFocusPreview={() => focusPreview(card.id)}
               onLeavePreview={clearPreview}
               disabled={
+                exhibitionState.phase !== 'READY' ||
+                recoveryInteractionBlocked ||
                 dialogExperienceId !== null ||
-                (realMode && !realSessionReady) ||
-                (realMode && deviceBusy) ||
-                switchingExperienceId !== null ||
-                (realMode ? !canSwitchExperience : (!active && !canSwitchExperience && displayedState.state !== 'FAULT'))
+                switchingExperienceId !== null
               }
-              onSelect={() => void selectExperience(card.id, !!card.experienceVideo)}
-              onReplay={() => void selectExperience(card.id, true)}
+              onSelect={() => void selectExperience(card.id)}
             />
           )
         })}
@@ -263,20 +273,7 @@ export default function ExhibitionHome() {
       </p>
 
       <footer className="exhibition-footer">
-        <details className="device-panel">
-          <summary aria-label="Device controls">
-            <span className={`status-dot${realMode && !firmwareState.identified ? ' status-dot--muted' : ''}`} aria-hidden="true" />
-            {realMode
-              ? `実機接続：${firmwareState.connectionState}（${firmwareState.openAirBenchSession ? '無圧ベンチ・気囊接続禁止' : '実出力制御はロック中'}）`
-              : 'Mock モード（実機は未接続）'}
-          </summary>
-          <div className="device-panel__content">
-            <ArduinoConnection realMode={realMode} onModeChange={setRealMode}
-              onSnapshot={setFirmwareState}
-              onBusyChange={setDeviceBusy}
-              disabled={switchingExperienceId !== null || experienceState.state === 'RUNNING' || experienceState.state === 'STOPPING'} />
-          </div>
-        </details>
+        <p className="exhibition-footer__device">{realDevice ? '実機連動 · 操作は担当者確認後' : 'ソフトウェア再生（実機出力なし）'}</p>
         <p className="exhibition-footer__instruction" lang="ja">
           音をえらんでください
         </p>
@@ -286,17 +283,22 @@ export default function ExhibitionHome() {
         </p>
       </footer>
 
+      {preparingCard && <PreparingPage
+        key={preparingCard.id}
+        id={preparingCard.id}
+        backendState={preparingBackendState}
+        backendReady={preparingBackendReady}
+        connectionReady={preparingConnectionReady}
+      />}
+
       <AnimatePresence onExitComplete={() => {
         document.querySelector<HTMLButtonElement>(`[data-experience="${activeExperienceId}"]`)?.focus({ preventScroll: true })
         clearPreview()
       }}>
         {dialogCard && <ExperiencePlayer key={dialogCard.id} {...dialogCard}
-          runState={displayedState}
-          connectionReady={!realMode || (firmwareState.connectionState === 'connected' && firmwareState.identified && (firmwareState.hardwareOutputsEnabled === false || benchReady))}
-          deviceLabel={realMode
-            ? `${firmwareState.connectionState === 'connected' ? (benchReady ? 'Arduino 無圧ベンチ' : 'Arduino シミュレーション') : 'デバイス未接続'} · ${firmwareState.experience.state} · ${benchReady ? '気囊接続禁止' : '実出力は無効'}`
-            : 'Mock モード · 実機は未接続'}
-          onSafeStop={requestSafeStop}
+          runState={experienceState}
+          exhibitionState={exhibitionState}
+          deviceLabel={realDevice ? '実機連動 · 確認済みファームウェア' : 'ソフトウェア再生 · 実機出力なし'}
           onStart={startMediaExperience}
           onExit={() => setDialogExperienceId(null)} />}
       </AnimatePresence>

@@ -1,0 +1,378 @@
+:root { color-scheme: light; color: #12304c; background: #fafaf9; font-family: "Yu Mincho", "Hiragino Mincho ProN", serif; }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; min-width: 320px; min-height: 100vh; background: #fafaf9; }
+button, input { font: inherit; }
+.shell { min-height: 100vh; max-width: 1500px; margin: auto; padding: max(30px, env(safe-area-inset-top)) max(32px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(32px, env(safe-area-inset-left)); display: flex; flex-direction: column; }
+.masthead { text-align: center; }
+.heading-stem { display: block; height: 34px; width: 1px; margin: 0 auto 20px; background: #d9d5d1; }
+.masthead h1 { margin: 0; font-weight: 400; font-size: clamp(20px, 3vw, 32px); letter-spacing: .14em; }
+.eyebrow { margin: 13px 0 0; color: #87909c; font: 11px/1.5 Georgia, serif; letter-spacing: .3em; }
+.heading-rule { display: block; width: 70px; height: 1px; background: #dedad5; margin: 24px auto; }
+.subtitle { color: #93959b; font-size: 15px; letter-spacing: .08em; }
+.login-panel { width: min(100%, 430px); margin: 50px auto; padding: 36px; background: white; border: 1px solid #e8e7e3; box-shadow: 0 18px 50px #1c23270d; }
+.login-panel h2 { font-size: 21px; font-weight: 400; }
+.login-panel p, label { color: #78828b; font: 14px/1.7 sans-serif; }
+form { display: grid; gap: 12px; margin-top: 26px; }
+input { width: 100%; min-height: 50px; padding: 12px; border: 1px solid #cdd5d8; background: #fafafa; }
+.primary-button { min-height: 50px; border: 0; background: #29465a; color: white; }
+.control-panel { width: 100%; margin: 50px auto 0; }
+.status-heading { display: flex; justify-content: space-between; align-items: baseline; color: #87909c; font: 12px/1.5 sans-serif; }
+.status-heading h2 { display: none; }
+.phase-card { color: #87909c; font: 12px/1.5 sans-serif; display: flex; gap: 12px; align-items: baseline; }
+.experience-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: clamp(14px,2vw,37px); margin: 20px auto 0; }
+.experience-button { position: relative; isolation: isolate; overflow: hidden; width: 100%; aspect-ratio: 4 / 5; border: 0; padding: 0; text-align: left; background: #bbc6c6; color: white; box-shadow: 0 24px 36px -16px #1c232730; }
+.experience-button img, .card-shade { position: absolute; inset: 0; width: 100%; height: 100%; }
+.experience-button img { object-fit: cover; }
+.card-shade { background: linear-gradient(180deg, transparent 34%, #182024b8 100%); }
+.card-copy { position: absolute; left: 8%; right: 6%; bottom: 7%; display: flex; flex-direction: column; align-items: flex-start; }
+.experience-name { font: 14px Georgia,serif; color: #ffffffb5; letter-spacing: .3em; }
+.experience-title { margin-top: 6px; font: 36px "Yu Gothic",sans-serif; }
+.card-rule { width: 40px; height: 2px; margin-top: 10px; background: #ffffff90; }
+.card-description { margin-top: 14px; font: 14px/1.6 "Yu Gothic",sans-serif; }
+.experience-button:focus-visible, input:focus-visible, .primary-button:focus-visible { outline: 2px solid #86bfc0; outline-offset: 4px; }
+.experience-button:disabled { opacity: .65; }
+.error { color: #a1443e; font: 14px/1.5 sans-serif; }
+.footnote, #runtime-status { color: #838c98; font: 12px/1.5 sans-serif; }
+.footnote { text-align: center; margin: 35px 0 0; }
+#runtime-status { margin-top: auto; padding-top: 30px; }
+@media (max-width: 600px) { .shell { padding: 24px; } .control-panel { margin-top: 28px; } .experience-grid { grid-template-columns: 1fr; width: min(100%,360px); gap: 24px; } .experience-title { font-size: 40px; } }
+/* Responsive iPad layouts: retain the desktop card language while fitting each viewport. */
+.shell { width: 100%; min-height: 100vh; min-height: 100svh; padding-top: max(22px, env(safe-area-inset-top)); }
+.control-panel { margin-top: clamp(18px, 4vh, 50px); }
+.experience-grid { width: min(100%, 1280px); }
+.experience-title { font-size: clamp(28px, 3.2vw, 42px); }
+.card-description { font-size: clamp(12px, 1.2vw, 17px); }
+@media (orientation: portrait) and (max-width: 900px) {
+  .shell { max-width: 780px; padding-inline: max(24px, env(safe-area-inset-left)) max(24px, env(safe-area-inset-right)); }
+  .heading-stem { height: 22px; margin-bottom: 13px; }
+  .heading-rule { margin-block: 16px; }
+  .control-panel { margin-top: 20px; }
+  .experience-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); width: min(100%, 680px); gap: clamp(14px, 3vw, 24px); }
+  .experience-button:last-child { grid-column: 1 / -1; justify-self: center; width: calc((100% - clamp(14px, 3vw, 24px)) / 2); }
+  .card-description { font-size: clamp(12px, 2vw, 16px); }
+  #runtime-status { padding-top: 22px; }
+}
+@media (orientation: landscape) and (max-height: 800px) {
+  .shell { padding-block: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-bottom)); }
+  .heading-stem { height: 12px; margin-bottom: 8px; }
+  .masthead h1 { font-size: clamp(18px, 2.8vw, 28px); }
+  .eyebrow { margin-top: 7px; }
+  .heading-rule { margin-block: 10px; }
+  .subtitle { margin-block: 8px; font-size: 13px; }
+  .control-panel { margin-top: 10px; }
+  .experience-grid { margin-top: 10px; gap: clamp(12px, 2vw, 28px); }
+  .experience-button { aspect-ratio: 1.2 / 1; }
+  .card-copy { bottom: 5%; }
+  .experience-title { font-size: clamp(24px, 3vh, 34px); }
+  .card-rule { margin-top: 5px; }
+  .card-description { margin-top: 7px; font-size: clamp(11px, 1.5vh, 14px); }
+  .footnote { margin-top: 12px; }
+  #runtime-status { padding-top: 10px; }
+}
+@media (max-width: 600px) {
+  .shell { padding: max(18px, env(safe-area-inset-top)) 20px max(18px, env(safe-area-inset-bottom)); }
+  .masthead h1 { font-size: clamp(18px, 5vw, 25px); }
+  .eyebrow { font-size: 9px; letter-spacing: .2em; }
+  .subtitle { font-size: 13px; }
+  .login-panel { margin: 30px auto; padding: 26px 22px; }
+  .control-panel { margin-top: 18px; }
+  .experience-grid { grid-template-columns: 1fr; width: min(100%, 400px); gap: 18px; }
+  .experience-button, .experience-button:last-child { grid-column: auto; width: 100%; aspect-ratio: 1.2 / 1; }
+  .experience-title { font-size: clamp(30px, 9vw, 40px); }
+  .card-description { font-size: 14px; }
+  .footnote { margin-top: 22px; }
+}
+
+@media (orientation: portrait) and (min-width: 601px) and (max-width: 900px) {
+  .experience-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .experience-button:last-child { grid-column: auto; justify-self: stretch; width: 100%; }
+}
+/* iPad exhibition layout */
+:root, body { background: #f6f2ef; color: #514e4c; }
+.shell { max-width: 1500px; padding: max(28px, env(safe-area-inset-top)) max(5vw, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(5vw, env(safe-area-inset-left)); }
+.brand { margin: 0 0 18px; color: #898580; font: 600 11px/1.4 system-ui, sans-serif; letter-spacing: .38em; }
+.heading-stem { height: 1px; width: 42px; margin: 0 auto 24px; background: #ded8d3; }
+.masthead h1 { color: #514e4c; font-size: clamp(22px, 3.1vw, 42px); letter-spacing: .15em; }
+.heading-rule, .masthead .subtitle { display: none; }
+.control-panel { margin-top: clamp(30px, 5vh, 64px); }
+body[data-phase="READY"] .status-heading, body[data-phase="READY"] .phase-card, body[data-phase="READY"] #runtime-status { display: none; }
+.experience-grid { width: 100%; gap: clamp(14px, 1.8vw, 26px); margin: 0 auto; }
+.experience-button { aspect-ratio: 4 / 5.2; border-radius: clamp(18px, 2.6vw, 36px); box-shadow: none; }
+.card-shade { z-index: 1; background: linear-gradient(180deg, transparent 40%, rgb(30 34 34 / 12%) 58%, rgb(28 31 31 / 58%) 100%); }
+.card-copy { left: 10%; right: 8%; bottom: 7%; }
+.experience-name { display: none; }
+.experience-title { font: 400 clamp(30px, 3.6vw, 46px)/1.2 "Yu Mincho", "Hiragino Mincho ProN", serif; }
+.card-description { font: clamp(12px, 1.25vw, 17px)/1.7 "Yu Gothic", sans-serif; }
+.touch-hint { position: absolute; z-index: 2; top: 42%; left: 50%; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; gap: 9px; color: white; font: 11px/1.4 "Yu Gothic", sans-serif; letter-spacing: .08em; white-space: nowrap; pointer-events: none; text-shadow: 0 1px 5px rgb(0 0 0 / 45%); }
+.touch-hint__circle { display: grid; place-items: center; width: clamp(42px, 5vw, 68px); aspect-ratio: 1; border-radius: 50%; background: rgb(255 255 255 / 22%); }
+.touch-hint__circle::after { content: ""; width: 30%; aspect-ratio: 1; border-radius: 50%; border: 1px solid rgb(255 255 255 / 85%); background: rgb(255 255 255 / 30%); }
+.footnote { margin: clamp(22px, 4vh, 42px) 0 0; padding: 20px 0 0; border-top: 1px solid #ded9d5; color: #77716d; font: clamp(12px, 1.3vw, 16px)/1.6 "Yu Gothic", sans-serif; }
+@media (orientation: landscape) and (min-width: 601px) {
+  .experience-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .experience-button { aspect-ratio: 4 / 5.2; }
+}
+@media (orientation: landscape) and (max-height: 800px) {
+  .brand { margin-bottom: 8px; }
+  .heading-stem { margin-bottom: 10px; }
+  .control-panel { margin-top: clamp(16px, 3vh, 26px); }
+  .experience-grid { width: min(100%, calc((100svh - 205px) * 2.31 + 52px)); }
+  .experience-button { aspect-ratio: 4 / 5.2; }
+  .footnote { margin-top: 18px; padding-top: 12px; }
+}
+@media (max-width: 600px) { .shell { padding-inline: 20px; } .experience-button { aspect-ratio: 4 / 5; } .control-panel { margin-top: 28px; } }
+
+/* Keep original image colors even when the device has not enabled selection. */
+.experience-button:disabled { opacity: 1; }
+.experience-button.is-carousel-active > img { opacity: 1; }
+body[data-phase="READY"][data-selectable="false"] .status-heading,
+body[data-phase="READY"][data-selectable="false"] .phase-card,
+body[data-phase="READY"][data-selectable="false"] #runtime-status { display: flex; }
+body[data-phase="READY"][data-selectable="false"] #runtime-status { display: block; }
+.touch-hint__circle { background: transparent; }
+.card-preview { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+.card-preview.is-playing { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .card-preview { transition: none; } }
+
+/* Match the reference header and instruction footer; experience cards stay untouched. */
+.heading-rule { display: block; margin: 20px auto; }
+.masthead .subtitle { display: block; margin: 0; color: #66615d; font-size: clamp(14px, 1.5vw, 20px); letter-spacing: .22em; }
+.status-heading, .phase-card, #runtime-status { display: none !important; }
+.footnote { display: flex; align-items: center; justify-content: center; gap: 22px; text-align: left; }
+.footnote p { margin: 0; }
+.touch-hand { width: 30px; height: 38px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
+.footnote-divider { width: 1px; height: 34px; background: #d4cfca; }
+@media (orientation: landscape) and (max-height: 800px) { .heading-rule { margin-block: 10px; } .masthead .subtitle { font-size: 14px; } }
+:root, html, body { height: 100%; }
+body { min-height: 0; overflow: hidden; }
+.shell { width: 100%; height: 100vh; height: 100dvh; min-height: 0; overflow: hidden; padding-top: max(12px, env(safe-area-inset-top)); padding-bottom: max(10px, env(safe-area-inset-bottom)); }
+.masthead { flex: 0 0 auto; }
+.brand { margin-bottom: clamp(4px, 1.2vh, 14px); font-size: clamp(8px, 1.25vh, 11px); }
+.heading-stem { margin-bottom: clamp(6px, 1.4vh, 18px); }
+.masthead h1 { font-size: clamp(19px, 4.3vh, 42px); }
+.heading-rule { margin-block: clamp(6px, 1.5vh, 18px); }
+.masthead .subtitle { font-size: clamp(12px, 2vh, 19px); }
+.control-panel { display: flex; flex: 1 1 auto; flex-direction: column; min-height: 0; margin-top: clamp(12px, 2.6vh, 30px); }
+.experience-grid { flex: 1 1 auto; min-height: 0; align-items: center; justify-items: center; margin: 0 auto; gap: clamp(10px, 1.8vw, 26px); }
+.experience-button { width: 100%; height: min(100%, 59vh); aspect-ratio: 4 / 5.2; }
+.footnote { flex: 0 0 auto; margin-top: clamp(10px, 2vh, 22px); padding-top: clamp(8px, 1.5vh, 16px); font-size: clamp(10px, 1.8vh, 16px); }
+.touch-hand { width: clamp(21px, 3.7vh, 30px); height: clamp(27px, 4.5vh, 38px); }
+.footnote-divider { height: clamp(24px, 4vh, 34px); }
+.card-copy { bottom: clamp(10px, 2.5vh, 28px); }
+.experience-title { font-size: clamp(22px, 5vh, 46px); }
+.card-description { margin-top: clamp(5px, 1.4vh, 14px); font-size: clamp(9px, 1.8vh, 16px); }
+.touch-hint { font-size: clamp(8px, 1.4vh, 11px); }
+.touch-hint__circle { width: clamp(32px, 6vh, 58px); }
+@media (orientation: portrait) {
+  .experience-button { height: min(100%, 48vh); }
+  .card-description { font-size: clamp(8px, 1.5vh, 13px); }
+  .experience-title { font-size: clamp(20px, 3.8vh, 34px); }
+  .touch-hint { white-space: normal; text-align: center; }
+}
+/* Scale the composed page as a whole; preserve generous internal spacing. */
+.shell {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 111.12vw;
+  height: 111.12vh;
+  height: 111.12dvh;
+  min-height: 0;
+  max-width: none;
+  padding: max(24px, env(safe-area-inset-top)) 4.5vw max(20px, env(safe-area-inset-bottom));
+  transform: translate(-50%, -50%) scale(.86);
+  transform-origin: center center;
+}
+.brand { margin-bottom: 18px; font-size: 11px; }
+.heading-stem { margin-bottom: 24px; }
+.masthead h1 { font-size: clamp(26px, 4.3vh, 42px); }
+.heading-rule { margin-block: 20px; }
+.masthead .subtitle { font-size: clamp(16px, 2vh, 20px); }
+.control-panel { margin-top: clamp(26px, 4vh, 46px); }
+.experience-grid { gap: clamp(16px, 1.8vw, 26px); }
+.experience-button { height: min(100%, 59vh); }
+.footnote { margin-top: clamp(22px, 3.6vh, 38px); padding-top: clamp(14px, 2vh, 20px); font-size: clamp(13px, 1.8vh, 16px); gap: 22px; }
+.touch-hand { width: 30px; height: 38px; }
+.footnote-divider { height: 34px; }
+@media (orientation: portrait) {
+  .shell { width: 111.12vw; height: 111.12dvh; padding-inline: 4vw; }
+  .experience-button { height: min(100%, 48vh); }
+  .experience-title { font-size: clamp(24px, 3.8vh, 34px); }
+  .card-description { font-size: clamp(10px, 1.5vh, 13px); }
+}
+
+/* Keep the pending video renderable for iPad Safari; the poster remains visible. */
+.card-preview.is-loading { opacity: .001; }
+.preview-play { align-self: center; min-height: 44px; margin-bottom: 8px; padding: 6px 18px; border: 1px solid #d4cfca; border-radius: 22px; background: transparent; color: #514e4c; font: 14px/1.4 "Yu Gothic", sans-serif; }
+.preview-play[hidden] { display: none; }
+.preview-play:focus-visible { outline: 2px solid #86bfc0; outline-offset: 4px; }
+
+.touch-hand { width: 34px; height: 38px; color: #817c78; stroke-width: 1.35; }
+.touch-hand { overflow: visible; }
+
+/* Keep card copy crisp above the moving preview footage. */
+.card-copy { z-index: 3; opacity: 1; }
+.experience-title,
+.card-description { color: #fff; opacity: 1; text-shadow: 0 1px 4px rgb(0 0 0 / 38%); }
+.footnote,
+.footnote p { color: #625d59; opacity: 1; }
+
+/* Slightly reduce the card footprint and soften the oversized corner radius. */
+.experience-grid { width: 92%; gap: clamp(22px, 2.8vw, 38px); }
+.experience-button { height: min(100%, 54vh); border-radius: clamp(14px, 1.9vw, 26px); }
+.touch-hint { visibility: hidden; opacity: 0; transition: opacity .45s ease; }
+.experience-button.is-preview-playing .touch-hint { visibility: visible; opacity: 1; }
+@media (orientation: portrait) {
+  .experience-grid { width: 92%; gap: clamp(14px, 2.8vw, 28px); }
+  .experience-button { height: min(100%, 44vh); }
+}
+
+/* Soft concentric sound waves expanding from the touch point. */
+.heading-rule { display: none !important; }
+.masthead .subtitle { margin-top: clamp(10px, 1.5vh, 18px); }
+.touch-hint__circle {
+  position: relative; overflow: visible; background: transparent;
+  background-image: radial-gradient(circle, rgb(255 255 255 / 92%) 0 8%, transparent 9%);
+}
+.touch-hint__circle::before,
+.touch-hint__circle::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  width: 22%; aspect-ratio: 1; border: 1px solid rgb(255 255 255 / 92%);
+  border-radius: 50%; transform: translate(-50%, -50%) scale(.72);
+  animation: sound-ripple 2.4s ease-out infinite;
+}
+.touch-hint__circle::after { animation-delay: 1.2s; }
+@keyframes sound-ripple {
+  0% { opacity: .82; transform: translate(-50%, -50%) scale(.72); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(4.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .touch-hint__circle::before, .touch-hint__circle::after { animation: none; opacity: .45; transform: translate(-50%, -50%) scale(2.2); }
+}
+
+/* Let the footer hand make a gentle tap and send out matching ripples. */
+.touch-hand > circle {
+  transform-box: fill-box; transform-origin: center;
+  animation: footer-ripple 2.4s ease-out infinite;
+}
+.touch-hand > path:first-of-type {
+  transform-box: view-box; transform-origin: 17px 9px;
+  animation: footer-tap 2.4s ease-in-out infinite;
+}
+.touch-hand > path:last-of-type {
+  transform-box: fill-box; transform-origin: center;
+  animation: footer-halo 2.4s ease-out infinite;
+}
+@keyframes footer-tap {
+  0%, 18%, 42%, 100% { transform: translateY(0); }
+  27%, 34% { transform: translateY(1.4px); }
+}
+@keyframes footer-ripple {
+  0%, 18% { opacity: .48; transform: scale(.75); }
+  58%, 100% { opacity: 0; transform: scale(1.9); }
+}
+@keyframes footer-halo {
+  0%, 20% { opacity: .55; transform: scale(.9); }
+  62%, 100% { opacity: 0; transform: scale(1.45); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .touch-hand > circle, .touch-hand > path { animation: none; }
+}
+.touch-hand > circle { animation-name: footer-ripple-spaced; }
+.touch-hand > path:last-of-type { animation-name: footer-halo-spaced; }
+@keyframes footer-ripple-spaced {
+  0%, 18% { opacity: .42; transform: translateY(-4px) scale(.72); }
+  58%, 100% { opacity: 0; transform: translateY(-4px) scale(2.35); }
+}
+@keyframes footer-halo-spaced {
+  0%, 20% { opacity: .48; transform: translateY(-4px) scale(.86); }
+  62%, 100% { opacity: 0; transform: translateY(-4px) scale(1.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .touch-hand > circle, .touch-hand > path:last-of-type { transform: translateY(-4px); }
+}
+.masthead h1,
+.masthead .subtitle { font-family: "Noto Sans JP", "Yu Gothic", sans-serif; }
+:root { --paper: #f7f6f3; }
+:root, html, body { background: var(--paper); }
+
+.masthead {
+  position: relative;
+  padding-top: clamp(58px, 7vh, 68px);
+}
+.brand-mark {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 4%;
+  width: clamp(44px, 5vw, 60px);
+  height: auto;
+}
+@media (max-width: 600px) {
+  .masthead { padding-top: 82px; }
+  .brand-mark { width: 42px; }
+}
+.masthead h1 {
+  max-width: 1000px;
+  margin-inline: auto;
+  font-size: clamp(25px, 3.7vh, 36px);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: .045em;
+  text-wrap: balance;
+}
+.masthead .subtitle {
+  max-width: 900px;
+  margin: clamp(6px, 1vh, 10px) auto 0;
+  color: #77716d;
+  font-size: clamp(15px, 1.8vh, 18px);
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: .055em;
+}
+.heading-stem { margin-bottom: clamp(12px, 2vh, 22px); }
+.control-panel { margin-top: clamp(14px, 2.8vh, 30px); }
+
+.card-heading {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(7px, 1vw, 13px);
+}
+.card-heading .experience-title { margin-top: 0; }
+.card-heading .experience-name {
+  display: inline;
+  color: #fff;
+  font: 600 clamp(10px, 1.5vh, 13px)/1.4 system-ui, sans-serif;
+  letter-spacing: .15em;
+  text-shadow: 0 1px 4px rgb(0 0 0 / 45%);
+}
+.card-description, .footnote {
+  font-family: "Noto Sans JP", "Yu Gothic", sans-serif;
+}
+
+/* Use the existing phase message where the home cards are locked. */
+body[data-phase]:not([data-phase="READY"]):not([data-phase="WAITING"]) .phase-card,
+body[data-phase="READY"][data-selectable="false"] .phase-card {
+  display: flex !important;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin-bottom: clamp(6px, 1.5vh, 14px);
+  color: #625d59;
+  font: 13px/1.6 "Noto Sans JP", "Yu Gothic", sans-serif;
+  text-align: center;
+}
+.phase { font-weight: 600; }
+#phase-description { margin: 0; }
+body[data-phase="EXPERIENCE"] .phase-card .phase { display: none; }
+body[data-selectable="false"] .footnote { visibility: hidden; }
+
+/* The same quiet palette carries into the existing three Preparing variants. */
+.nt-preparing__stage[data-mode="wind"] { --surface-shadow: #dcdcd7; }
+.nt-preparing__stage[data-mode="wave"] { --surface-shadow: #d6dfe0; }
+.nt-preparing__stage[data-mode="bubble"] { --surface-shadow: #e3d9d9; }
+.nt-preparing .nt-preparing__stage[data-mode] {
+  background:
+    radial-gradient(ellipse 76% 62% at 50% 32%, #fdfcf9 26%, transparent 100%),
+    radial-gradient(ellipse 64% 47% at 54% 66%, var(--surface-shadow, #ddd8d1), transparent 100%),
+    var(--paper);
+}

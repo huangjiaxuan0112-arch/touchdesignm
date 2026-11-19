@@ -3,7 +3,7 @@ import type { SerialPortInfo } from '../../shared/serial-protocol'
 export interface SerialConnection {
   write(line: string): Promise<void>
   close(): Promise<void>
-  onData(listener: (chunk: string) => void): () => void
+  onData(listener: (chunk: string, rawBytes?: Uint8Array) => void): () => void
   onError(listener: (error: Error) => void): () => void
   onClose(listener: () => void): () => void
 }

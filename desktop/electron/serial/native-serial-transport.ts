@@ -78,7 +78,7 @@ export class NativeSerialTransport implements SerialTransport {
 }
 
 class NativeSerialConnection implements SerialConnection {
-  private readonly dataListeners = new Set<(chunk: string) => void>()
+  private readonly dataListeners = new Set<(chunk: string, rawBytes?: Uint8Array) => void>()
   private readonly errorListeners = new Set<(error: Error) => void>()
   private readonly closeListeners = new Set<() => void>()
   private readonly pendingWriteRejectors = new Set<(error: Error) => void>()
@@ -128,7 +128,7 @@ class NativeSerialConnection implements SerialConnection {
     })
   }
 
-  onData(listener: (chunk: string) => void): () => void {
+  onData(listener: (chunk: string, rawBytes?: Uint8Array) => void): () => void {
     this.dataListeners.add(listener)
     return () => this.dataListeners.delete(listener)
   }
@@ -151,7 +151,7 @@ class NativeSerialConnection implements SerialConnection {
   private readonly handleData = (data: Buffer): void => {
     const chunk = data.toString('utf8')
     for (const listener of this.dataListeners) {
-      this.notifyListener(() => listener(chunk), 'data')
+      this.notifyListener(() => listener(chunk, data), 'data')
     }
   }
 

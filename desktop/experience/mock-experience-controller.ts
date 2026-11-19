@@ -16,6 +16,7 @@ interface MockControllerOptions {
   clock?: ExperienceClock
   stopDelayMs?: number
   requestCacheLimit?: number
+  completionDurationMs?: number
 }
 
 type StateListener = (snapshot: ExperienceSnapshot) => void
@@ -39,11 +40,13 @@ export class MockExperienceController {
   private readonly clock: ExperienceClock
   private readonly stopDelayMs: number
   private readonly requestCacheLimit: number
+  private readonly completionDurationMs?: number
 
   constructor(options: MockControllerOptions = {}) {
     this.clock = options.clock ?? systemExperienceClock
     this.stopDelayMs = options.stopDelayMs ?? 200
     this.requestCacheLimit = options.requestCacheLimit ?? 256
+    this.completionDurationMs = options.completionDurationMs
   }
 
   getSnapshot(): ExperienceSnapshot {
@@ -97,7 +100,7 @@ export class MockExperienceController {
       if (!this.state.selectedExperienceId) return this.nack('START', requestId, 'NO_EXPERIENCE_SELECTED')
 
       const experienceId = this.state.selectedExperienceId
-      const durationMs = EXPERIENCE_DEFINITIONS[experienceId].totalDurationMs
+      const durationMs = this.completionDurationMs ?? EXPERIENCE_DEFINITIONS[experienceId].totalDurationMs
       this.operationIds.add(operationId)
       this.startedAtMs = this.clock.now()
       this.state = {

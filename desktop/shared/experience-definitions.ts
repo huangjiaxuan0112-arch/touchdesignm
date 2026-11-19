@@ -1,6 +1,21 @@
 export const EXPERIENCE_IDS = ['WIND', 'WAVE', 'BUBBLE'] as const
 
+const waitingMs = 10_000
+const experienceMs = 15_000
+const finalDeflateMs = 5_000
+export const EXHIBITION_TIMING = {
+  waitingMs,
+  experienceMs,
+  cooldownMs: 3_000,
+  mockDeviceCompletionMs: waitingMs + experienceMs + finalDeflateMs,
+} as const
+
 export type ExperienceId = (typeof EXPERIENCE_IDS)[number]
+export const EXPERIENCE_DISPLAY_NAMES = {
+  WIND: 'WIND',
+  WAVE: 'WAVES',
+  BUBBLE: 'BUBBLES',
+} as const satisfies Readonly<Record<ExperienceId, string>>
 export type LegacyServoValue = 0 | 180
 
 export interface LegacyServoWrites {
@@ -55,45 +70,43 @@ function action(
   }
 }
 
-const windTimeline: ExperienceTimelineEvent[] = []
-let windTime = 0
-windTimeline.push(marker(windTime, 'INITIAL FILL'), action(windTime, 'INFLATE', 5000))
-windTime += 5000
-windTimeline.push(marker(windTime, 'PLAY WIND AUDIO NOW'))
-for (const [deflateMs, inflateMs] of [
-  [1500, 1300],
-  [1450, 1050],
-  [1900, 1600],
-  [1750, 1450],
-  [1050, 950],
-] as const) {
-  windTimeline.push(action(windTime, 'DEFLATE', deflateMs))
-  windTime += deflateMs
-  windTimeline.push(action(windTime, 'INFLATE', inflateMs))
-  windTime += inflateMs
+// 30s OFFLINE CANDIDATE: source of truth remains the reviewed Arduino action table.
+// These arrays mirror proposed segments for Mock/diagnostic UI only.
+function buildCandidateTimeline(
+  actions: readonly (readonly [number, 'INFLATE' | 'DEFLATE'])[],
+  completionMarker: string,
+): ExperienceTimelineEvent[] {
+  const events: ExperienceTimelineEvent[] = []
+  let at = 0
+  events.push(marker(0, 'INITIAL FILL'))
+  for (const [duration, type] of actions) {
+    if (at === waitingMs) events.push(marker(at, 'EXPERIENCE START'))
+    if (at === waitingMs + experienceMs) events.push(marker(at, 'FINAL SHRINK'))
+    events.push(action(at, type, duration))
+    at += duration
+  }
+  events.push(marker(at, completionMarker))
+  return events
 }
-windTimeline.push(marker(windTime, 'FINAL SHRINK'), action(windTime, 'DEFLATE', 5000))
-windTime += 5000
-windTimeline.push(marker(windTime, 'NEXT WIND CYCLE'))
 
-const waveTimeline: ExperienceTimelineEvent[] = []
-let waveTime = 0
-waveTimeline.push(marker(waveTime, 'INITIAL FILL'), action(waveTime, 'INFLATE', 5000))
-waveTime += 5000
-waveTimeline.push(marker(waveTime, 'PLAY WAVE AUDIO NOW'))
-for (let wave = 0; wave < 3; wave += 1) {
-  waveTimeline.push(action(waveTime, 'DEFLATE', 2000))
-  waveTime += 2000
-  waveTimeline.push(action(waveTime, 'INFLATE', 2500))
-  waveTime += 2500
-}
-waveTimeline.push(action(waveTime, 'DEFLATE', 1000))
-waveTime += 1000
-waveTimeline.push(action(waveTime, 'INFLATE', 500))
-waveTime += 500
-waveTimeline.push(marker(waveTime, 'FINAL SHRINK'), action(waveTime, 'DEFLATE', 5000))
-waveTime += 5000
-waveTimeline.push(marker(waveTime, 'NEXT WAVE CYCLE'))
+const WIND_CANDIDATE = [
+  // WIND: five DRAIN/FILL pairs from the 25s baseline.
+  [waitingMs, 'INFLATE'],
+  [1600, 'DEFLATE'], [1400, 'INFLATE'],
+  [1550, 'DEFLATE'], [1150, 'INFLATE'],
+  [2000, 'DEFLATE'], [1700, 'INFLATE'],
+  [1850, 'DEFLATE'], [1550, 'INFLATE'],
+  [1150, 'DEFLATE'], [1050, 'INFLATE'],
+  [finalDeflateMs, 'DEFLATE'],
+] as const
+const WAVE_CANDIDATE = [
+  [waitingMs, 'INFLATE'],
+  [2000, 'DEFLATE'], [2500, 'INFLATE'],
+  [2000, 'DEFLATE'], [2500, 'INFLATE'],
+  [2000, 'DEFLATE'], [2500, 'INFLATE'],
+  [1000, 'DEFLATE'], [500, 'INFLATE'],
+  [finalDeflateMs, 'DEFLATE'],
+] as const
 
 export const LEGACY_BUBBLE_POP_TIMES_MS = [
   580, 2040, 3530, 5510,
@@ -107,57 +120,44 @@ export const LEGACY_BUBBLE_POP_TIMES_MS = [
   31770, 32690, 33040,
 ] as const
 
-const BUBBLE_MUSIC_LENGTH_MS = 20000
-const BUBBLE_OUT_PERCENT = 45
-const bubbleTimeline: ExperienceTimelineEvent[] = []
-let bubbleTime = 0
-bubbleTimeline.push(action(bubbleTime, 'INFLATE', 4420))
-bubbleTime += 4420
-bubbleTimeline.push(marker(bubbleTime, 'PLAY AUDIO NOW'))
-bubbleTimeline.push(action(bubbleTime, 'INFLATE', 580))
-bubbleTime += 580
-bubbleTimeline.push(marker(bubbleTime, 'BUBBLE START'))
-
-for (let index = 0; index < LEGACY_BUBBLE_POP_TIMES_MS.length; index += 1) {
-  const popTime = LEGACY_BUBBLE_POP_TIMES_MS[index]
-  if (popTime >= BUBBLE_MUSIC_LENGTH_MS) break
-
-  const nextPopTime = LEGACY_BUBBLE_POP_TIMES_MS[index + 1] ?? BUBBLE_MUSIC_LENGTH_MS
-  const intervalEnd = Math.min(nextPopTime, BUBBLE_MUSIC_LENGTH_MS)
-  const intervalMs = intervalEnd - popTime
-  const outMs = Math.floor((intervalMs * BUBBLE_OUT_PERCENT) / 100)
-  const inMs = intervalMs - outMs
-
-  bubbleTimeline.push(action(bubbleTime, 'DEFLATE', outMs))
-  bubbleTime += outMs
-  bubbleTimeline.push(action(bubbleTime, 'INFLATE', inMs))
-  bubbleTime += inMs
-}
-
-bubbleTimeline.push(marker(bubbleTime, 'FINAL SHRINK'), action(bubbleTime, 'DEFLATE', 3000))
-bubbleTime += 3000
-bubbleTimeline.push(marker(bubbleTime, 'NEXT ROUND'))
+// Original BUBBLE music/pop values above remain exported only for historical comparison.
+// This proposal replaces 14 rapid pop pairs with six longer irregular pairs because
+// many original segments had no theoretical pump-on window with 500/300ms switching.
+// Rhythm is a CONCEPT: physically unverified and not approved for real operation.
+const BUBBLE_CANDIDATE = [
+  [waitingMs, 'INFLATE'],
+  [1080, 'DEFLATE'], [1320, 'INFLATE'],
+  [1215, 'DEFLATE'], [1485, 'INFLATE'],
+  [967, 'DEFLATE'], [1183, 'INFLATE'],
+  [1282, 'DEFLATE'], [1568, 'INFLATE'],
+  [1102, 'DEFLATE'], [1348, 'INFLATE'],
+  [1102, 'DEFLATE'], [1348, 'INFLATE'],
+  [finalDeflateMs, 'DEFLATE'],
+] as const
+const windTimeline = buildCandidateTimeline(WIND_CANDIDATE, 'NEXT WIND CYCLE')
+const waveTimeline = buildCandidateTimeline(WAVE_CANDIDATE, 'NEXT WAVE CYCLE')
+const bubbleTimeline = buildCandidateTimeline(BUBBLE_CANDIDATE, 'NEXT ROUND')
 
 export const EXPERIENCE_DEFINITIONS: Readonly<Record<ExperienceId, ExperienceDefinition>> = {
   WIND: {
     id: 'WIND',
     name: 'Wind',
     sourceSketch: '卒研music/wind/sketch_oct21a/sketch_oct21a.ino',
-    totalDurationMs: windTime,
+    totalDurationMs: EXHIBITION_TIMING.mockDeviceCompletionMs,
     timeline: windTimeline,
   },
   WAVE: {
     id: 'WAVE',
     name: 'Ocean Waves',
     sourceSketch: '卒研music/ocean waves/sketch_oct21b/sketch_oct21b.ino',
-    totalDurationMs: waveTime,
+    totalDurationMs: EXHIBITION_TIMING.mockDeviceCompletionMs,
     timeline: waveTimeline,
   },
   BUBBLE: {
     id: 'BUBBLE',
     name: 'Bubbles',
     sourceSketch: '卒研music/bubbles/sketch_sep30a/sketch_oct21a/sketch_oct21a.ino',
-    totalDurationMs: bubbleTime,
+    totalDurationMs: EXHIBITION_TIMING.mockDeviceCompletionMs,
     timeline: bubbleTimeline,
     legacySourcePopTimesMs: LEGACY_BUBBLE_POP_TIMES_MS,
   },

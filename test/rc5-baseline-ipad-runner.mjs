@@ -1,0 +1,22 @@
+// Test-only harness: same RC5 Main bundle with loopback-only LAN configuration.
+import {readFileSync,writeFileSync} from 'node:fs';
+import {spawn} from 'node:child_process';
+import {resolve,join} from 'node:path';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const root=resolve(import.meta.dirname,'..');
+const source=readFileSync(join(root,'test/electron-ipad-loopback.cjs'),'utf8');
+const from="'out-exhibition/main/main.js'",to="'out-exhibition-rc5-valve/main/main.js'";
+assert.equal(source.split(from).length,2);
+const fixture=join(root,'test/rc5-baseline-ipad-fixture.cjs');
+writeFileSync(fixture,source.replace(from,to));
+const env={...process.env};delete env.ELECTRON_RUN_AS_NODE;
+const child=spawn(join(root,'desktop/node_modules/electron/dist/electron.exe'),[fixture,'--exhibition'],{cwd:root,env,windowsHide:true,stdio:['ignore','pipe','pipe']});
+let out='',err='';child.stdout.on('data',b=>out+=b);child.stderr.on('data',b=>err+=b);
+const code=await new Promise((done,reject)=>{child.once('error',reject);child.once('exit',done)});
+const lines=out.split(/\r?\n/);const summary=lines.map(x=>{try{return JSON.parse(x)}catch{return null}}).find(x=>x?.result);
+if(code!==0||summary?.result!=='PASS')throw Error(JSON.stringify({code,summary,out,err}));
+const evidence=JSON.parse(readFileSync(summary.evidence,'utf8'));
+const digest=createHash('sha256').update(readFileSync(join(root,'desktop/out-exhibition-rc5-valve/main/main.js'))).digest('hex');
+assert.equal(evidence.productionMainSha256,digest);assert.equal(evidence.hardwareAccessAttempts,0);
+console.log(JSON.stringify({result:'PASS',scope:'RC5 bundle, in-memory loopback adapter and config; disconnected device',evidence:summary.evidence,checks:summary.checks,mainSha256:digest,hardwareAccess:false}));

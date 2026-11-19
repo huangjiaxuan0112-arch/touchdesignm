@@ -13,7 +13,7 @@ const require = createRequire(new URL('../avr8js-wind/package.json', import.meta
 const { CPU, avrInstruction, AVRTimer, timer0Config, timer1Config, timer2Config,
   AVRIOPort, portBConfig, portCConfig, portDConfig, AVRUSART, usart0Config } = require('avr8js');
 const here = dirname(fileURLToPath(import.meta.url)), root = resolve(here, '../..');
-const output = resolve(process.env.UNIFIED_RESULTS || join(here, 'results'));
+const output = resolve(process.env.UNIFIED_RESULTS || join(root, '.validation/final-30s/avr8js'));
 mkdirSync(output, { recursive: true });
 const sha = data => createHash('sha256').update(data).digest('hex');
 const startedAtUtc = new Date().toISOString();
@@ -247,16 +247,30 @@ test('USART model regression: pending RXC survives an unrelated UDRIE update', (
 for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
   test(`${mode}: select, start, complete once, stay stopped`, () => {
     const n = new VirtualNano(mode);
-    const identity = ack(n, 'IDENTIFY', 'identify', { protocol: 2 });
+    const identity = ack(n, 'IDENTIFY', '1234567890123456', { protocol: 2 });
+    assert.equal(identity.firmwareVersion, '3.0.0-30s');
+    assert.match(identity.timelineVersion, /^30s-[a-f0-9]{8}$/);
+    assert.equal(identity.sourceRevision, '5356f28e');
+    assert.ok(JSON.stringify(identity).length + 1 <= 384, 'Versioned identity must fit legacy decoder including CR');
     assert.equal(identity.hardwareOutputsEnabled, false);
     assert.equal(n.intent, 'STOPPED');
     n.start(mode, `run${mode}`);
     n.runWithHeartbeat(EXPERIENCE_DEFINITIONS[mode].totalDurationMs + 600);
     const status = n.request('STATUS_QUERY', 'final');
     assert.equal(status.snapshot.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
+    assert.equal(status.snapshot.durationMs, 30000);
+    assert.equal(status.snapshot.elapsedMs, 30000);
+    assert.equal(n.request('START', 'noauto', { operationId: 'new' }).code, 'COOLDOWN');
+    const completedIdentity = ack(n, 'IDENTIFY', 'completeIdentity', { protocol: 2 });
+    assert.equal(completedIdentity.state, 'COMPLETED');
+    assert.ok(JSON.stringify(completedIdentity).length + 1 <= 384, 'Maximum-length completed identity including CR');
+    assert.equal(n.outputRecords.at(-1).intent, 'STOPPED');
+    const markers = n.frames.filter(f => f.message.name === 'MARKER').map(f => [f.message.atMs, f.message.text]);
+    assert.deepEqual(markers, EXPERIENCE_DEFINITIONS[mode].timeline.filter(e => e.kind === 'MARKER').map(e => [e.atMs, e.text]));
     const expected = EXPERIENCE_DEFINITIONS[mode].timeline.filter(e => e.kind === 'ACTION');
     const actual = n.frames.filter(f => f.message.name === 'ACTUATOR_EVENT').map(f => f.message);
-    assert.deepEqual(actual.map(e => [e.atMs, e.action, e.durationMs]), expected.map(e => [e.atMs, e.action, e.durationMs]));
+    assert.deepEqual(actual.map(e => [e.atMs, e.action, e.durationMs, { D5:e.D5, D6:e.D6, D7:e.D7 }]),
+      expected.map(e => [e.atMs, e.action, e.durationMs, e.servoWrites]));
     const intentions = n.outputRecords.filter(r => r.intent !== 'STOPPED');
     assert.deepEqual(intentions.map(r => r.intent), expected.map(e => e.action === 'INFLATE' ? 'INFLATING' : 'DEFLATING'));
     assert.equal(n.frames.filter(f => f.message.name === 'COMPLETED').length, 1);
@@ -271,13 +285,13 @@ for (const mode of ['WIND', 'WAVE', 'BUBBLE']) {
       recordedCompletionMs: stopped.recordedAtMs - intentions[0].recordedAtMs,
       virtualCpuDurationMs: stopped.virtualMs - intentions[0].virtualMs, timing });
     const count = n.outputRecords.length; n.advance(1000); assert.equal(n.outputRecords.length, count);
-    assert.equal(n.request('START', 'noauto', { operationId: 'new' }).code, 'INVALID_STATE');
     if (mode === 'BUBBLE') {
-      assert.equal(intentions.length, 31);
-      assert.deepEqual(intentions.slice(0, 2).map(r => r.intent), ['INFLATING', 'INFLATING']);
-      assert.ok(intentions[1].recordedAtMs - intentions[0].recordedAtMs >= 4420);
+      assert.equal(intentions.length, expected.length);
+      assert.deepEqual(intentions.slice(0, 2).map(r => r.intent), ['INFLATING', 'DEFLATING']);
+      assert.ok(Math.abs(intentions[1].recordedAtMs - intentions[0].recordedAtMs - expected[1].atMs) <= 2);
+      n.runWithHeartbeat(2100);
       n.start('BUBBLE', 'repeatB', 'r');
-      n.runWithHeartbeat(28000);
+      n.runWithHeartbeat(EXPERIENCE_DEFINITIONS.BUBBLE.totalDurationMs + 600);
       assert.equal(n.state, 'COMPLETED'); assert.equal(n.intent, 'STOPPED');
       assert.equal(n.frames.filter(f => f.message.name === 'COMPLETED').length, 2);
       const repeat = n.frames.filter(f => f.message.name === 'ACTUATOR_EVENT' && f.message.operationId === 'repeatB').map(f => f.message);
@@ -302,7 +316,7 @@ test('STOP cancels every future action; switching modes requires explicit START'
   assert.equal(ack(n, 'STOP', 'stop', { operationId: 'cancel' }).state, 'STOPPING');
   n.waitFor(() => n.frames.some(f => f.message.name === 'STOPPED'));
   assert.equal(n.intent, 'STOPPED'); assert.equal(n.state, 'IDLE');
-  n.advance(28000); noActionsAfter(n, before);
+  n.advance(EXPERIENCE_DEFINITIONS.BUBBLE.totalDurationMs + 1000); noActionsAfter(n, before);
   assert.equal(n.frames.filter(f => f.message.name === 'COMPLETED').length, 0);
   ack(n, 'SELECT', 'wave', { experienceId: 'WAVE' }); n.advance(500);
   noActionsAfter(n, before); assert.equal(n.state, 'IDLE');

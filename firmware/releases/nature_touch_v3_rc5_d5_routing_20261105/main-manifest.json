@@ -1,0 +1,47 @@
+{
+  "status": "DEPLOYED_READONLY_VERIFIED_NO_START",
+  "output": "desktop/out-exhibition-rc5-valve",
+  "entry": "main/bootstrap.cjs",
+  "entries": {
+    "RC5": {
+      "file": "main.js",
+      "version": "3.0.0-rc5-d5route",
+      "sha256": "fe81638aed3eb500ea8c3e76a6d7a1f98864660ae77094f9b8e1f133ec04bff9"
+    },
+    "RC4": {
+      "file": "rc4-rollback.js",
+      "version": "3.0.0-rc4-d6inflate",
+      "sha256": "fdb4e9c496a86784946cdb392b7f11234da03333dff2da2072f2076d11d7f81b"
+    }
+  },
+  "mainChange": "Exact firmware identity constant only",
+  "checksums": {
+    "main/bootstrap.cjs": "ffae5d8d5e7f7ccfd471622932e9e5a561245fb0014f8323b9c232c0fd6ccf6c",
+    "main/main.js": "fe81638aed3eb500ea8c3e76a6d7a1f98864660ae77094f9b8e1f133ec04bff9",
+    "main/rc4-rollback.js": "fdb4e9c496a86784946cdb392b7f11234da03333dff2da2072f2076d11d7f81b",
+    "main/startup-config.json": "282349cdd8c34abb88a76dfa5c92eab8c2cc2df30edacf109b5e3ebca396e4f4",
+    "preload/preload.cjs": "d3e2a0e6aec935d859ee0425edf155c42f7121714517bc3e52214c69b24128b5",
+    "renderer/assets/bubble-20s-silent-DV80kj_F.mp4": "8d09061579774948d7ef6f766ada049f39ffb901e9679d793d694a6f907cbb22",
+    "renderer/assets/bubbles-experience-DLYWOwH6.mp4": "1824afc46e2816f7ac7246272dd9098a6a5f246fd91b39090901f51aac43590d",
+    "renderer/assets/bubbles-poster-Cz_p-kwv.png": "60b95fecca1d3453471f6ba11f19e5c7270d9ca874d58e830454b2e7a7095d58",
+    "renderer/assets/bubbles-preview-Dju7DUTj.mp4": "ffe973bcafd654fa0383bb1d819d095c92194a4fbbe161fd19be0fe4b806b2c9",
+    "renderer/assets/client-Ju6CzuKA.js": "cd4c9f376e39a0d0d2b2c131c8d5a3e2523b0ea0ddfbd793663aa2390cf483ea",
+    "renderer/assets/index-BKdiKyV4.js": "f1a61aaa0def7353fe30e88c8fa9981b6d24ecb00107f426a5cfb319a0f600a8",
+    "renderer/assets/index-DRqDqAbI.css": "efbf358b179b72a56d9b32569a65f6f3596f3efcbd558918e763b35caf706fe2",
+    "renderer/assets/projector-B1dznj6i.css": "41c092ca60cdd8121758586c3da48960c7dff873984ed5ea276bec5a1f9d6dab",
+    "renderer/assets/projector-C-HGcqk9.js": "457a297777fe05f078e67c41862bf000bd2cc6a841a326ee27506f013dd65470",
+    "renderer/assets/wave-20s-silent-C0T5cDh5.mp4": "b6af9900d3377c38c9ef23498fdfc7a1f8cdf30e8b15d4b4793871631a83f0cb",
+    "renderer/assets/waves-experience-CT8b_JR6.mp4": "fb3bc306393989d06faf154e773c49fca0b56e21a74c45e82f03a2891997839e",
+    "renderer/assets/waves-poster-B3rCs3T2.png": "fde35add1a40581ce011e52bff45173880354a609e2ca2e57d8b020be4db35ef",
+    "renderer/assets/waves-preview-aiRqhpmy.mp4": "c9e90d1bed9e0f5b5f65f92102be6fbaa90d5f948672dc1f36ea78a720d2d449",
+    "renderer/assets/wind-20s-silent-BxNrNv4u.mp4": "f316ca8d1c376e97918b1a0d06a519b0f095f8b2ba1e7645aa768b033ec7cbfc",
+    "renderer/assets/wind-poster-CptwKMVE.png": "e19b8b3c6ab143f736de68ec250e86ae37fc0eab9de8c264c31ff4c5350e1129",
+    "renderer/assets/wind-preview-D3Gy5Sg6.mp4": "3095c0dc3a22d7a68f4cc2f983289309150495ed6abc3fb8e6cb62fe85c167ce",
+    "renderer/assets/东风长3_15秒音视频合成-CsJm9tnX.mp4": "bd8393cd94184c6422f3d98ec9b39ad25f8ab6a952c03ae6e036cf1c1dcdf9c8",
+    "renderer/index.html": "b2b7066a1bbceaa8c21fe8575201d6f5b098d97a48f6c1874c05200fdc6a0d65",
+    "renderer/projector.html": "86af76f3ea32482d27201e73083c7cc5a70807d824eabd7cef8ca41621f5eb40"
+  },
+  "baselineMainSha256": "fdb4e9c496a86784946cdb392b7f11234da03333dff2da2072f2076d11d7f81b",
+  "guiHttpsCommunicationRetested": true,
+  "deploymentResult": "firmware/releases/nature_touch_v3_rc5_d5_routing_20261105/onsite-logs/RC5-deployment-result.json"
+}

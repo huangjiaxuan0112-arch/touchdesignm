@@ -1,6 +1,7 @@
 #include <string.h>
 #include "experience-timelines.h"
 #include "actuator-driver.h"
+#include "firmware-version.h"
 
 // Simulation is the default; the real build uses the same protocol and scheduler.
 // The real selector requires reviewed source-level shutdown/protection conditions.
@@ -86,6 +87,12 @@ uint32_t elapsedBeforeCurrentAction = 0;
 uint16_t actionIndex = 0;
 uint16_t actionCount = 0;
 bool runActive = false;
+const uint32_t COOLDOWN_MS = 3000;
+bool cooldownActive = false;
+uint32_t cooldownStartedAt = 0;
+bool cooldownPending(uint32_t now) {
+  return cooldownActive && uint32_t(now - cooldownStartedAt) < COOLDOWN_MS;
+}
 uint32_t lastHostContactAt = 0;
 const char* faultCode = NULL;
 bool actionScheduled = false;
@@ -126,9 +133,9 @@ const ScheduledAction* currentTimeline() {
 
 uint16_t currentDuration() {
   switch (selectedExperience) {
-    case EXPERIENCE_WIND: return 24000;
-    case EXPERIENCE_WAVE: return 25000;
-    case EXPERIENCE_BUBBLE: return 27420;
+    case EXPERIENCE_WIND: return 30000;
+    case EXPERIENCE_WAVE: return 30000;
+    case EXPERIENCE_BUBBLE: return 30000;
     default: return 0;
   }
 }
@@ -204,6 +211,9 @@ void printAcknowledgement(
   if (includeIdentity) {
     ProtocolOutput.print(F(",\"protocol\":"));
     ProtocolOutput.print(PROTOCOL_VERSION);
+    ProtocolOutput.print(F(",\"firmwareVersion\":\"" NATURE_TOUCH_FIRMWARE_VERSION "\""));
+    ProtocolOutput.print(F(",\"timelineVersion\":\"" NATURE_TOUCH_TIMELINE_VERSION "\""));
+    ProtocolOutput.print(F(",\"sourceRevision\":\"" NATURE_TOUCH_SOURCE_BASE "\""));
 #if NATURE_TOUCH_ACTUATOR_DRIVER == 1
     ProtocolOutput.print(F(",\"firmware\":\"nature-touch-unified-real\""));
     ProtocolOutput.print(F(",\"deviceId\":\"nature-touch-nano-real\""));
@@ -464,10 +474,18 @@ void processSafety(uint32_t now) {
   } else if (runActive && static_cast<uint32_t>(now - lastHostContactAt) >= HOST_TIMEOUT_MS) {
     enterFault("HOST_TIMEOUT");
   }
+  if (!runActive && Actuators::preparingReady() &&
+      uint32_t(now - lastHostContactAt) >= HOST_TIMEOUT_MS) {
+    Actuators::stopAll(); // Idle valve preparation never survives lease loss.
+  }
+  if (cooldownActive && !cooldownPending(now)) cooldownActive = false;
   // Cancel/fault first; never release a pending pump handover after timeout.
-  if (runActive && controlState == STATE_RUNNING) Actuators::service(now);
+  if (controlState != STATE_FAULT) Actuators::service(now);
 }
 
+// RC5 scheduled intent (not measured outputs): D5=180 selects P-A for fill,
+// D5=0 selects A-R for drain; D6=180 inflates and D7=180 deflates.
+// These events describe requested intervals, not measured applied pump-on time.
 void sendActionEvent(uint32_t atMs, uint16_t durationMs, bool inflate) {
   ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"ACTUATOR_EVENT\",\"operationId\":\""));
   printEscaped(activeOperationId);
@@ -496,19 +514,9 @@ void sendActionEvent(uint32_t atMs, uint16_t durationMs, bool inflate) {
 
 void sendTimelineMarker(uint32_t atMs) {
   const char* marker = NULL;
-  if (selectedExperience == EXPERIENCE_WIND && atMs == 0) marker = "INITIAL FILL";
-  if (selectedExperience == EXPERIENCE_WAVE && atMs == 0) marker = "INITIAL FILL";
-  if (selectedExperience == EXPERIENCE_BUBBLE && atMs == 4420) marker = "PLAY AUDIO NOW";
-  if ((selectedExperience == EXPERIENCE_WIND || selectedExperience == EXPERIENCE_WAVE) &&
-      atMs == 5000) {
-    marker = selectedExperience == EXPERIENCE_WIND
-      ? "PLAY WIND AUDIO NOW"
-      : "PLAY WAVE AUDIO NOW";
-  }
-  if (selectedExperience == EXPERIENCE_BUBBLE && atMs == 5000) marker = "BUBBLE START";
-  if (selectedExperience == EXPERIENCE_WIND && atMs == 19000) marker = "FINAL SHRINK";
-  if (selectedExperience == EXPERIENCE_WAVE && atMs == 20000) marker = "FINAL SHRINK";
-  if (selectedExperience == EXPERIENCE_BUBBLE && atMs == 24420) marker = "FINAL SHRINK";
+  if (atMs == 0) marker = "INITIAL FILL";
+  if (atMs == 10000) marker = "EXPERIENCE START";
+  if (atMs == 25000) marker = "FINAL SHRINK";
   if (!marker) return;
 
   ProtocolOutput.print(F("{\"type\":\"EVENT\",\"name\":\"MARKER\",\"operationId\":\""));
@@ -522,70 +530,10 @@ void sendTimelineMarker(uint32_t atMs) {
   ProtocolOutput.println(F("\"}"));
 }
 
-void beginScheduledAction() {
-  const ScheduledAction* timeline = currentTimeline();
-  if (!runActive || controlState != STATE_RUNNING) return;
-  if (!timeline || actionIndex >= actionCount) {
-    enterFault("INVALID_TIMELINE");
-    return;
-  }
-  const ScheduledAction action = {
-    pgm_read_word(&timeline[actionIndex].durationMs),
-    pgm_read_byte(&timeline[actionIndex].inflate)
-  };
-  if (!(action.inflate ? Actuators::inflate() : Actuators::deflate())) {
-    enterFault("ACTUATOR_FAULT");
-    return;
-  }
-  pendingActionEvents |= (1UL << actionIndex);
-  actionDeadline += action.durationMs;
-  actionScheduled = true;
-}
-
-void startOperation(const char* operationId, uint32_t now) {
-  strncpy(activeOperationId, operationId, MAX_OPERATION_ID_LENGTH);
-  activeOperationId[MAX_OPERATION_ID_LENGTH] = '\0';
-  rememberOperation(operationId);
-  operationStartedAt = now;
-  actionDeadline = now;
-  elapsedBeforeCurrentAction = 0;
-  actionIndex = 0;
-  actionCount = currentActionCount();
-  runActive = true;
-  actionScheduled = false;
-  pendingActionEvents = 0;
-  completionEventPending = false;
-  controlState = STATE_RUNNING;
-  lastHostContactAt = now;
-}
-
-void processScheduler(uint32_t now) {
-  processSafety(now);
-  if (!runActive || !actionScheduled || static_cast<int32_t>(now - actionDeadline) < 0) return;
-
-  const ScheduledAction* timeline = currentTimeline();
-  if (!timeline || actionIndex >= actionCount) {
-    enterFault("INVALID_TIMELINE");
-    return;
-  }
-  const uint16_t previousDuration = pgm_read_word(&timeline[actionIndex].durationMs);
-  elapsedBeforeCurrentAction += previousDuration;
-  actionIndex++;
-
-  if (actionIndex >= actionCount) {
-    runActive = false;
-    actionScheduled = false;
-    Actuators::stopAll();
-    controlState = STATE_COMPLETED;
-    completionEventPending = true;
-    return;
-  }
-
-  beginScheduledAction();
-}
+#include "experience-scheduler.h"
 
 // Drain diagnostic events separately from logical control. A 32-bit pending mask
-// retains all 31 BUBBLE actions, including its consecutive inflation calls.
+// retains all candidate actions (WIND 12 / WAVE 10 / BUBBLE 14).
 void flushScheduledTelemetry() {
   if (faultEventPending) {
     faultEventPending = false;
@@ -749,17 +697,21 @@ void processProtocolCommand(const char* line) {
       code = "UNKNOWN_EXPERIENCE";
     }
     if (accepted) {
+      if (!Actuators::preparingReady() && !Actuators::preparedStartReady())
+        Actuators::allowReadyPreparation();
       controlState = STATE_IDLE;
       elapsedBeforeCurrentAction = 0;
       activeOperationId[0] = '\0';
     }
   } else if (strcmp(command, "START") == 0) {
 #if NATURE_TOUCH_ACTUATOR_DRIVER == 1
-    if (!Actuators::outputsReady()) {
+    if (!Actuators::outputsReady() || (Actuators::readyPreparationRequired() && !Actuators::preparedStartReady())) {
       code = "ACTUATOR_NOT_READY";
     } else
 #endif
-    if (controlState != STATE_IDLE) {
+    if (cooldownPending(millis())) {
+      code = "COOLDOWN";
+    } else if (controlState != STATE_IDLE) {
       code = "INVALID_STATE";
     } else if (selectedExperience == EXPERIENCE_NONE) {
       code = "NO_EXPERIENCE_SELECTED";
@@ -769,6 +721,7 @@ void processProtocolCommand(const char* line) {
       accepted = true;
       operationId = payload;
       startOperation(payload, millis());
+      beginScheduledAction(); // Commit output before serial ACK transmission.
     }
   } else if (strcmp(command, "STOP") == 0) {
     if (controlState != STATE_RUNNING) {
@@ -824,12 +777,6 @@ void processProtocolCommand(const char* line) {
   const CachedAcknowledgement& cached = requestCache[(requestCacheIndex + REQUEST_CACHE_SIZE - 1) % REQUEST_CACHE_SIZE];
   sendCachedAcknowledgement(cached);
 
-  if (accepted && strcmp(command, "START") == 0) {
-    operationStartedAt = millis();
-    actionDeadline = operationStartedAt;
-    lastHostContactAt = operationStartedAt;
-    beginScheduledAction();
-  }
   if (accepted && strcmp(command, "STOP") == 0) {
     char stoppedOperationId[MAX_OPERATION_ID_LENGTH + 1];
     strncpy(stoppedOperationId, operationId, MAX_OPERATION_ID_LENGTH);

@@ -15,6 +15,9 @@ export interface FirmwareControlSnapshot {
   connectionState: FirmwareConnectionState
   identified: boolean
   protocolVersion: number | null
+  firmwareVersion?: string | null
+  timelineVersion?: string | null
+  sourceRevision?: string | null
   firmware: string | null
   hardwareOutputsEnabled: boolean
   experience: ExperienceSnapshot
@@ -30,6 +33,9 @@ export const INITIAL_FIRMWARE_CONTROL_SNAPSHOT: FirmwareControlSnapshot = {
   simulationTestEligible: false,
   identified: false,
   protocolVersion: null,
+  firmwareVersion: null,
+  timelineVersion: null,
+  sourceRevision: null,
   firmware: null,
   hardwareOutputsEnabled: false,
   experience: {

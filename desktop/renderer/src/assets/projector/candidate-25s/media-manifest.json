@@ -1,0 +1,39 @@
+{
+  "version": "candidate-25s",
+  "provenance": "Individually attached MP4s; locally verified",
+  "files": {
+    "WIND": {
+      "source": "WIND_25s_静音投影.mp4",
+      "file": "wind-25s-silent.mp4",
+      "bytes": 7334659,
+      "sha256": "5b820ad46ef77d7938092f507413be4fe86ecce27a65afffd728dde905c6318d",
+      "durationMs": 25000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    },
+    "WAVE": {
+      "source": "WAVE_25s_静音投影.mp4",
+      "file": "wave-25s-silent.mp4",
+      "bytes": 16992391,
+      "sha256": "bf0611af23c401dbd1be1d402bdf79bce0949ffe3b5f71b3bb16fe3784d6d381",
+      "durationMs": 25000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    },
+    "BUBBLE": {
+      "source": "BUBBLE_25s_不变速.mp4",
+      "file": "bubble-25s-silent.mp4",
+      "bytes": 22857735,
+      "sha256": "238f2cf58df276ae0a6ccea1433f5860b07c788321c6a0f1d1e0bc60e3c91528",
+      "durationMs": 25000,
+      "videoCodec": "avc1 / H.264",
+      "width": 1920,
+      "height": 1080,
+      "audioTracks": 0
+    }
+  }
+}

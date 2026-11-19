@@ -1,11 +1,61 @@
-# Nature Touch
+当前开发基线采用 30 秒设备动作、25 秒静音投影及完成确认后 3 秒冷却。开发流程见 [单一基线规则](docs/NATURE_TOUCH_SINGLE_BASELINE_DEVELOPMENT_POLICY.md)，验证结果和现场待办见 [最终 30 秒基线](docs/NATURE_TOUCH_FINAL_30S_BASELINE.md)。正式 RC5 的启动与回退记录见 [RC5 正式入口](docs/NATURE_TOUCH_RC5_OFFICIAL_ENTRY.md)。
 
-Nature Touch is a Windows desktop application scaffold for the interactive exhibition. This repository currently contains a minimal Electron + React shell only. It does not communicate with Arduino hardware or control pumps or valves.
+# Nature Touch — v3.0 Exhibition Prototype
+
+Nature Touch is a Windows Electron + React application for the WIND, WAVE, and
+BUBBLE exhibition experiences. The v3.0 S01 prototype provides local software-only
+media playback and keeps physical actuator control disabled. This repository is
+not a packaged exhibition release.
+
+## Runtime architecture
+
+```text
+ExhibitionHome / ExperiencePlayer
+  -> typed preload API
+  -> Electron Main ExhibitionLifecycleController
+  -> ExperienceCoordinator
+  -> MockExperienceController (current exhibition UI)
+
+Firmware experience commands
+  -> ExperienceCoordinator
+  -> FirmwareService -> NativeSerialTransport -> Protocol v2 firmware
+
+Read-only diagnostics and output-disabled test APIs
+  -> Main process permission checks -> FirmwareService
+```
+
+The Main process owns READY → STARTING → WAITING (5s) → EXPERIENCE (15s) →
+AWAIT_COMPLETION → COOLDOWN (3s after confirmed device COMPLETED) → READY. Media is prepared during
+STARTING, before one confirmed START establishes T=0. The existing PreparingPage
+is the only WAITING UI; Main switches to the same preloaded video at T=5s.
+Mock device COMPLETED, not video `ended`, authorizes cooldown. The UI
+contains no STOP, Pause, Back, Replay, firmware mode selector, ARM, or Bench
+controls.
+
+The Home and Player contain no firmware mode selector, ARM, or Bench controls.
+Normal launches keep real hardware control disabled. The pre-existing
+`--open-air-bench` Main-process profile and its fixture/device checks are
+preserved, but are not exposed by the Home UI; an isolated open-air bench
+utility also remains outside the default test and build path. S01 uses the
+existing local MP4 assets as temporary media. Device completion is owned by
+the Main Mock controller.
+
+An optional S03 iPad controller is served by Electron Main over HTTPS. It uses
+the same Main-owned exhibition lifecycle and Mock service, never controls
+Arduino directly, and only binds to an explicitly configured private LAN
+interface. The iPad page does not play the Windows experience video.
+
+The active firmware source is
+`firmware/unified/nature_touch_unified/`. The retained `firmware/releases/`
+directories are historical snapshots and build from their own sources; they
+are not interchangeable with the active source. Physical configuration,
+deployment identity, and pressure-protection validation remain unverified.
 
 ## Requirements
 
+- Windows
 - Node.js 20 or newer and npm
-- Windows for exhibition-machine testing
+- Arduino CLI and AVR8js only for the offline firmware tests
 
 ## Install and run
 
@@ -17,39 +67,101 @@ npm install
 npm run dev
 ```
 
-The development command starts the Vite renderer and opens it in Electron.
+## Build and tests
 
-## Build and typecheck
+The app opens a separate **Nature Touch — Projector** window displaying Standby.
+It uses the first non-primary display in fullscreen when available. With one
+display it opens a windowed preview beside Main; Main is repositioned/resized
+only when needed to prevent overlap. Display changes reposition an open
+Projector. Close it normally, then use Main's **窗口 → 打开 Projector** menu
+(`Ctrl+Shift+P`) to reopen it. Closing Main also closes Projector.
 
-Run these from `desktop/`:
+Projector has a separate renderer entry and a read-only preload interface. It
+only subscribes to the existing exhibition snapshot, sends no control commands,
+and loads no audio/video. The three future 20-second media slots are intentionally
+empty. After building, `npm run test:projector` runs focused placement and isolated
+Electron window checks with native serial access forbidden.
+
+Run these commands from `desktop/`:
 
 ```powershell
 npm run typecheck
+npm test
 npm run build
 npm run preview
 ```
 
-`preview` opens the built Electron application. Packaging an installer is not configured in this foundation phase.
+Electron Mock lifecycle and media tests:
 
-For the isolated Arduino Nano diagnostic procedure, see [docs/phase-1b-serial.md](docs/phase-1b-serial.md). Keep all actuator loads and power disconnected during those tests.
+```powershell
+$env:NATURE_TOUCH_UI_RESULTS_DIR = Join-Path $env:TEMP "NatureTouch-UI-$([guid]::NewGuid().ToString('N'))"
+npm run test:ui
+npm run test:audio
+npm run test:ipad
+```
 
-For the Phase 2B simulation-only unified firmware, protocol tests, upload procedure, and remaining safety gates, see [docs/phase-2b-integration.md](docs/phase-2b-integration.md). The Nano firmware emits source-timeline diagnostics only; it does not drive actuators.
+Both commands run the same current lifecycle fixture. It replaces the SerialPort
+enumerator and open method before Main loads; a COM enumeration or open attempt
+fails the test. Results are written to a unique temporary directory outside the
+repository.
 
-## Project layout
+Offline firmware checks:
 
-- `desktop/electron/`: Electron main process and minimal preload bridge
-- `desktop/renderer/`: Vite and React renderer placeholder
-- `desktop/shared/`: shared device and proposed serial protocol types
-- `firmware/`: diagnostic and unified Nano firmware; the unified build is simulation-only and has no physical output behavior
-- `firmware/original/` and `references/original/`: reserved for unmodified source sketches and supplied project references
-- `assets/audio/`: reserved for supplied local audio
-- `docs/`: architecture and development plan
-- `test/`: reserved for protocol and device tests
+```powershell
+$env:UNIFIED_RESULTS = Join-Path $env:TEMP "NatureTouch-Unified-$([guid]::NewGuid().ToString('N'))"
+$env:DRIVER_SAFETY_RESULTS = Join-Path $env:TEMP "NatureTouch-DriverSafety-$([guid]::NewGuid().ToString('N'))"
+npm run test:firmware
+```
 
-The original sketches and three MP3 assets are now available under `卒研music/`; see [docs/hardware-analysis.md](docs/hardware-analysis.md) for the source-level inventory and unresolved hardware questions. Preserve the sketches unchanged. The separate hardware schematic, driver details, and pressure-safety information remain unverified.
+`test:firmware` runs the unified simulation/AVR8js suite and the Real Driver
+compile-block/GPIO-safety suite. Results are written to the supplied locations;
+do not reuse a directory containing prior evidence. These tests do not connect
+to COM or upload firmware.
 
-## Security and hardware boundary
+The current package version is `0.1.0` and is not a release designation.
+[`docs/build-manifest.json`](docs/build-manifest.json) records the prior Phase 0
+baseline; it does not identify this v3.0 prototype build. The P0-05 firmware
+source and configuration audit is in
+[`docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md`](docs/PHASE0_FIRMWARE_SOURCE_AUDIT.md).
 
-Electron uses context isolation, disables Node integration in the renderer, enables sandboxing, and exposes a narrow typed API through preload. The local mock simulation is separate from the serial-controlled Nano simulation firmware. Neither simulation generates physical actuator signals.
+## Optional iPad Safari controller
 
-Do not connect or operate tactile hardware based on this scaffold. Verify driver and pin mappings, pressure protection, and an independent physical actuator power cutoff before any live test.
+The LAN server is disabled unless all four required environment variables are
+set before starting the Windows app:
+
+- `NATURE_TOUCH_IPAD_BIND_ADDRESS`: an assigned private IPv4 (RFC1918) or IPv6
+  ULA address on the Windows host. Wildcard, loopback, public, and unassigned
+  addresses are rejected.
+- `NATURE_TOUCH_IPAD_TLS_KEY_PATH` and `NATURE_TOUCH_IPAD_TLS_CERT_PATH`:
+  absolute paths to the TLS private key and certificate. The certificate must
+  be trusted by the iPad and include the selected LAN address in its SAN.
+- `NATURE_TOUCH_IPAD_PASSWORD`: a non-empty password of at least 12 characters.
+  Supply it through the launch environment or a protected secret manager; do
+  not put it in source, the web page, or command-line arguments.
+
+`NATURE_TOUCH_IPAD_PORT` optionally selects a port from 1024 through 65535
+(default `8443`). The service uses HTTPS only, exact Host/Origin checks,
+HttpOnly/Secure/SameSite session cookies, in-memory expiring sessions, bounded
+login attempts, CSP, and revisioned Server-Sent Events. It has no CORS endpoint,
+database, firmware route, public bind, or direct hardware path. Use the printed
+`https://<configured-lan-address>:<port>/` URL in Safari. A self-signed
+certificate must first be installed and trusted on the iPad; otherwise Safari
+will correctly reject the connection.
+
+In PowerShell, set the address, TLS file paths, and password in the process
+environment before launching `npm run dev`. Avoid saving the password in a
+script or shell history. The integration tests use a test-only certificate and
+an assigned private interface; they do not represent Safari trust testing.
+
+## Hardware boundary
+
+Do not treat a successful simulation, compile, or historical bench report as
+authorization for connected or pressurized operation. No physical COM access,
+firmware upload, actuator START, or pressure test was performed for Phase 0
+final verification. The independent physical bench utility requires its own
+review and explicit operator authorization; it is not launched by the normal
+application.
+
+Historical phase documents describe prior experiments and are not a current
+product specification. iPad control and final exhibition media assets remain
+out of scope for S01.

@@ -87,3 +87,19 @@ test('frames native serial writes with one newline delimiter', async () => {
 
   assert.equal(received, '{"type":"IDENTIFY"}\n')
 })
+
+test('native RX supplies original Buffer bytes before UTF8 replacement for passive diagnostics',async()=>{
+  SerialPortMock.binding.reset()
+  SerialPortMock.binding.createPort('OFFLINE_RAW',{echo:false})
+  let native:MockPort|undefined
+  const transport=new NativeSerialTransport({list:async()=>[{path:'OFFLINE_RAW'}],create:options=>{
+    native=new SerialPortMock(options);return native
+  }})
+  const connection=await transport.open('OFFLINE_RAW',9600)
+  const captured:Buffer[]=[]
+  connection.onData((_text,raw)=>{assert.ok(raw);captured.push(Buffer.from(raw))})
+  const bytes=Buffer.from([0x7b,0xff,0xc3,0x0d,0x0a])
+  ;(native as unknown as {emit(event:'data',data:Buffer):void}).emit('data',bytes)
+  assert.deepEqual(Buffer.concat(captured),bytes)
+  await connection.close()
+})
